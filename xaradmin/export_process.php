@@ -20,9 +20,9 @@
 function workflow_admin_export_process()
 {
     // Security Check
-    if (!xarSecurityCheck('AdminWorkflow')) return;
+    if (!xarSecurity::check('AdminWorkflow')) return;
 
-    if (!xarVarFetch('pid' ,    'int',    $data['processid'] , 0 ,          XARVAR_NOT_REQUIRED)) return;
+    if (!xarVar::fetch('pid' ,    'int',    $data['processid'] , 0 ,          xarVar::NOT_REQUIRED)) return;
     
 // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');

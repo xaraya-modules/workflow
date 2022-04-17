@@ -44,7 +44,7 @@
       <id>169</id>
       <label>Owner</label>
       <type>username</type>
-      <defaultvalue>xarUserGetVar('uname')</defaultvalue>
+      <defaultvalue>xarUser::getVar('uname')</defaultvalue>
       <source>xar_workflow_instances.owner</source>
       <status>33</status>
       <seq>4</seq>

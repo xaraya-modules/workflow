@@ -74,7 +74,7 @@ class Instance extends Base
         $actname=trim($actname);
         $aid = $this->getOne("select `activityId` from ".self::tbl('activities')."where `pId`=? and `name`=?",array($pId,$actname));
         if(!$this->getOne("select count(*) from ".self::tbl('activities')." where `activityId`=? and `pId`=?",array($aid,$pId))) {
-//            return xarTplModule('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $aid));
+//            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $aid));
             
             //REMOVEME
             trigger_error(xarML('Fatal error: setting next activity to an unexisting activity'),E_USER_WARNING);
@@ -445,7 +445,7 @@ class Instance extends Base
           if (in_array($this->nextActivity,$candidates)) {
             $this->sendTo((int)$activityId,(int)$this->nextActivity);
           } else {
-//            return xarTplModule('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $this->nextActivity));
+//            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $this->nextActivity));
             // REMOVEME
             trigger_error(xarML('Fatal error: nextActivity does not match any candidate in autorouting switch activity'),E_USER_WARNING);
           }
@@ -628,7 +628,7 @@ class Instance extends Base
     } else {
       // This activity is interactive: just execute it as running
         xarController::redirect(
-                                xarModURL('workflow','user','run_activity',
+                                xarController::URL('workflow','user','run_activity',
                                 array('activityId' => $activityId,
                                       'iid' => $iid,
                                       'auto' => 0)));

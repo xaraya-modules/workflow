@@ -12,7 +12,7 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarModURL('workflow','user','main')#" class="#$linkclass#">
+          <a href="#xarController::URL('workflow','user','main')#" class="#$linkclass#">
             <img src="#sys::code()#modules/workflow/lib/galaxia/img/icons/home.gif" alt="#xarML('workflows')#" title="#xarML('my workflows')#"/>
             My Workflow
           </a>
@@ -26,7 +26,7 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarModURL('workflow','user','processes')#" class="#$linkclass#">
+          <a href="#xarController::URL('workflow','user','processes')#" class="#$linkclass#">
             <img src="#sys::code()#modules/workflow/lib/galaxia/img/icons/process.gif" alt="#xarML('processes')#" title="#xarML('user processes')#"/>
             Processes
           </a>
@@ -40,7 +40,7 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarModURL('workflow','user','activities')#" class="#$linkclass#">
+          <a href="#xarController::URL('workflow','user','activities')#" class="#$linkclass#">
             <img src="#sys::code()#modules/workflow/lib/galaxia/img/icons/activity.gif" alt="#xarML('activities')#" title="#xarML('user activities')#"/>
             Activities
           </a>
@@ -54,7 +54,7 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarModURL('workflow','user','instances')#" class="#$linkclass#">
+          <a href="#xarController::URL('workflow','user','instances')#" class="#$linkclass#">
             <img src="#sys::code()#modules/workflow/lib/galaxia/img/icons/instance.gif" alt="#xarML('instances')#" title="#xarML('user instances')#"/>
             Instances
           </a>

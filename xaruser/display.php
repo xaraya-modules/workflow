@@ -14,8 +14,8 @@
 
 function workflow_user_display()
 {
-    if (!xarSecurityCheck('ReadWorkflow')) return;
-    xarTplSetPageTitle('Display Activities');
+    if (!xarSecurity::check('ReadWorkflow')) return;
+    xarTpl::setPageTitle('Display Activities');
 
     // Get all the activities
     sys::import('modules.dynamicdata.class.objects.master');

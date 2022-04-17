@@ -20,22 +20,22 @@
 function workflow_user_instances()
 {
     // Security Check
-    if (!xarSecurityCheck('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) return;
 
 
     // Initialize some stuff
-    $user = xarUserGetVar('id');
+    $user = xarUser::getVar('id');
     $maxRecords = xarModVars::get('workflow','items_per_page');
 
     if (isset($_REQUEST['run']) || isset($_REQUEST['run_x'])) {
-        return xarModFunc('workflow','user','run_activity');
+        return xarMod::guiFunc('workflow','user','run_activity');
     }
 
     if (isset($_REQUEST['remove']) || isset($_REQUEST['remove_x'])) {
-        xarVarFetch('iid','isset',$iid,'',XARVAR_NOT_REQUIRED);
-        xarVarFetch('return_url','isset',$return_url,'',XARVAR_NOT_REQUIRED);
+        xarVar::fetch('iid','isset',$iid,'',xarVar::NOT_REQUIRED);
+        xarVar::fetch('return_url','isset',$return_url,'',xarVar::NOT_REQUIRED);
         if (!empty($iid)) {
-            if (xarUserIsLoggedIn()) {
+            if (xarUser::isLoggedIn()) {
                 $seenlist = xarModUserVars::get('workflow','seenlist');
                 if (empty($seenlist)) {
                     xarModUserVars::set('workflow','seenlist',$iid);
@@ -201,9 +201,9 @@ $data['filter_status'] = isset($_REQUEST['filter_status']) ? $_REQUEST['filter_s
 $data['filter_act_status'] = isset($_REQUEST['filter_act_status']) ? $_REQUEST['filter_act_status'] : '';
 $data['filter_user'] = isset($_REQUEST['filter_user']) ? $_REQUEST['filter_user'] : '';
 $data['userId'] = $user;
-$data['user'] = xarUserGetVar('name', $user);
+$data['user'] = xarUser::getVar('name', $user);
 
-/*    $data['pager'] = xarTplGetPager($data['offset'],
+/*    $data['pager'] = xarTplPager::getPager($data['offset'],
                                        $items['cant'],
                                        $url,
                                        $maxRecords);*/

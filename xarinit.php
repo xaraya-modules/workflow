@@ -18,7 +18,7 @@
  */
 function workflow_init()
 {
-    if (!xarVarFetch('loadexample', 'checkbox', $loadexample, 1, XARVAR_NOT_REQUIRED)) return;
+    if (!xarVar::fetch('loadexample', 'checkbox', $loadexample, 1, xarVar::NOT_REQUIRED)) return;
 
     $dbconn = xarDB::getConn();
     $xartable = xarDB::getTables();
@@ -73,7 +73,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -97,7 +97,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -131,7 +131,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -170,7 +170,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -210,7 +210,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -248,7 +248,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -279,7 +279,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -307,7 +307,7 @@ function workflow_init()
 
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -335,7 +335,7 @@ function workflow_init()
 
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -373,7 +373,7 @@ function workflow_init()
     );
 
     // Create the table DDL
-    $query = xarDBCreateTable($table, $fields);
+    $query = xarTableDDL::createTable($table, $fields);
     if (empty($query)) return false; // throw back
 
     // Pass the Table Create DDL to adodb to create the table
@@ -393,7 +393,7 @@ function workflow_init()
                      'workflow_instance_activities',
                      );
 
-    if(!xarModAPIFunc('modules','admin','standardinstall',array('module' => $module, 'objects' => $objects))) return;
+    if(!xarMod::apiFunc('modules','admin','standardinstall',array('module' => $module, 'objects' => $objects))) return;
 
 # --------------------------------------------------------
 #
@@ -411,25 +411,25 @@ function workflow_init()
 #
 # Set up hooks
 #
-if (!xarModRegisterHook('item', 'create', 'API',
+if (!xarModHooks::register('item', 'create', 'API',
                            'workflow', 'admin', 'createhook')) {
         return false;
     }
-    if (!xarModRegisterHook('item', 'update', 'API',
+    if (!xarModHooks::register('item', 'update', 'API',
                            'workflow', 'admin', 'updatehook')) {
         return false;
     }
-    if (!xarModRegisterHook('item', 'delete', 'API',
+    if (!xarModHooks::register('item', 'delete', 'API',
                            'workflow', 'admin', 'deletehook')) {
         return false;
     }
-    if (!xarModRegisterHook('module', 'remove', 'API',
+    if (!xarModHooks::register('module', 'remove', 'API',
                            'workflow', 'admin', 'removehook')) {
         return false;
     }
 
 /* // TODO: show pending instances someday ?
-    if (!xarModRegisterHook('item', 'usermenu', 'GUI',
+    if (!xarModHooks::register('item', 'usermenu', 'GUI',
             'workflow', 'user', 'usermenu')) {
         return false;
     }
@@ -438,37 +438,37 @@ if (!xarModRegisterHook('item', 'create', 'API',
     // define privilege instances and masks
     $instances = array(
                        array('header' => 'external', // this keyword indicates an external "wizard"
-                             'query'  => xarModURL('workflow', 'admin', 'privileges'),
+                             'query'  => xarController::URL('workflow', 'admin', 'privileges'),
                              'limit'  => 0
                             )
                     );
-    xarDefineInstance('workflow', 'Item', $instances);
+    xarPrivileges::defineInstance('workflow', 'Item', $instances);
 
 # --------------------------------------------------------
 #
 # Set up masks
 #
-    xarRegisterMask('ViewWorkflow','All','workflow','All','All','ACCESS_OVERVIEW');
-    xarRegisterMask('ReadWorkflow','All','workflow','All','All','ACCESS_READ');
-    xarRegisterMask('SubmitWorkflow','All','workflow','All','All','ACCESS_COMMENT');
-    xarRegisterMask('ModerateWorkflow','All','workflow','All','All','ACCESS_MODERATE');
-    xarRegisterMask('EditWorkflow','All','workflow','All','All','ACCESS_EDIT');
-    xarRegisterMask('AddWorkflow','All','workflow','All','All','ACCESS_ADD');
-    xarRegisterMask('ManageWorkflow','All','workflow','All','All','ACCESS_DELETE');
-    xarRegisterMask('AdminWorkflow','All','workflow','All','All','ACCESS_ADMIN');
+    xarMasks::register('ViewWorkflow','All','workflow','All','All','ACCESS_OVERVIEW');
+    xarMasks::register('ReadWorkflow','All','workflow','All','All','ACCESS_READ');
+    xarMasks::register('SubmitWorkflow','All','workflow','All','All','ACCESS_COMMENT');
+    xarMasks::register('ModerateWorkflow','All','workflow','All','All','ACCESS_MODERATE');
+    xarMasks::register('EditWorkflow','All','workflow','All','All','ACCESS_EDIT');
+    xarMasks::register('AddWorkflow','All','workflow','All','All','ACCESS_ADD');
+    xarMasks::register('ManageWorkflow','All','workflow','All','All','ACCESS_DELETE');
+    xarMasks::register('AdminWorkflow','All','workflow','All','All','ACCESS_ADMIN');
 
 # --------------------------------------------------------
 #
 # Set up privileges
 #
-    xarRegisterPrivilege('ViewWorkflow','All','workflow','All','All','ACCESS_OVERVIEW');
-    xarRegisterPrivilege('ReadWorkflow','All','workflow','All','All','ACCESS_READ');
-    xarRegisterPrivilege('SubmitWorkflow','All','workflow','All','All','ACCESS_COMMENT');
-    xarRegisterPrivilege('ModerateWorkflow','All','workflow','All','All','ACCESS_MODERATE');
-    xarRegisterPrivilege('EditWorkflow','All','workflow','All','All','ACCESS_EDIT');
-    xarRegisterPrivilege('AddWorkflow','All','workflow','All','All','ACCESS_ADD');
-    xarRegisterPrivilege('ManageWorkflow','All','workflow','All','All','ACCESS_DELETE');
-    xarRegisterPrivilege('AdminWorkflow','All','workflow','All','All','ACCESS_ADMIN');
+    xarPrivileges::register('ViewWorkflow','All','workflow','All','All','ACCESS_OVERVIEW');
+    xarPrivileges::register('ReadWorkflow','All','workflow','All','All','ACCESS_READ');
+    xarPrivileges::register('SubmitWorkflow','All','workflow','All','All','ACCESS_COMMENT');
+    xarPrivileges::register('ModerateWorkflow','All','workflow','All','All','ACCESS_MODERATE');
+    xarPrivileges::register('EditWorkflow','All','workflow','All','All','ACCESS_EDIT');
+    xarPrivileges::register('AddWorkflow','All','workflow','All','All','ACCESS_ADD');
+    xarPrivileges::register('ManageWorkflow','All','workflow','All','All','ACCESS_DELETE');
+    xarPrivileges::register('AdminWorkflow','All','workflow','All','All','ACCESS_ADMIN');
 
     // Initialisation successful
     return true;
@@ -520,7 +520,7 @@ function workflow_delete()
 
     foreach ($mytables as $mytable) {
         // Generate the SQL to drop the table using the API
-        $query = xarDBDropTable($xartable[$mytable]);
+        $query = xarTableDDL::dropTable($xartable[$mytable]);
         if (empty($query)) return false; // throw back
 
         // Drop the table and send exception if returns false.
@@ -529,26 +529,26 @@ function workflow_delete()
     }
 
     // Remove module hooks
-    if (!xarModUnregisterHook('item', 'create', 'API',
+    if (!xarModHooks::unregister('item', 'create', 'API',
                            'workflow', 'admin', 'createhook')) {
         return false;
     }
-    if (!xarModUnregisterHook('item', 'update', 'API',
+    if (!xarModHooks::unregister('item', 'update', 'API',
                            'workflow', 'admin', 'updatehook')) {
         return false;
     }
-    if (!xarModUnregisterHook('item', 'delete', 'API',
+    if (!xarModHooks::unregister('item', 'delete', 'API',
                            'workflow', 'admin', 'deletehook')) {
         return false;
     }
     // when a whole module is removed, e.g. via the modules admin screen
     // (set object ID to the module name !)
-    if (!xarModUnregisterHook('module', 'remove', 'API',
+    if (!xarModHooks::unregister('module', 'remove', 'API',
                            'workflow', 'admin', 'removehook')) {
         return false;
     }
 /* // TODO: show pending instances someday ?
-    if (!xarModUnregisterHook('item', 'usermenu', 'GUI',
+    if (!xarModHooks::unregister('item', 'usermenu', 'GUI',
             'workflow', 'user', 'usermenu')) {
         return false;
     }
@@ -558,8 +558,8 @@ function workflow_delete()
     workflow_remove_processes();
 
     // Remove Masks and Instances
-    xarRemoveMasks('workflow');
-    xarRemoveInstances('workflow');
+    xarMasks::removemasks('workflow');
+    xarPrivileges::removeInstances('workflow');
 
     // Deletion successful
     return true;

@@ -22,7 +22,7 @@ sys::import('modules.dynamicdata.class.objects.master');
 function workflow_admin_activities()
 {
     // Security Check
-    if (!xarSecurityCheck('AdminWorkflow')) return;
+    if (!xarSecurity::check('AdminWorkflow')) return;
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
@@ -32,10 +32,10 @@ function workflow_admin_activities()
     include_once(GALAXIA_LIBRARY.'/processmanager.php');
 
 
-    if (!xarVarFetch('pid',   'int', $data['pid'],     NULL, XARVAR_NOT_REQUIRED)) {return;}
+    if (!xarVar::fetch('pid',   'int', $data['pid'],     NULL, xarVar::NOT_REQUIRED)) {return;}
     if (empty($data['pid'])) {
         $data['msg'] =  xarML("No process indicated");
-        return xarTplModule('workflow', 'admin', 'errors', $data);
+        return xarTpl::module('workflow', 'admin', 'errors', $data);
     }
 
     // Create a dataobject of this activity for displaying, saving etc.
@@ -51,7 +51,7 @@ function workflow_admin_activities()
 
     // Retrieve activity info if we are editing, assign to
     // default values when creating a new activity
-    if (!xarVarFetch('activityId',   'int', $data['activityId'],     0, XARVAR_NOT_REQUIRED)) {return;}
+    if (!xarVar::fetch('activityId',   'int', $data['activityId'],     0, xarVar::NOT_REQUIRED)) {return;}
     if (!empty($data['activityId'])) $data['activity']->getItem(array('itemid' => $data['activityId']));
 
     $activity  = WorkFlowActivity::get($data['activityId']);
@@ -83,7 +83,7 @@ function workflow_admin_activities()
 
     $role_to_add = 0;
     // Add a role to the process
-    if (!xarVarFetch('addrole',   'int', $data['addrole'],     0, XARVAR_NOT_REQUIRED)) {return;}
+    if (!xarVar::fetch('addrole',   'int', $data['addrole'],     0, xarVar::NOT_REQUIRED)) {return;}
     if (isset($addrole)) {
         $data['activity']->checkInput();
         $isInteractive = (isset($_REQUEST['isInteractive']) && $_REQUEST['isInteractive'] == 'on') ? 1 : 0;
@@ -137,7 +137,7 @@ function workflow_admin_activities()
         $name = $data['activity']->properties['name']->value;
         if ($process->hasActivity($name) && $data['activityId'] == 0) {
             $data['msg'] =  xarML("Activity name already exists");
-            return xarTplModule('workflow', 'admin', 'errors', $data);
+            return xarTpl::module('workflow', 'admin', 'errors', $data);
         }
 
     //--------------------------------------------- Save or create the item
@@ -255,7 +255,7 @@ function workflow_admin_activities()
 // ---------------------------------------
 // Update all activities at once
 
-    if (!xarVarFetch('update_act',   'isset', $update_act,     NULL, XARVAR_NOT_REQUIRED)) {return;}
+    if (!xarVar::fetch('update_act',   'isset', $update_act,     NULL, xarVar::NOT_REQUIRED)) {return;}
     if ($update_act) {
         for ($i=0, $na=count($activities['data']); $i < $na; $i++) {
             // Make id a bit more accessible
@@ -281,16 +281,16 @@ function workflow_admin_activities()
 
     // If its valid and requested to activate or deactivate, do so
     if ($valid) {
-        xarVarFetch('activate_proc', 'int', $activate_proc, 0, XARVAR_NOT_REQUIRED);
+        xarVar::fetch('activate_proc', 'int', $activate_proc, 0, xarVar::NOT_REQUIRED);
         if ($activate_proc) {
             $process->activate();
-            xarController::redirect(xarModURL('workflow','admin','activities',array('pid' => $data['pid'])));
+            xarController::redirect(xarController::URL('workflow','admin','activities',array('pid' => $data['pid'])));
             return true;
         }
-        xarVarFetch('deactivate_proc', 'int', $deactivate_proc, 0, XARVAR_NOT_REQUIRED);
+        xarVar::fetch('deactivate_proc', 'int', $deactivate_proc, 0, xarVar::NOT_REQUIRED);
         if ($deactivate_proc) {
             $process->deactivate();
-            xarController::redirect(xarModURL('workflow','admin','activities',array('pid' => $data['pid'])));
+            xarController::redirect(xarController::URL('workflow','admin','activities',array('pid' => $data['pid'])));
             return true;
         }
     }

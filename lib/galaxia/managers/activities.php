@@ -220,7 +220,7 @@ class ActivityManager extends BaseManager
 
         if(!$this->_node_in_list($start_node,$nodes)) {
             // Start node is NOT reachable from the end node
-            $link = '<a href="' . xarModURL('workflow','admin','activities',array('pid' => $pId)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+            $link = '<a href="' . xarController::URL('workflow','admin','activities',array('pid' => $pId)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
             $errors[] = $link . xarML('End activity is not reachable from start activity');
         }
 
@@ -234,21 +234,21 @@ class ActivityManager extends BaseManager
             if($res['isInteractive'] == 1) {
                 $cant = $this->getOne("select count(*) from ".self::tbl('activity_roles')." where activityId=?",array($res['activityId']));
                 if(!$cant) {
-                    $link = '<a href="' . xarModURL('workflow','admin','activities',array('pid' => $pId, 'activityId' => $aid)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+                    $link = '<a href="' . xarController::URL('workflow','admin','activities',array('pid' => $pId, 'activityId' => $aid)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
                     $errors[] = $link . xarML('Activity').': <b>'.$res['name'].xarML('</b> is interactive but has no role assigned');
                 }
             } else {
                 if( $res['type'] != 'end' && $res['isAutoRouted'] == 0) {
                     $cant = $this->getOne("select count(*) from".self::tbl('activity_roles')." where activityId=?",array($res['activityId']));
                     if(!$cant) {
-                        $link = '<a href="' . xarModURL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+                        $link = '<a href="' . xarController::URL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
                         $errors[] = $link . xarML('Activity').': <b>'.$res['name'].xarML('</b> is non-interactive and non-autorouted but has no role assigned');
                     }
                 }
             }
             if($res['type']=='standalone') {
                 if($this->getOne("select count(*) from ".self::tbl('transitions')."where actFromId=? or actToId=?",array($aid,$aid))) {
-                    $link = '<a href="' . xarModURL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+                    $link = '<a href="' . xarController::URL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
                     $errors[] = $link . xarML('Activity').': <b>'.$res['name'].xarML('</b> is standalone but has transitions');
                 }
             }
@@ -262,7 +262,7 @@ class ActivityManager extends BaseManager
         while($res = $result->fetchRow()) {
             $cant = $this->getOne("select count(*) from ".self::tbl('user_roles')." where roleId=?",array($res['roleId']));
             if(!$cant) {
-                $link = '<a href="' . xarModURL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+                $link = '<a href="' . xarController::URL('workflow','admin','roles',array('pid' => $pId)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
                 $errors[] = $link . xarML('Role').': <b>'.$res['name'].xarML('</b> is not mapped');
             }
         }
@@ -323,7 +323,7 @@ class ActivityManager extends BaseManager
             } else {
                 if($res['isInteractive']== 1) {
                     if(!strstr($data,'$instance->complete()')) {
-                        $link = '<a href="' . xarModURL('workflow','admin','shared_source',array('pid' => $pid)) . '"><img src="' . xarTplGetImage('red_dot.gif','workflow') . '"/></a> ';
+                        $link = '<a href="' . xarController::URL('workflow','admin','shared_source',array('pid' => $pid)) . '"><img src="' . xarTpl::getImage('red_dot.gif','workflow') . '"/></a> ';
                         $errors[] = $link . xarML('Activity <b>'.$res['name'].'</b> is interactive so it must use the $instance->complete() method');
                     }
                 } else {

@@ -64,7 +64,7 @@
       <id>185</id>
       <label>User</label>
       <type>username</type>
-      <defaultvalue>xarUserGetVar('uname')</defaultvalue>
+      <defaultvalue>xarUser::getVar('uname')</defaultvalue>
       <source>xar_workflow_instance_activities.user</source>
       <status>33</status>
       <seq>6</seq>
