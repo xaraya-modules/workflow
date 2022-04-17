@@ -33,7 +33,7 @@ function workflow_userapi_findinstances($args)
     }
 
     $where = '';
-    $wheres = array();
+    $wheres = [];
     // TODO: reformulate this with bindvars
     if (!empty($status)) {
         $wheres[] = "gi.status='" . $status . "'";
@@ -47,19 +47,17 @@ function workflow_userapi_findinstances($args)
     if (!empty($max_started)) {
         $wheres[] = "gi.started <= " . $max_started;
     }
-        if (!empty($activityName) && !empty($processName)) {
-                $wheres[] = "ga.name = '" . $activityName . "' AND gp.name = '".$processName."'";
-        }
+    if (!empty($activityName) && !empty($processName)) {
+        $wheres[] = "ga.name = '" . $activityName . "' AND gp.name = '".$processName."'";
+    }
 
     $where = implode(' and ', $wheres);
 
-    $items = $processMonitor->monitor_list_instances(0, -1, 'instanceId_asc', '', $where, array());
+    $items = $processMonitor->monitor_list_instances(0, -1, 'instanceId_asc', '', $where, []);
 
     if (isset($items) && isset($items['data'])) {
         return $items['data'];
     } else {
-        return array();
+        return [];
     }
 }
-
-?>

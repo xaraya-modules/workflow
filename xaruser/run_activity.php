@@ -22,16 +22,18 @@ function workflow_user_run_activity()
     xarLog::message("Running activity");
     // Security Check
     // CHECKME: what if an activity is Auto? (probably nothing different)
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    $data = array();
+    $data = [];
     // global $user variable used by instance
     global $user;
     $user = xarUser::getVar('id');
-//--------------------------------------------- Load the instance class
-    include (GALAXIA_LIBRARY.'/api.php');
+    //--------------------------------------------- Load the instance class
+    include(GALAXIA_LIBRARY.'/api.php');
 
     // TODO: evaluate why this is here
     global $__activity_completed;
@@ -65,9 +67,13 @@ function workflow_user_run_activity()
     if ($activity->isInteractive()) {
         // TODO: revisit this when roles/users is clearer
         $canrun = false;
-        foreach ($act_roles as $candidate)
-            if (in_array($candidate["roleId"], $user_roles)) $canrun = true;
-        if (!$canrun) {var_dump($act_roles);
+        foreach ($act_roles as $candidate) {
+            if (in_array($candidate["roleId"], $user_roles)) {
+                $canrun = true;
+            }
+        }
+        if (!$canrun) {
+            var_dump($act_roles);
             $data['msg'] =  xarML("You can't execute this activity");
             return xarTpl::module('workflow', 'user', 'errors', $data);
         }
@@ -93,33 +99,44 @@ function workflow_user_run_activity()
 
     // Existing variables here:
     // $process, $activity, $instance (if not standalone)
-//--------------------------------------------- Execute the PHP code of the activity
+    //--------------------------------------------- Execute the PHP code of the activity
 
     // Include the shared code
-    if (file_exists($shared)) include_once ($shared);
+    if (file_exists($shared)) {
+        include_once($shared);
+    }
 
-   // Now do whatever you have to do in the activity
+    // Now do whatever you have to do in the activity
     // cls - this needs to be included each time, otherwise you can't run more than 1 activity per request
-    if (file_exists($source)) require ($source);
+    if (file_exists($source)) {
+        require($source);
+    }
 
-//--------------------------------------------- 
+    //---------------------------------------------
     // Process comments
     if (isset($_REQUEST['__removecomment'])) {
         $__comment = $instance->get_instance_comment($_REQUEST['__removecomment']);
 
-        if ($__comment['user'] == $user or xarSecurity::check('AdminWorkflow',0)) {
+        if ($__comment['user'] == $user or xarSecurity::check('AdminWorkflow', 0)) {
             $instance->remove_instance_comment($_REQUEST['__removecomment']);
         }
     }
 
     $data['__comments'] =&  $__comments;
 
-    if (!isset($_REQUEST['__cid']))
+    if (!isset($_REQUEST['__cid'])) {
         $_REQUEST['__cid'] = 0;
+    }
 
     if (isset($_REQUEST['__post'])) {
-        $instance->replace_instance_comment($_REQUEST['__cid'], $activity->getActivityId(), $activity->getName(),
-            $user, $_REQUEST['__title'], $_REQUEST['__comment']);
+        $instance->replace_instance_comment(
+            $_REQUEST['__cid'],
+            $activity->getActivityId(),
+            $activity->getName(),
+            $user,
+            $_REQUEST['__title'],
+            $_REQUEST['__comment']
+        );
     }
 
     $__comments = $instance->get_instance_comments();
@@ -145,7 +162,7 @@ function workflow_user_run_activity()
         $data['return_url'] = '';
     }
 
-//--------------------------------------------- Redirect the process to the next activity (or not)
+    //--------------------------------------------- Redirect the process to the next activity (or not)
 
     if (!isset($_REQUEST['auto']) && $activity->isInteractive() && $__activity_completed) {
 
@@ -177,7 +194,7 @@ function workflow_user_run_activity()
     } else {
 //        if (!isset($_REQUEST['auto']) && $activity->isInteractive()) {
 
-//--------------------------------------------- This activity is not completed
+        //--------------------------------------------- This activity is not completed
 
         if ((!isset($_REQUEST['auto']) || !$_REQUEST['auto'])&& $activity->isInteractive()) {
 
@@ -195,31 +212,36 @@ function workflow_user_run_activity()
                 $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName(). '/code/templates/' . $template, $data);
                 $data['mid'] = $output;
             }
-            
+
             $template = 'running';
 
             // call display hooks if we have an instance
             if (!empty($instance->instanceId)) {
                 // get object properties for this instance - that's a bit much :)
                 //$item = get_object_vars($instance);
-                $props = array('pId','instanceId','properties','owner','status','started','ended','nextActivity','nextUser','workitems');
-                $item = array();
+                $props = ['pId','instanceId','properties','owner','status','started','ended','nextActivity','nextUser','workitems'];
+                $item = [];
                 foreach ($props as $prop) {
                     $item[$prop] = $instance->$prop;
                 }
                 $item['module'] = 'workflow';
                 $item['itemtype'] = $activity->getProcessId();
                 $item['itemid'] = $instance->getInstanceId();
-                $item['returnurl'] = xarController::URL('workflow','user','run_activity',
-                                               array('activityId' => $activity->getActivityId(),
-                                                     'iid' => $instance->getInstanceId()));
-                $data['hooks'] = xarModHooks::call('item','display',$instance->instanceId,$item);                
+                $item['returnurl'] = xarController::URL(
+                    'workflow',
+                    'user',
+                    'run_activity',
+                    ['activityId' => $activity->getActivityId(),
+                                                     'iid' => $instance->getInstanceId(), ]
+                );
+                $data['hooks'] = xarModHooks::call('item', 'display', $instance->instanceId, $item);
             }
-            
+
             // If we are not testing, then display the output in its own page
             // Otherwise display it as part of this page
-            if (xarSession::getVar('role_id') != xarModvars::get('roles','admin')) return $output;
-            
+            if (xarSession::getVar('role_id') != xarModvars::get('roles', 'admin')) {
+                return $output;
+            }
         } elseif (isset($_REQUEST['auto']) && $activity->isInteractive()) {
 
 //--------------------------------------------- This activity is interactive and autorouted
@@ -235,7 +257,5 @@ function workflow_user_run_activity()
             $template = 'completed';
         }
     }
-    return xarTpl::module('workflow','user','activity',$data,$template);
+    return xarTpl::module('workflow', 'user', 'activity', $data, $template);
 }
-
-?>

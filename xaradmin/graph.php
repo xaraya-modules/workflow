@@ -21,20 +21,23 @@ sys::import('modules.workflow.lib.galaxia.api');
 function workflow_admin_graph()
 {
     // Security Check
-    if (!xarSecurity::check('AdminWorkflow')) return;
+    if (!xarSecurity::check('AdminWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    $tplData = array();
-$maxRecords = xarModVars::get('workflow','items_per_page');
+    $tplData = [];
+    $maxRecords = xarModVars::get('workflow', 'items_per_page');
     // Adapted from tiki-g-admin_processes.php
 
     include_once(GALAXIA_LIBRARY.'/processmanager.php');
 
     // Check if we are editing an existing process
     // if so retrieve the process info and assign it.
-    if (!isset($_REQUEST['pid']))
+    if (!isset($_REQUEST['pid'])) {
         $_REQUEST['pid'] = 0;
+    }
 
     if ($_REQUEST["pid"]) {
         xarLog::message("WORKFLOW: Getting process");
@@ -46,7 +49,7 @@ $maxRecords = xarModVars::get('workflow','items_per_page');
         $info['graph'] = GALAXIA_PROCESSES."/" . $procNName . "/graph/" . $procNName . ".png";
         $mapfile = GALAXIA_PROCESSES."/" . $procNName . "/graph/" . $procNName. ".map";
 
-        if(!file_exists($process->getGraph()) or !file_exists($mapfile)) {
+        if (!file_exists($process->getGraph()) or !file_exists($mapfile)) {
             // Try to build it
             xarLog::message("WF: need to build graph files");
             $activityManager->build_process_graph($_REQUEST['pid']);
@@ -54,25 +57,29 @@ $maxRecords = xarModVars::get('workflow','items_per_page');
 
         if (file_exists($process->getGraph()) && file_exists($mapfile)) {
             xarLog::message("WF: graph files exist");
-            $map = join('',file($mapfile));
+            $map = join('', file($mapfile));
 
-            $url = xarController::URL('workflow','admin','activities',
-                             array('pid' => $info['pId']));
+            $url = xarController::URL(
+                'workflow',
+                'admin',
+                'activities',
+                ['pid' => $info['pId']]
+            );
             $map = preg_replace('/href=".*?activityId/', 'href="' . $url . '&amp;activityId', $map);
             // Darn graphviz does not close the area tags
-            $map = preg_replace('#<area (.*[^/])>#','<area $1/>',$map);
+            $map = preg_replace('#<area (.*[^/])>#', '<area $1/>', $map);
             $info['map'] = $map;
         } else {
             $info['graph'] = '';
         }
     } else {
-        $info = array(
+        $info = [
                       'name' => '',
                       'description' => '',
                       'version' => '1.0',
                       'isActive' => 0,
-                      'pId' => 0
-                      );
+                      'pId' => 0,
+                      ];
     }
 
     $tplData['proc_info'] = $info;
@@ -80,7 +87,7 @@ $maxRecords = xarModVars::get('workflow','items_per_page');
     $tplData['info'] =  $info;
 
     $where = '';
-    $wheres = array();
+    $wheres = [];
 
     if (isset($_REQUEST['filter'])) {
         if ($_REQUEST['filter_name']) {
@@ -146,7 +153,7 @@ $maxRecords = xarModVars::get('workflow','items_per_page');
     if ($_REQUEST['pid']) {
         $valid = $activityManager->validate_process_activities($_REQUEST['pid']);
 
-        $errors = array();
+        $errors = [];
 
         if (!$valid) {
             $process->deactivate();
@@ -157,27 +164,25 @@ $maxRecords = xarModVars::get('workflow','items_per_page');
         $tplData['errors'] =  $errors;
     }
 
-    $sameurl_elements = array(
+    $sameurl_elements = [
                               'offset',
                               'sort_mode',
                               'where',
                               'find',
                               'filter_name',
-                              'filter_active'
-                              );
+                              'filter_active',
+                              ];
 
     $all_procs = $items = $processManager->list_processes(0, -1, 'name_desc', '', '');
     $tplData['all_procs'] =  $all_procs['data'];
 
     $tplData['mid'] =  'tiki-g-admin_processes.tpl';
 
-/*    $tplData['pager'] = xarTplPager::getPager($tplData['offset'],
-                                       $items['cant'],
-                                       $url,
-                                       $maxRecords);*/
-    $tplData['url'] = xarServer::getCurrentURL(array('offset' => '%%'));
+    /*    $tplData['pager'] = xarTplPager::getPager($tplData['offset'],
+                                           $items['cant'],
+                                           $url,
+                                           $maxRecords);*/
+    $tplData['url'] = xarServer::getCurrentURL(['offset' => '%%']);
     $tplData['maxRecords'] = $maxRecords;
     return $tplData;
 }
-
-?>

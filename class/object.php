@@ -18,8 +18,8 @@ class WorkflowObject extends DataObject
 {
     protected function normalize($name, $version = null)
     {
-        $name = str_replace(" ","_",$name);
-        $name = preg_replace("/[^0-9A-Za-z\_]/",'',$name);
+        $name = str_replace(" ", "_", $name);
+        $name = preg_replace("/[^0-9A-Za-z\_]/", '', $name);
         return $name;
     }
 
@@ -28,4 +28,3 @@ class WorkflowObject extends DataObject
         return self::normalize($this->getName());
     }
 }
-?>

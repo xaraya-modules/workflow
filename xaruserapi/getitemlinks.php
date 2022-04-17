@@ -22,7 +22,7 @@ function workflow_userapi_getitemlinks($args)
 {
     extract($args);
 
-    $itemlinks = array();
+    $itemlinks = [];
     if (empty($itemtype)) {
         return $itemlinks;
     }
@@ -37,25 +37,29 @@ function workflow_userapi_getitemlinks($args)
     $where = "gi.pId=$itemtype";
     $items = $GUI->gui_list_user_instances($user, 0, -1, $sort, $find, $where);
 
-// TODO: add the instances you're the owner of (if relevant)
+    // TODO: add the instances you're the owner of (if relevant)
 
     if (empty($items['data']) || !is_array($items['data']) || count($items['data']) == 0) {
-       return $itemlinks;
+        return $itemlinks;
     }
 
-    $itemid2key = array();
+    $itemid2key = [];
     foreach ($items['data'] as $key => $item) {
         $itemid2key[$item['instanceId']] = $key;
     }
     foreach ($itemids as $itemid) {
-        if (!isset($itemid2key[$itemid])) continue;
+        if (!isset($itemid2key[$itemid])) {
+            continue;
+        }
         $item = $items['data'][$itemid2key[$itemid]];
-        $itemlinks[$itemid] = array('url'   => xarController::URL('workflow', 'user', 'instances',
-                                                         array('filter_process' => $itemtype)),
+        $itemlinks[$itemid] = ['url'   => xarController::URL(
+            'workflow',
+            'user',
+            'instances',
+            ['filter_process' => $itemtype]
+        ),
                                     'title' => xarML('Display Instance'),
-                                    'label' => xarVar::prepForDisplay($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']));
+                                    'label' => xarVar::prepForDisplay($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']), ];
     }
     return $itemlinks;
 }
-
-?>

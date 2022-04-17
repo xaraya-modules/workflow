@@ -21,11 +21,13 @@ sys::import('modules.workflow.lib.galaxia.api');
 function workflow_admin_shared_source()
 {
     // Security Check
-    if (!xarSecurity::check('AdminWorkflow')) return;
+    if (!xarSecurity::check('AdminWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    $data = array();
+    $data = [];
 
     // Adapted from tiki-g-admin_shared_source.php
 
@@ -39,7 +41,7 @@ function workflow_admin_shared_source()
     $data['pid'] =  $_REQUEST['pid'];
 
     if (isset($_REQUEST['code'])) {
-        unset ($_REQUEST['template']);
+        unset($_REQUEST['template']);
         $_REQUEST['save'] = 'y';
     }
 
@@ -52,8 +54,9 @@ function workflow_admin_shared_source()
 
     $data['warn'] =  '';
 
-    if (!isset($_REQUEST['activityId']))
+    if (!isset($_REQUEST['activityId'])) {
         $_REQUEST['activityId'] = 0;
+    }
 
     $data['activityId'] =  $_REQUEST['activityId'];
 
@@ -73,12 +76,12 @@ function workflow_admin_shared_source()
         }
 
         // Then editing an activity
-        $data['act_info'] =  array(
+        $data['act_info'] =  [
             'isInteractive' => $act->isInteractive() ? 1 : 0,
-            'type'          => $act->getType());
+            'type'          => $act->getType(), ];
     } else {
         $data['template'] =  0;
-        $data['act_info'] =  array('isInteractive' => 0, 'type' => 'shared');
+        $data['act_info'] =  ['isInteractive' => 0, 'type' => 'shared'];
         // Then editing shared code
         $source = GALAXIA_PROCESSES."/$procname/code/shared.php";
     }
@@ -86,19 +89,19 @@ function workflow_admin_shared_source()
     //First of all save
     xarVar::fetch('source', 'str', $source_data, '', xarVar::NOT_REQUIRED);
     if (!empty($source_data)) {
-    //var_dump($source);exit;
+        //var_dump($source);exit;
         // security check on paths
         $basedir = GALAXIA_PROCESSES . "/$procname/code/";
         $basepath = realpath($basedir);
         $sourcepath = realpath($_REQUEST['source_name']);
-        if (substr($sourcepath,0,strlen($basepath)) == $basepath) {
+        if (substr($sourcepath, 0, strlen($basepath)) == $basepath) {
             $fp = fopen($_REQUEST['source_name'], "wb");
 
             if (get_magic_quotes_gpc()) {
                 $source_data = stripslashes($source_data);
             }
             fwrite($fp, $source_data);
-            fclose ($fp);
+            fclose($fp);
             if ($_REQUEST['activityId']) {
                 $act = WorkflowActivity::get($_REQUEST['activityId']);
                 $act->compile();
@@ -116,7 +119,7 @@ function workflow_admin_shared_source()
         $filestring = fread($fp, 4096);
         $data['data'] .=  $filestring;
     }
-    fclose ($fp);
+    fclose($fp);
 
     // initialize template
     if (empty($data['data']) && isset($_REQUEST['template']) && !empty($act)) {
@@ -126,7 +129,7 @@ function workflow_admin_shared_source()
     }
 
     $valid = $activityManager->validate_process_activities($_REQUEST['pid']);
-    $errors = array();
+    $errors = [];
 
     if (!$valid) {
         $errors = $activityManager->get_error();
@@ -145,4 +148,3 @@ function workflow_admin_shared_source()
 
     return $data;
 }
-?>

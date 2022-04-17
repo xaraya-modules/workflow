@@ -20,14 +20,16 @@
 function workflow_userapi_run_activity($args)
 {
     // Security Check
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment (possibly include more than once here !)
     sys::import('modules.workflow.lib.galaxia.config');
-    $data = array();
+    $data = [];
 
     // Adapted from tiki-g-run_activity.php
-    include (GALAXIA_LIBRARY.'/api.php');
+    include(GALAXIA_LIBRARY.'/api.php');
 
     // TODO: evaluate why this is here
     global $__activity_completed;
@@ -57,11 +59,14 @@ function workflow_userapi_run_activity($args)
     // Existing variables here:
     // $process, $activity, $instance (if not standalone)
 
-//--------------------------------------------- Execute the PHP code of the activity
+    //--------------------------------------------- Execute the PHP code of the activity
     // Include the shared code
-    if (file_exists($shared)) include_once ($shared);
-    if (file_exists($source)) require ($source);
+    if (file_exists($shared)) {
+        include_once($shared);
+    }
+    if (file_exists($source)) {
+        require($source);
+    }
 
     return true;
 }
-?>

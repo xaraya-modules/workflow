@@ -20,32 +20,35 @@
 function workflow_user_activities()
 {
     // Security Check
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    $data = array();
+    $data = [];
 
     // Adapted from tiki-g-user_activities.php
-    include_once (GALAXIA_LIBRARY.'/gui.php');
+    include_once(GALAXIA_LIBRARY.'/gui.php');
 
     // Initialize some stuff
     $user = xarUser::getVar('id');
-    $maxRecords = xarModVars::get('workflow','items_per_page');
+    $maxRecords = xarModVars::get('workflow', 'items_per_page');
 
     // Filtering data to be received by request and
     // used to build the where part of a query
     // filter_active, filter_valid, find, sort_mode,
     // filter_process
     $where = '';
-    $wheres = array();
+    $wheres = [];
 
     /*
     if(isset($_REQUEST['filter_active'])&&$_REQUEST['filter_active']) $wheres[]="isActive='".$_REQUEST['filter_active']."'";
     if(isset($_REQUEST['filter_valid'])&&$_REQUEST['filter_valid']) $wheres[]="isValid='".$_REQUEST['filter_valid']."'";
     */
-    if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process'])
+    if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {
         $wheres[] = "gp.pId=" . $_REQUEST['filter_process'] . "";
+    }
 
     $where = implode(' and ', $wheres);
 
@@ -101,7 +104,7 @@ function workflow_user_activities()
     }
 
     if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {
-        $actid2item = array();
+        $actid2item = [];
         foreach (array_keys($data['items']) as $index) {
             $actid2item[$data['items'][$index]['activityId']] = $index;
         }
@@ -113,24 +116,32 @@ function workflow_user_activities()
                     $maplines = file($mapfile);
                     $map = '';
                     foreach ($maplines as $mapline) {
-                        if (!preg_match('/activityId=(\d+)/',$mapline,$matches)) continue;
+                        if (!preg_match('/activityId=(\d+)/', $mapline, $matches)) {
+                            continue;
+                        }
                         $actid = $matches[1];
-                        if (!isset($actid2item[$actid])) continue;
+                        if (!isset($actid2item[$actid])) {
+                            continue;
+                        }
                         $index = $actid2item[$actid];
                         $item = $data['items'][$index];
                         if ($item['instances'] > 0) {
-                            $url = xarController::URL('workflow','user','instances',
-                                             array('filter_process' => $info['pId']));
+                            $url = xarController::URL(
+                                'workflow',
+                                'user',
+                                'instances',
+                                ['filter_process' => $info['pId']]
+                            );
                             $mapline = preg_replace('/href=".*?activityId/', 'href="' . $url . '&amp;filter_activity', $mapline);
                             $map .= $mapline;
                         } elseif ($item['isInteractive'] && ($item['type'] == 'start' || $item['type'] == 'standalone')) {
-                            $url = xarController::URL('workflow','user','run_activity');
+                            $url = xarController::URL('workflow', 'user', 'run_activity');
                             $mapline = preg_replace('/href=".*?activityId/', 'href="' . $url . '&amp;activityId', $mapline);
                             $map .= $mapline;
                         }
                     }
                     // Darn graphviz does not close the area tags
-                    $map = preg_replace('#<area (.*[^/])>#','<area $1/>',$map);
+                    $map = preg_replace('#<area (.*[^/])>#', '<area $1/>', $map);
 
                     $data['graph'] = $graph;
                     $data['map'] = $map;
@@ -145,7 +156,7 @@ function workflow_user_activities()
 
     //$section = 'workflow';
     //include_once ('tiki-section_options.php');
-    $sameurl_elements = array(
+    $sameurl_elements = [
         'offset',
         'sort_mode',
         'where',
@@ -155,21 +166,19 @@ function workflow_user_activities()
         'filter_activity',
         'filter_type',
         'processId',
-        'filter_process'
-    );
+        'filter_process',
+    ];
 
     $data['mid'] =  'tiki-g-user_activities.tpl';
 
     // Missing variable
-    $data['filter_process'] = isset($_REQUEST['filter_process']) ? $_REQUEST['filter_process'] : '';
+    $data['filter_process'] = $_REQUEST['filter_process'] ?? '';
 
-/*        $data['pager'] = xarTplPager::getPager($data['offset'],
-                                           $items['cant'],
-                                           $url,
-                                           $maxRecords);*/
-        $data['maxRecords'] = $maxRecords;
-        $data['url'] = xarServer::getCurrentURL(array('offset' => '%%'));
-        return $data;
+    /*        $data['pager'] = xarTplPager::getPager($data['offset'],
+                                               $items['cant'],
+                                               $url,
+                                               $maxRecords);*/
+    $data['maxRecords'] = $maxRecords;
+    $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+    return $data;
 }
-
-?>

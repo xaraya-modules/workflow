@@ -23,9 +23,9 @@
 function workflow_user_main()
 {
     // Security Check
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
 
-    return array();
+    return [];
 }
-
-?>

@@ -27,4 +27,3 @@ $modversion['admin']          = 1;
 $modversion['user']           = 1;
 $modversion['class']          = 'Utility';
 $modversion['category']       = 'Miscellaneous';
-?>

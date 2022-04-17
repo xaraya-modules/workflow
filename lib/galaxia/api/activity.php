@@ -1,5 +1,6 @@
 <?php
-include_once (GALAXIA_LIBRARY.'/common/base.php');
+
+include_once(GALAXIA_LIBRARY.'/common/base.php');
 /**
  * Base class for Workflow activities
  *
@@ -16,8 +17,8 @@ class WorkflowActivity extends Base
     public $isInteractive;
     public $isAutoRouted;
 
-    public $outbound=Array();
-    public $inbound=Array();
+    public $outbound=[];
+    public $inbound=[];
 
     public $pId;
     public $activityId;
@@ -28,46 +29,49 @@ class WorkflowActivity extends Base
      * loading the information from the database.
      *
     **/
-    static function &get($activityId)
+    public static function &get($activityId)
     {
         // Get an object with a db object for now
         $dummy = new Base();
         $query = "select * from ".self::tbl('activities')." where `activityId`=?";
-        $result = $dummy->query($query,array($activityId));
+        $result = $dummy->query($query, [$activityId]);
 
-        if(!$result->numRows()) { $false = false; return $false;}
+        if (!$result->numRows()) {
+            $false = false;
+            return $false;
+        }
         $res = $result->fetchRow();
-        switch($res['type']) {
+        switch ($res['type']) {
           case 'start':
-            include_once (GALAXIA_LIBRARY.'/api/activities/start.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/start.php');
             $act = new StartActivity();
             break;
           case 'end':
-            include_once (GALAXIA_LIBRARY.'/api/activities/end.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/end.php');
             $act = new EndActivity();
             break;
           case 'join':
-            include_once (GALAXIA_LIBRARY.'/api/activities/join.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/join.php');
             $act = new JoinActivity();
             break;
           case 'split':
-            include_once (GALAXIA_LIBRARY.'/api/activities/split.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/split.php');
             $act = new SplitActivity();
             break;
           case 'standalone':
-            include_once (GALAXIA_LIBRARY.'/api/activities/standalone.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/standalone.php');
             $act = new StandaloneActivity();
             break;
           case 'switch':
-            include_once (GALAXIA_LIBRARY.'/api/activities/switch.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/switch.php');
             $act = new SwitchActivity();
             break;
           case 'activity':
-            include_once (GALAXIA_LIBRARY.'/api/activities/standard.php');
+            include_once(GALAXIA_LIBRARY.'/api/activities/standard.php');
             $act = new StandardActivity();
             break;
           default:
-            trigger_error('Unknown activity type:'.$res['type'],E_USER_WARNING);
+            trigger_error('Unknown activity type:'.$res['type'], E_USER_WARNING);
         }
 
         $act->isInteractive = $res['isInteractive'];
@@ -84,41 +88,77 @@ class WorkflowActivity extends Base
     }
 
     /* Returns the normalized name for the activity */
-    function getNormalizedName()
+    public function getNormalizedName()
     {
         return self::normalize($this->getName());
     }
 
     /* Various getters / setters */
-    function setName($name)        { $this->name=$name; }
-    function getName()             { return $this->name;}
+    public function setName($name)
+    {
+        $this->name=$name;
+    }
+    public function getName()
+    {
+        return $this->name;
+    }
 
-    function setDescription($desc) { $this->description=$desc;  }
-    function getDescription()      { return $this->description; }
+    public function setDescription($desc)
+    {
+        $this->description=$desc;
+    }
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-    function getType()             { return $this->type;  }
+    public function getType()
+    {
+        return $this->type;
+    }
 
-    function setInteractive($is)
+    public function setInteractive($is)
     {
         // @todo cache
         $query = "update ".self::tbl('activities')."set isInteractive=? where pId=? and activityId=?";
-        $this->query($query, array($is, $this->getProcessId(), $this->getActivityId()));
+        $this->query($query, [$is, $this->getProcessId(), $this->getActivityId()]);
         // If template does not exist then create template
         $this->compile();
 
         $this->isInteractive = $is;
     }
 
-    function isInteractive()       { return $this->isInteractive; }
+    public function isInteractive()
+    {
+        return $this->isInteractive;
+    }
 
-    function setIsAutoRouted($is)  { $this->isAutoRouted = $is;  }
-    function isAutoRouted()        { return $this->isAutoRouted == 1;  }
+    public function setIsAutoRouted($is)
+    {
+        $this->isAutoRouted = $is;
+    }
+    public function isAutoRouted()
+    {
+        return $this->isAutoRouted == 1;
+    }
 
-    function setProcessId($pid)    { $this->pId=$pid;  }
-    function getProcessId()        { return $this->pId;  }
+    public function setProcessId($pid)
+    {
+        $this->pId=$pid;
+    }
+    public function getProcessId()
+    {
+        return $this->pId;
+    }
 
-    function setActivityId($id)    { $this->activityId=$id;  }
-    function getActivityId()       { return $this->activityId;  }
+    public function setActivityId($id)
+    {
+        $this->activityId=$id;
+    }
+    public function getActivityId()
+    {
+        return $this->activityId;
+    }
 
     /**
      * Return the shape of the activity
@@ -126,7 +166,10 @@ class WorkflowActivity extends Base
      * @todo just a name now, could be an object later
      *
     **/
-    public function getShape()  {  return $this->shape; }
+    public function getShape()
+    {
+        return $this->shape;
+    }
 
     /**
      * Role manipulation for this activity has the following parts:
@@ -137,36 +180,36 @@ class WorkflowActivity extends Base
      * @todo work with real Role objects
      * @todo cache getRoles again.
     **/
-    function getRoles()
+    public function getRoles()
     {
         $query = "select activityId,roles.roleId,roles.name
                 from ".self::tbl('activity_roles')."  gar, ".self::tbl('roles')."  roles
                 where roles.roleId = gar.roleId and activityId=?";
-        $result = $this->query($query,array($this->activityId));
-        $ret = Array();
-        while($res = $result->fetchRow()) {
+        $result = $this->query($query, [$this->activityId]);
+        $ret = [];
+        while ($res = $result->fetchRow()) {
             $ret[] = $res;
         }
         return $ret;
     }
 
-    function addRole($roleId)
+    public function addRole($roleId)
     {
         $this->removeRole($roleId);
         $query = "insert into ".self::tbl('activity_roles')." (`activityId`,`roleId`) values(?,?)";
-        $this->query($query,array($this->activityId, $roleId));
+        $this->query($query, [$this->activityId, $roleId]);
     }
-    function removeRole($roleId)
+    public function removeRole($roleId)
     {
         $query = "delete from ".self::tbl('activity_roles')." where activityId=? and roleId=?";
-        $this->query($query,array($this->activityId, $roleId));
+        $this->query($query, [$this->activityId, $roleId]);
     }
     /** END role manipulation **/
 
-    function removeTransitions()
+    public function removeTransitions()
     {
         $query = "delete from ".self::tbl('transitions')."  where pId=? and (actFromId=? or actToId=?)";
-        $this->query($query, array($this->pId, $this->activityId, $this->activityId));
+        $this->query($query, [$this->pId, $this->activityId, $this->activityId]);
     }
 
 
@@ -184,49 +227,49 @@ class WorkflowActivity extends Base
         $user_file = GALAXIA_PROCESSES.'/'.$procNName.'/code/activities/'.$actname.'.php';
         $pre_file = GALAXIA_LIBRARY.'/compiler/'.$acttype.'_pre.php';
         $pos_file = GALAXIA_LIBRARY.'/compiler/'.$acttype.'_pos.php';
-        $fw = fopen($compiled_file,"wb");
+        $fw = fopen($compiled_file, "wb");
 
         // First of all add an include to the shared code
         $shared_file = GALAXIA_PROCESSES.'/'.$procNName.'/code/shared.php';
         fwrite($fw, '<'."?php include_once('$shared_file'); ?".'>'."\n");
 
         // Before pre shared
-        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pre.php',"rb");
+        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pre.php', "rb");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
-            fwrite($fw,$data);
+            fwrite($fw, $data);
         }
         fclose($fp);
 
         // Now get pre and pos files for the activity
-        $fp = fopen($pre_file,"rb");
+        $fp = fopen($pre_file, "rb");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
-            fwrite($fw,$data);
+            fwrite($fw, $data);
         }
         fclose($fp);
 
         // Get the user data for the activity
-        $fp = fopen($user_file,"rb");
+        $fp = fopen($user_file, "rb");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
-            fwrite($fw,$data);
+            fwrite($fw, $data);
         }
         fclose($fp);
 
         // Get pos and write
-        $fp = fopen($pos_file,"rb");
+        $fp = fopen($pos_file, "rb");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
-            fwrite($fw,$data);
+            fwrite($fw, $data);
         }
         fclose($fp);
 
         // Shared pos
-        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pos.php',"rb");
+        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pos.php', "rb");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
-            fwrite($fw,$data);
+            fwrite($fw, $data);
         }
         fclose($fp);
 
@@ -234,14 +277,14 @@ class WorkflowActivity extends Base
 
         //Copy the templates
 
-        if($this->isInteractive() && !file_exists($template_file)) {
-            $fw = fopen($template_file,'w');
+        if ($this->isInteractive() && !file_exists($template_file)) {
+            $fw = fopen($template_file, 'w');
             if (defined('GALAXIA_TEMPLATE_HEADER') && GALAXIA_TEMPLATE_HEADER) {
-                fwrite($fw,GALAXIA_TEMPLATE_HEADER . "\n");
+                fwrite($fw, GALAXIA_TEMPLATE_HEADER . "\n");
             }
             fclose($fw);
         }
-        if($this->isInteractive() && file_exists($template_file)) {
+        if ($this->isInteractive() && file_exists($template_file)) {
             // remove the copy of the template, if any
             if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt")) {
                 unlink(GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt");
@@ -249,9 +292,8 @@ class WorkflowActivity extends Base
         }
         if (GALAXIA_TEMPLATES && file_exists($template_file)) {
             // and make a fresh one
-            copy($template_file,GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt");
+            copy($template_file, GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt");
         }
-
     }
 
     /** METHODS WHICH BELONG SOMEWHERE ELSE */
@@ -262,12 +304,12 @@ class WorkflowActivity extends Base
      * @todo This is a method which does not belong here, but in a user object of some sort (which we dont have)
      *
     **/
-    function getUserRoles($user)
+    public function getUserRoles($user)
     {
         $query = "select `roleId` from ".self::tbl('user_roles')." where `user`=?";
-        $result=$this->query($query,array($user));
-        $ret = Array();
-        while($res = $result->fetchRow()) {
+        $result=$this->query($query, [$user]);
+        $ret = [];
+        while ($res = $result->fetchRow()) {
             $ret[] = $res['roleId'];
         }
         return $ret;
@@ -279,34 +321,33 @@ class WorkflowActivity extends Base
      * @todo This is a method which does not belong here, but in a user object of some sort (which we dont have)
      *
     **/
-    function getActivityRoleNames()
+    public function getActivityRoleNames()
     {
         $aid = $this->activityId;
         $query = "select gr.`roleId`, `name` from ".self::tbl('activity_roles')." gar, ".self::tbl('roles')." gr where gar.`roleId`=gr.`roleId` and gar.`activityId`=?";
-        $result=$this->query($query,array($aid));
-        $ret = Array();
-        while($res = $result->fetchRow()) {
-          $ret[] = $res;
+        $result=$this->query($query, [$aid]);
+        $ret = [];
+        while ($res = $result->fetchRow()) {
+            $ret[] = $res;
         }
         return $ret;
     }
 
-     /*
+    /*
     /**
-     * Checks if a user has a certain role (by name) for this activity,
-     * e.g.
-     * $isadmin = $activity->checkUserRole($user,'admin');
-     *
-     * @todo This is a method which does not belong here, but in a user object of some sort (which we dont have)
-     *
+    * Checks if a user has a certain role (by name) for this activity,
+    * e.g.
+    * $isadmin = $activity->checkUserRole($user,'admin');
+    *
+    * @todo This is a method which does not belong here, but in a user object of some sort (which we dont have)
+    *
     **/
-     function checkUserRole($user,$rolename)
-     {
-         $aid = $this->activityId;
-         return $this->getOne("
+    public function checkUserRole($user, $rolename)
+    {
+        $aid = $this->activityId;
+        return $this->getOne("
              select count(*)
              from ".self::tbl('activity_roles')." gar, ".self::tbl('user_roles')."gur, ".self::tbl('roles')."gr
-             where gar.`roleId`=gr.`roleId` and gur.`roleId`=gr.`roleId` and gar.`activityId`=? and gur.`user`=? and gr.`name`=?",array($aid, $user, $rolename));
-     }
+             where gar.`roleId`=gr.`roleId` and gur.`roleId`=gr.`roleId` and gar.`activityId`=? and gur.`user`=? and gr.`name`=?", [$aid, $user, $rolename]);
+    }
 }
-?>

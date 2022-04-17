@@ -14,40 +14,43 @@
 
 function workflow_user_display()
 {
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
     xarTpl::setPageTitle('Display Activities');
 
     // Get all the activities
     sys::import('modules.dynamicdata.class.objects.master');
-    $activities = DataObjectMaster::getObjectList(array('name' => 'workflow_activities'));
+    $activities = DataObjectMaster::getObjectList(['name' => 'workflow_activities']);
 //    $where = "type = 'start'";
     $activities->getItems();
 
     // For each activity get the roles and add them to the activity
     sys::import('xaraya.structures.query');
     $tables = xarDB::getTables();
-    $q = new Query('SELECT',$tables['workflow_activity_roles']);
+    $q = new Query('SELECT', $tables['workflow_activity_roles']);
     foreach ($activities->items as $key => $item) {
-        $q->eq('activityId',$item['id']);
+        $q->eq('activityId', $item['id']);
         $q->run();
         $result = $q->output();
         $q->clearconditions();
         if (!empty($result)) {
-            $roles = array();
-            foreach ($result as $row) $roles[] = $row['roleid'];
+            $roles = [];
+            foreach ($result as $row) {
+                $roles[] = $row['roleid'];
+            }
             $activities->items[$key]['roles'] = $roles;
         } else {
-            $activities->items[$key]['roles'] = array();
+            $activities->items[$key]['roles'] = [];
         }
     }
     $data['activities'] = $activities->items;
 
     // Get all the instances
-    $instances = DataObjectMaster::getObjectList(array('name' => 'workflow_instance_activities'));
+    $instances = DataObjectMaster::getObjectList(['name' => 'workflow_instance_activities']);
     $where = "status = 'running'";
-    $instances->getItems(array('where'=>$where));
+    $instances->getItems(['where'=>$where]);
     $data['properties'] = $instances->getProperties();
     $data['items'] = $instances->items;
     return $data;
 }
-?>

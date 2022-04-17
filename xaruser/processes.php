@@ -20,25 +20,27 @@
 function workflow_user_processes()
 {
     // Security Check
-    if (!xarSecurity::check('ReadWorkflow')) return;
+    if (!xarSecurity::check('ReadWorkflow')) {
+        return;
+    }
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    $data = array();
+    $data = [];
 
     // Adapted from tiki-g-user_processes.php
-    include_once (GALAXIA_LIBRARY.'/gui.php');
+    include_once(GALAXIA_LIBRARY.'/gui.php');
 
     // Initialize some stuff
     $user = xarUser::getVar('id');
-    $maxRecords = xarModVars::get('workflow','items_per_page');
+    $maxRecords = xarModVars::get('workflow', 'items_per_page');
 
     // Filtering data to be received by request and
     // used to build the where part of a query
     // filter_active, filter_valid, find, sort_mode,
     // filter_process
     $where = '';
-    $wheres = array();
+    $wheres = [];
 
     /*
     if(isset($_REQUEST['filter_active'])&&$_REQUEST['filter_active']) $wheres[]="isActive='".$_REQUEST['filter_active']."'";
@@ -94,7 +96,7 @@ function workflow_user_processes()
     //$section = 'workflow';
     //include_once ('tiki-section_options.php');
 
-    $sameurl_elements = array(
+    $sameurl_elements = [
         'offset',
         'sort_mode',
         'where',
@@ -102,19 +104,17 @@ function workflow_user_processes()
         'filter_valid',
         'filter_process',
         'filter_active',
-        'processId'
-    );
+        'processId',
+    ];
 
     $data['mid'] =  'tiki-g-user_processes.tpl';
 
 
-/*        $data['pager'] = xarTplPager::getPager($data['offset'],
-                                           $items['cant'],
-                                           $url,
-                                           $maxRecords);*/
-        $data['url'] = xarServer::getCurrentURL(array('offset' => '%%'));
-        $data['maxRecords'] = $maxRecords;
-        return $data;
+    /*        $data['pager'] = xarTplPager::getPager($data['offset'],
+                                               $items['cant'],
+                                               $url,
+                                               $maxRecords);*/
+    $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+    $data['maxRecords'] = $maxRecords;
+    return $data;
 }
-
-?>

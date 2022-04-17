@@ -1,4 +1,5 @@
 <?php
+
 include_once(GALAXIA_LIBRARY.'/common/base.php');
 //!! Abstract class representing the base of the API
 //! An abstract class representing the API base
@@ -13,10 +14,8 @@ class BaseManager extends Base
     /**
      * @todo This doesn't belong here
     **/
-    function get_error()
+    public function get_error()
     {
         return $this->error;
     }
 } //end of class
-
-?>

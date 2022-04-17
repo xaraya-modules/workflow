@@ -23,7 +23,7 @@
 function workflow_xartables()
 {
     // Initialise table array
-    $xarTables = array();
+    $xarTables = [];
 
     $prefix = xarDB::getPrefix();
 
@@ -42,5 +42,3 @@ function workflow_xartables()
     // Return the table information
     return $xarTables;
 }
-
-?>
