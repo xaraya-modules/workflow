@@ -16,6 +16,6 @@
  */
 function workflow_admin_test_manage()
 {
-    $data=[];
+    $data = [];
     return $data;
 }

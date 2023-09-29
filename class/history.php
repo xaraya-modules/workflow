@@ -21,9 +21,7 @@ class xarWorkflowHistory extends xarWorkflowTracker
     protected static $objectName = 'workflow_history';
     protected static $fieldList = ['tracker_id', 'workflow', 'user', 'object', 'item', 'transition', 'marking', 'updated', 'context'];
 
-    public static function init(array $args = [])
-    {
-    }
+    public static function init(array $args = []) {}
 
     // this method overrides the one in xarWorkflowTracker to get the history for trackerId(s)
     public static function getTrackerItems(int|array $trackerIds = [], array $paging = [])

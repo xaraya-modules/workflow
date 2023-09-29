@@ -29,7 +29,7 @@ function workflow_userapi_run_activity($args)
     $data = [];
 
     // Adapted from tiki-g-run_activity.php
-    include(GALAXIA_LIBRARY.'/api.php');
+    include(GALAXIA_LIBRARY . '/api.php');
 
     // TODO: evaluate why this is here
     global $__activity_completed;
@@ -53,8 +53,8 @@ function workflow_userapi_run_activity($args)
         $instance->complete($args['activityId']);
     }
 
-    $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName(). '/compiled/' . $activity->getNormalizedName(). '.php';
-    $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName(). '/code/shared.php';
+    $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+    $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
     // Existing variables here:
     // $process, $activity, $instance (if not standalone)

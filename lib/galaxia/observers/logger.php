@@ -2,7 +2,7 @@
 
 namespace Galaxia\Observers;
 
-include_once(GALAXIA_LIBRARY.'/common/observer.php');
+include_once(GALAXIA_LIBRARY . '/common/observer.php');
 use Galaxia\Common\Observer;
 
 //!! Logger
@@ -20,7 +20,7 @@ class Logger extends Observer
         $this->_filename = $filename;
         $fp = fopen($this->_filename, "a");
         if (!$fp) {
-            trigger_error("Logger cannot append to log file: ".$this->_filename, E_USER_WARNING);
+            trigger_error("Logger cannot append to log file: " . $this->_filename, E_USER_WARNING);
         }
         if ($fp) {
             fclose($fp);
@@ -32,8 +32,8 @@ class Logger extends Observer
         // Add a line to the log file.
         $fp = fopen($this->_filename, "a");
         $date = date("[d/m/Y h:i:s]");
-        $msg=trim($msg);
-        fputs($fp, $date." ".$msg."\n");
+        $msg = trim($msg);
+        fputs($fp, $date . " " . $msg . "\n");
         fclose($fp);
     }
 }

@@ -16,6 +16,4 @@ namespace Xaraya\Modules\Workflow;
 
 use xarObject;
 
-class xarWorkflowMarking extends xarObject
-{
-}
+class xarWorkflowMarking extends xarObject {}

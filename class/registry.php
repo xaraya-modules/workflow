@@ -16,6 +16,4 @@ namespace Xaraya\Modules\Workflow;
 
 use xarObject;
 
-class xarWorkflowRegistry extends xarObject
-{
-}
+class xarWorkflowRegistry extends xarObject {}

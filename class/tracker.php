@@ -30,9 +30,7 @@ class xarWorkflowTracker extends xarObject
     protected static $paging = [];
     protected static $count = false;
 
-    public static function init(array $args = [])
-    {
-    }
+    public static function init(array $args = []) {}
 
     // @checkme we want to be able to get items for a list of itemIds of a particular objectName here (= dataobjectlist)
     public static function getItems(string $workflowName = '', string $objectName = '', int|array $itemId = 0, string|array $marking = '', int|array $userId = 0, array $trackerIds = [], array $paging = [])

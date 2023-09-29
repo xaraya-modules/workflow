@@ -94,8 +94,8 @@ class Process_GraphViz
         $this->setDirected($directed);
         $this->setAttributes($attributes);
         if (defined('GRAPHVIZ_BIN_DIR') && GRAPHVIZ_BIN_DIR) {
-            $this->dotCommand = GRAPHVIZ_BIN_DIR.'/'.$this->dotCommand;
-            $this->neatoCommand = GRAPHVIZ_BIN_DIR.'/'.$this->neatoCommand;
+            $this->dotCommand = GRAPHVIZ_BIN_DIR . '/' . $this->dotCommand;
+            $this->neatoCommand = GRAPHVIZ_BIN_DIR . '/' . $this->neatoCommand;
         }
     }
 
@@ -121,7 +121,7 @@ class Process_GraphViz
 
             @`$command`;
             $command = $this->dotCommand;
-            $command.= " -Tcmap -o$outputfile2 $file";
+            $command .= " -Tcmap -o$outputfile2 $file";
             @`$command`;
             $fr = fopen($outputfile2, "r");
             $map = fread($fr, filesize($outputfile2));
@@ -166,14 +166,14 @@ class Process_GraphViz
 
             if (substr(php_uname(), 0, 7) == "Windows") {
                 $src = '"' . $file . '"';
-                $outputfile  = '"' . $outputfile   . '"';
-                $outputfile2 = '"' . $outputfile2  . '"';
+                $outputfile  = '"' . $outputfile . '"';
+                $outputfile2 = '"' . $outputfile2 . '"';
             } else {
                 $src = $file;
             }
 
             if (!isset($this->graph['directed'])) {
-                $this->graph['directed']=true;
+                $this->graph['directed'] = true;
             }
 
             $command  = $this->graph['directed'] ? $this->dotCommand : $this->neatoCommand;
@@ -181,7 +181,7 @@ class Process_GraphViz
             @`$command`;
 
             $command = $this->dotCommand;
-            $command.= " -Tcmap -o $outputfile2 $src";
+            $command .= " -Tcmap -o $outputfile2 $src";
             @`$command`;
 
             //@unlink($file);
@@ -196,7 +196,7 @@ class Process_GraphViz
             $outputfile2 = $file . '.' . 'map';
 
             $command = $this->dotCommand;
-            $command.= " -Tcmap -o$outputfile2 $file";
+            $command .= " -Tcmap -o$outputfile2 $file";
             @`$command`;
             $fr = fopen($outputfile2, "r");
             $map = fread($fr, filesize($outputfile2));
@@ -480,7 +480,7 @@ class Process_GraphViz
     {
         $parsedGraph = $this->parse();
         if (!empty($parsedGraph)) {
-            $file = GALAXIA_PROCESSES.'/'.$this->pid.'/graph/'.$this->pid;
+            $file = GALAXIA_PROCESSES . '/' . $this->pid . '/graph/' . $this->pid;
 
             if ($fp = @fopen($file, 'w')) {
                 @fputs($fp, $parsedGraph, strlen($parsedGraph));

@@ -40,7 +40,7 @@ function workflow_userapi_getInstance($args)
 
     //check to see if this hasn't alredy been done
     if (!function_exists("getInstance")) {
-        include_once(GALAXIA_LIBRARY.'/api.php');
+        include_once(GALAXIA_LIBRARY . '/api.php');
     }
 
     $inst = new \Galaxia\Api\Instance();

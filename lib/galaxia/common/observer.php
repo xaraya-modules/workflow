@@ -22,7 +22,7 @@ namespace Galaxia\Common;
 class Observer
 {
     ///This will be assigned by an observable object when attaching.
-    public $_observerId='';
+    public $_observerId = '';
 
     public function notify($event, $msg)
     {

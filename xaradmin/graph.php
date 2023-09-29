@@ -34,7 +34,7 @@ function workflow_admin_graph()
     $maxRecords = xarModVars::get('workflow', 'items_per_page');
     // Adapted from tiki-g-admin_processes.php
 
-    include_once(GALAXIA_LIBRARY.'/processmanager.php');
+    include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
     // Check if we are editing an existing process
     // if so retrieve the process info and assign it.
@@ -49,8 +49,8 @@ function workflow_admin_graph()
 
         $info = $processManager->get_process($_REQUEST["pid"]);
 
-        $info['graph'] = GALAXIA_PROCESSES."/" . $procNName . "/graph/" . $procNName . ".png";
-        $mapfile = GALAXIA_PROCESSES."/" . $procNName . "/graph/" . $procNName. ".map";
+        $info['graph'] = GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".png";
+        $mapfile = GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".map";
 
         if (!file_exists($process->getGraph()) or !file_exists($mapfile)) {
             // Try to build it

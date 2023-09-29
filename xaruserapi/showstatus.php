@@ -29,7 +29,7 @@ function workflow_userapi_showstatus($args)
     sys::import('modules.workflow.lib.galaxia.config');
     $tplData = [];
 
-    include(GALAXIA_LIBRARY.'/processmonitor.php');
+    include(GALAXIA_LIBRARY . '/processmonitor.php');
 
     if (empty($user)) {
         $user = xarUser::getVar('id');

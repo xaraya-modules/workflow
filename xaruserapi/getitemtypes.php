@@ -22,7 +22,7 @@ function workflow_userapi_getitemtypes($args)
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    include(GALAXIA_LIBRARY.'/processmonitor.php');
+    include(GALAXIA_LIBRARY . '/processmonitor.php');
 
     // get all active processes
     $processes = $processMonitor->monitor_list_all_processes('name_asc', "isActive = 1");

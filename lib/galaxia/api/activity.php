@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -21,8 +21,8 @@ class WorkflowActivity extends Base
     public $isInteractive;
     public $isAutoRouted;
 
-    public $outbound=[];
-    public $inbound=[];
+    public $outbound = [];
+    public $inbound = [];
 
     public $pId;
     public $activityId;
@@ -40,7 +40,7 @@ class WorkflowActivity extends Base
     {
         // Get an object with a db object for now
         $dummy = new Base();
-        $query = "select * from ".self::tbl('activities')." where `activityId`=?";
+        $query = "select * from " . self::tbl('activities') . " where `activityId`=?";
         $result = $dummy->query($query, [$activityId]);
 
         if (!$result->numRows()) {
@@ -50,35 +50,35 @@ class WorkflowActivity extends Base
         $res = $result->fetchRow();
         switch ($res['type']) {
             case 'start':
-                include_once(GALAXIA_LIBRARY.'/api/activities/start.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/start.php');
                 $act = new \Galaxia\Api\Activities\StartActivity();
                 break;
             case 'end':
-                include_once(GALAXIA_LIBRARY.'/api/activities/end.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/end.php');
                 $act = new \Galaxia\Api\Activities\EndActivity();
                 break;
             case 'join':
-                include_once(GALAXIA_LIBRARY.'/api/activities/join.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/join.php');
                 $act = new \Galaxia\Api\Activities\JoinActivity();
                 break;
             case 'split':
-                include_once(GALAXIA_LIBRARY.'/api/activities/split.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/split.php');
                 $act = new \Galaxia\Api\Activities\SplitActivity();
                 break;
             case 'standalone':
-                include_once(GALAXIA_LIBRARY.'/api/activities/standalone.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/standalone.php');
                 $act = new \Galaxia\Api\Activities\StandaloneActivity();
                 break;
             case 'switch':
-                include_once(GALAXIA_LIBRARY.'/api/activities/switch.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/switch.php');
                 $act = new \Galaxia\Api\Activities\SwitchActivity();
                 break;
             case 'activity':
-                include_once(GALAXIA_LIBRARY.'/api/activities/standard.php');
+                include_once(GALAXIA_LIBRARY . '/api/activities/standard.php');
                 $act = new \Galaxia\Api\Activities\StandardActivity();
                 break;
             default:
-                trigger_error('Unknown activity type:'.$res['type'], E_USER_WARNING);
+                trigger_error('Unknown activity type:' . $res['type'], E_USER_WARNING);
         }
 
         $act->isInteractive = $res['isInteractive'];
@@ -103,7 +103,7 @@ class WorkflowActivity extends Base
     /* Various getters / setters */
     public function setName($name)
     {
-        $this->name=$name;
+        $this->name = $name;
     }
     public function getName()
     {
@@ -112,7 +112,7 @@ class WorkflowActivity extends Base
 
     public function setDescription($desc)
     {
-        $this->description=$desc;
+        $this->description = $desc;
     }
     public function getDescription()
     {
@@ -127,7 +127,7 @@ class WorkflowActivity extends Base
     public function setInteractive($is)
     {
         // @todo cache
-        $query = "update ".self::tbl('activities')."set isInteractive=? where pId=? and activityId=?";
+        $query = "update " . self::tbl('activities') . "set isInteractive=? where pId=? and activityId=?";
         $this->query($query, [$is, $this->getProcessId(), $this->getActivityId()]);
         // If template does not exist then create template
         $this->compile();
@@ -151,7 +151,7 @@ class WorkflowActivity extends Base
 
     public function setProcessId($pid)
     {
-        $this->pId=$pid;
+        $this->pId = $pid;
     }
     public function getProcessId()
     {
@@ -160,7 +160,7 @@ class WorkflowActivity extends Base
 
     public function setActivityId($id)
     {
-        $this->activityId=$id;
+        $this->activityId = $id;
     }
     public function getActivityId()
     {
@@ -190,7 +190,7 @@ class WorkflowActivity extends Base
     public function getRoles()
     {
         $query = "select activityId,roles.roleId,roles.name
-                from ".self::tbl('activity_roles')."  gar, ".self::tbl('roles')."  roles
+                from " . self::tbl('activity_roles') . "  gar, " . self::tbl('roles') . "  roles
                 where roles.roleId = gar.roleId and activityId=?";
         $result = $this->query($query, [$this->activityId]);
         $ret = [];
@@ -203,19 +203,19 @@ class WorkflowActivity extends Base
     public function addRole($roleId)
     {
         $this->removeRole($roleId);
-        $query = "insert into ".self::tbl('activity_roles')." (`activityId`,`roleId`) values (?,?)";
+        $query = "insert into " . self::tbl('activity_roles') . " (`activityId`,`roleId`) values (?,?)";
         $this->query($query, [$this->activityId, $roleId]);
     }
     public function removeRole($roleId)
     {
-        $query = "delete from ".self::tbl('activity_roles')." where activityId=? and roleId=?";
+        $query = "delete from " . self::tbl('activity_roles') . " where activityId=? and roleId=?";
         $this->query($query, [$this->activityId, $roleId]);
     }
     /** END role manipulation **/
 
     public function removeTransitions()
     {
-        $query = "delete from ".self::tbl('transitions')."  where pId=? and (actFromId=? or actToId=?)";
+        $query = "delete from " . self::tbl('transitions') . "  where pId=? and (actFromId=? or actToId=?)";
         $this->query($query, [$this->pId, $this->activityId, $this->activityId]);
     }
 
@@ -229,19 +229,19 @@ class WorkflowActivity extends Base
         $process = new Process($this->pId);
         $procNName = $process->getNormalizedName();
 
-        $compiled_file = GALAXIA_PROCESSES.'/'.$procNName.'/compiled/'.$actname.'.php';
-        $template_file = GALAXIA_PROCESSES.'/'.$procNName.'/code/templates/'.$actname.'.xt';
-        $user_file = GALAXIA_PROCESSES.'/'.$procNName.'/code/activities/'.$actname.'.php';
-        $pre_file = GALAXIA_LIBRARY.'/compiler/'.$acttype.'_pre.php';
-        $pos_file = GALAXIA_LIBRARY.'/compiler/'.$acttype.'_pos.php';
+        $compiled_file = GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $actname . '.php';
+        $template_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $actname . '.xt';
+        $user_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $actname . '.php';
+        $pre_file = GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pre.php';
+        $pos_file = GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pos.php';
         $fw = fopen($compiled_file, "w");
 
         // First of all add an include to the shared code
-        $shared_file = GALAXIA_PROCESSES.'/'.$procNName.'/code/shared.php';
-        fwrite($fw, '<'."?php include_once('$shared_file');\n");
+        $shared_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/shared.php';
+        fwrite($fw, '<' . "?php include_once('$shared_file');\n");
 
         // Before pre shared
-        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pre.php', "r");
+        $fp = fopen(GALAXIA_LIBRARY . '/compiler/_shared_pre.php', "r");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
             $data = $this->stripPHPTags($data);
@@ -277,7 +277,7 @@ class WorkflowActivity extends Base
         fclose($fp);
 
         // Shared pos
-        $fp = fopen(GALAXIA_LIBRARY.'/compiler/_shared_pos.php', "r");
+        $fp = fopen(GALAXIA_LIBRARY . '/compiler/_shared_pos.php', "r");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
             $data = $this->stripPHPTags($data);
@@ -298,13 +298,13 @@ class WorkflowActivity extends Base
         }
         if ($this->isInteractive() && file_exists($template_file)) {
             // remove the copy of the template, if any
-            if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt")) {
-                unlink(GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt");
+            if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt")) {
+                unlink(GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
             }
         }
         if (GALAXIA_TEMPLATES && file_exists($template_file)) {
             // and make a fresh one
-            copy($template_file, GALAXIA_TEMPLATES.'/'.$procNName."/$actname.xt");
+            copy($template_file, GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
         }
     }
 
@@ -325,8 +325,8 @@ class WorkflowActivity extends Base
     **/
     public function getUserRoles($user)
     {
-        $query = "select `roleId` from ".self::tbl('user_roles')." where `user`=?";
-        $result=$this->query($query, [$user]);
+        $query = "select `roleId` from " . self::tbl('user_roles') . " where `user`=?";
+        $result = $this->query($query, [$user]);
         $ret = [];
         while ($res = $result->fetchRow()) {
             $ret[] = $res['roleId'];
@@ -343,8 +343,8 @@ class WorkflowActivity extends Base
     public function getActivityRoleNames()
     {
         $aid = $this->activityId;
-        $query = "select gr.`roleId`, `name` from ".self::tbl('activity_roles')." gar, ".self::tbl('roles')." gr where gar.`roleId`=gr.`roleId` and gar.`activityId`=?";
-        $result=$this->query($query, [$aid]);
+        $query = "select gr.`roleId`, `name` from " . self::tbl('activity_roles') . " gar, " . self::tbl('roles') . " gr where gar.`roleId`=gr.`roleId` and gar.`activityId`=?";
+        $result = $this->query($query, [$aid]);
         $ret = [];
         while ($res = $result->fetchRow()) {
             $ret[] = $res;
@@ -366,7 +366,7 @@ class WorkflowActivity extends Base
         $aid = $this->activityId;
         return $this->getOne("
              select count(*)
-             from ".self::tbl('activity_roles')." gar, ".self::tbl('user_roles')."gur, ".self::tbl('roles')."gr
+             from " . self::tbl('activity_roles') . " gar, " . self::tbl('user_roles') . "gur, " . self::tbl('roles') . "gr
              where gar.`roleId`=gr.`roleId` and gur.`roleId`=gr.`roleId` and gar.`activityId`=? and gur.`user`=? and gr.`name`=?", [$aid, $user, $rolename]);
     }
 }

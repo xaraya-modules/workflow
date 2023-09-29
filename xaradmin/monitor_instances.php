@@ -33,7 +33,7 @@ function workflow_admin_monitor_instances()
     $maxRecords = xarModVars::get('workflow', 'items_per_page');
     // Adapted from tiki-g-monitor_instances.php
 
-    include_once(GALAXIA_LIBRARY.'/processmonitor.php');
+    include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
     // Filtering data to be received by request and
     // used to build the where part of a query
@@ -71,7 +71,7 @@ function workflow_admin_monitor_instances()
     if (isset($_REQUEST['sendInstance'])) {
         //activityId indicates the activity where the instance was
         //and we have to send it to some activity to be determined
-        include_once(GALAXIA_LIBRARY.'/api/instance.php');
+        include_once(GALAXIA_LIBRARY . '/api/instance.php');
 
         $instance = new \Galaxia\Api\Instance();
         $instance->getInstance($_REQUEST['sendInstance']);
@@ -118,7 +118,7 @@ function workflow_admin_monitor_instances()
         $offset = $_REQUEST["offset"];
     }
 
-    $tplData['offset'] =&  $offset;
+    $tplData['offset'] = &  $offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -128,13 +128,13 @@ function workflow_admin_monitor_instances()
 
     $tplData['find'] =  $find;
     $tplData['where'] =  $where;
-    $tplData['sort_mode'] =&  $sort_mode;
+    $tplData['sort_mode'] = &  $sort_mode;
 
     $items = $processMonitor->monitor_list_instances($offset - 1, $maxRecords, $sort_mode, $find, $where, []);
     $tplData['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $tplData['cant_pages'] =&  $cant_pages;
+    $tplData['cant_pages'] = &  $cant_pages;
     $tplData['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -168,7 +168,7 @@ function workflow_admin_monitor_instances()
     }
     foreach ($items['data'] as $index => $info) {
         $items['data'][$index]['timescale'] = intval($scale * $info['duration']);
-        $items['data'][$index]['duration'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time'=>$info['duration']]);
+        $items['data'][$index]['duration'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']]);
         if (!empty($info['started'])) {
             $items['data'][$index]['started'] = xarLocale::getFormattedDate('medium', $info['started']) . ' '
                                             . xarLocale::getFormattedTime('short', $info['started']);
@@ -180,10 +180,10 @@ function workflow_admin_monitor_instances()
             $items['data'][$index]['owner'] = xarUser::getVar('name', $info['owner']);
         }
     }
-    $tplData['items'] =&  $items["data"];
+    $tplData['items'] = &  $items["data"];
 
     $all_procs = $processMonitor->monitor_list_all_processes('name_asc');
-    $tplData['all_procs'] =&  $all_procs;
+    $tplData['all_procs'] = &  $all_procs;
 
     if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {
         $where = ' pId=' . $_REQUEST['filter_process'];
@@ -192,10 +192,10 @@ function workflow_admin_monitor_instances()
     }
 
     $all_acts = $processMonitor->monitor_list_all_activities('name_desc', $where);
-    $tplData['all_acts'] =&  $all_acts;
+    $tplData['all_acts'] = &  $all_acts;
 
     $types = $processMonitor->monitor_list_activity_types();
-    $tplData['types'] =&  $types;
+    $tplData['types'] = &  $types;
 
     $tplData['stats'] =  $processMonitor->monitor_stats();
 

@@ -76,7 +76,7 @@ function workflow_userapi_run_transition($args)
     if ($workflow->can($subject, $transitionName)) {
         $context = $args;
         $marking = $workflow->apply($subject, $transitionName, $context);
-    //$place = implode(', ', array_keys($marking->getPlaces()));
+        //$place = implode(', ', array_keys($marking->getPlaces()));
     } else {
         $blockers = $workflow->buildTransitionBlockerList($subject, $transitionName);
         $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';

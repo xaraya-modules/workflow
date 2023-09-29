@@ -28,7 +28,7 @@ function workflow_userapi_showinstances($args)
     sys::import('modules.workflow.lib.galaxia.config');
     $tplData = [];
 
-    include(GALAXIA_LIBRARY.'/gui.php');
+    include(GALAXIA_LIBRARY . '/gui.php');
 
     if (empty($user)) {
         $user = xarUser::getVar('id');

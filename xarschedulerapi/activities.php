@@ -98,7 +98,7 @@ function workflow_schedulerapi_activities($args)
     }
 
     // Trick : make sure we're dealing with up-to-date information here,
-//         because running all those jobs may have taken a while...
+    //         because running all those jobs may have taken a while...
     xarVar::delCached('Mod.Variables.workflow', 'jobs');
 
     // get the current list of jobs

@@ -29,7 +29,7 @@ function workflow_userapi_getActivityId($args)
     }
 
     sys::import('modules.workflow.lib.galaxia.config');
-    include(GALAXIA_LIBRARY.'/processmonitor.php');
+    include(GALAXIA_LIBRARY . '/processmonitor.php');
 
 
     $items = $processMonitor->monitor_list_activities(0, -1, 'activityId_asc', $activityName, '', []);

@@ -29,7 +29,7 @@ function workflow_userapi_getitemlinks($args)
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    include(GALAXIA_LIBRARY.'/gui.php');
+    include(GALAXIA_LIBRARY . '/gui.php');
 
     if (empty($user)) {
         $user = xarSession::getVar('role_id') ?? 0;

@@ -29,7 +29,7 @@ class xarWorkflowConfig extends xarObject
         }
         static::$config = [];
         //$configFile = sys::varpath() . '/cache/processes/config.json';
-        $configFile = dirname(__DIR__).'/xardata/config.workflows.php';
+        $configFile = dirname(__DIR__) . '/xardata/config.workflows.php';
         if (file_exists($configFile)) {
             //$contents = file_get_contents($configFile);
             //static::$config = json_decode($contents, true);
@@ -68,7 +68,7 @@ class xarWorkflowConfig extends xarObject
                 EOT;
             throw new Exception($message . "\nVendor: $root - $vendor\n");
         }
-        return $vendor .'/autoload.php';
+        return $vendor . '/autoload.php';
     }
 
     public static function setAutoload()

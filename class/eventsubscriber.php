@@ -122,7 +122,7 @@ class xarWorkflowEventSubscriber implements EventSubscriberInterface
         //workflow.guard
         if (empty($workflowName)) {
             $eventName = static::$eventNamePrefix . $eventType;
-        //workflow.[workflow name].guard
+            //workflow.[workflow name].guard
         } else {
             $eventName = static::$eventNamePrefix . $workflowName . '.' . $eventType;
             //workflow.[workflow name].guard.[transition name]

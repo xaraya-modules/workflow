@@ -28,7 +28,7 @@ function workflow_userapi_showactivity($args)
     sys::import('modules.workflow.lib.galaxia.config');
     $tplData = [];
 
-    include(GALAXIA_LIBRARY.'/api.php');
+    include(GALAXIA_LIBRARY . '/api.php');
 
     if (empty($args['activityId'])) {
         return xarML("No activity found");
@@ -81,8 +81,8 @@ function workflow_userapi_showactivity($args)
         }
     }
 
-    $source = GALAXIA_PROCESSES.'/' . $process->getNormalizedName(). '/compiled/' . $activity->getNormalizedName(). '.php';
-    $shared = GALAXIA_PROCESSES.'/' . $process->getNormalizedName(). '/code/shared.php';
+    $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+    $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
     // Existing variables here:
     // $process, $activity, $instance (if not standalone)
@@ -111,9 +111,9 @@ function workflow_userapi_showactivity($args)
     $tplData['return_url'] = xarServer::getCurrentURL();
 
     if ($activity->isInteractive()) {
-        $template = $activity->getNormalizedName(). '.xt';
+        $template = $activity->getNormalizedName() . '.xt';
         // not very clean way, but it works :)
-        $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName(). '/code/templates/' . $template, $tplData);
+        $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $tplData);
         return $output;
     } else {
         $instance->getInstance($instance->instanceId);

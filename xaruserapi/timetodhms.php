@@ -7,15 +7,15 @@ function workflow_userapi_timetodhms($args)
         $format = '';
     }
 
-    if ($time > 24*60*60) {
-        $days = intval($time / (24*60*60));
-        $time = $time % (24*60*60);
+    if ($time > 24 * 60 * 60) {
+        $days = intval($time / (24 * 60 * 60));
+        $time = $time % (24 * 60 * 60);
     } else {
         $days = 0;
     }
-    if ($time > 60*60) {
-        $hours = intval($time / (60*60));
-        $time = $time % (60*60);
+    if ($time > 60 * 60) {
+        $hours = intval($time / (60 * 60));
+        $time = $time % (60 * 60);
     } else {
         $hours = 0;
     }

@@ -31,7 +31,7 @@ function workflow_admin_activities()
     $data = [];
 
     // Adapted from tiki-g-admin_activities.php
-    include_once(GALAXIA_LIBRARY.'/processmanager.php');
+    include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
 
     if (!xarVar::fetch('pid', 'int', $data['pid'], null, xarVar::NOT_REQUIRED)) {
@@ -206,7 +206,7 @@ function workflow_admin_activities()
 
     // Get all the process roles
     $all_roles = $roleManager->list_roles($data['pid'], 0, -1, 'name_asc', '');
-    $data['all_roles'] =&  $all_roles['data'];
+    $data['all_roles'] = &  $all_roles['data'];
 
     // Get activity roles
     $data['roles'] = [];
@@ -251,7 +251,7 @@ function workflow_admin_activities()
     } else {
         $transitions = $activityManager->get_process_transitions($data['pid'], '');
     }
-    $data['transitions'] =&  $transitions;
+    $data['transitions'] = &  $transitions;
     $data['filter_tran_name'] = $_REQUEST['filter_tran_name'] ?? '';
 
     //Now information for activities in this process
@@ -259,7 +259,7 @@ function workflow_admin_activities()
 
     //Now check if the activity is or not part of a transition
     if (isset($data['activityId'])) {
-        for ($i=0, $na=count($activities['data']); $i < $na; $i++) {
+        for ($i = 0, $na = count($activities['data']); $i < $na; $i++) {
             $id = $activities["data"][$i]['activityId'];
 
             $activities["data"][$i]['to']
@@ -276,7 +276,7 @@ function workflow_admin_activities()
         return;
     }
     if ($update_act) {
-        for ($i=0, $na=count($activities['data']); $i < $na; $i++) {
+        for ($i = 0, $na = count($activities['data']); $i < $na; $i++) {
             // Make id a bit more accessible
             $id = $activities["data"][$i]['activityId'];
             $activity = \Galaxia\Api\WorkflowActivity::get($id);
@@ -292,7 +292,7 @@ function workflow_admin_activities()
             $activityManager->set_autorouting($data['pid'], $id, $ar);
         }
     }
-    $data['items'] =& $activities['data'];
+    $data['items'] = & $activities['data'];
 
     // Validate the process
     $valid = $activityManager->validate_process_activities($data['pid']);
@@ -315,8 +315,8 @@ function workflow_admin_activities()
     }
 
     // @todo migrate proc_info into $process
-    $data['proc_info'] =& $proc_info;
-    $data['process'] =& $process;
+    $data['proc_info'] = & $proc_info;
+    $data['process'] = & $process;
 
     $data['errors'] = [];
     if (!$valid) {

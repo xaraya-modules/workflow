@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -59,9 +59,9 @@ class Process extends Base
     }
     private function SetActiveFlag($value)
     {
-        assert($value === true or $value===false);
+        assert($value === true or $value === false);
         // DB
-        $query = "update ".self::tbl('processes')." set isActive=? where pId=?";
+        $query = "update " . self::tbl('processes') . " set isActive=? where pId=?";
         $this->query($query, [$value ? 1 : 0,$this->pId]);
         $msg = sprintf(\xarML('Process %d has been (de)-activated'), $this->pId);
         // Object
@@ -81,7 +81,7 @@ class Process extends Base
         // Make sure we are inactive
         $this->deactivate();
 
-        $query = "update ".self::tbl('processes')." set isValid=? where pId=?";
+        $query = "update " . self::tbl('processes') . " set isValid=? where pId=?";
         $this->query($query, [0,$this->pId]);
         $this->valid = false;
     }
@@ -95,7 +95,7 @@ class Process extends Base
     **/
     private function getProcess($pId)
     {
-        $query = "select * from ".self::tbl('processes')."where `pId`=?";
+        $query = "select * from " . self::tbl('processes') . "where `pId`=?";
         $result = $this->query($query, [$pId]);
         if (!$result->numRows()) {
             return false;
@@ -105,7 +105,7 @@ class Process extends Base
         $this->description = $res['description'];
         $this->version = $res['version'];
         $this->pId = $res['pId'];
-        $this->graph = GALAXIA_PROCESSES."/".$this->getNormalizedName()."/graph/".$this->getNormalizedName().".png";
+        $this->graph = GALAXIA_PROCESSES . "/" . $this->getNormalizedName() . "/graph/" . $this->getNormalizedName() . ".png";
     }
 
     /**
@@ -160,7 +160,7 @@ class Process extends Base
     public function getActivityByName($actname)
     {
         // Get the activity data
-        $query = "select * from ".self::tbl('activities')."where `pId`=? and `name`=?";
+        $query = "select * from " . self::tbl('activities') . "where `pId`=? and `name`=?";
         $result = $this->query($query, [$this->pId,$actname]);
         if (!$result->numRows()) {
             return false;
@@ -177,7 +177,7 @@ class Process extends Base
     public function hasActivity($name)
     {
         $bindvars = [$this->pId, $this->getNormalizedName()];
-        $query    = "SELECT COUNT(*) FROM ".self::tbl('activities')." WHERE pId=? AND normalized_name=?";
+        $query    = "SELECT COUNT(*) FROM " . self::tbl('activities') . " WHERE pId=? AND normalized_name=?";
         return ($this->getOne($query, $bindvars) > 0);
     }
 
@@ -189,7 +189,7 @@ class Process extends Base
     */
     public function &getActivities()
     {
-        $query = "select activityId from ".self::tbl('activities')."where pId=?";
+        $query = "select activityId from " . self::tbl('activities') . "where pId=?";
         $result = $this->query($query, [$this->pId]);
         $ret = [];
         while ($res = $result->fetchRow()) {
@@ -200,7 +200,7 @@ class Process extends Base
 
     public static function normalize($name, $version = null)
     {
-        $name = $name.'_'.$version;
+        $name = $name . '_' . $version;
         return parent::normalize($name);
     }
 
@@ -209,14 +209,14 @@ class Process extends Base
         // @todo get rid of this temporary trick to get an object which has a $db
         $dummy = new Base();
         $name = self::normalize($name, $version);
-        return $dummy->getOne("select count(*) from ".self::tbl('processes')." where normalized_name=?", [$name]);
+        return $dummy->getOne("select count(*) from " . self::tbl('processes') . " where normalized_name=?", [$name]);
     }
 
     public function removeRoles()
     {
-        $query = "delete from ".self::tbl('roles')." where pId=?";
+        $query = "delete from " . self::tbl('roles') . " where pId=?";
         $this->query($query, [$this->pId]);
-        $query = "delete from ".self::tbl('user_roles')." where pId=?";
+        $query = "delete from " . self::tbl('user_roles') . " where pId=?";
         $this->query($query, [$this->pId]);
     }
 
@@ -226,32 +226,32 @@ class Process extends Base
         $actname = $act->getNormalizedName();
 
         // This removes the actual activity
-        $query = "delete from ".self::tbl('activities')." where pId=? and activityId=?";
+        $query = "delete from " . self::tbl('activities') . " where pId=? and activityId=?";
         $this->query($query, [$this->pId, $actId]);
 
         // @todo This is activity->removeTransitions
-        $query = "select actFromId,actToId from ".self::tbl('transitions')." where actFromId=? or actToId=?";
+        $query = "select actFromId,actToId from " . self::tbl('transitions') . " where actFromId=? or actToId=?";
         $result = $this->query($query, [$actId, $actId]);
         while ($res = $result->fetchRow()) {
             // @todo This is activity->removeTransition(from,to)
-            $query = "delete from ".self::tbl('transitions')." where actFromId=? and actToId=?";
+            $query = "delete from " . self::tbl('transitions') . " where actFromId=? and actToId=?";
             $this->query($query, [$res['actFromId'], $res['actToId']]);
         }
 
         // @todo This is activity->removeRoles
-        $query = "delete from ".self::tbl('activity_roles')." where activityId=?";
+        $query = "delete from " . self::tbl('activity_roles') . " where activityId=?";
         $this->query($query, [$actId]);
         // And we have to remove the user and compiled files
         // for this activity
         $procname = $this->getNormalizedName();
-        if (file_exists(GALAXIA_PROCESSES."/$procname/code/activities/$actname".'.php')) {
-            unlink(GALAXIA_PROCESSES."/$procname/code/activities/$actname".'.php');
+        if (file_exists(GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php')) {
+            unlink(GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php');
         }
-        if (file_exists(GALAXIA_PROCESSES."/$procname/code/templates/$actname".'.xt')) {
-            unlink(GALAXIA_PROCESSES."/$procname/code/templates/$actname".'.xt');
+        if (file_exists(GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt')) {
+            unlink(GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt');
         }
-        if (file_exists(GALAXIA_PROCESSES."/$procname/compiled/$actname".'.php')) {
-            unlink(GALAXIA_PROCESSES."/$procname/compiled/$actname".'.php');
+        if (file_exists(GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php')) {
+            unlink(GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php');
         }
         return true;
     }

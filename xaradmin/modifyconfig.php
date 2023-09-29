@@ -110,7 +110,7 @@ function workflow_admin_modifyconfig()
 
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    include_once(GALAXIA_LIBRARY.'/processmonitor.php');
+    include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
     // get all start activities that are not interactive
     $activities = $processMonitor->monitor_list_activities(0, -1, 'pId_asc', '', "type='start' and isInteractive=0");

@@ -30,7 +30,7 @@ function workflow_admin_workitem()
 
     // Adapted from tiki-g-view_workitem.php
 
-    include_once(GALAXIA_LIBRARY.'/processmonitor.php');
+    include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
     if (!isset($_REQUEST['itemId'])) {
         $tplData['msg'] =  xarML("No item indicated");
@@ -42,7 +42,7 @@ function workflow_admin_workitem()
     if (is_numeric($wi['user'])) {
         $wi['user'] = xarUser::getVar('name', $wi['user']);
     }
-    $tplData['wi'] =&  $wi;
+    $tplData['wi'] = &  $wi;
 
     $tplData['stats'] =  $processMonitor->monitor_stats();
 

@@ -146,7 +146,7 @@ class xarWorkflowProcess extends xarObject
                 foreach ($fromto['from'] as $from) {
                     $transitions[] = new Transition($transitionName, $from, $fromto['to']);
                 }
-            // @checkme not supported for state_machine, pick the first
+                // @checkme not supported for state_machine, pick the first
             } elseif ($workflowType == 'state_machine' && is_array($fromto['to']) && count($fromto['to']) > 1) {
                 $transitions[] = new Transition($transitionName, $fromto['from'], $fromto['to'][0]);
             } else {

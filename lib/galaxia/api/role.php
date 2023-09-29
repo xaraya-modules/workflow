@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -10,6 +10,4 @@ use Galaxia\Common\Base;
  *
  * @todo implement it
 **/
-class Role extends Base
-{
-}
+class Role extends Base {}

@@ -22,7 +22,7 @@ function workflow_user_display()
     // Get all the activities
     sys::import('modules.dynamicdata.class.objects.master');
     $activities = DataObjectMaster::getObjectList(['name' => 'workflow_activities']);
-//    $where = "type = 'start'";
+    //    $where = "type = 'start'";
     $activities->getItems();
 
     // For each activity get the roles and add them to the activity
@@ -49,7 +49,7 @@ function workflow_user_display()
     // Get all the instances
     $instances = DataObjectMaster::getObjectList(['name' => 'workflow_instance_activities']);
     $where = "status = 'running'";
-    $instances->getItems(['where'=>$where]);
+    $instances->getItems(['where' => $where]);
     $data['properties'] = $instances->getProperties();
     $data['items'] = $instances->items;
     return $data;

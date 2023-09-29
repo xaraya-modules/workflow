@@ -7,7 +7,7 @@ if (!defined('GALAXIA_LIBRARY')) {
     define('GALAXIA_LIBRARY', dirname(dirname(__FILE__)));
     \sys::import('creole.Creole');
 }
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -44,7 +44,7 @@ class Instance extends Base
     public function getInstance($instanceId)
     {
         // Get the instance data
-        $query = "select * from ".self::tbl('instances')."where `instanceId`=?";
+        $query = "select * from " . self::tbl('instances') . "where `instanceId`=?";
         $result = $this->query($query, [(int)$instanceId]);
         if (!$result->numRows()) {
             return false;
@@ -63,10 +63,10 @@ class Instance extends Base
         $this->nextActivity = $res['nextActivity'];
         $this->nextUser = $res['nextUser'];
         // Get the activities where the instance is (ids only is ok)
-        $query = "select * from ".self::tbl('instance_activities')." where  `instanceId`=?";
+        $query = "select * from " . self::tbl('instance_activities') . " where  `instanceId`=?";
         $result = $this->query($query, [(int)$instanceId]);
         while ($res = $result->fetchRow()) {
-            $this->activities[]=$res;
+            $this->activities[] = $res;
         }
     }
 
@@ -82,16 +82,16 @@ class Instance extends Base
     public function setNextActivity($actname)
     {
         $pId = $this->pId;
-        $actname=trim($actname);
-        $aid = $this->getOne("select `activityId` from ".self::tbl('activities')."where `pId`=? and `name`=?", [$pId,$actname]);
-        if (!$this->getOne("select count(*) from ".self::tbl('activities')." where `activityId`=? and `pId`=?", [$aid,$pId])) {
-//            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $aid));
+        $actname = trim($actname);
+        $aid = $this->getOne("select `activityId` from " . self::tbl('activities') . "where `pId`=? and `name`=?", [$pId,$actname]);
+        if (!$this->getOne("select count(*) from " . self::tbl('activities') . " where `activityId`=? and `pId`=?", [$aid,$pId])) {
+            //            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $aid));
 
             //REMOVEME
             trigger_error(\xarML('Fatal error: setting next activity to an unexisting activity'), E_USER_WARNING);
         }
-        $this->nextActivity=$aid;
-        $query = "update ".self::tbl('instances')." set `nextActivity`=? where `instanceId`=?";
+        $this->nextActivity = $aid;
+        $query = "update " . self::tbl('instances') . " set `nextActivity`=? where `instanceId`=?";
         $this->query($query, [(int)$aid,(int)$this->instanceId]);
     }
 
@@ -105,7 +105,7 @@ class Instance extends Base
     {
         $pId = $this->pId;
         $this->nextUser = $user;
-        $query = "update ".self::tbl('instances')."set `nextUser`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . "set `nextUser`=? where `instanceId`=?";
         $this->query($query, [$user,(int)$this->instanceId]);
     }
 
@@ -122,28 +122,28 @@ class Instance extends Base
     {
         // Creates a new instance setting up started,ended,user
         // and status
-        $pid = $this->getOne("select `pId` from ".self::tbl('activities')." where `activityId`=?", [(int)$activityId]);
+        $pid = $this->getOne("select `pId` from " . self::tbl('activities') . " where `activityId`=?", [(int)$activityId]);
         $this->status = 'active';
         $this->nextActivity = 0;
         $this->setNextUser('');
         $this->pId = $pid;
         $now = date("U");
-        $this->started=$now;
+        $this->started = $now;
         $this->owner = $user;
-        $props=serialize($this->properties);
-        $query = "insert into ".self::tbl('instances')."(`started`,`ended`,`status`,`name`,`pId`,`owner`,`properties`) values(?,?,?,?,?,?,?)";
+        $props = serialize($this->properties);
+        $query = "insert into " . self::tbl('instances') . "(`started`,`ended`,`status`,`name`,`pId`,`owner`,`properties`) values(?,?,?,?,?,?,?)";
         $this->query($query, [$now,0,'active',$this->name,$pid,$user,$props]);
-        $this->instanceId = $this->getOne("select max(`instanceId`) from ".self::tbl('instances')." where `started`=? and `owner`=?", [(int)$now,$user]);
-        $iid=$this->instanceId;
+        $this->instanceId = $this->getOne("select max(`instanceId`) from " . self::tbl('instances') . " where `started`=? and `owner`=?", [(int)$now,$user]);
+        $iid = $this->instanceId;
 
         // Now update the properties!
         $props = serialize($this->properties);
-        $query = "update ".self::tbl('instances')."set `properties`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . "set `properties`=? where `instanceId`=?";
         $this->query($query, [$props,(int)$iid]);
 
         // Then add in ".self::tbl('instance_activities')." an entry for the
         // activity the user and status running and started now
-        $query = "insert into ".self::tbl('instance_activities')."(`instanceId`,`activityId`,`user`,`started`,`status`) values(?,?,?,?,?)";
+        $query = "insert into " . self::tbl('instance_activities') . "(`instanceId`,`activityId`,`user`,`started`,`status`) values(?,?,?,?,?)";
         $this->query($query, [(int)$iid,(int)$activityId,$user,(int)$now,'running']);
     }
 
@@ -155,7 +155,7 @@ class Instance extends Base
     {
         $this->properties[$name] = $value;
         $props = serialize($this->properties);
-        $query = "update ".self::tbl('instances')." set `properties`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . " set `properties`=? where `instanceId`=?";
         $this->query($query, [$props,$this->instanceId]);
     }
 
@@ -197,7 +197,7 @@ class Instance extends Base
     {
         $this->status = $status;
         // and update the database
-        $query = "update ".self::tbl('instances')." set `status`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . " set `status`=? where `instanceId`=?";
         $this->query($query, [$status,(int)$this->instanceId]);
     }
 
@@ -218,7 +218,7 @@ class Instance extends Base
     {
         $this->name = $name;
         // save database
-        $query = "update ".self::tbl('instances')." set `name`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . " set `name`=? where `instanceId`=?";
         $this->query($query, [$name,(int)$this->instanceId]);
     }
 
@@ -230,7 +230,7 @@ class Instance extends Base
     {
         $this->owner = $user;
         // save database
-        $query = "update ".self::tbl('instances')."set `owner`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . "set `owner`=? where `instanceId`=?";
         $this->query($query, [$this->owner,(int)$this->instanceId]);
     }
 
@@ -242,12 +242,12 @@ class Instance extends Base
     public function setActivityUser($activityId, $theuser)
     {
         if (empty($theuser)) {
-            $theuser='*';
+            $theuser = '*';
         }
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
-                $this->activities[$i]['user']=$theuser;
-                $query = "update ".self::tbl('instance_activities')."set `user`=? where `activityId`=? and `instanceId`=?";
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
+                $this->activities[$i]['user'] = $theuser;
+                $query = "update " . self::tbl('instance_activities') . "set `user`=? where `activityId`=? and `instanceId`=?";
 
                 $this->query($query, [$theuser,(int)$activityId,(int)$this->instanceId]);
             }
@@ -260,8 +260,8 @@ class Instance extends Base
     */
     public function getActivityUser($activityId)
     {
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
                 return $this->activities[$i]['user'];
             }
         }
@@ -274,10 +274,10 @@ class Instance extends Base
     */
     public function setActivityStatus($activityId, $status)
     {
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
-                $this->activities[$i]['status']=$status;
-                $query = "update ".self::tbl('instance_activities')."set `status`=? where `activityId`=? and `instanceId`=?";
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
+                $this->activities[$i]['status'] = $status;
+                $query = "update " . self::tbl('instance_activities') . "set `status`=? where `activityId`=? and `instanceId`=?";
                 $this->query($query, [$status,(int)$activityId,(int)$this->instanceId]);
             }
         }
@@ -290,8 +290,8 @@ class Instance extends Base
     */
     public function getActivityStatus($activityId)
     {
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
                 return $this->activities[$i]['status'];
             }
         }
@@ -304,10 +304,10 @@ class Instance extends Base
     public function setActivityStarted($activityId)
     {
         $now = date("U");
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
-                $this->activities[$i]['started']=$now;
-                $query = "update ".self::tbl('instance_activities')." set `started`=? where `activityId`=? and `instanceId`=?";
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
+                $this->activities[$i]['started'] = $now;
+                $query = "update " . self::tbl('instance_activities') . " set `started`=? where `activityId`=? and `instanceId`=?";
                 $this->query($query, [$now,(int)$activityId,(int)$this->instanceId]);
             }
         }
@@ -318,8 +318,8 @@ class Instance extends Base
     */
     public function getActivityStarted($activityId)
     {
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
                 return $this->activities[$i]['started'];
             }
         }
@@ -332,8 +332,8 @@ class Instance extends Base
     */
     public function _get_instance_activity($activityId)
     {
-        for ($i=0;$i<count($this->activities);$i++) {
-            if ($this->activities[$i]['activityId']==$activityId) {
+        for ($i = 0;$i < count($this->activities);$i++) {
+            if ($this->activities[$i]['activityId'] == $activityId) {
                 return $this->activities[$i];
             }
         }
@@ -345,8 +345,8 @@ class Instance extends Base
     */
     public function setStarted($time)
     {
-        $this->started=$time;
-        $query = "update ".self::tbl('instances')."set `started`=? where `instanceId`=?";
+        $this->started = $time;
+        $query = "update " . self::tbl('instances') . "set `started`=? where `instanceId`=?";
         $this->query($query, [(int)$time,(int)$this->instanceId]);
     }
 
@@ -363,8 +363,8 @@ class Instance extends Base
     */
     public function setEnded($time)
     {
-        $this->ended=$time;
-        $query = "update ".self::tbl('instances')." set `ended`=? where `instanceId`=?";
+        $this->ended = $time;
+        $query = "update " . self::tbl('instances') . " set `ended`=? where `instanceId`=?";
         $this->query($query, [(int)$time,(int)$this->instanceId]);
     }
 
@@ -392,7 +392,7 @@ class Instance extends Base
     the engine does automatically complete such (automatic) activities after
     executing them.
     */
-    public function complete($activityId=0, $force=false, $addworkitem=true)
+    public function complete($activityId = 0, $force = false, $addworkitem = true)
     {
         global $user;
         global $__activity_completed;
@@ -400,35 +400,35 @@ class Instance extends Base
         $__activity_completed = true;
 
         if (empty($user)) {
-            $theuser='*';
+            $theuser = '*';
         } else {
-            $theuser=$user;
+            $theuser = $user;
         }
 
-        if ($activityId==0) {
-            $activityId=$_REQUEST['activityId'];
+        if ($activityId == 0) {
+            $activityId = $_REQUEST['activityId'];
         }
         //---------------------------------------------
 
         // If we are completing a start activity then the instance must be created first!
-        $type = $this->getOne("select `type` from ".self::tbl('activities')." where `activityId`=?", [(int)$activityId]);
-        if ($type=='start') {
+        $type = $this->getOne("select `type` from " . self::tbl('activities') . " where `activityId`=?", [(int)$activityId]);
+        if ($type == 'start') {
             $this->_createNewInstance((int)$activityId, $theuser);
         }
         //---------------------------------------------
 
         // Clock the time the instance-activity ended and set its status to completed
         $now = date("U");
-        $query = "update ".self::tbl('instance_activities')." set `ended`=?, `status`=? where `activityId`=? and `instanceId`=?";
+        $query = "update " . self::tbl('instance_activities') . " set `ended`=?, `status`=? where `activityId`=? and `instanceId`=?";
         $this->query($query, [(int)$now,'completed',(int)$activityId,(int)$this->instanceId]);
         //---------------------------------------------
 
         //Add a workitem to the instance
         $iid = $this->instanceId;
         if ($addworkitem) {
-            $max = $this->getOne("select max(`orderId`) from ".self::tbl('workitems')."where `instanceId`=?", [(int)$iid]);
+            $max = $this->getOne("select max(`orderId`) from " . self::tbl('workitems') . "where `instanceId`=?", [(int)$iid]);
             if (!$max) {
-                $max=1;
+                $max = 1;
             } else {
                 $max++;
             }
@@ -438,12 +438,12 @@ class Instance extends Base
                 $started = $this->getStarted();
                 $putuser = $this->getOwner();
             } else {
-                $started=$act['started'];
+                $started = $act['started'];
                 $putuser = $act['user'];
             }
             $ended = date("U");
             $properties = serialize($this->properties);
-            $query="insert into ".self::tbl('workitems')."(`instanceId`,`orderId`,`activityId`,`started`,`ended`,`properties`,`user`) values(?,?,?,?,?,?,?)";
+            $query = "insert into " . self::tbl('workitems') . "(`instanceId`,`orderId`,`activityId`,`started`,`ended`,`properties`,`user`) values(?,?,?,?,?,?,?)";
             $this->query($query, [(int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser]);
         }
         //---------------------------------------------
@@ -454,7 +454,7 @@ class Instance extends Base
         //---------------------------------------------
 
         //If this is an end activity then terminate the instance
-        if ($type=='end') {
+        if ($type == 'end') {
             $this->terminate();
             return;
         }
@@ -462,9 +462,9 @@ class Instance extends Base
 
         //If the activity ending is autorouted then send to the next activity
         if ($type != 'end') {
-            if (($force) || ($this->getOne("select `isAutoRouted` from ".self::tbl('activities')." where `activityId`=?", [$activityId]) == 1)) {
+            if (($force) || ($this->getOne("select `isAutoRouted` from " . self::tbl('activities') . " where `activityId`=?", [$activityId]) == 1)) {
                 // Now determine where to send the instance
-                $query = "select `actToId` from ".self::tbl('transitions')." where `actFromId`=?";
+                $query = "select `actToId` from " . self::tbl('transitions') . " where `actFromId`=?";
                 $result = $this->query($query, [(int)$activityId]);
                 $candidates = [];
                 while ($res = $result->fetchRow()) {
@@ -480,14 +480,14 @@ class Instance extends Base
                     if (in_array($this->nextActivity, $candidates)) {
                         $this->sendTo((int)$activityId, (int)$this->nextActivity);
                     } else {
-//            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $this->nextActivity));
+                        //            return xarTpl::module('workflow', 'user', 'errors', array('layout' => 'unknown_activity', 'id' => $this->nextActivity));
                         // REMOVEME
                         trigger_error(\xarML('Fatal error: nextActivity does not match any candidate in autorouting switch activity'), E_USER_WARNING);
                     }
                 } else {
-                    if (count($candidates)>1) {
+                    if (count($candidates) > 1) {
                         trigger_error(\xarML('Fatal error: non-deterministic decision for autorouting activity'), E_USER_WARNING);
-                    } elseif (count($candidates)==0) {
+                    } elseif (count($candidates) == 0) {
                         trigger_error(\xarML('Fatal error: no next activity found'), E_USER_WARNING);
                     } else {
                         $this->sendTo((int)$activityId, (int)$candidates[0]);
@@ -500,39 +500,39 @@ class Instance extends Base
     /**
     Aborts an activity and terminates the whole instance. We still create a workitem to keep track of where in the process the instance was aborted
     */
-    public function abort($activityId=0, $theuser = '', $addworkitem=true)
+    public function abort($activityId = 0, $theuser = '', $addworkitem = true)
     {
         if (empty($theuser)) {
             global $user;
             if (empty($user)) {
-                $theuser='*';
+                $theuser = '*';
             } else {
-                $theuser=$user;
+                $theuser = $user;
             }
         }
 
-        if ($activityId==0) {
-            $activityId=$_REQUEST['activityId'];
+        if ($activityId == 0) {
+            $activityId = $_REQUEST['activityId'];
         }
 
         // If we are completing a start activity then the instance must
         // be created first!
-        $type = $this->getOne("select `type` from ".self::tbl('activities')."where `activityId`=?", [(int)$activityId]);
-        if ($type=='start') {
+        $type = $this->getOne("select `type` from " . self::tbl('activities') . "where `activityId`=?", [(int)$activityId]);
+        if ($type == 'start') {
             $this->_createNewInstance((int)$activityId, $theuser);
         }
 
         // Now set ended
         $now = date("U");
-        $query = "update ".self::tbl('instance_activities')." set `ended`=? where `activityId`=? and `instanceId`=?";
+        $query = "update " . self::tbl('instance_activities') . " set `ended`=? where `activityId`=? and `instanceId`=?";
         $this->query($query, [(int)$now,(int)$activityId,(int)$this->instanceId]);
 
         //Add a workitem to the instance
         $iid = $this->instanceId;
         if ($addworkitem) {
-            $max = $this->getOne("select max(`orderId`) from ".self::tbl('workitems')." where `instanceId`=?", [(int)$iid]);
+            $max = $this->getOne("select max(`orderId`) from " . self::tbl('workitems') . " where `instanceId`=?", [(int)$iid]);
             if (!$max) {
-                $max=1;
+                $max = 1;
             } else {
                 $max++;
             }
@@ -542,12 +542,12 @@ class Instance extends Base
                 $started = $this->getStarted();
                 $putuser = $this->getOwner();
             } else {
-                $started=$act['started'];
+                $started = $act['started'];
                 $putuser = $act['user'];
             }
             $ended = date("U");
             $properties = serialize($this->properties);
-            $query="insert into ".self::tbl('workitems')."(`instanceId`,`orderId`,`activityId`,`started`,`ended`,`properties`,`user`) values(?,?,?,?,?,?,?)";
+            $query = "insert into " . self::tbl('workitems') . "(`instanceId`,`orderId`,`activityId`,`started`,`ended`,`properties`,`user`) values(?,?,?,?,?,?,?)";
             $this->query($query, [(int)$iid,(int)$max,(int)$activityId,(int)$started,(int)$ended,$properties,$putuser]);
         }
 
@@ -569,9 +569,9 @@ class Instance extends Base
     {
         //Set the status of the instance to completed
         $now = date("U");
-        $query = "update ".self::tbl('instances')."set `status`=?, `ended`=? where `instanceId`=?";
+        $query = "update " . self::tbl('instances') . "set `status`=?, `ended`=? where `instanceId`=?";
         $this->query($query, [$status,(int)$now,(int)$this->instanceId]);
-        $query = "delete from ".self::tbl('instance_activities')." where `instanceId`=?";
+        $query = "delete from " . self::tbl('instance_activities') . " where `instanceId`=?";
         $this->query($query, [(int)$this->instanceId]);
         $this->status = $status;
         $this->activities = [];
@@ -583,16 +583,16 @@ class Instance extends Base
     You should not call this method unless you know very very well what
     you are doing.
     */
-    public function sendTo($from, $activityId, $split=false)
+    public function sendTo($from, $activityId, $split = false)
     {
         //1: if we are in a join check
         //if this instance is also in
         //other activity if so do
         //nothing
-        $type = $this->getOne("select `type` from ".self::tbl('activities')." where `activityId`=?", [(int)$activityId]);
+        $type = $this->getOne("select `type` from " . self::tbl('activities') . " where `activityId`=?", [(int)$activityId]);
 
         // Verify the existance of a transition
-        if (!$this->getOne("select count(*) from ".self::tbl('transitions')."where `actFromId`=? and `actToId`=?", [$from,(int)$activityId])) {
+        if (!$this->getOne("select count(*) from " . self::tbl('transitions') . "where `actFromId`=? and `actToId`=?", [$from,(int)$activityId])) {
             trigger_error(\xarML('Fatal error: trying to send an instance to an activity but no transition found'), E_USER_WARNING);
         }
 
@@ -602,11 +602,11 @@ class Instance extends Base
             $putuser = $this->nextUser;
         } else {
             $candidates = [];
-            $query = "select `roleId` from ".self::tbl('activity_roles')."where `activityId`=?";
+            $query = "select `roleId` from " . self::tbl('activity_roles') . "where `activityId`=?";
             $result = $this->query($query, [(int)$activityId]);
             while ($res = $result->fetchRow()) {
                 $roleId = $res['roleId'];
-                $query2 = "select `user` from ".self::tbl('user_roles')." where `roleId`=?";
+                $query2 = "select `user` from " . self::tbl('user_roles') . " where `roleId`=?";
                 $result2 = $this->query($query2, [(int)$roleId]);
                 while ($res2 = $result2->fetchRow()) {
                     $candidates[] = $res2['user'];
@@ -624,27 +624,27 @@ class Instance extends Base
         //update the instance_activities table
         //if not splitting delete first
         if (!$split && $from != $activityId) {
-            $query = "delete from ".self::tbl('instance_activities')." where `instanceId`=? and `activityId`=?";
+            $query = "delete from " . self::tbl('instance_activities') . " where `instanceId`=? and `activityId`=?";
             $this->query($query, [(int)$this->instanceId,$from]);
         }
 
         $now = date("U");
         $iid = $this->instanceId;
-        $query="delete from ".self::tbl('instance_activities')." where `instanceId`=? and `activityId`=?";
+        $query = "delete from " . self::tbl('instance_activities') . " where `instanceId`=? and `activityId`=?";
         $this->query($query, [(int)$iid,(int)$activityId]);
-        $query="insert into ".self::tbl('instance_activities')."(`instanceId`,`activityId`,`user`,`status`,`started`) values(?,?,?,?,?)";
+        $query = "insert into " . self::tbl('instance_activities') . "(`instanceId`,`activityId`,`user`,`status`,`started`) values(?,?,?,?,?)";
         $this->query($query, [(int)$iid,(int)$activityId,$putuser,'running',(int)$now]);
 
         //we are now in a new activity
-        $this->activities=[];
-        $query = "select * from ".self::tbl('instance_activities')." where `instanceId`=?";
+        $this->activities = [];
+        $query = "select * from " . self::tbl('instance_activities') . " where `instanceId`=?";
         $result = $this->query($query, [(int)$iid]);
         while ($res = $result->fetchRow()) {
-            $this->activities[]=$res;
+            $this->activities[] = $res;
         }
 
         if ($type == 'join') {
-            if (count($this->activities)>1) {
+            if (count($this->activities) > 1) {
                 // This instance will have to wait!
                 return;
             }
@@ -654,7 +654,7 @@ class Instance extends Base
         //if the activity is not interactive then
         //execute the code for the activity and
         //complete the activity
-        $isInteractive = $this->getOne("select `isInteractive` from ".self::tbl('activities')." where `activityId`=?", [(int)$activityId]);
+        $isInteractive = $this->getOne("select `isInteractive` from " . self::tbl('activities') . " where `activityId`=?", [(int)$activityId]);
 
         if ($isInteractive == 0) {
             // This activity is not interactive: execute and complete it
@@ -685,7 +685,7 @@ class Instance extends Base
     public function get_instance_comment($cId)
     {
         $iid = $this->instanceId;
-        $query = "select * from ".self::tbl('instance_comments')." where `instanceId`=? and `cId`=?";
+        $query = "select * from " . self::tbl('instance_comments') . " where `instanceId`=? and `cId`=?";
         $result = $this->query($query, [(int)$iid,(int)$cId]);
         $res = $result->fetchRow();
         return $res;
@@ -701,15 +701,15 @@ class Instance extends Base
         }
         $iid = $this->instanceId;
         if ($cId) {
-            $query = "update ".self::tbl('instance_comments')." set `title`=?,`comment`=? where `instanceId`=? and `cId`=?";
+            $query = "update " . self::tbl('instance_comments') . " set `title`=?,`comment`=? where `instanceId`=? and `cId`=?";
             $this->query($query, [$title,$comment,(int)$iid,(int)$cId]);
         } else {
-            $hash = md5($title.$comment);
-            if ($this->getOne("select count(*) from ".self::tbl('instance_comments')." where `instanceId`=? and `hash`=?", [$iid,$hash])) {
+            $hash = md5($title . $comment);
+            if ($this->getOne("select count(*) from " . self::tbl('instance_comments') . " where `instanceId`=? and `hash`=?", [$iid,$hash])) {
                 return false;
             }
             $now = date("U");
-            $query ="insert into ".self::tbl('instance_comments')."(`instanceId`,`user`,`activityId`,`activity`,`title`,`comment`,`timestamp`,`hash`) values(?,?,?,?,?,?,?,?)";
+            $query = "insert into " . self::tbl('instance_comments') . "(`instanceId`,`user`,`activityId`,`activity`,`title`,`comment`,`timestamp`,`hash`) values(?,?,?,?,?,?,?,?)";
             $this->query($query, [(int)$iid,$user,(int)$activityId,$activity,$title,$comment,(int)$now,$hash]);
         }
     }
@@ -720,7 +720,7 @@ class Instance extends Base
     public function remove_instance_comment($cId)
     {
         $iid = $this->instanceId;
-        $query = "delete from ".self::tbl('instance_comments')." where `cId`=? and `instanceId`=?";
+        $query = "delete from " . self::tbl('instance_comments') . " where `cId`=? and `instanceId`=?";
         $this->query($query, [(int)$cId,(int)$iid]);
     }
 
@@ -730,7 +730,7 @@ class Instance extends Base
     public function get_instance_comments()
     {
         $iid = $this->instanceId;
-        $query = "select * from ".self::tbl('instance_comments')." where `instanceId`=? order by ".$this->convert_sortmode("timestamp_desc");
+        $query = "select * from " . self::tbl('instance_comments') . " where `instanceId`=? order by " . $this->convert_sortmode("timestamp_desc");
         $result = $this->query($query, [(int)$iid]);
         $ret = [];
         while ($res = $result->fetchRow()) {

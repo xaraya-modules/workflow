@@ -17,7 +17,7 @@ namespace Galaxia\Common;
 */
 class Observable
 {
-    public $_observers=[];
+    public $_observers = [];
 
     /*!
      This method can be used to attach an object to the class listening for

@@ -9,7 +9,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -21,7 +21,5 @@ class Transition extends Base
     private $from = null;
     private $to   = null;
 
-    public function __construct(WorkflowActivity $from, WorkflowActivity $to)
-    {
-    }
+    public function __construct(WorkflowActivity $from, WorkflowActivity $to) {}
 }

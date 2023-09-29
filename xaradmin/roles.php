@@ -34,7 +34,7 @@ function workflow_admin_roles()
     $maxRecords = xarModVars::get('workflow', 'items_per_page');
 
     // Adapted from tiki-g-admin_roles.php
-    include_once(GALAXIA_LIBRARY.'/processmanager.php');
+    include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
     if (!xarVar::fetch('pid', 'id', $pid)) {
         return;
@@ -48,7 +48,7 @@ function workflow_admin_roles()
     // Retrieve the relevant process info
     $process = new \Galaxia\Api\Process($pid);
     $proc_info = $processManager->get_process($pid);
-    $proc_info['graph']=$process->getGraph();
+    $proc_info['graph'] = $process->getGraph();
 
     // Role ID set?
     if (!xarVar::fetch('roleId', 'id', $roleId, 0, xarVar::NOT_REQUIRED)) {
@@ -80,7 +80,7 @@ function workflow_admin_roles()
     }
 
     // MAPPING
-    $data['find_users'] =$_REQUEST['find_users'] ?? '';
+    $data['find_users'] = $_REQUEST['find_users'] ?? '';
 
     $numusers = xarMod::apiFunc('roles', 'user', 'countall');
     // don't show thousands of users here without filtering
@@ -90,7 +90,7 @@ function workflow_admin_roles()
         $selection = '';
         if (!empty($data['find_users'])) {
             $dbconn = xarDB::getConn();
-            $selection = " AND name LIKE " . $dbconn->qstr('%'.$data['find_users'].'%');
+            $selection = " AND name LIKE " . $dbconn->qstr('%' . $data['find_users'] . '%');
         }
         $data['users'] = xarMod::apiFunc(
             'roles',
@@ -104,7 +104,7 @@ function workflow_admin_roles()
     $data['groups'] = xarMod::apiFunc('roles', 'user', 'getallgroups');
 
     $roles = $roleManager->list_roles($pid, 0, -1, 'name_asc', '');
-    $data['roles'] =&  $roles['data'];
+    $data['roles'] = &  $roles['data'];
 
     if (isset($_REQUEST["delete_map"])) {
         foreach (array_keys($_REQUEST["map"])as $item) {
@@ -188,13 +188,13 @@ function workflow_admin_roles()
     if ($data['offset'] > 1) {
         $data['prev_offset'] =  $data['offset'] - $maxRecords;
     }
-    $data['mapitems'] =&  $mapitems["data"];
+    $data['mapitems'] = &  $mapitems["data"];
 
     //MAPPING
     $data['sort_mode2'] =  $_REQUEST['sort_mode2'] ?? 'name_asc';
     // Get all the process roles
     $all_roles = $roleManager->list_roles($pid, 0, -1, $data['sort_mode2'], '');
-    $data['items'] =&  $all_roles['data'];
+    $data['items'] = &  $all_roles['data'];
 
     $valid = $activityManager->validate_process_activities($pid);
     $proc_info['isValid'] = $valid ? 1 : 0;

@@ -131,7 +131,7 @@ class xarWorkflowHandlers extends xarObject
         return $objectRef->checkAccess($action, $itemId, $userId);
     }
 
-    public static function guardSecurityCheck($mask, $catch=0, $component='', $instance='', $module='', $rolename='', $realm=0, $level=0)
+    public static function guardSecurityCheck($mask, $catch = 0, $component = '', $instance = '', $module = '', $rolename = '', $realm = 0, $level = 0)
     {
         sys::import('modules.privileges.class.security');
         // Fallback for checkAccess:

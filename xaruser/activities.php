@@ -32,7 +32,7 @@ function workflow_user_activities()
     $data = [];
 
     // Adapted from tiki-g-user_activities.php
-    include_once(GALAXIA_LIBRARY.'/gui.php');
+    include_once(GALAXIA_LIBRARY . '/gui.php');
 
     // Initialize some stuff
     $user = xarUser::getVar('id');
@@ -67,7 +67,7 @@ function workflow_user_activities()
         $offset = $_REQUEST["offset"];
     }
 
-    $data['offset'] =&  $offset;
+    $data['offset'] = &  $offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -77,13 +77,13 @@ function workflow_user_activities()
 
     $data['find'] =  $find;
     $data['where'] =  $where;
-    $data['sort_mode'] =&  $sort_mode;
+    $data['sort_mode'] = &  $sort_mode;
 
     $items = $GUI->gui_list_user_activities($user, $offset - 1, $maxRecords, $sort_mode, $find, $where);
     $data['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $data['cant_pages'] =&  $cant_pages;
+    $data['cant_pages'] = &  $cant_pages;
     $data['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -98,10 +98,10 @@ function workflow_user_activities()
         $data['prev_offset'] =  -1;
     }
 
-    $data['items'] =&  $items["data"];
+    $data['items'] = &  $items["data"];
 
     $processes = $GUI->gui_list_user_processes($user, 0, -1, 'procname_asc', '', '');
-    $data['all_procs'] =&  $processes['data'];
+    $data['all_procs'] = &  $processes['data'];
     if (count($data['all_procs']) == 1 && empty($_REQUEST['filter_process'])) {
         $_REQUEST['filter_process'] = $data['all_procs'][0]['pId'];
     }
@@ -113,8 +113,8 @@ function workflow_user_activities()
         }
         foreach ($data['all_procs'] as $info) {
             if ($info['pId'] == $_REQUEST['filter_process'] && !empty($info['normalized_name'])) {
-                $graph = GALAXIA_PROCESSES."/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".png";
-                $mapfile = GALAXIA_PROCESSES."/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".map";
+                $graph = GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".png";
+                $mapfile = GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".map";
                 if (file_exists($graph) && file_exists($mapfile)) {
                     $maplines = file($mapfile);
                     $map = '';

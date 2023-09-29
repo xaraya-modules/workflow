@@ -32,7 +32,7 @@ function workflow_admin_monitor_processes()
     $maxRecords = xarModVars::get('workflow', 'items_per_page');
 
     // Adapted from tiki-g-monitor_processes.php
-    include_once(GALAXIA_LIBRARY.'/processmonitor.php');
+    include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
     if (!xarVar::fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
         return;
@@ -75,7 +75,7 @@ function workflow_admin_monitor_processes()
         $offset = $_REQUEST["offset"];
     }
 
-    $data['offset'] =&  $offset;
+    $data['offset'] = &  $offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -85,13 +85,13 @@ function workflow_admin_monitor_processes()
 
     $data['find'] =  $find;
     $data['where'] =  $where;
-    $data['sort_mode'] =&  $sort_mode;
+    $data['sort_mode'] = &  $sort_mode;
 
     $items = $processMonitor->monitor_list_processes($offset - 1, $maxRecords, $sort_mode, $find, $where);
     $data['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $data['cant_pages'] =&  $cant_pages;
+    $data['cant_pages'] = &  $cant_pages;
     $data['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -106,7 +106,7 @@ function workflow_admin_monitor_processes()
         $data['prev_offset'] =  -1;
     }
 
-    $data['items'] =&  $items["data"];
+    $data['items'] = &  $items["data"];
 
     $maxtime = 0;
     foreach ($items['data'] as $info) {
@@ -121,9 +121,9 @@ function workflow_admin_monitor_processes()
     }
     foreach ($items['data'] as $index => $info) {
         if (isset($info['duration'])) {
-            $items['data'][$index]['duration']['min'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time'=>$info['duration']['min']]);
-            $items['data'][$index]['duration']['avg'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time'=>$info['duration']['avg']]);
-            $items['data'][$index]['duration']['max'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time'=>$info['duration']['max']]);
+            $items['data'][$index]['duration']['min'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['min']]);
+            $items['data'][$index]['duration']['avg'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['avg']]);
+            $items['data'][$index]['duration']['max'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['max']]);
             $info['duration']['max'] -= $info['duration']['avg'];
             $info['duration']['avg'] -= $info['duration']['min'];
             $items['data'][$index]['timescale'] = [];
@@ -136,7 +136,7 @@ function workflow_admin_monitor_processes()
     $allprocs = $processMonitor->monitor_list_all_processes('name_asc');
     $data['all_procs'] = [];
     foreach ($allprocs as $row) {
-        $data['all_procs'][] = ['pId' => $row['pId'], 'name' => $row['name'] . ' ' . $row['version'], 'version'=>$row['version']];
+        $data['all_procs'][] = ['pId' => $row['pId'], 'name' => $row['name'] . ' ' . $row['version'], 'version' => $row['version']];
     }
 
     $sameurl_elements = [

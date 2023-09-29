@@ -33,7 +33,7 @@ function workflow_user_run_activity()
     global $user;
     $user = xarUser::getVar('id');
     //--------------------------------------------- Load the instance class
-    include(GALAXIA_LIBRARY.'/api.php');
+    include(GALAXIA_LIBRARY . '/api.php');
 
     // TODO: evaluate why this is here
     global $__activity_completed;
@@ -54,7 +54,7 @@ function workflow_user_run_activity()
         return xarTpl::module('workflow', 'user', 'errors', $data);
     }
     $process = new \Galaxia\Api\Process($activity->getProcessId());
-    $instance->pId =$activity->getProcessId();
+    $instance->pId = $activity->getProcessId();
 
     // Get user roles
 
@@ -94,8 +94,8 @@ function workflow_user_run_activity()
         }
     }
 
-    $source = GALAXIA_PROCESSES.'/' . $process->getNormalizedName(). '/compiled/' . $activity->getNormalizedName(). '.php';
-    $shared = GALAXIA_PROCESSES.'/' . $process->getNormalizedName(). '/code/shared.php';
+    $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+    $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
     // Existing variables here:
     // $process, $activity, $instance (if not standalone)
@@ -122,7 +122,7 @@ function workflow_user_run_activity()
         }
     }
 
-    $data['__comments'] =&  $__comments;
+    $data['__comments'] = &  $__comments;
 
     if (!isset($_REQUEST['__cid'])) {
         $_REQUEST['__cid'] = 0;
@@ -180,30 +180,30 @@ function workflow_user_run_activity()
             xarController::redirect(xarController::URL('workflow', 'user', 'display'));
         }
         return true;
-//    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
+        //    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
     } elseif (!isset($_REQUEST['auto']) && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
         //---------------------------------------------  Case of a completed standalone activity <-- REVIEW THIS
 
         xarController::redirect($_REQUEST['return_url']);
         return true;
     } else {
-//        if (!isset($_REQUEST['auto']) && $activity->isInteractive()) {
+        //        if (!isset($_REQUEST['auto']) && $activity->isInteractive()) {
 
         //--------------------------------------------- This activity is not completed
 
-        if ((!isset($_REQUEST['auto']) || !$_REQUEST['auto'])&& $activity->isInteractive()) {
+        if ((!isset($_REQUEST['auto']) || !$_REQUEST['auto']) && $activity->isInteractive()) {
             //--------------------------------------------- This activity is interactive and not autorouted
 
             // This activity is interactive and not autorouted. Run it and then halt
             //$section = 'workflow';
             //include_once ('tiki-section_options.php');
-            $template = $activity->getNormalizedName(). '.xt';
-//            $data['mid'] =  $process->getNormalizedName(). '/' . $template;
+            $template = $activity->getNormalizedName() . '.xt';
+            //            $data['mid'] =  $process->getNormalizedName(). '/' . $template;
             // not very clean way, but it works :)
             $data['mid'] = '';
 
             if ($activity->isInteractive()) {
-                $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName(). '/code/templates/' . $template, $data);
+                $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $data);
                 $data['mid'] = $output;
             }
 

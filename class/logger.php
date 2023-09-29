@@ -15,6 +15,4 @@
 sys::import('xaraya.bridge.logging');
 use Xaraya\Bridge\Logging\LoggerBridge;
 
-class xarWorkflowLogger extends LoggerBridge
-{
-}
+class xarWorkflowLogger extends LoggerBridge {}

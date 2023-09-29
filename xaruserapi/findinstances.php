@@ -22,7 +22,7 @@ function workflow_userapi_findinstances($args)
 {
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');
-    include(GALAXIA_LIBRARY.'/processmonitor.php');
+    include(GALAXIA_LIBRARY . '/processmonitor.php');
 
     extract($args);
     if (!isset($status)) {
@@ -48,7 +48,7 @@ function workflow_userapi_findinstances($args)
         $wheres[] = "gi.started <= " . $max_started;
     }
     if (!empty($activityName) && !empty($processName)) {
-        $wheres[] = "ga.name = '" . $activityName . "' AND gp.name = '".$processName."'";
+        $wheres[] = "ga.name = '" . $activityName . "' AND gp.name = '" . $processName . "'";
     }
 
     $where = implode(' and ', $wheres);

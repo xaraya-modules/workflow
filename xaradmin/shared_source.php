@@ -31,7 +31,7 @@ function workflow_admin_shared_source()
 
     // Adapted from tiki-g-admin_shared_source.php
 
-    include_once(GALAXIA_LIBRARY.'/processmanager.php');
+    include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
     if (!isset($_REQUEST['pid'])) {
         $data['msg'] =  xarML("No process indicated");
@@ -47,8 +47,8 @@ function workflow_admin_shared_source()
 
     $process = new \Galaxia\Api\Process($_REQUEST['pid']);
     $proc_info = $processManager->get_process($_REQUEST['pid']);
-    $proc_info['graph']=$process->getGraph();
-    $data['proc_info'] =& $proc_info;
+    $proc_info['graph'] = $process->getGraph();
+    $data['proc_info'] = & $proc_info;
 
     $procname = $process->getNormalizedName();
 
@@ -68,11 +68,11 @@ function workflow_admin_shared_source()
         if (isset($_REQUEST['template'])) {
             $data['template'] =  1;
 
-            $source = GALAXIA_PROCESSES."/$procname/code/templates/$actname" . '.xt';
+            $source = GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt';
         } else {
             $data['template'] =  0;
 
-            $source = GALAXIA_PROCESSES."/$procname/code/activities/$actname" . '.php';
+            $source = GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php';
         }
 
         // Then editing an activity
@@ -83,7 +83,7 @@ function workflow_admin_shared_source()
         $data['template'] =  0;
         $data['act_info'] =  ['isInteractive' => 0, 'type' => 'shared'];
         // Then editing shared code
-        $source = GALAXIA_PROCESSES."/$procname/code/shared.php";
+        $source = GALAXIA_PROCESSES . "/$procname/code/shared.php";
     }
 
     //First of all save

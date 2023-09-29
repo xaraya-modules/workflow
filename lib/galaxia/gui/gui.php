@@ -2,7 +2,7 @@
 
 namespace Galaxia\Gui;
 
-include_once(GALAXIA_LIBRARY.'/common/base.php');
+include_once(GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 //!! GUI
@@ -24,7 +24,7 @@ class GUI extends Base
     and it also returns the number of instances that are in the
     process matching the conditions.
     */
-    public function gui_list_user_processes($user, $offset, $maxRecords, $sort_mode, $find, $where='')
+    public function gui_list_user_processes($user, $offset, $maxRecords, $sort_mode, $find, $where = '')
     {
         // FIXME: this doesn't support multiple sort criteria
         //$sort_mode = $this->convert_sortmode($sort_mode);
@@ -33,13 +33,13 @@ class GUI extends Base
         $mid = "where gp.isActive=? and gur.user=?";
         $bindvars = [1,$user];
         if ($find) {
-            $findesc = '%'.$find.'%';
+            $findesc = '%' . $find . '%';
             $mid .= " and ((gp.name like ?) or (gp.description like ?))";
             $bindvars[] = $findesc;
             $bindvars[] = $findesc;
         }
         if ($where) {
-            $mid.= " and ($where) ";
+            $mid .= " and ($where) ";
         }
 
         $query = "select distinct(gp.pId),
@@ -47,18 +47,18 @@ class GUI extends Base
                      gp.name as procname,
                      gp.normalized_name as normalized_name,
                      gp.version as version
-              from ".self::tbl('processes')." gp
-                INNER JOIN ".self::tbl('activities')." ga ON gp.pId=ga.pId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=ga.activityId
-                INNER JOIN ".self::tbl('roles')."gr ON gr.roleId=gar.roleId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gr.roleId
+              from " . self::tbl('processes') . " gp
+                INNER JOIN " . self::tbl('activities') . " ga ON gp.pId=ga.pId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=ga.activityId
+                INNER JOIN " . self::tbl('roles') . "gr ON gr.roleId=gar.roleId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gr.roleId
               $mid order by $sort_mode";
         $query_cant = "select count(distinct(gp.pId))
-              from ".self::tbl('processes')." gp
-                INNER JOIN ".self::tbl('activities')." ga ON gp.pId=ga.pId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=ga.activityId
-                INNER JOIN ".self::tbl('roles')." gr ON gr.roleId=gar.roleId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gr.roleId
+              from " . self::tbl('processes') . " gp
+                INNER JOIN " . self::tbl('activities') . " ga ON gp.pId=ga.pId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=ga.activityId
+                INNER JOIN " . self::tbl('roles') . " gr ON gr.roleId=gar.roleId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gr.roleId
               $mid";
         $result = $this->query($query, $bindvars, $maxRecords, $offset);
         $cant = $this->getOne($query_cant, $bindvars);
@@ -66,23 +66,23 @@ class GUI extends Base
 
         while ($res = $result->fetchRow()) {
             // Get instances per activity
-            $pId=$res['pId'];
-            $res['activities']=$this->getOne(
+            $pId = $res['pId'];
+            $res['activities'] = $this->getOne(
                 "select count(distinct(ga.activityId))
-              from ".self::tbl('processes')." gp
-                INNER JOIN ".self::tbl('activities')." ga ON gp.pId=ga.pId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=ga.activityId
-                INNER JOIN ".self::tbl('roles')." gr ON gr.roleId=gar.roleId
-                INNER JOIN ".self::tbl('user_roles')."gur ON gur.roleId=gr.roleId
+              from " . self::tbl('processes') . " gp
+                INNER JOIN " . self::tbl('activities') . " ga ON gp.pId=ga.pId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=ga.activityId
+                INNER JOIN " . self::tbl('roles') . " gr ON gr.roleId=gar.roleId
+                INNER JOIN " . self::tbl('user_roles') . "gur ON gur.roleId=gr.roleId
               where gp.pId=? and gur.user=?",
                 [$pId,$user]
             );
-            $res['instances']=$this->getOne(
+            $res['instances'] = $this->getOne(
                 "select count(distinct(gi.instanceId))
-              from ".self::tbl('instances')."gi
-                INNER JOIN ".self::tbl('instance_activities')."gia ON gi.instanceId=gia.instanceId
-                INNER JOIN ".self::tbl('activity_roles')."gar ON gia.activityId=gar.activityId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gar.roleId=gur.roleId
+              from " . self::tbl('instances') . "gi
+                INNER JOIN " . self::tbl('instance_activities') . "gia ON gi.instanceId=gia.instanceId
+                INNER JOIN " . self::tbl('activity_roles') . "gar ON gia.activityId=gar.activityId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gar.roleId=gur.roleId
               where gi.pId=? and ((gia.user=?) or (gia.user=? and gur.user=?))",
                 [$pId,$user,'*',$user]
             );
@@ -95,7 +95,7 @@ class GUI extends Base
     }
 
 
-    public function gui_list_user_activities($user, $offset, $maxRecords, $sort_mode, $find, $where='')
+    public function gui_list_user_activities($user, $offset, $maxRecords, $sort_mode, $find, $where = '')
     {
         // FIXME: this doesn't support multiple sort criteria
         //$sort_mode = $this->convert_sortmode($sort_mode);
@@ -104,13 +104,13 @@ class GUI extends Base
         $mid = "where gp.isActive=? and gur.user=?";
         $bindvars = [1,$user];
         if ($find) {
-            $findesc = '%'.$find.'%';
+            $findesc = '%' . $find . '%';
             $mid .= " and ((ga.name like ?) or (ga.description like ?))";
             $bindvars[] = $findesc;
             $bindvars[] = $findesc;
         }
         if ($where) {
-            $mid.= " and ($where) ";
+            $mid .= " and ($where) ";
         }
 
         $query = "select distinct(ga.activityId),
@@ -123,18 +123,18 @@ class GUI extends Base
                      gp.version as version,
                      gp.pId,
                      gp.isActive
-              from ".self::tbl('processes')." gp
-                INNER JOIN ".self::tbl('activities')." ga ON gp.pId=ga.pId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=ga.activityId
-                INNER JOIN ".self::tbl('roles')." gr ON gr.roleId=gar.roleId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gr.roleId
+              from " . self::tbl('processes') . " gp
+                INNER JOIN " . self::tbl('activities') . " ga ON gp.pId=ga.pId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=ga.activityId
+                INNER JOIN " . self::tbl('roles') . " gr ON gr.roleId=gar.roleId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gr.roleId
               $mid order by $sort_mode";
         $query_cant = "select count(distinct(ga.activityId))
-              from ".self::tbl('processes')." gp
-                INNER JOIN ".self::tbl('activities')." ga ON gp.pId=ga.pId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=ga.activityId
-                INNER JOIN ".self::tbl('roles')." gr ON gr.roleId=gar.roleId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gr.roleId
+              from " . self::tbl('processes') . " gp
+                INNER JOIN " . self::tbl('activities') . " ga ON gp.pId=ga.pId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=ga.activityId
+                INNER JOIN " . self::tbl('roles') . " gr ON gr.roleId=gar.roleId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gr.roleId
               $mid";
         $result = $this->query($query, $bindvars, $maxRecords, $offset);
         $cant = $this->getOne($query_cant, $bindvars);
@@ -142,12 +142,12 @@ class GUI extends Base
         // TODO: check http://tikiwiki.svn.sourceforge.net/viewvc/tikiwiki/branches/1.10/lib/Galaxia/src/GUI/GUI.php?annotate=5629
         while ($res = $result->fetchRow()) {
             // Get instances per activity
-            $res['instances']=$this->getOne(
+            $res['instances'] = $this->getOne(
                 "select count(distinct(gi.instanceId))
-              from ".self::tbl('instances')." gi
-                INNER JOIN ".self::tbl('instance_activities')."gia ON gi.instanceId=gia.instanceId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gia.activityId=gar.activityId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gar.roleId=gur.roleId
+              from " . self::tbl('instances') . " gi
+                INNER JOIN " . self::tbl('instance_activities') . "gia ON gi.instanceId=gia.instanceId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gia.activityId=gar.activityId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gar.roleId=gur.roleId
               where gia.activityId=? and ((gia.user=?) or (gia.user=? and gur.user=?))",
                 [$res['activityId'],$user,'*',$user]
             );
@@ -159,7 +159,7 @@ class GUI extends Base
         return $retval;
     }
 
-    public function gui_list_user_instances($user, $offset, $maxRecords, $sort_mode, $find, $where='')
+    public function gui_list_user_instances($user, $offset, $maxRecords, $sort_mode, $find, $where = '')
     {
         // FIXME: this doesn't support multiple sort criteria
         //$sort_mode = $this->convert_sortmode($sort_mode);
@@ -168,13 +168,13 @@ class GUI extends Base
         $mid = "where (gia.user=? or (gia.user=? and gur.user=?))";
         $bindvars = [$user,'*',$user];
         if ($find) {
-            $findesc = '%'.$find.'%';
+            $findesc = '%' . $find . '%';
             $mid .= " and ((ga.name like ?) or (ga.description like ?))";
             $bindvars[] = $findesc;
             $bindvars[] = $findesc;
         }
         if ($where) {
-            $mid.= " and ($where) ";
+            $mid .= " and ($where) ";
         }
 
         $query = "select distinct(gi.instanceId),
@@ -191,20 +191,20 @@ class GUI extends Base
                      ga.activityId,
                      gp.version as version,
                      gp.pId
-              from ".self::tbl('instances')." gi
-                INNER JOIN ".self::tbl('instance_activities')." gia ON gi.instanceId=gia.instanceId
-                INNER JOIN ".self::tbl('activities')." ga ON gia.activityId = ga.activityId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gia.activityId=gar.activityId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gar.roleId
-                INNER JOIN ".self::tbl('processes')." gp ON gp.pId=ga.pId
+              from " . self::tbl('instances') . " gi
+                INNER JOIN " . self::tbl('instance_activities') . " gia ON gi.instanceId=gia.instanceId
+                INNER JOIN " . self::tbl('activities') . " ga ON gia.activityId = ga.activityId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gia.activityId=gar.activityId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gar.roleId
+                INNER JOIN " . self::tbl('processes') . " gp ON gp.pId=ga.pId
               $mid order by $sort_mode";
         $query_cant = "select count(distinct(gi.instanceId))
-              from ".self::tbl('instances')." gi
-                INNER JOIN ".self::tbl('instance_activities')." gia ON gi.instanceId=gia.instanceId
-                INNER JOIN ".self::tbl('activities')." ga ON gia.activityId = ga.activityId
-                INNER JOIN ".self::tbl('activity_roles')." gar ON gia.activityId=gar.activityId
-                INNER JOIN ".self::tbl('user_roles')." gur ON gur.roleId=gar.roleId
-                INNER JOIN ".self::tbl('processes')."gp ON gp.pId=ga.pId
+              from " . self::tbl('instances') . " gi
+                INNER JOIN " . self::tbl('instance_activities') . " gia ON gi.instanceId=gia.instanceId
+                INNER JOIN " . self::tbl('activities') . " ga ON gia.activityId = ga.activityId
+                INNER JOIN " . self::tbl('activity_roles') . " gar ON gia.activityId=gar.activityId
+                INNER JOIN " . self::tbl('user_roles') . " gur ON gur.roleId=gar.roleId
+                INNER JOIN " . self::tbl('processes') . "gp ON gp.pId=ga.pId
               $mid";
         $result = $this->query($query, $bindvars, $maxRecords, $offset);
         $cant = $this->getOne($query_cant, $bindvars);
@@ -227,13 +227,13 @@ class GUI extends Base
         // Users can only abort instances they're currently running, or instances that they're the owner of
         if (!$this->getOne(
             "select count(*)
-                       from ".self::tbl('instance_activities')." gia, ".self::tbl('instances')." gi
+                       from " . self::tbl('instance_activities') . " gia, " . self::tbl('instances') . " gi
                        where gia.instanceId=gi.instanceId and activityId=? and gia.instanceId=? and (user=? or owner=?)",
             [$activityId,$instanceId,$user,$user]
         )) {
             return false;
         }
-        include_once(GALAXIA_LIBRARY.'/api/instance.php');
+        include_once(GALAXIA_LIBRARY . '/api/instance.php');
         $instance = new \Galaxia\Api\Instance($this->db);
         $instance->getInstance($instanceId);
         if (!empty($instance->instanceId)) {
@@ -251,13 +251,13 @@ class GUI extends Base
         // Users can only do exception handling for instances they're currently running, or instances that they're the owner of
         if (!$this->getOne(
             "select count(*)
-                       from ".self::tbl('instance_activities')."gia, ".self::tbl('instances')." gi
+                       from " . self::tbl('instance_activities') . "gia, " . self::tbl('instances') . " gi
                        where gia.instanceId=gi.instanceId and activityId=? and gia.instanceId=? and (user=? or owner=?)",
             [$activityId,$instanceId,$user,$user]
         )) {
             return false;
         }
-        $query = "update ".self::tbl('instances')."
+        $query = "update " . self::tbl('instances') . "
               set status=?
               where instanceId=?";
         $this->query($query, ['exception',$instanceId]);
@@ -271,13 +271,13 @@ class GUI extends Base
         // Users can only resume instances they're currently running, or instances that they're the owner of
         if (!$this->getOne(
             "select count(*)
-                       from ".self::tbl('instance_activities')." gia, ".self::tbl('instances')." gi
+                       from " . self::tbl('instance_activities') . " gia, " . self::tbl('instances') . " gi
                        where gia.instanceId=gi.instanceId and activityId=? and gia.instanceId=? and (user=? or owner=?)",
             [$activityId,$instanceId,$user,$user]
         )) {
             return false;
         }
-        $query = "update ".self::tbl('instances')."
+        $query = "update " . self::tbl('instances') . "
               set status=?
               where instanceId=?";
         $this->query($query, ['active',$instanceId]);
@@ -289,23 +289,23 @@ class GUI extends Base
         if (!
       ($this->getOne(
           "select count(*)
-                      from ".self::tbl('instance_activities')."
+                      from " . self::tbl('instance_activities') . "
                       where activityId=? and instanceId=? and user=?",
           [$activityId,$instanceId,$user]
       ))
       ||
       ($this->getOne(
           "select count(*)
-                      from ".self::tbl('instance_activities')." gia
-                      INNER JOIN ".self::tbl('activity_roles')."gar ON gar.activityId=gia.activityId
-                      INNER JOIN ".self::tbl('user_roles')." gur ON gar.roleId=gur.roleId
+                      from " . self::tbl('instance_activities') . " gia
+                      INNER JOIN " . self::tbl('activity_roles') . "gar ON gar.activityId=gia.activityId
+                      INNER JOIN " . self::tbl('user_roles') . " gur ON gar.roleId=gur.roleId
                       where gia.instanceId=? and gia.activityId=? and gia.user=? and gur.user=?",
           [$instanceId,$activityId,'*',$user]
       ))
         ) {
             return false;
         }
-        include_once(GALAXIA_LIBRARY.'/api/instance.php');
+        include_once(GALAXIA_LIBRARY . '/api/instance.php');
         $instance = new \Galaxia\Api\Instance($this->db);
         $instance->getInstance($instanceId);
         $instance->complete($activityId, true, false);
@@ -316,13 +316,13 @@ class GUI extends Base
     {
         if (!$this->getOne(
             "select count(*)
-                       from ".self::tbl('instance_activities')."
+                       from " . self::tbl('instance_activities') . "
                        where activityId=? and instanceId=? and user=?",
             [$activityId,$instanceId,$user]
         )) {
             return false;
         }
-        $query = "update ".self::tbl('instance_activities')."
+        $query = "update " . self::tbl('instance_activities') . "
               set user=?
               where instanceId=? and activityId=?";
         $this->query($query, ['*',$instanceId,$activityId]);
@@ -333,15 +333,15 @@ class GUI extends Base
         // Grab only if roles are ok
         if (!$this->getOne(
             "select count(*)
-                      from ".self::tbl('instance_activities')." gia
-                      INNER JOIN ".self::tbl('activity_roles')." gar ON gar.activityId=gia.activityId
-                      INNER JOIN ".self::tbl('user_roles')." gur ON gar.roleId=gur.roleId
+                      from " . self::tbl('instance_activities') . " gia
+                      INNER JOIN " . self::tbl('activity_roles') . " gar ON gar.activityId=gia.activityId
+                      INNER JOIN " . self::tbl('user_roles') . " gur ON gar.roleId=gur.roleId
                       where gia.instanceId=? and gia.activityId=? and gia.user=? and gur.user=?",
             [$instanceId,$activityId,'*',$user]
         )) {
             return false;
         }
-        $query = "update ".self::tbl('instance_activities')."
+        $query = "update " . self::tbl('instance_activities') . "
               set user=?
               where instanceId=? and activityId=?";
         $this->query($query, [$user,$instanceId,$activityId]);

@@ -35,7 +35,7 @@ function workflow_admin_processes()
     $maxRecords = xarModVars::get('workflow', 'items_per_page');
 
     // Adapted from tiki-g-admin_processes.php
-    include_once(GALAXIA_LIBRARY.'/processmanager.php');
+    include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
     // Initialize
     $data['proc_info'] = [
@@ -145,10 +145,10 @@ function workflow_admin_processes()
     $wheres = [];
     if (isset($_REQUEST['filter'])) {
         if ($_REQUEST['filter_name']) {
-            $wheres[]=" name='".$_REQUEST['filter_name']."'";
+            $wheres[] = " name='" . $_REQUEST['filter_name'] . "'";
         }
         if ($_REQUEST['filter_active']) {
-            $wheres[]=" isActive='" . $_REQUEST['filter_active']."'";
+            $wheres[] = " isActive='" . $_REQUEST['filter_active'] . "'";
         }
         $data['where'] = implode('and', $wheres);
     }
@@ -193,7 +193,7 @@ function workflow_admin_processes()
 
     $data['all_procs'] =  $items['data'];
 
-//    $data['pager'] = xarTplPager::getPager($data['offset'], $items['cant'], $url, $maxRecords);
+    //    $data['pager'] = xarTplPager::getPager($data['offset'], $items['cant'], $url, $maxRecords);
     $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
     $data['maxRecords'] = $maxRecords;
 
