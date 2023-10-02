@@ -56,7 +56,7 @@ class xarWorkflowHookMediator extends GenericObserver
         throw new Exception('Unknown HookSubject class: ' . $subject::class);
     }
 
-    public function callBack(ixarEventSubject $subject, string $subjectName)
+    public function callBack(ixarHookSubject $subject, string $subjectName)
     {
         if (empty(static::$callbackFunctions[$subjectName])) {
             return;
@@ -66,35 +66,35 @@ class xarWorkflowHookMediator extends GenericObserver
         }
     }
 
-    public function onItemCreate(ixarEventSubject $subject, string $subjectName)
+    public function onItemCreate(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         //$this->logEvent($subject, $subjectName);
         //$this->callBack($subject, $subjectName);
     }
 
-    public function onItemUpdate(ixarEventSubject $subject, string $subjectName)
+    public function onItemUpdate(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         //$this->logEvent($subject, $subjectName);
         //$this->callBack($subject, $subjectName);
     }
 
-    public function onItemDelete(ixarEventSubject $subject, string $subjectName)
+    public function onItemDelete(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         //$this->logEvent($subject, $subjectName);
         //$this->callBack($subject, $subjectName);
     }
 
-    public function onModuleRemove(ixarEventSubject $subject, string $subjectName)
+    public function onModuleRemove(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         //$this->logEvent($subject, $subjectName);
         //$this->callBack($subject, $subjectName);
     }
 
-    public function onItemDisplay(ixarEventSubject $subject, string $subjectName)
+    public function onItemDisplay(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         //$this->logEvent($subject, $subjectName);

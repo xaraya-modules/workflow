@@ -16,6 +16,7 @@ namespace Xaraya\Modules\Workflow\HookObservers;
 
 use HookObserver;
 use ixarEventSubject;
+use ixarHookSubject;
 use ApiHookSubject;
 use GuiHookSubject;
 use Exception;
@@ -39,6 +40,9 @@ class GenericObserver extends HookObserver
         parent::__construct($args);
     }
 
+    /**
+     * @param ixarHookSubject $subject
+     */
     public function notify(ixarEventSubject $subject)
     {
         // @checkme Xaraya only fires one event per subject type, so subjectName = subjectType here
@@ -60,7 +64,7 @@ class GenericObserver extends HookObserver
         throw new Exception('Unknown HookSubject class: ' . $subject::class);
     }
 
-    public function getGuiResult(ixarEventSubject $subject, string $subjectName)
+    public function getGuiResult(ixarHookSubject $subject, string $subjectName)
     {
         // get args from subject (array containing objectid, extrainfo)
         //$args = $subject->getArgs();
@@ -74,7 +78,7 @@ class GenericObserver extends HookObserver
         return xarMod::guiFunc($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
-    public function getApiResult(ixarEventSubject $subject, string $subjectName)
+    public function getApiResult(ixarHookSubject $subject, string $subjectName)
     {
         // get args from subject (array containing objectid, extrainfo)
         //$args = $subject->getArgs();
@@ -89,7 +93,7 @@ class GenericObserver extends HookObserver
         return xarMod::apiFunc($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
-    public function logEvent(ixarEventSubject $subject, string $subjectName)
+    public function logEvent(ixarHookSubject $subject, string $subjectName)
     {
         //$subjectName = $subject->getSubject();
         // get args from subject (array containing objectid, extrainfo)
