@@ -640,11 +640,12 @@ function workflow_deactivate()
 
 function workflow_create_new_hooks()
 {
-    xarHooks::registerObserver('ItemCreate', 'workflow');
-    xarHooks::registerObserver('ItemUpdate', 'workflow');
-    xarHooks::registerObserver('ItemDelete', 'workflow');
-    xarHooks::registerObserver('ModuleRemove', 'workflow');
-    xarHooks::registerObserver('ItemDisplay', 'workflow');
+    $namespace = 'Xaraya\Modules\Workflow\HookObservers';
+    xarHooks::registerObserver('ItemCreate', 'workflow', $namespace . '\ItemCreateObserver');
+    xarHooks::registerObserver('ItemUpdate', 'workflow', $namespace . '\ItemUpdateObserver');
+    xarHooks::registerObserver('ItemDelete', 'workflow', $namespace . '\ItemDeleteObserver');
+    xarHooks::registerObserver('ModuleRemove', 'workflow', $namespace . '\ModuleRemoveObserver');
+    xarHooks::registerObserver('ItemDisplay', 'workflow', $namespace . '\ItemDisplayObserver');
     return true;
 }
 
