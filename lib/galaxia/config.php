@@ -68,7 +68,7 @@ if (!isset($GLOBALS['dbGalaxia'])) {
         $GLOBALS['dbGalaxia'] = \xarDB::getConnection($dsn, $flags);
 
         // This means we're in the 2 series of Xaraya
-        define('GALAXIA_FETCHMODE', \ResultSet::FETCHMODE_ASSOC);
+        define('GALAXIA_FETCHMODE', \xarDB::FETCHMODE_ASSOC);
     } else {
         // Hope that everything works out :-)
     }
