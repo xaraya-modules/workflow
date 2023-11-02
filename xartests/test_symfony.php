@@ -14,7 +14,7 @@
 
 $baseDir = dirname(__DIR__);
 $baseDir = '/home/mikespub/xaraya-core';
-require $baseDir . '/vendor/autoload.php';
+require_once $baseDir . '/vendor/autoload.php';
 // initialize bootstrap
 sys::init();
 // initialize caching - delay until we need results

@@ -76,7 +76,7 @@ parameters:
 			path: lib/galaxia/compiler/switch_pre.php
 
 		-
-			message: "#^Access to constant FETCHMODE_ASSOC on an unknown class ResultSet\\.$#"
+			message: "#^Access to constant FETCHMODE_ASSOC on an unknown class xarDB\\.$#"
 			count: 1
 			path: lib/galaxia/config.php
 
