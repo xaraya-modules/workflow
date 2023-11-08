@@ -33,7 +33,7 @@ class xarWorkflowSubject implements xarWorkflowMarkingInterface
         sys::import('modules.dynamicdata.class.objects.base');
         // @checkme create fake objectName for module:itemtype if no object is available for now?
         if ($build && !$this->objectref instanceof DataObject && strpos($this->objectref->name, ':') === false) {
-            $objectref = DataObjectMaster::getObject(['name' => $this->objectref->name, 'itemid' => $this->objectref->itemid]);
+            $objectref = DataObjectFactory::getObject(['name' => $this->objectref->name, 'itemid' => $this->objectref->itemid]);
             if (!empty($objectref)) {
                 if (!empty($this->objectref->itemid)) {
                     $objectref->getItem();

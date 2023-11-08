@@ -20,7 +20,7 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.dynamicdata.class.objects.master');
+sys::import('modules.dynamicdata.class.objects.factory');
 sys::import('modules.dynamicdata.class.objects.loader');
 
 class xarWorkflowTracker extends xarObject
@@ -47,7 +47,7 @@ class xarWorkflowTracker extends xarObject
             // @checkme we want to get tracker items for all users here
             $userId = null;
         }
-        //$objectList = DataObjectMaster::getObjectList(['name' => static::$objectName]);
+        //$objectList = DataObjectFactory::getObjectList(['name' => static::$objectName]);
         //$items = $objectList->getItems(['where' => "user eq $userId"]);
         $filter = [];
         if (!empty($workflowName)) {
@@ -138,7 +138,7 @@ class xarWorkflowTracker extends xarObject
 
     public static function getTrackerItem(int $trackerId)
     {
-        $objectRef = DataObjectMaster::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
+        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
         $trackerId = $objectRef->getItem();
         // @checkme bypass getValue() for properties here
         $item = $objectRef->getFieldValues([], 1);
@@ -185,11 +185,11 @@ class xarWorkflowTracker extends xarObject
         ];
         $oldItem = static::getItem($workflowName, $objectName, $itemId, '', $userId, $trackerId);
         if (empty($oldItem)) {
-            $objectRef = DataObjectMaster::getObject(['name' => static::$objectName]);
+            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName]);
             $trackerId = $objectRef->createItem($newItem);
             xarLog::message("New tracker item $trackerId created");
         } elseif ($newItem['marking'] != $oldItem['marking']) {
-            $objectRef = DataObjectMaster::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
+            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
             $trackerId = $objectRef->updateItem($newItem);
             xarLog::message("Old tracker item $trackerId updated");
         } else {
@@ -210,7 +210,7 @@ class xarWorkflowTracker extends xarObject
             // nothing to do here
             $trackerId = 0;
         } else {
-            $objectRef = DataObjectMaster::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
+            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
             $trackerId = $objectRef->deleteItem();
             xarLog::message("Old tracker item $trackerId deleted");
         }

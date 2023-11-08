@@ -104,12 +104,12 @@ class xarWorkflowHandlers extends xarObject
 
     public static function guardCheckAccess($action, $roleId = null)
     {
-        sys::import('modules.dynamicdata.class.objects.master');
+        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName) use ($action, $roleId) {
             $subjectId = $event->getSubject()->getId();
             // @checkme assuming subjectId = objectName.itemId here
             [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
-            $objectRef = DataObjectMaster::getObject(['name' => $objectName, 'itemid' => $itemId]);
+            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
             if (empty($objectRef) || !$objectRef->checkAccess($action, $itemId, $userId)) {
                 $transitionName = $event->getTransition()->getName();
@@ -123,7 +123,7 @@ class xarWorkflowHandlers extends xarObject
 
     public static function doCheckAccess($objectName, $itemId, $action, $roleId = null)
     {
-        $objectRef = DataObjectMaster::getObject(['name' => $objectName, 'itemid' => $itemId]);
+        $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
         if (empty($objectRef)) {
             return false;
         }
@@ -146,7 +146,7 @@ class xarWorkflowHandlers extends xarObject
     // this would be where we check the actual status of the subject, rather than the places
     public static function guardPropertyHandler(array $propertyMapping, array $valueMapping = [])
     {
-        sys::import('modules.dynamicdata.class.objects.master');
+        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName) use ($propertyMapping, $valueMapping) {
             $transitionName = $event->getTransition()->getName();
             //$places = $event->getMarking()->getPlaces();
@@ -159,7 +159,7 @@ class xarWorkflowHandlers extends xarObject
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
                 throw new Exception($message);
             }
-            $objectRef = DataObjectMaster::getObject(['name' => $objectName, 'itemid' => $itemId]);
+            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
             if (empty($objectRef)) {
                 $message = "Unknown subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
@@ -188,7 +188,7 @@ class xarWorkflowHandlers extends xarObject
         if (!array_key_exists($objectName, $propertyMapping)) {
             return false;
         }
-        $objectRef = DataObjectMaster::getObject(['name' => $objectName, 'itemid' => $itemId]);
+        $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
         if (empty($objectRef)) {
             return false;
         }
@@ -209,7 +209,7 @@ class xarWorkflowHandlers extends xarObject
     // this would be where we update the actual status of the object, rather than the places of the subject
     public static function updatePropertyHandler(array $propertyMapping, array $valueMapping = [])
     {
-        sys::import('modules.dynamicdata.class.objects.master');
+        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName) use ($propertyMapping, $valueMapping) {
             //$workflowName = $event->getWorkflowName();
             //$subject = $event->getSubject();
@@ -228,7 +228,7 @@ class xarWorkflowHandlers extends xarObject
             foreach ($propertyMapping[$objectName] as $propertyName => $value) {
                 $newItem[$propertyName] = $value;
             }
-            $objectRef = DataObjectMaster::getObject(['name' => $objectName, 'itemid' => $itemId]);
+            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
             if (empty($objectRef)) {
                 $message = "Unknown subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);

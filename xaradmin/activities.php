@@ -12,7 +12,7 @@
  * @author Workflow Module Development Team
  */
 sys::import('modules.workflow.lib.galaxia.api');
-sys::import('modules.dynamicdata.class.objects.master');
+sys::import('modules.dynamicdata.class.objects.factory');
 /**
  * the activities administration function
  *
@@ -43,7 +43,7 @@ function workflow_admin_activities()
     }
 
     // Create a dataobject of this activity for displaying, saving etc.
-    $data['activity'] = DataObjectMaster::getObject(['name' => 'workflow_activities']);
+    $data['activity'] = DataObjectFactory::getObject(['name' => 'workflow_activities']);
     $data['activity']->properties['process_id']->value = $data['pid'];
 
     // Create a process object

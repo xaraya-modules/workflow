@@ -600,7 +600,7 @@ function workflow_upgrade($oldversion)
             // Code to upgrade from version 1.6.1 goes here
             sys::import('modules.dynamicdata.class.objects.base');
             $objectinfo = DataObjectDescriptor::getObjectID(['name' => 'workflow_activities']);
-            $object = DataObjectMaster::getObject(['name' => 'objects', 'itemid' => $objectinfo['objectid']]);
+            $object = DataObjectFactory::getObject(['name' => 'objects', 'itemid' => $objectinfo['objectid']]);
             $itemid = $object->getItem();
             if (empty($itemid) || $itemid != $objectinfo['objectid']) {
                 throw new Exception("Invalid item id $itemid");

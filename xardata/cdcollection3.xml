@@ -43,7 +43,7 @@ $data['isadmin'] = $isadmin;
 // Change the status of CDs if allowed
 if ($isadmin && isset($_REQUEST['status'])) {
     // get the CD item
-    $cd = DataObjectMaster::getObject(array('name' => 'cdcollection'));
+    $cd = DataObjectFactory::getObject(array('name' => 'cdcollection'));
     $itemid = $cd->getItem(array('itemid' => $_REQUEST['cdId']));
     // update the CD status and user
     if ($_REQUEST['status']=='available') {
@@ -56,7 +56,7 @@ if ($isadmin && isset($_REQUEST['status'])) {
 }
 
 // Get the CD list
-$cdlist = DataObjectMaster::getObjectList(array('name' => 'cdcollection'));
+$cdlist = DataObjectFactory::getObjectList(array('name' => 'cdcollection'));
 $items = $cdlist->getItems();
 foreach (array_keys($items) as $index) {
     // show the user name instead of the user id
@@ -133,7 +133,7 @@ if ($actinfo) {
       <code><![CDATA[<?php
 
 // Get the CDs with status 'available'
-$cdlist = DataObjectMaster::getObjectList(array('name' => 'cdcollection'));
+$cdlist = DataObjectFactory::getObjectList(array('name' => 'cdcollection'));
 $items = $cdlist->getItems(array('where' => "status eq 'available'"));
 
 // Put the CD list in a template variable
@@ -186,7 +186,7 @@ There are no CDs available at the moment...
       <code><![CDATA[<?php
 
 // Get the CD that was requested
-$cd = DataObjectMaster::getObject(array('name' => 'cdcollection'));
+$cd = DataObjectFactory::getObject(array('name' => 'cdcollection'));
 $cd->getItem(array('itemid' => $instance->get('cdId')));
 $cdinfo = $cd->getFieldValues();
 
@@ -257,7 +257,7 @@ if (!empty($sendto)) {
 }
 
 // Get the CD that was requested
-$cd = DataObjectMaster::getObject(array('name' => 'cdcollection'));
+$cd = DataObjectFactory::getObject(array('name' => 'cdcollection'));
 $cd->getItem(array('itemid' => $instance->get('cdId')));
 
 // Update the CD status and user
@@ -351,7 +351,7 @@ Note that we need to specify a transition from Approve CD Request here, even tho
 $data['escalated'] = $instance->get('escalated');
 
 // Get the CD that was requested
-$cd = DataObjectMaster::getObject(array('name' => 'cdcollection'));
+$cd = DataObjectFactory::getObject(array('name' => 'cdcollection'));
 $cd->getItem(array('itemid' => $instance->get('cdId')));
 $cdinfo = $cd->getFieldValues();
 
