@@ -65,12 +65,12 @@ function workflow_admin_instance()
                 . xarLocale::getFormattedTime('short', $ins_info['started']);
         $ins_info['started'] = $date;
     }
-    $tplData['ins_info'] = &  $ins_info;
+    $tplData['ins_info'] = &$ins_info;
 
     // Get the process from the instance and set information
     // @todo use the $process object itself
     $proc_info = $processManager->get_process($ins_info['pId']);
-    $tplData['proc_info'] = &  $proc_info;
+    $tplData['proc_info'] = &$proc_info;
 
     // Process activities
     $activities = $activityManager->list_activities($ins_info['pId'], 0, -1, 'flowNum_asc', '', '');
@@ -92,7 +92,7 @@ function workflow_admin_instance()
             $mapitems['data'][$index]['login'] = $role['uname'];
         }
     }
-    $tplData['users'] = &  $mapitems['data'];
+    $tplData['users'] = &$mapitems['data'];
 
     $props = $instanceManager->get_instance_properties($_REQUEST['iid']);
 
@@ -106,7 +106,7 @@ function workflow_admin_instance()
         $props = [];
     }
 
-    $tplData['props'] = &  $props;
+    $tplData['props'] = &$props;
 
     if (isset($_REQUEST['addprop'])) {
         $props[$_REQUEST['name']] = $_REQUEST['value'];
@@ -123,7 +123,7 @@ function workflow_admin_instance()
     }
 
     $acts = $instanceManager->get_instance_activities($_REQUEST['iid']);
-    $tplData['acts'] = &  $acts;
+    $tplData['acts'] = &$acts;
 
     $instance->getInstance($_REQUEST['iid']);
 
@@ -136,7 +136,7 @@ function workflow_admin_instance()
         }
     }
 
-    $tplData['__comments'] = &  $__comments;
+    $tplData['__comments'] = &$__comments;
 
     if (!isset($_REQUEST['__cid'])) {
         $_REQUEST['__cid'] = 0;

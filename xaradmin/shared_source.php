@@ -48,7 +48,7 @@ function workflow_admin_shared_source()
     $process = new \Galaxia\Api\Process($_REQUEST['pid']);
     $proc_info = $processManager->get_process($_REQUEST['pid']);
     $proc_info['graph'] = $process->getGraph();
-    $data['proc_info'] = & $proc_info;
+    $data['proc_info'] = &$proc_info;
 
     $procname = $process->getNormalizedName();
 

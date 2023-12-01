@@ -80,7 +80,7 @@ function workflow_admin_monitor_workitems()
         $offset = $_REQUEST["offset"];
     }
 
-    $data['offset'] = &  $offset;
+    $data['offset'] = &$offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -90,13 +90,13 @@ function workflow_admin_monitor_workitems()
 
     $data['find'] =  $find;
     $data['where'] =  $where;
-    $data['sort_mode'] = &  $sort_mode;
+    $data['sort_mode'] = &$sort_mode;
 
     $items = $processMonitor->monitor_list_workitems($offset - 1, $maxRecords, $sort_mode, $find, $where);
     $data['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $data['cant_pages'] = &  $cant_pages;
+    $data['cant_pages'] = &$cant_pages;
     $data['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -134,7 +134,7 @@ function workflow_admin_monitor_workitems()
         }
         $items['data'][$index]['user'] = xarUser::getVar('name', $info['user']);
     }
-    $data['items'] = &  $items["data"];
+    $data['items'] = &$items["data"];
 
     $allprocs = $processMonitor->monitor_list_all_processes('name_asc');
     $data['all_procs'] = [];
@@ -149,7 +149,7 @@ function workflow_admin_monitor_workitems()
     }
 
     $all_acts = $processMonitor->monitor_list_all_activities('name_desc', $where);
-    $data['all_acts'] = &  $all_acts;
+    $data['all_acts'] = &$all_acts;
 
     $sameurl_elements = [
     'offset',
@@ -165,7 +165,7 @@ function workflow_admin_monitor_workitems()
 ];
 
     $types = $processMonitor->monitor_list_activity_types();
-    $data['types'] = &  $types;
+    $data['types'] = &$types;
 
     $data['stats'] =  $processMonitor->monitor_stats();
 

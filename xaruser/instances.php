@@ -142,7 +142,7 @@ function workflow_user_instances()
         $offset = $_REQUEST["offset"];
     }
 
-    $data['offset'] = &  $offset;
+    $data['offset'] = &$offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -152,13 +152,13 @@ function workflow_user_instances()
 
     $data['find'] =  $find;
     $data['where'] =  $where;
-    $data['sort_mode'] = &  $sort_mode;
+    $data['sort_mode'] = &$sort_mode;
 
     $items = $GUI->gui_list_user_instances($user, $offset - 1, $maxRecords, $sort_mode, $find, $where);
     $data['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $data['cant_pages'] = &  $cant_pages;
+    $data['cant_pages'] = &$cant_pages;
     $data['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -173,10 +173,10 @@ function workflow_user_instances()
         $data['prev_offset'] =  -1;
     }
 
-    $data['items'] = &  $items["data"];
+    $data['items'] = &$items["data"];
 
     $processes = $GUI->gui_list_user_processes($user, 0, -1, 'procname_asc', '', '');
-    $data['all_procs'] = &  $processes['data'];
+    $data['all_procs'] = &$processes['data'];
 
     $all_statuses = [
     'aborted',

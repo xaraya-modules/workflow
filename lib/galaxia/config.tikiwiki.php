@@ -57,7 +57,7 @@ if (!defined('GRAPHVIZ_BIN_DIR')) {
 
 // Database handler
 if (!isset($dbGalaxia)) {
-    $dbGalaxia = & $dbTiki;
+    $dbGalaxia = &$dbTiki;
 }
 
 // Specify how to execute a non-interactive activity (for use in api/instance.php)

@@ -206,7 +206,7 @@ function workflow_admin_activities()
 
     // Get all the process roles
     $all_roles = $roleManager->list_roles($data['pid'], 0, -1, 'name_asc', '');
-    $data['all_roles'] = &  $all_roles['data'];
+    $data['all_roles'] = &$all_roles['data'];
 
     // Get activity roles
     $data['roles'] = [];
@@ -251,7 +251,7 @@ function workflow_admin_activities()
     } else {
         $transitions = $activityManager->get_process_transitions($data['pid'], '');
     }
-    $data['transitions'] = &  $transitions;
+    $data['transitions'] = &$transitions;
     $data['filter_tran_name'] = $_REQUEST['filter_tran_name'] ?? '';
 
     //Now information for activities in this process
@@ -292,7 +292,7 @@ function workflow_admin_activities()
             $activityManager->set_autorouting($data['pid'], $id, $ar);
         }
     }
-    $data['items'] = & $activities['data'];
+    $data['items'] = &$activities['data'];
 
     // Validate the process
     $valid = $activityManager->validate_process_activities($data['pid']);
@@ -315,8 +315,8 @@ function workflow_admin_activities()
     }
 
     // @todo migrate proc_info into $process
-    $data['proc_info'] = & $proc_info;
-    $data['process'] = & $process;
+    $data['proc_info'] = &$proc_info;
+    $data['process'] = &$process;
 
     $data['errors'] = [];
     if (!$valid) {

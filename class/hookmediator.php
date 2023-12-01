@@ -107,7 +107,7 @@ class xarWorkflowHookMediator extends GenericObserver
         //workflow.guard
         if (empty($workflowName)) {
             $subjectName = static::$subjectNamePrefix . $subjectType;
-            //workflow.[workflow name].guard
+        //workflow.[workflow name].guard
         } else {
             $subjectName = static::$subjectNamePrefix . $workflowName . '.' . $subjectType;
             //workflow.[workflow name].guard.[transition name]

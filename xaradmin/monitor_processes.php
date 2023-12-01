@@ -75,7 +75,7 @@ function workflow_admin_monitor_processes()
         $offset = $_REQUEST["offset"];
     }
 
-    $data['offset'] = &  $offset;
+    $data['offset'] = &$offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -85,13 +85,13 @@ function workflow_admin_monitor_processes()
 
     $data['find'] =  $find;
     $data['where'] =  $where;
-    $data['sort_mode'] = &  $sort_mode;
+    $data['sort_mode'] = &$sort_mode;
 
     $items = $processMonitor->monitor_list_processes($offset - 1, $maxRecords, $sort_mode, $find, $where);
     $data['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $data['cant_pages'] = &  $cant_pages;
+    $data['cant_pages'] = &$cant_pages;
     $data['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -106,7 +106,7 @@ function workflow_admin_monitor_processes()
         $data['prev_offset'] =  -1;
     }
 
-    $data['items'] = &  $items["data"];
+    $data['items'] = &$items["data"];
 
     $maxtime = 0;
     foreach ($items['data'] as $info) {

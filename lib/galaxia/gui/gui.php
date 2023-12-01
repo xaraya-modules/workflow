@@ -286,13 +286,12 @@ class GUI extends Base
 
     public function gui_send_instance($user, $activityId, $instanceId)
     {
-        if (!
-      ($this->getOne(
-          "select count(*)
+        if (!($this->getOne(
+            "select count(*)
                       from " . self::tbl('instance_activities') . "
                       where activityId=? and instanceId=? and user=?",
-          [$activityId,$instanceId,$user]
-      ))
+            [$activityId,$instanceId,$user]
+        ))
       ||
       ($this->getOne(
           "select count(*)

@@ -42,7 +42,7 @@ function workflow_admin_workitem()
     if (is_numeric($wi['user'])) {
         $wi['user'] = xarUser::getVar('name', $wi['user']);
     }
-    $tplData['wi'] = &  $wi;
+    $tplData['wi'] = &$wi;
 
     $tplData['stats'] =  $processMonitor->monitor_stats();
 

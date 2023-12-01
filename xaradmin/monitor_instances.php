@@ -118,7 +118,7 @@ function workflow_admin_monitor_instances()
         $offset = $_REQUEST["offset"];
     }
 
-    $tplData['offset'] = &  $offset;
+    $tplData['offset'] = &$offset;
 
     if (isset($_REQUEST["find"])) {
         $find = $_REQUEST["find"];
@@ -128,13 +128,13 @@ function workflow_admin_monitor_instances()
 
     $tplData['find'] =  $find;
     $tplData['where'] =  $where;
-    $tplData['sort_mode'] = &  $sort_mode;
+    $tplData['sort_mode'] = &$sort_mode;
 
     $items = $processMonitor->monitor_list_instances($offset - 1, $maxRecords, $sort_mode, $find, $where, []);
     $tplData['cant'] =  $items['cant'];
 
     $cant_pages = ceil($items["cant"] / $maxRecords);
-    $tplData['cant_pages'] = &  $cant_pages;
+    $tplData['cant_pages'] = &$cant_pages;
     $tplData['actual_page'] =  1 + (($offset - 1) / $maxRecords);
 
     if ($items["cant"] >= ($offset + $maxRecords)) {
@@ -180,10 +180,10 @@ function workflow_admin_monitor_instances()
             $items['data'][$index]['owner'] = xarUser::getVar('name', $info['owner']);
         }
     }
-    $tplData['items'] = &  $items["data"];
+    $tplData['items'] = &$items["data"];
 
     $all_procs = $processMonitor->monitor_list_all_processes('name_asc');
-    $tplData['all_procs'] = &  $all_procs;
+    $tplData['all_procs'] = &$all_procs;
 
     if (isset($_REQUEST['filter_process']) && $_REQUEST['filter_process']) {
         $where = ' pId=' . $_REQUEST['filter_process'];
@@ -192,10 +192,10 @@ function workflow_admin_monitor_instances()
     }
 
     $all_acts = $processMonitor->monitor_list_all_activities('name_desc', $where);
-    $tplData['all_acts'] = &  $all_acts;
+    $tplData['all_acts'] = &$all_acts;
 
     $types = $processMonitor->monitor_list_activity_types();
-    $tplData['types'] = &  $types;
+    $tplData['types'] = &$types;
 
     $tplData['stats'] =  $processMonitor->monitor_stats();
 

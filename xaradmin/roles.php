@@ -104,7 +104,7 @@ function workflow_admin_roles()
     $data['groups'] = xarMod::apiFunc('roles', 'user', 'getallgroups');
 
     $roles = $roleManager->list_roles($pid, 0, -1, 'name_asc', '');
-    $data['roles'] = &  $roles['data'];
+    $data['roles'] = &$roles['data'];
 
     if (isset($_REQUEST["delete_map"])) {
         foreach (array_keys($_REQUEST["map"])as $item) {
@@ -188,13 +188,13 @@ function workflow_admin_roles()
     if ($data['offset'] > 1) {
         $data['prev_offset'] =  $data['offset'] - $maxRecords;
     }
-    $data['mapitems'] = &  $mapitems["data"];
+    $data['mapitems'] = &$mapitems["data"];
 
     //MAPPING
     $data['sort_mode2'] =  $_REQUEST['sort_mode2'] ?? 'name_asc';
     // Get all the process roles
     $all_roles = $roleManager->list_roles($pid, 0, -1, $data['sort_mode2'], '');
-    $data['items'] = &  $all_roles['data'];
+    $data['items'] = &$all_roles['data'];
 
     $valid = $activityManager->validate_process_activities($pid);
     $proc_info['isValid'] = $valid ? 1 : 0;

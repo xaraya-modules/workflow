@@ -122,7 +122,7 @@ function workflow_user_run_activity()
         }
     }
 
-    $data['__comments'] = &  $__comments;
+    $data['__comments'] = &$__comments;
 
     if (!isset($_REQUEST['__cid'])) {
         $_REQUEST['__cid'] = 0;
@@ -180,7 +180,7 @@ function workflow_user_run_activity()
             xarController::redirect(xarController::URL('workflow', 'user', 'display'));
         }
         return true;
-        //    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
+    //    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
     } elseif (!isset($_REQUEST['auto']) && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
         //---------------------------------------------  Case of a completed standalone activity <-- REVIEW THIS
 
