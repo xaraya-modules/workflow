@@ -49,7 +49,7 @@ class xarWorkflowConfig extends xarObject
         $root = sys::root();
         // flat install supporting symlinks
         if (empty($root)) {
-            $vendor = realpath(dirname(realpath($_SERVER['SCRIPT_FILENAME'])) . '/../vendor');
+            $vendor = realpath(dirname(realpath(xarServer::getVar('SCRIPT_FILENAME'))) . '/../vendor');
         } elseif ($root == sys::web() && is_dir($root . '../vendor')) {
             $vendor = realpath($root . '../vendor');
         } else {
