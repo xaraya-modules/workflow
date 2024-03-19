@@ -16,10 +16,7 @@
  *
  * @author mikespub
  * @access public
- * @param no $ parameters
- * @return true on success or void on failure
- * @throws no exceptions
- * @todo nothing
+ * @return array|void true on success or void on failure
  */
 function workflow_admin_modifyconfig()
 {
@@ -58,8 +55,7 @@ function workflow_admin_modifyconfig()
                     'user',
                     'getitemtypes',
                     // don't throw an exception if this function doesn't exist
-                    [],
-                    0
+                    []
                 );
                 foreach ($value as $itemtype => $val) {
                     $create = xarModVars::get('workflow', "$modname.$itemtype.create");

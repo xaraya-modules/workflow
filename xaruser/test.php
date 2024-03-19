@@ -16,11 +16,9 @@
  *
  * @author mikespub
  * @access public
- * @param no $ parameters
- * @return array empty
- * @throws XAR_SYSTEM_EXCEPTION, 'NO_PERMISSION'
+ * @return array|void empty
  */
-function workflow_user_test(array $args = [])
+function workflow_user_test(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {
@@ -38,6 +36,7 @@ function workflow_user_test(array $args = [])
         $data['warning'] = nl2br($e->getMessage());
     }
     $data['config'] = xarWorkflowConfig::loadConfig();
+    $data['context'] = $context;
 
     xarVar::fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);

@@ -75,7 +75,7 @@ class GenericObserver extends HookObserver
         //return xarMod::guiFunc('workflow', 'user', 'display', []);
         //return 'workflow was here...';
         // See lib/xaraya/structures/events/guiobserver.php
-        return xarMod::guiFunc($this->module, $this->type, $this->func, $subject->getArgs());
+        return xarMod::guiFunc($this->module, $this->type, $this->func, $subject->getArgs(), $subject->getContext());
     }
 
     public function getApiResult(ixarHookSubject $subject, string $subjectName)
@@ -90,7 +90,7 @@ class GenericObserver extends HookObserver
         //$item = ['workflow' => 'was here...'];
         //return $extrainfo += $item;
         // See lib/xaraya/structures/events/apiobserver.php
-        return xarMod::apiFunc($this->module, $this->type, $this->func, $subject->getArgs());
+        return xarMod::apiFunc($this->module, $this->type, $this->func, $subject->getArgs(), $subject->getContext());
     }
 
     public function logEvent(ixarHookSubject $subject, string $subjectName)

@@ -12,7 +12,7 @@
  * @author Marc Lutolf <mfl@netspan.ch>
  */
 
-function workflow_user_displayhook($args)
+function workflow_user_displayhook(array $args = [], $context = null)
 {
     //return var_export($args, true);
     extract($args);

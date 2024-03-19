@@ -11,6 +11,7 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+use Galaxia\Api\Instance;
 /**
  * the run activity user function
  *
@@ -34,6 +35,7 @@ function workflow_user_run_activity()
     $user = xarUser::getVar('id');
     //--------------------------------------------- Load the instance class
     include(GALAXIA_LIBRARY . '/api.php');
+    /** @var Instance $instance */
 
     // TODO: evaluate why this is here
     global $__activity_completed;

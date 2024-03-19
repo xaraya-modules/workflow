@@ -30,9 +30,9 @@ class xarWorkflowDumper extends StateMachineGraphvizDumper
         return ucwords(str_replace('_', ' ', $name));
     }
 
-    protected function findPlaces(Definition $definition, Marking $marking = null): array
+    protected function findPlaces(Definition $definition, bool $withMetadata, ?Marking $marking = null): array
     {
-        $places = parent::findPlaces($definition, $marking);
+        $places = parent::findPlaces($definition, $withMetadata, $marking);
         foreach (array_keys($places) as $place) {
             $places[$place]['attributes']['href'] = $this->baseURL . '&place=' . $place;
             $places[$place]['attributes']['name'] = $this->formatName($place);

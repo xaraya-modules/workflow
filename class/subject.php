@@ -17,6 +17,7 @@ sys::import('modules.workflow.class.traits.transitiontrait');
 
 class xarWorkflowSubject implements xarWorkflowMarkingInterface
 {
+    // @todo verify use of Xaraya $context with Symfony Workflow component
     use xarWorkflowMarkingTrait;
 
     // @checkme create minimal objectref object for use in getId()

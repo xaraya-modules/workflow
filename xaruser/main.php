@@ -16,9 +16,7 @@
  *
  * @author mikespub
  * @access public
- * @param no $ parameters
- * @return array empty
- * @throws XAR_SYSTEM_EXCEPTION, 'NO_PERMISSION'
+ * @return array|void empty
  */
 function workflow_user_main()
 {

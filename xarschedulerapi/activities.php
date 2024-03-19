@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_schedulerapi_activities($args)
+function workflow_schedulerapi_activities(array $args = [], $context = null)
 {
     // We need to keep track of our own set of jobs here, because the scheduler won't know what
     // workflow activities to run when. Other modules will typically have 1 job that corresponds
@@ -78,7 +78,7 @@ function workflow_schedulerapi_activities($args)
             'user',
             'run_activity',
             ['activityId' => $job['activity']],
-            0
+            $context
         )) {
             $jobs[$id]['result'] = xarML('failed');
             $log .= xarML('failed');

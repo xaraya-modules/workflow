@@ -24,6 +24,7 @@ function workflow_admin_export_process()
         return;
     }
 
+    $data = [];
     if (!xarVar::fetch('pid', 'int', $data['processid'], 0, xarVar::NOT_REQUIRED)) {
         return;
     }

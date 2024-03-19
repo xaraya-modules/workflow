@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_userapi_run_transition($args)
+function workflow_userapi_run_transition(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {
@@ -64,6 +64,8 @@ function workflow_userapi_run_transition($args)
     //xarWorkflowProcess::setLogger(new xarWorkflowLogger());
 
     $workflow = xarWorkflowProcess::getProcess($workflowName);
+
+    // @todo verify use of Xaraya $context with Symfony Workflow component
     $subject = new xarWorkflowSubject($objectName, (int) $itemId);
     // @checkme since we don't verify the state of the original object here, this will be triggered for
     // each hook event even if it has already been hooked before. So we will get the same trackerId as

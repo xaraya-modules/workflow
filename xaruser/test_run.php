@@ -16,11 +16,9 @@
  *
  * @author mikespub
  * @access public
- * @param no $ parameters
- * @return array empty
- * @throws XAR_SYSTEM_EXCEPTION, 'NO_PERMISSION'
+ * @return array|string|void empty
  */
-function workflow_user_test_run(array $args = [])
+function workflow_user_test_run(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {
@@ -38,6 +36,7 @@ function workflow_user_test_run(array $args = [])
         $data['warning'] = nl2br($e->getMessage());
     }
     $data['config'] = xarWorkflowConfig::loadConfig();
+    $data['context'] = $context;
 
     xarVar::fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
@@ -114,6 +113,7 @@ function workflow_user_test_run(array $args = [])
 
     $workflow = xarWorkflowProcess::getProcess($data['workflow']);
 
+    // @todo verify use of Xaraya $context with Symfony Workflow component
     $subject = new xarWorkflowSubject($item['object'], (int) $item['item']);
     if (!empty($data['trackerId'])) {
         // set current marking

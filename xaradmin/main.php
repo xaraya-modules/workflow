@@ -16,9 +16,7 @@
  *
  * @author mikespub
  * @access public
- * @param no $ parameters
- * @return true on success or void on falure
- * @throws XAR_SYSTEM_EXCEPTION, 'NO_PERMISSION'
+ * @return bool|void true on success or void on falure
  */
 function workflow_admin_main()
 {

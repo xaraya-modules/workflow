@@ -14,7 +14,7 @@
 /**
  * Sample REST API call supported by this module (if any)
  *
- * @return array of info
+ * @return array|string of info
  */
 function workflow_restapi_test($args = [])
 {

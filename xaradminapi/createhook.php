@@ -19,7 +19,7 @@
  * @return array extrainfo array
  * @raise BAD_PARAM, NO_PERMISSION, DATABASE_ERROR
  */
-function workflow_adminapi_createhook($args)
+function workflow_adminapi_createhook(array $args = [], $context = null)
 {
     extract($args);
 
@@ -46,18 +46,22 @@ function workflow_adminapi_createhook($args)
     // Symfony Workflow transition
     if (!is_numeric($activityId) && strpos($activityId, '/') !== false) {
         [$workflowName, $transitionName] = explode('/', $activityId);
-        if (!xarMod::apiFunc('workflow', 'user', 'run_transition', [
-                'workflow' => $workflowName,
-                'subjectId' => null,
-                'transition' => $transitionName,
-                // extra parameters from hook functions
-                'hooktype' => 'ItemCreate',
-                'module' => $modname,
-                'itemtype' => $itemtype,
-                'itemid' => $objectid,
-                'module_id' => $modid,
-                'extrainfo' => $extrainfo,
-            ])) {
+        if (!xarMod::apiFunc(
+            'workflow',
+            'user',
+            'run_transition',
+            ['workflow' => $workflowName,
+            'subjectId' => null,
+            'transition' => $transitionName,
+            // extra parameters from hook functions
+            'hooktype' => 'ItemCreate',
+            'module' => $modname,
+            'itemtype' => $itemtype,
+            'itemid' => $objectid,
+            'module_id' => $modid,
+            'extrainfo' => $extrainfo, ],
+            $context
+        )) {
             return $extrainfo;
         }
         return $extrainfo;
@@ -69,11 +73,12 @@ function workflow_adminapi_createhook($args)
         'user',
         'run_activity',
         ['activityId' => $activityId,
-                             'auto' => 1,
-                             // standard arguments for use in activity code
-                             'module' => $modname,
-                             'itemtype' => $itemtype,
-                             'itemid' => $objectid, ]
+        'auto' => 1,
+        // standard arguments for use in activity code
+        'module' => $modname,
+        'itemtype' => $itemtype,
+        'itemid' => $objectid, ],
+        $context
     )) {
         return $extrainfo;
     }
