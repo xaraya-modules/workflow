@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-  <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available -->
+  <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
     <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>
     <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
@@ -12,7 +12,7 @@
   <xar:if condition="empty($workflow) and !empty($item)">
     <xar:set name="trackerId">$item['id']</xar:set>
     <xar:set name="workflow">$item['workflow']</xar:set>
-    <xar:set name="user">$item['user']</xar:set>
+    <xar:set name="userId">$item['user']</xar:set>
     <xar:set name="place">$item['marking']</xar:set>
     <xar:set name="updated">$item['updated']</xar:set>
     <xar:set name="subjectId">implode('.', [$item['object'], (string) $item['item']])</xar:set>

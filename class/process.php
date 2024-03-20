@@ -84,6 +84,10 @@ class xarWorkflowProcess extends xarObject
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
                         $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardCheckAccess($callbackFuncs[$eventType]));
                         break;
+                    case 'property':
+                        $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
+                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardPropertyHandler($callbackFuncs[$eventType]));
+                        break;
                     case 'update':
                         $eventName = $subscriber->addSubscribedEvent('completed', $workflowName, $transitionName);
                         $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::updatePropertyHandler($callbackFuncs[$eventType]));
@@ -123,7 +127,7 @@ class xarWorkflowProcess extends xarObject
         // this is the list of all possible events we might be interested in
         //$eventTypes = ['guard', 'leave', 'transition', 'enter', 'entered', 'completed', 'announce'];
         // add some predefined callbacks here, e.g. 'access' => 'update' means guardCheckAccess('update')
-        $checkTypes = ['guard', 'completed', 'admin', 'roles', 'access', 'update', 'delete'];
+        $checkTypes = ['guard', 'completed', 'admin', 'roles', 'access', 'property', 'update', 'delete'];
         foreach ($info['transitions'] as $transitionName => $fromto) {
             foreach ($checkTypes as $checkType) {
                 if (!empty($fromto[$checkType])) {

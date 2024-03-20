@@ -49,11 +49,8 @@ class xarWorkflowHistory extends xarWorkflowTracker
         return array_values($items);
     }
 
-    public static function addItem(int $trackerId, string $workflowName, string $objectName, int $itemId, string $transition, string $marking = '', string $context = '', int $userId = 0)
+    public static function addItem(int $trackerId, string $workflowName, string $objectName, int $itemId, string $transition, string $marking, string $context, int $userId)
     {
-        if (empty($userId)) {
-            $userId = xarSession::getVar('role_id') ?? 0;
-        }
         $newItem = [
             'tracker_id' => $trackerId,
             'workflow' => $workflowName,

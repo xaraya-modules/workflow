@@ -52,7 +52,7 @@
           <xar:else/>
             <td>#xarWorkflowConfig::formatName($to)#</td>
           </xar:if>
-          <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['guard'])">
+          <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['property']) or !empty($info['guard'])">
             <td>#$guarded#</td>
           <xar:else/>
             <td>&#160;</td>
@@ -132,7 +132,7 @@
         <xar:foreach in="$info['from']" value="$from">
           <xar:set name="dummy">$fromto[$from] ??= []</xar:set>
           <xar:set name="dummy">$fromto[$from][$to] = $name</xar:set>
-          <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['guard'])">
+          <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['property']) or !empty($info['guard'])">
             <xar:set name="dummy">$fromto[$from][$to] = $guarded . ' ' . $fromto[$from][$to]</xar:set>
           </xar:if>
           <xar:if condition="!empty($info['update']) or !empty($info['completed']) or (is_array($info['to']) and count($info['to']) gt 1)">
@@ -145,7 +145,7 @@
       <xar:else/>
         <xar:set name="dummy">$fromto[$info['from']] ??= []</xar:set>
         <xar:set name="dummy">$fromto[$info['from']][$to] = $name</xar:set>
-        <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['guard'])">
+        <xar:if condition="!empty($info['admin']) or !empty($info['roles']) or !empty($info['access']) or !empty($info['property']) or !empty($info['guard'])">
           <xar:set name="dummy">$fromto[$info['from']][$to] = $guarded . ' ' . $fromto[$info['from']][$to]</xar:set>
         </xar:if>
         <xar:if condition="!empty($info['update']) or !empty($info['completed']) or (is_array($info['to']) and count($info['to']) gt 1)">

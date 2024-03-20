@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-  <!-- this relies on $workflow, $subjectId and $trackerId if available -->
+  <!-- this relies on $workflow, $subjectId, $userId and $trackerId if available -->
   <xar:set name="dummy">sys::import('modules.workflow.class.history')</xar:set>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => '-updated']</xar:set>
   <xar:set name="dummy">xarWorkflowHistory::setPaging($paging)</xar:set>
@@ -10,9 +10,9 @@
   <xar:if condition="!empty($trackerId)">
     <xar:set name="items">xarWorkflowHistory::getTrackerItems($trackerId)</xar:set>
   <xar:elseif condition="!empty($subjectId)"/>
-    <xar:set name="items">xarWorkflowHistory::getSubjectItems($subjectId)</xar:set>
+    <xar:set name="items">xarWorkflowHistory::getSubjectItems($subjectId, $workflow, $userId)</xar:set>
   <xar:elseif condition="!empty($workflow)"/>
-    <xar:set name="items">xarWorkflowHistory::getWorkflowItems($workflow)</xar:set>
+    <xar:set name="items">xarWorkflowHistory::getWorkflowItems($workflow, $userId)</xar:set>
   <xar:else/>
     <xar:set name="items">[]</xar:set>
   </xar:if>

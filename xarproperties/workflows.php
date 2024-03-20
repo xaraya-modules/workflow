@@ -16,6 +16,7 @@ namespace Xaraya\Modules\Workflow;
 
 use TextAreaProperty;
 use ObjectDescriptor;
+use xarSession;
 use xarVar;
 use sys;
 // @checkme remove once moved to the same namespace
@@ -95,6 +96,7 @@ class WorkflowsProperty extends TextAreaProperty implements xarWorkflowMarkingIn
         if (!empty($data['preview'])) {
             return xarML('Preview');
         }
+        $data['userId'] = $this->objectref->getContext()?->getUserId() ?? xarSession::getVar('role_id');
         $data['subjectId'] = $this->getId();
         // pass along objectref for xarWorkflowTracker::getItems()
         $data['objectref'] = $this->objectref;

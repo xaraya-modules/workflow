@@ -9,6 +9,9 @@
     <xar:if condition="empty($layout)">
         <xar:set name="layout">'default'</xar:set>
     </xar:if>
+    <xar:if condition="empty($userId)">
+        <xar:set name="userId">$object->getContext()?->getUserId() ?? xarSession::getVar('role_id')</xar:set>
+    </xar:if>
     <xar:if condition="$layout eq 'default'">
         <!-- xar:set name="dummy">xarTpl::setPageTemplateName('user')</xar:set -->
         <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>

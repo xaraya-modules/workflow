@@ -14,33 +14,57 @@
 
 class xarWorkflowHandlers extends xarObject
 {
+    public static function getObjectRef($subject, $eventName)
+    {
+        if (method_exists($subject, 'getObject')) {
+            return $subject->getObject();
+        }
+        $subjectId = $subject->getId();
+        // @checkme assuming subjectId = objectName.itemId here
+        [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
+        $context = null;
+        if (method_exists($subject, 'getContext')) {
+            $context = $subject->getContext();
+        }
+        $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId], $context);
+        if (empty($objectRef)) {
+            $message = "Unknown subject $subjectId";
+            xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
+            throw new Exception($message);
+        }
+        return $objectRef;
+    }
+
     // this is where we add the successful transition to a new marking to the tracker
-    public static function setTrackerItem(array $deleteTracker = [])
+    public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
     {
         sys::import('modules.workflow.class.tracker');
         sys::import('modules.workflow.class.history');
-        $handler = function ($event, $eventName) use ($deleteTracker) {
+        $handler = function ($event, $eventName) use ($deleteTracker, $roleId) {
             $workflowName = $event->getWorkflowName();
             $subject = $event->getSubject();
             // @checkme assuming subjectId = objectName.itemId here
             [$objectName, $itemId] = explode('.', (string) $subject->getId() . '.0');
+            // @todo use $context if available?
+            //$context = $event->getSubject()->getContext();
+            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
             $transitionName = $event->getTransition()->getName();
             // @checkme delete tracker at the end of this transition - pass along eventName to completed
             $deleteEventName = "workflow.$workflowName.delete.$transitionName";
             if (!empty($deleteTracker) && !empty($deleteTracker[$deleteEventName])) {
-                $trackerId = xarWorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking());
+                $trackerId = xarWorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
             } else {
-                $trackerId = xarWorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking());
+                $trackerId = xarWorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
             }
             $marking = implode(',', array_keys($event->getMarking()->getPlaces()));
             $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            $historyId = xarWorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context);
+            $historyId = xarWorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
         };
         return $handler;
     }
 
     // here you can specify callback functions as transition blockers - expression language is not supported
-    public static function guardCheckAdmin($admin, $roleId = null)
+    public static function guardCheckAdmin(bool $admin, $roleId = null)
     {
         if (empty($admin)) {
             return;
@@ -51,21 +75,23 @@ class xarWorkflowHandlers extends xarObject
     }
 
     // with the corresponding actual function to check yourself e.g. in code or templates
-    public static function doCheckAdmin($admin, $roleId = null)
+    public static function doCheckAdmin(bool $admin, int $userId)
     {
         if (empty($admin)) {
             return true;
         }
         $adminGroups = ['administrators', 'sitemanagers'];
-        return static::doCheckRoles($adminGroups, $roleId);
+        return static::doCheckRoles($adminGroups, $userId);
     }
 
-    public static function guardCheckRoles($groupUserNames, $roleId = null)
+    public static function guardCheckRoles(array $groupUserNames, $roleId = null)
     {
         sys::import('modules.roles.class.roles');
         $parentRoleIds = static::getGroupRoleIds($groupUserNames);
         // @checkme we only look up the direct parents here
         $handler = function ($event, $eventName) use ($parentRoleIds, $roleId) {
+            // @todo use $context if available?
+            //$context = $event->getSubject()->getContext();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
             $parents = xarCache::getParents($userId);
             $intersect = array_intersect($parents, $parentRoleIds);
@@ -79,16 +105,15 @@ class xarWorkflowHandlers extends xarObject
         return $handler;
     }
 
-    public static function doCheckRoles($groupUserNames, $roleId = null)
+    public static function doCheckRoles(array $groupUserNames, int $userId)
     {
         $parentRoleIds = static::getGroupRoleIds($groupUserNames);
-        $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
         $parents = xarCache::getParents($userId);
         $intersect = array_intersect($parents, $parentRoleIds);
         return !empty($intersect);
     }
 
-    public static function getGroupRoleIds($groupUserNames)
+    public static function getGroupRoleIds(array $groupUserNames)
     {
         $groupRoleIds = [];
         foreach ($groupUserNames as $uname) {
@@ -102,16 +127,15 @@ class xarWorkflowHandlers extends xarObject
         return $groupRoleIds;
     }
 
-    public static function guardCheckAccess($action, $roleId = null)
+    public static function guardCheckAccess(string $action, $roleId = null)
     {
         sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName) use ($action, $roleId) {
-            $subjectId = $event->getSubject()->getId();
-            // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
-            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
+            $objectRef = static::getObjectRef($event->getSubject(), $eventName);
+            // @todo use $context if available?
+            //$context = $event->getSubject()->getContext();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
-            if (empty($objectRef) || !$objectRef->checkAccess($action, $itemId, $userId)) {
+            if (empty($objectRef) || !$objectRef->checkAccess($action, $objectRef->itemid, $userId)) {
                 $transitionName = $event->getTransition()->getName();
                 $message = "Sorry, you do not have '$action' access to this subject";
                 $event->setBlocked(true, $message);
@@ -121,13 +145,18 @@ class xarWorkflowHandlers extends xarObject
         return $handler;
     }
 
-    public static function doCheckAccess($objectName, $itemId, $action, $roleId = null)
+    public static function doCheckAccess(string|DataObject $objectName, int|null $itemId, string $action, int $userId)
     {
-        $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
+        if (is_object($objectName)) {
+            $objectRef = $objectName;
+            $objectName = $objectRef->name;
+            $itemId ??= $objectRef->itemid;
+        } else {
+            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
+        }
         if (empty($objectRef)) {
             return false;
         }
-        $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
         return $objectRef->checkAccess($action, $itemId, $userId);
     }
 
@@ -152,20 +181,22 @@ class xarWorkflowHandlers extends xarObject
             //$places = $event->getMarking()->getPlaces();
             //$subject = $event->getSubject();
             $subjectId = $event->getSubject()->getId();
-            // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
-            if (!array_key_exists($objectName, $propertyMapping)) {
-                $message = "Unexpected subject $subjectId";
-                xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
-                throw new Exception($message);
-            }
-            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
+            $objectRef = static::getObjectRef($event->getSubject(), $eventName);
             if (empty($objectRef)) {
                 $message = "Unknown subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
                 throw new Exception($message);
             }
-            $id = $objectRef->getItem();
+            // @checkme assuming subjectId = objectName.itemId here
+            [$objectName, $itemId] = explode('.', $subjectId . '.0');
+            if (!array_key_exists($objectName, $propertyMapping)) {
+                $message = "Unexpected subject $subjectId";
+                xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
+                throw new Exception($message);
+            }
+            if (!empty($itemId)) {
+                $id = $objectRef->getItem(['itemid' => $itemId]);
+            }
             foreach ($propertyMapping[$objectName] as $propertyName => $match) {
                 if (!array_key_exists($propertyName, $objectRef->properties)) {
                     $message = "Sorry, this subject does not have property '$propertyName'";
@@ -183,16 +214,24 @@ class xarWorkflowHandlers extends xarObject
         return $handler;
     }
 
-    public static function doCheckProperty($objectName, $itemId, $propertyMapping)
+    public static function doCheckProperty(string|DataObject $objectName, int|null $itemId, array $propertyMapping)
     {
+        if (is_object($objectName)) {
+            $objectRef = $objectName;
+            $objectName = $objectRef->name;
+            $itemId ??= $objectRef->itemid;
+        } else {
+            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
+        }
         if (!array_key_exists($objectName, $propertyMapping)) {
             return false;
         }
-        $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
         if (empty($objectRef)) {
             return false;
         }
-        $id = $objectRef->getItem();
+        if (!empty($itemId)) {
+            $id = $objectRef->getItem(['itemid' => $itemId]);
+        }
         foreach ($propertyMapping[$objectName] as $propertyName => $match) {
             if (!array_key_exists($propertyName, $objectRef->properties)) {
                 return false;
@@ -217,22 +256,25 @@ class xarWorkflowHandlers extends xarObject
             //$marking = $event->getMarking();
             //$metadata = $event->getMetadata();
             $subjectId = $event->getSubject()->getId();
+            $objectRef = static::getObjectRef($event->getSubject(), $eventName);
+            if (empty($objectRef)) {
+                $message = "Unknown subject $subjectId";
+                xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
+                throw new Exception($message);
+            }
             // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
+            [$objectName, $itemId] = explode('.', $subjectId . '.0');
             if (!array_key_exists($objectName, $propertyMapping)) {
                 $message = "Unexpected subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
                 throw new Exception($message);
             }
+            if (!empty($itemId)) {
+                $id = $objectRef->getItem(['itemid' => $itemId]);
+            }
             $newItem = [];
             foreach ($propertyMapping[$objectName] as $propertyName => $value) {
                 $newItem[$propertyName] = $value;
-            }
-            $objectRef = DataObjectFactory::getObject(['name' => $objectName, 'itemid' => $itemId]);
-            if (empty($objectRef)) {
-                $message = "Unknown subject $subjectId";
-                xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
-                throw new Exception($message);
             }
             $id = $objectRef->updateItem($newItem);
         };

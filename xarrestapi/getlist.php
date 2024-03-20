@@ -22,7 +22,7 @@
  *
  * @return array of info
  */
-function workflow_restapi_getlist($args = [])
+function workflow_restapi_getlist($args = [], $context = null)
 {
     $apilist = [];
     // $func name as used in xarMod::apiFunc($module, $type, $func, $args)

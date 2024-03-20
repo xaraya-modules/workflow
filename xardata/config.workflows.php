@@ -24,6 +24,7 @@ $callbackFuncs = [
 // return configuration of the workflow(s)
 return [
     'hook_sample' => [
+        'name' => 'hook_sample',
         'label' => 'Hook Sample',
         'description' => "Experiment with hook events triggering workflow transitions",
         'type' => 'state_machine',
@@ -69,6 +70,7 @@ return [
         ],
     ],
     'cd_loans' => [
+        'name' => 'cd_loans',
         'label' => 'Music CD Loans',
         'description' => "Borrow CD's, browse CDs, etc...",
         //'class' => null,  // something other than Workflow or StateMachine - not supported here
@@ -106,8 +108,9 @@ return [
                 'from' => ['available'],
                 'to' => ['requested'],
                 // here you can specify callback functions as transition blockers - expression language is not supported
-                'guard' => $callbackFuncs['cd_loans.guard.request'],
+                //'guard' => $callbackFuncs['cd_loans.guard.request'],
                 // or you can check permission to run the transition in predefined ways
+                'property' => ['cdcollection' => ['status' => 'available']],  // check if this property of the object has that value
                 //'admin' => false,                               // true or false userId belongs to admin role groups
                 //'roles' => ['administrators', 'sitemanagers'],  // parent role groups the userId can belong to
                 'access' => 'update',                             // $dataobject->checkAccess()

@@ -42,7 +42,7 @@ class xarWorkflowTracker extends xarObject
         // we want to filter on any combination of elements to get tracker items here
         if (empty($userId)) {
             // we want to get tracker items for current user here
-            $userId = xarSession::getVar('role_id') ?? 0;
+            //$userId = xarSession::getVar('role_id') ?? 0;
         } elseif ($userId < 0) {
             // @checkme we want to get tracker items for all users here
             $userId = null;
@@ -86,6 +86,7 @@ class xarWorkflowTracker extends xarObject
             $params += static::$paging;
         }
         $loader = new DataObjectLoader(static::$objectName, static::$fieldList);
+        //$loader->setContext($context);
         $items = $loader->query($params);
         // @checkme if we didn't ask for a count in paging, this will return false
         static::$count = $loader->count;
@@ -116,17 +117,17 @@ class xarWorkflowTracker extends xarObject
         return [ static::getTrackerItem($trackerIds) ];
     }
 
-    public static function getSubjectItems(string $subjectId, string $workflowName = '')
+    public static function getSubjectItems(string $subjectId, string $workflowName, int $userId)
     {
         // get items for a particular subjectId = objectName.itemId or objectName for all DD object items
         [$objectName, $itemId] = explode('.', $subjectId . '.0');
-        return static::getItems($workflowName, $objectName, (int) $itemId);
+        return static::getItems($workflowName, $objectName, (int) $itemId, '', $userId);
     }
 
-    public static function getWorkflowItems(string $workflowName)
+    public static function getWorkflowItems(string $workflowName, int $userId)
     {
         // get items for a particular workflow
-        return static::getItems($workflowName);
+        return static::getItems($workflowName, '', 0, '', $userId);
     }
 
     public static function getObjectValues(string $objectName, array $itemIds, array $fieldList = [])
@@ -148,16 +149,13 @@ class xarWorkflowTracker extends xarObject
         return $item;
     }
 
-    public static function getItem(string $workflowName, string $objectName, int $itemId, string $marking = '', int $userId = 0, int $trackerId = 0)
+    public static function getItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
     {
         // we have the internal trackerId of the item that we want to get/update/delete for some reason
         if (!empty($trackerId)) {
             return static::getTrackerItem($trackerId);
         }
         // we want to get the tracker for a particular workflow, object item and user here, regardless of the marking
-        if (empty($userId)) {
-            $userId = xarSession::getVar('role_id') ?? 0;
-        }
         $oldItems = static::getItems($workflowName, $objectName, $itemId, '', $userId);
         if (empty($oldItems)) {
             // nothing to do here
@@ -170,11 +168,8 @@ class xarWorkflowTracker extends xarObject
         return $oldItem;
     }
 
-    public static function setItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId = 0, int $trackerId = 0)
+    public static function setItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
     {
-        if (empty($userId)) {
-            $userId = xarSession::getVar('role_id') ?? 0;
-        }
         $newItem = [
             'workflow' => $workflowName,
             'object' => $objectName,
@@ -200,11 +195,8 @@ class xarWorkflowTracker extends xarObject
         return $trackerId;
     }
 
-    public static function deleteItem(string $workflowName, string $objectName, int $itemId, string $marking = '', int $userId = 0, int $trackerId = 0)
+    public static function deleteItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
     {
-        if (empty($userId)) {
-            $userId = xarSession::getVar('role_id') ?? 0;
-        }
         $oldItem = static::getItem($workflowName, $objectName, $itemId, '', $userId, $trackerId);
         if (empty($oldItem)) {
             // nothing to do here

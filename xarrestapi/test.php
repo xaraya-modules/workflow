@@ -16,9 +16,10 @@
  *
  * @return array|string of info
  */
-function workflow_restapi_test($args = [])
+function workflow_restapi_test($args = [], $context = null)
 {
     xarLog::init();
+    $userId = $context?->getUserId() ?? xarSession::getVar('role_id');
     // @checkme pass all args from handler here?
     //extract($args);
     $result = $args;
@@ -39,6 +40,8 @@ function workflow_restapi_test($args = [])
         case 'process':
             sys::import('modules.workflow.class.process');
             $workflowName = $args['workflow'] ?? '';
+            $subjectId = $args['subjectId'] ?? '';
+            $transition = $args['transition'] ?? '';
             $workflow = xarWorkflowProcess::getProcess($workflowName);
             $result = xarWorkflowProcess::showProcess($workflow);
             break;
@@ -63,9 +66,9 @@ function workflow_restapi_test($args = [])
             if (!empty($trackerId)) {
                 $result = xarWorkflowTracker::getTrackerItem($trackerId);
             } elseif (!empty($subjectId)) {
-                $result = xarWorkflowTracker::getSubjectItems($subjectId, $workflowName);
+                $result = xarWorkflowTracker::getSubjectItems($subjectId, $workflowName, $userId);
             } else {
-                $result = xarWorkflowTracker::getWorkflowItems($workflowName);
+                $result = xarWorkflowTracker::getWorkflowItems($workflowName, $userId);
             }
             //$result['paging'] = $paging;
             //$result['paging']['count'] = xarWorkflowTracker::getCount();
@@ -91,9 +94,9 @@ function workflow_restapi_test($args = [])
             if (!empty($trackerId)) {
                 $result = xarWorkflowHistory::getTrackerItems($trackerId);
             } elseif (!empty($subjectId)) {
-                $result = xarWorkflowHistory::getSubjectItems($subjectId, $workflowName);
+                $result = xarWorkflowHistory::getSubjectItems($subjectId, $workflowName, $userId);
             } else {
-                $result = xarWorkflowHistory::getWorkflowItems($workflowName);
+                $result = xarWorkflowHistory::getWorkflowItems($workflowName, $userId);
             }
             //$result['paging'] = $paging;
             //$result['paging']['count'] = xarWorkflowHistory::getCount();
@@ -103,6 +106,7 @@ function workflow_restapi_test($args = [])
             $objectName = $args['object'] ?? '';
             $itemId = $args['item'] ?? 0;
             $subject = new xarWorkflowSubject($objectName, (int) $itemId);
+            $subject->setContext($context);
             $result = [
                 'marking' => $subject->getMarking(),
                 'context' => $subject->getContext(),

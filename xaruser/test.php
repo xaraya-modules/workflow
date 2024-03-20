@@ -37,11 +37,20 @@ function workflow_user_test(array $args = [], $context = null)
     }
     $data['config'] = xarWorkflowConfig::loadConfig();
     $data['context'] = $context;
+    $data['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
 
     xarVar::fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('subjectId', 'isset', $data['subjectId'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('place', 'isset', $data['place'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
+
+    if (!empty($data['subjectId'])) {
+        [$objectName, $itemId] = explode('.', $data['subjectId'] . '.0');
+        $subject = new xarWorkflowSubject($objectName, (int) $itemId);
+        $subject->setContext($context);
+        $data['objectref'] = $subject->getObject();
+    }
+
     return $data;
 }

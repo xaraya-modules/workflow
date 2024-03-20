@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-    <!-- this relies on $objectref, $workflows, $subjectId, $marking and $context if available -->
+    <!-- this relies on $objectref, $workflows, $subjectId, $userId, $marking and $context if available -->
     <xar:if condition="!empty($layout) and $layout eq 'preformat'">
         <pre>
         <xar:var name="value"/>
@@ -12,13 +12,13 @@
         <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
         <xar:set name="dummy">sys::import('modules.workflow.class.tracker')</xar:set>
         <!-- @todo decide whether to show items for all users or only the current one -->
-        <xar:set name="items">xarWorkflowTracker::getItems('', $objectref->name, $objectref->itemid)</xar:set>
+        <xar:set name="items">xarWorkflowTracker::getItems('', $objectref->name, $objectref->itemid, '', $userId)</xar:set>
         <div>
         <xar:if condition="empty($items)">
             <!-- @checkme for each workflow for this subject, set to initial place with empty trackerId -->
             <xar:foreach in="$workflows" key="$workflow" value="$info">
                 <xar:set name="place">$config[$workflow]['initial_marking'][0]</xar:set>
-                <xar:set name="item">['id' => 0, 'workflow' => $workflow, 'object' => $objectref->name, 'item' => $objectref->itemid, 'user' => xarSession::getVar('role_id'), 'marking' => $place, 'updated' => time()]</xar:set>
+                <xar:set name="item">['id' => 0, 'workflow' => $workflow, 'object' => $objectref->name, 'item' => $objectref->itemid, 'user' => $userId, 'marking' => $place, 'updated' => time()]</xar:set>
                 <xar:workflow-actions name="actions" config="$config" item="$item" title="$place" template="$place"/>
             </xar:foreach>
         </xar:if>

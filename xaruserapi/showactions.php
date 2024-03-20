@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_userapi_showactions($args)
+function workflow_userapi_showactions($args, $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow', 0)) {
@@ -26,6 +26,10 @@ function workflow_userapi_showactions($args)
 
     sys::import('modules.workflow.class.config');
     $tplData = $args;
+    if (!isset($tplData['userId'])) {
+        // @todo get userId from $item['user'] here?
+        $tplData['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
+    }
 
     if (!empty($args['template'])) {
         return xarTpl::module('workflow', 'user', 'showactions', $tplData, $args['template']);

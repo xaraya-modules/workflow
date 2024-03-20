@@ -11,6 +11,7 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+use Xaraya\Context\Context;
 
 /**
 * For documentation purposes only - available via xarWorkflowMarkingTrait
@@ -19,8 +20,9 @@ interface xarWorkflowMarkingInterface
 {
     public function getId(): string;
     public function getMarking(): array|string|null;
-    public function setMarking($marking, array $context = []): void;
-    public function getContext(): array|null;
+    public function setMarking($marking, Context|array $context = []): void;
+    public function getContext(): Context|array|null;
+    public function setContext(Context|array $context = []): void;
 }
 
 trait xarWorkflowMarkingTrait
@@ -45,14 +47,21 @@ trait xarWorkflowMarkingTrait
         return $this->_workflowMarking;
     }
 
-    public function setMarking($marking, array $context = []): void
+    public function setMarking($marking, Context|array $context = []): void
     {
         $this->_workflowMarking = $marking;
-        $this->_workflowContext = $context;
+        if (!empty($context)) {
+            $this->setContext($context);
+        }
     }
 
-    public function getContext(): array|null
+    public function getContext(): Context|array|null
     {
         return $this->_workflowContext;
+    }
+
+    public function setContext(Context|array $context = []): void
+    {
+        $this->_workflowContext = $context;
     }
 }

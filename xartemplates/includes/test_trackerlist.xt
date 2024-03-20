@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-  <!-- this relies on $workflow, $subjectId, $place and $trackerId if available -->
+  <!-- this relies on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
     <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>
     <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
@@ -8,20 +8,21 @@
   <xar:set name="dummy">sys::import('modules.workflow.class.tracker')</xar:set>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => null]</xar:set>
   <xar:set name="dummy">xarWorkflowTracker::setPaging($paging)</xar:set>
+  <!-- @todo decide whether to show items for all users or only the current one -->
   <xar:if condition="!empty($trackerId)">
     <xar:set name="item">xarWorkflowTracker::getTrackerItem($trackerId)</xar:set>
     <xar:set name="items">!empty($item) ?  [ $item ] : []</xar:set>
   <xar:elseif condition="!empty($subjectId)"/>
     <xar:if condition="empty($place)">
-      <xar:set name="items">xarWorkflowTracker::getSubjectItems($subjectId, $workflow)</xar:set>
+      <xar:set name="items">xarWorkflowTracker::getSubjectItems($subjectId, $workflow, $userId)</xar:set>
     <xar:else/>
       <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
-      <xar:set name="items">xarWorkflowTracker::getItems($workflow, $pieces[0], (int) $pieces[1], $place)</xar:set>
+      <xar:set name="items">xarWorkflowTracker::getItems($workflow, $pieces[0], (int) $pieces[1], $place, $userId)</xar:set>
     </xar:if>
   <xar:elseif condition="!empty($place)"/>
-    <xar:set name="items">xarWorkflowTracker::getItems($workflow, '', 0, $place)</xar:set>
+    <xar:set name="items">xarWorkflowTracker::getItems($workflow, '', 0, $place, $userId)</xar:set>
   <xar:elseif condition="!empty($workflow)"/>
-    <xar:set name="items">xarWorkflowTracker::getWorkflowItems($workflow)</xar:set>
+    <xar:set name="items">xarWorkflowTracker::getWorkflowItems($workflow, $userId)</xar:set>
   <xar:elseif condition="!empty($items)"/>
     <xar:set name="workflow">'cd_loans'</xar:set>
   <xar:else/>
@@ -33,21 +34,39 @@
     <!-- check for access based on config here -->
     <xar:set name="enabled">true</xar:set>
     <xar:if condition="!empty($info['admin'])">
-      <xar:if condition="!xarWorkflowHandlers::doCheckAdmin($info['admin'])">
+      <xar:if condition="!xarWorkflowHandlers::doCheckAdmin($info['admin'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['roles'])">
-      <xar:if condition="!xarWorkflowHandlers::doCheckRoles($info['roles'])">
+      <xar:if condition="!xarWorkflowHandlers::doCheckRoles($info['roles'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['access']) and !empty($subjectId)">
       <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
-      <xar:if condition="!xarWorkflowHandlers::doCheckAccess($pieces[0], $pieces[1], $info['access'])">
+      <xar:if condition="!empty($objectref)">
+        <xar:set name="object">$objectref</xar:set>
+      <xar:else/>
+        <xar:set name="object">$pieces[0]</xar:set>
+      </xar:if>
+      <xar:if condition="!xarWorkflowHandlers::doCheckAccess($object, $pieces[1], $info['access'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
+    <!-- this needs to be checked for each DataObject item, not overall
+    <xar:if condition="!empty($info['property']) and !empty($subjectId)">
+      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:if condition="!empty($objectref)">
+        <xar:set name="object">$objectref</xar:set>
+      <xar:else/>
+        <xar:set name="object">$pieces[0]</xar:set>
+      </xar:if>
+      <xar:if condition="!xarWorkflowHandlers::doCheckProperty($object, $pieces[1], $info['property'])">
+        <xar:set name="enabled">false</xar:set>
+      </xar:if>
+    </xar:if>
+    -->
     <xar:set name="from">is_array($info['from']) ? $info['from'] : [ $info['from'] ]</xar:set>
     <xar:foreach in="$from" value="$where">
       <xar:set name="dummy">$places[$where] ??= []</xar:set>

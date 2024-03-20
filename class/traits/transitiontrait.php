@@ -32,18 +32,18 @@ trait xarWorkflowTransitionTrait
     public function canTransition(string $workflowName, string $transitionName): bool
     {
         $workflow = $this->getWorkflow($workflowName);
-        return $workflow->can($transitionName);
+        return $workflow->can($this, $transitionName);
     }
 
     public function applyTransition(string $workflowName, string $transitionName, array $context = []): mixed
     {
         $workflow = $this->getWorkflow($workflowName);
-        return $workflow->apply($transitionName, $context);
+        return $workflow->apply($this, $transitionName, $context);
     }
 
     public function getEnabledTransitions(string $workflowName): array
     {
         $workflow = $this->getWorkflow($workflowName);
-        return $workflow->getEnabledTransitions();
+        return $workflow->getEnabledTransitions($this);
     }
 }

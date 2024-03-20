@@ -37,6 +37,7 @@ function workflow_user_test_run(array $args = [], $context = null)
     }
     $data['config'] = xarWorkflowConfig::loadConfig();
     $data['context'] = $context;
+    $data['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
 
     xarVar::fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
     xarVar::fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
@@ -74,7 +75,7 @@ function workflow_user_test_run(array $args = [], $context = null)
             $vars = ['subjectId', 'user', 'test_run', 'workflow'];
             throw new BadParameterException($vars, $msg);
         }
-        $items = xarWorkflowTracker::getSubjectItems($data['subjectId'], $data['workflow']);
+        $items = xarWorkflowTracker::getSubjectItems($data['subjectId'], $data['workflow'], $data['userId']);
         if (!empty($items)) {
             // @checkme there can be only one :-)
             $item = array_values($items)[0];
@@ -82,7 +83,7 @@ function workflow_user_test_run(array $args = [], $context = null)
             $data['trackerId'] = $item['id'];
         } else {
             $data['place'] = xarWorkflowConfig::getInitialMarking($data['workflow']);
-            $item = ['id' => 0, 'workflow' => $data['workflow'], 'object' => $objectName, 'item' => $itemId, 'user' => xarSession::getVar('role_id'), 'marking' => $data['place'], 'updated' => time()];
+            $item = ['id' => 0, 'workflow' => $data['workflow'], 'object' => $objectName, 'item' => $itemId, 'user' => $data['userId'], 'marking' => $data['place'], 'updated' => time()];
         }
     } else {
         //$subject = new xarWorkflowSubject();
@@ -115,6 +116,7 @@ function workflow_user_test_run(array $args = [], $context = null)
 
     // @todo verify use of Xaraya $context with Symfony Workflow component
     $subject = new xarWorkflowSubject($item['object'], (int) $item['item']);
+    $subject->setContext($context);
     if (!empty($data['trackerId'])) {
         // set current marking
         $subject->setMarking($item['marking'], $item);
@@ -127,7 +129,7 @@ function workflow_user_test_run(array $args = [], $context = null)
     $transitions = $workflow->getEnabledTransitions($subject);
     // request transition
     if ($workflow->can($subject, $data['transition'])) {
-        $marking = $workflow->apply($subject, $data['transition']);
+        $marking = $workflow->apply($subject, $data['transition'], $args);
         $data['place'] = implode(', ', array_keys($marking->getPlaces()));
         $data['message'] = "The transition of subject " . $subject->getId() . " to " . xarWorkflowConfig::formatName($data['place']) . " was successful";
     } else {
@@ -139,6 +141,7 @@ function workflow_user_test_run(array $args = [], $context = null)
         $vars = ['transition', 'user', 'test_run', 'workflow'];
         throw new BadParameterException($vars, $msg);
     }
+    $data['objectref'] = $subject->getObject();
     unset($data['place']);
 
     return xarTpl::module('workflow', 'user', 'test', $data);

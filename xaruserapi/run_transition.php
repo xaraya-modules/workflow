@@ -67,6 +67,7 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
 
     // @todo verify use of Xaraya $context with Symfony Workflow component
     $subject = new xarWorkflowSubject($objectName, (int) $itemId);
+    $subject->setContext($context);
     // @checkme since we don't verify the state of the original object here, this will be triggered for
     // each hook event even if it has already been hooked before. So we will get the same trackerId as
     // before (= same workflow, subject and user), but different entries in the history table...
@@ -76,8 +77,7 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     //$transitions = $workflow->getEnabledTransitions($subject);
     // request transition
     if ($workflow->can($subject, $transitionName)) {
-        $context = $args;
-        $marking = $workflow->apply($subject, $transitionName, $context);
+        $marking = $workflow->apply($subject, $transitionName, $args);
         //$place = implode(', ', array_keys($marking->getPlaces()));
     } else {
         $blockers = $workflow->buildTransitionBlockerList($subject, $transitionName);
