@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.transition');
+use Xaraya\Modules\Workflow\WorkflowTransition;
 
 /**
- * the handlers user API function
+ * the transition user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowTransition
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_transition(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowTransition($args, $context);
 }

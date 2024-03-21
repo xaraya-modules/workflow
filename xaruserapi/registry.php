@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.registry');
+use Xaraya\Modules\Workflow\WorkflowRegistry;
 
 /**
- * the handlers user API function
+ * the registry user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowRegistry
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_registry(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowRegistry($args, $context);
 }

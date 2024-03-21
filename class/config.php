@@ -14,12 +14,12 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use xarObject;
-use xarServer;
 use sys;
 use Exception;
 
-class WorkflowConfig extends xarObject
+sys::import('modules.workflow.class.base');
+
+class WorkflowConfig extends WorkflowBase
 {
     public static $config = [];
 
@@ -53,13 +53,13 @@ class WorkflowConfig extends xarObject
     public static function checkAutoload()
     {
         // Adapted from sys::autoload()
-        if (empty(sys::$root)) {
+        if (empty(sys::root())) {
             // go back up to directory above bootstrap.php (for composer install with symlinks)
             $vendor = dirname(__DIR__, 4) . '/vendor';
-        } elseif (sys::$root == sys::$web && is_dir(sys::$root . '../vendor')) {
-            $vendor = sys::$root . '../vendor';
+        } elseif (sys::root() == sys::web() && is_dir(sys::root() . '../vendor')) {
+            $vendor = sys::root() . '../vendor';
         } else {
-            $vendor = sys::$root . 'vendor';
+            $vendor = sys::root() . 'vendor';
         }
 
         if (!file_exists($vendor . '/autoload.php')) {
@@ -77,6 +77,9 @@ class WorkflowConfig extends xarObject
         return $vendor . '/autoload.php';
     }
 
+    /**
+     * @uses \sys::autoload()
+     */
     public static function setAutoload()
     {
         static::checkAutoload();

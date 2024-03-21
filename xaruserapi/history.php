@@ -24,5 +24,5 @@ use Xaraya\Modules\Workflow\WorkflowHistory;
  */
 function workflow_userapi_history(array $args = [], $context = null)
 {
-    return new WorkflowHistory();
+    return new WorkflowHistory($args, $context);
 }

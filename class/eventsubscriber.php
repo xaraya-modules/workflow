@@ -20,7 +20,10 @@ use Symfony\Component\Workflow\Event\GuardEvent;
 use xarLog;
 use Exception;
 
-class WorkflowEventSubscriber implements EventSubscriberInterface
+/**
+ * @uses \sys::autoload()
+ */
+class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInterface
 {
     private static $eventNamePrefix = 'workflow.';
     private static $subscribedEvents = [];
@@ -37,10 +40,10 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
 
     public function callBack(Event|GuardEvent $event, string $eventName)
     {
-        if (empty(static::$callbackFunctions[$eventName])) {
+        if (empty(self::$callbackFunctions[$eventName])) {
             return;
         }
-        foreach (static::$callbackFunctions[$eventName] as $callbackFunc) {
+        foreach (self::$callbackFunctions[$eventName] as $callbackFunc) {
             try {
                 $callbackFunc($event, $eventName);
             } catch (Exception $e) {
@@ -64,7 +67,7 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
             isset($transition) ? $transition->getName() : '',
             isset($marking) ? implode(', ', array_keys($marking->getPlaces())) : '',
             isset($transition) ? implode(', ', $transition->getTos()) : '',
-            count(static::$callbackFunctions[$eventName] ?? [])
+            count(self::$callbackFunctions[$eventName] ?? [])
         );
         xarLog::message($message, xarLog::LEVEL_INFO);
     }
@@ -125,10 +128,10 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
     {
         //workflow.guard
         if (empty($workflowName)) {
-            $eventName = static::$eventNamePrefix . $eventType;
+            $eventName = self::$eventNamePrefix . $eventType;
             //workflow.[workflow name].guard
         } else {
-            $eventName = static::$eventNamePrefix . $workflowName . '.' . $eventType;
+            $eventName = self::$eventNamePrefix . $workflowName . '.' . $eventType;
             //workflow.[workflow name].guard.[transition name]
             if (!empty($specificName)) {
                 $eventName .= '.' . $specificName;
@@ -140,7 +143,7 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
     public static function addSubscribedEvent(string $eventType, string $workflowName = '', string $specificName = '', ?callable $callbackFunc = null)
     {
         $eventName = static::getEventName($eventType, $workflowName, $specificName);
-        static::$subscribedEvents[$eventName] = [static::$eventTypeMethods[$eventType]];
+        self::$subscribedEvents[$eventName] = [self::$eventTypeMethods[$eventType]];
         if (!empty($callbackFunc)) {
             static::addCallbackFunction($eventName, $callbackFunc);
         }
@@ -149,9 +152,9 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
 
     public static function addCallbackFunction(string $eventName, callable $callbackFunc)
     {
-        static::$callbackFunctions[$eventName] ??= [];
+        self::$callbackFunctions[$eventName] ??= [];
         // @checkme call only once per event even if specified several times?
-        static::$callbackFunctions[$eventName][] = $callbackFunc;
+        self::$callbackFunctions[$eventName][] = $callbackFunc;
     }
 
     public static function getSubscribedEvents()
@@ -159,17 +162,17 @@ class WorkflowEventSubscriber implements EventSubscriberInterface
         //return [
         //    'workflow.guard' => ['onGuardEvent'],
         //];
-        return static::$subscribedEvents;
+        return self::$subscribedEvents;
     }
 
     public static function getCallbackFunctions()
     {
-        return static::$callbackFunctions;
+        return self::$callbackFunctions;
     }
 
     public static function reset()
     {
-        static::$subscribedEvents = [];
-        static::$callbackFunctions = [];
+        self::$subscribedEvents = [];
+        self::$callbackFunctions = [];
     }
 }

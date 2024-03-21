@@ -18,9 +18,11 @@ use DataObject;
 use DataObjectFactory;
 use sys;
 
+sys::import('modules.workflow.class.base');
 sys::import('modules.workflow.class.traits.markingtrait');
 sys::import('modules.workflow.class.traits.transitiontrait');
 
+// @todo verify interface with WorkflowBase
 class WorkflowSubject implements Traits\MarkingInterface
 {
     // @todo verify use of Xaraya $context with Symfony Workflow component

@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.definition');
+use Xaraya\Modules\Workflow\WorkflowDefinition;
 
 /**
- * the handlers user API function
+ * the definition user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowDefinition
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_definition(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowDefinition($args, $context);
 }

@@ -15,8 +15,8 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Bridge\Logging\LoggerBridge;
-use sys;
 
-sys::import('xaraya.bridge.logging');
-
+/**
+ * @uses \sys::autoload()
+ */
 class WorkflowLogger extends LoggerBridge {}

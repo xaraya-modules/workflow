@@ -12,17 +12,18 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.dumper');
+use Xaraya\Modules\Workflow\WorkflowDumper;
 
 /**
- * the handlers user API function
+ * the dumper user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowDumper
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_dumper(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    // @todo do something with $args and $context
+    return new WorkflowDumper();
 }

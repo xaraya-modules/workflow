@@ -63,10 +63,10 @@ class HookMediator extends GenericObserver
 
     public function callBack(ixarHookSubject $subject, string $subjectName)
     {
-        if (empty(static::$callbackFunctions[$subjectName])) {
+        if (empty(self::$callbackFunctions[$subjectName])) {
             return;
         }
-        foreach (static::$callbackFunctions[$subjectName] as $callbackFunc) {
+        foreach (self::$callbackFunctions[$subjectName] as $callbackFunc) {
             $callbackFunc($subject, $subjectName);
         }
     }
@@ -111,10 +111,10 @@ class HookMediator extends GenericObserver
     {
         //workflow.guard
         if (empty($workflowName)) {
-            $subjectName = static::$subjectNamePrefix . $subjectType;
+            $subjectName = self::$subjectNamePrefix . $subjectType;
             //workflow.[workflow name].guard
         } else {
-            $subjectName = static::$subjectNamePrefix . $workflowName . '.' . $subjectType;
+            $subjectName = self::$subjectNamePrefix . $workflowName . '.' . $subjectType;
             //workflow.[workflow name].guard.[transition name]
             if (!empty($specificName)) {
                 $subjectName .= '.' . $specificName;
@@ -127,7 +127,7 @@ class HookMediator extends GenericObserver
     public static function addRegisteredSubject(string $subjectType, string $workflowName = '', string $specificName = '', ?callable $callbackFunc = null)
     {
         $subjectName = static::getSubjectName($subjectType, $workflowName, $specificName);
-        static::$registeredSubjects[$subjectName] = [static::$subjectTypeMethods[$subjectType]];
+        self::$registeredSubjects[$subjectName] = [self::$subjectTypeMethods[$subjectType]];
         if (!empty($callbackFunc)) {
             static::addCallbackFunction($subjectName, $callbackFunc);
         }
@@ -136,9 +136,9 @@ class HookMediator extends GenericObserver
 
     public static function addCallbackFunction(string $subjectName, callable $callbackFunc)
     {
-        static::$callbackFunctions[$subjectName] ??= [];
+        self::$callbackFunctions[$subjectName] ??= [];
         // @checkme call only once per event even if specified several times?
-        static::$callbackFunctions[$subjectName][] = $callbackFunc;
+        self::$callbackFunctions[$subjectName][] = $callbackFunc;
     }
 
     // @checkme for information purposes only, not loaded or called by dispatcher here
@@ -147,6 +147,6 @@ class HookMediator extends GenericObserver
         //return [
         //    'ItemCreate' => ['onItemCreate'],
         //];
-        return static::$registeredSubjects;
+        return self::$registeredSubjects;
     }
 }

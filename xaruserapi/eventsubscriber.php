@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.eventsubscriber');
+use Xaraya\Modules\Workflow\WorkflowEventSubscriber;
 
 /**
- * the handlers user API function
+ * the eventsubscriber user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowEventSubscriber
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_eventsubscriber(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowEventSubscriber($args, $context);
 }

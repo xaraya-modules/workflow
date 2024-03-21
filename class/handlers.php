@@ -18,13 +18,14 @@ use DataObject;
 use DataObjectFactory;
 use xarCache;
 use xarLog;
-use xarObject;
 use xarRoles;
 use xarSession;
 use sys;
 use Exception;
 
-class WorkflowHandlers extends xarObject
+sys::import('modules.workflow.class.base');
+
+class WorkflowHandlers extends WorkflowBase
 {
     public static function getObjectRef($subject, $eventName)
     {

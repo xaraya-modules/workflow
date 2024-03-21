@@ -18,6 +18,9 @@ use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\Marking;
 
+/**
+ * @uses \sys::autoload()
+ */
 class WorkflowDumper extends StateMachineGraphvizDumper
 {
     protected $baseURL = '?';

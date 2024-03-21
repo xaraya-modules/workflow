@@ -24,5 +24,5 @@ use Xaraya\Modules\Workflow\WorkflowTracker;
  */
 function workflow_userapi_tracker(array $args = [], $context = null)
 {
-    return new WorkflowTracker();
+    return new WorkflowTracker($args, $context);
 }

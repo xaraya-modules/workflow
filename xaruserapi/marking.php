@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.marking');
+use Xaraya\Modules\Workflow\WorkflowMarking;
 
 /**
- * the handlers user API function
+ * the marking user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowMarking
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_marking(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowMarking($args, $context);
 }

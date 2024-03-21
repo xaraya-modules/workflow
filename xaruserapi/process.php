@@ -12,17 +12,17 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.process');
+use Xaraya\Modules\Workflow\WorkflowProcess;
 
 /**
- * the handlers user API function
+ * the process user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowProcess
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_process(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    return new WorkflowProcess($args, $context);
 }

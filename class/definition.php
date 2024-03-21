@@ -14,6 +14,8 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use xarObject;
+use sys;
 
-class WorkflowDefinition extends xarObject {}
+sys::import('modules.workflow.class.base');
+
+class WorkflowDefinition extends WorkflowBase {}

@@ -12,17 +12,18 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.handlers');
-use Xaraya\Modules\Workflow\WorkflowHandlers;
+sys::import('modules.workflow.class.logger');
+use Xaraya\Modules\Workflow\WorkflowLogger;
 
 /**
- * the handlers user API function
+ * the logger user API function
  *
- * @uses WorkflowHandlers
+ * @uses WorkflowLogger
  * @author mikespub
  * @access public
  */
-function workflow_userapi_handlers(array $args = [], $context = null)
+function workflow_userapi_logger(array $args = [], $context = null)
 {
-    return new WorkflowHandlers($args, $context);
+    // @todo do something with $args and $context
+    return new WorkflowLogger();
 }

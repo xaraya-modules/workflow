@@ -25,14 +25,14 @@ namespace Xaraya\Modules\Workflow;
 use DataObjectFactory;
 use DataObjectLoader;
 use xarLog;
-use xarObject;
 use sys;
 use Exception;
 
+sys::import('modules.workflow.class.base');
 sys::import('modules.dynamicdata.class.objects.factory');
 sys::import('modules.dynamicdata.class.objects.loader');
 
-class WorkflowTracker extends xarObject
+class WorkflowTracker extends WorkflowBase
 {
     protected static $objectName = 'workflow_tracker';
     protected static $fieldList = ['workflow', 'user', 'object', 'item', 'marking', 'updated'];

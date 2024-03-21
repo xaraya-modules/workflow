@@ -27,14 +27,11 @@ use Symfony\Component\Workflow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\EventListener\AuditTrailListener;
-use xarObject;
-use sys;
 
-sys::import('modules.workflow.class.config');
-sys::import('modules.workflow.class.eventsubscriber');
-sys::import('modules.workflow.class.logger');
-
-class WorkflowProcess extends xarObject
+/**
+ * @uses \sys::autoload()
+ */
+class WorkflowProcess extends WorkflowBase
 {
     public static $workflows = [];
     public static $dispatcher;
@@ -71,7 +68,6 @@ class WorkflowProcess extends xarObject
         // this is the list of all possible events we might be interested in
         //$eventTypes = ['guard', 'leave', 'transition', 'enter', 'entered', 'completed', 'announce'];
         // add some predefined callbacks here, e.g. 'access' => 'update' means guardCheckAccess('update')
-        sys::import('modules.workflow.class.handlers');
         $deleteTracker = [];
         foreach ($callbackList as $transitionName => $callbackFuncs) {
             foreach (array_keys($callbackFuncs) as $eventType) {
@@ -249,7 +245,6 @@ class WorkflowProcess extends xarObject
 
     public static function dumpProcess(string $workflowName, string $sitePrefix = '')
     {
-        sys::import('modules.workflow.class.dumper');
         $workflow = static::getProcess($workflowName);
         if ($workflow instanceof StateMachine) {
             // php test.php | dot -Tpng -o cd_loans.png -Tcmapx -o cd_loans.map
