@@ -19,4 +19,10 @@ use Xaraya\Bridge\Logging\LoggerBridge;
 /**
  * @uses \sys::autoload()
  */
-class WorkflowLogger extends LoggerBridge {}
+class WorkflowLogger extends LoggerBridge
+{
+    public function __construct($prefix = 'WorkflowLogger')
+    {
+        parent::__construct($prefix);
+    }
+}

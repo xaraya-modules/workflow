@@ -25,5 +25,6 @@ use Xaraya\Modules\Workflow\WorkflowLogger;
 function workflow_userapi_logger(array $args = [], $context = null)
 {
     // @todo do something with $args and $context
-    return new WorkflowLogger();
+    $args['prefix'] ??= '';
+    return new WorkflowLogger($args['prefix']);
 }

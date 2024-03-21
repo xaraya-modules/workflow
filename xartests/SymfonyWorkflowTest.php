@@ -34,9 +34,16 @@ final class SymfonyWorkflowTest extends TestCase
 
     public static function tearDownAfterClass(): void {}
 
-    /**
-     * @covers \Xaraya\Modules\Workflow\WorkflowProcess
-     */
+    protected function setUp(): void
+    {
+        WorkflowProcess::setLogger(new WorkflowLogger());
+    }
+
+    protected function tearDown(): void
+    {
+        WorkflowProcess::reset();
+    }
+
     public function testGetWorkflow(): void
     {
         $workflow = WorkflowProcess::getProcess('cd_loans');
@@ -49,13 +56,8 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertCount($expected, $definition->getTransitions());
     }
 
-    /**
-     * @covers \Xaraya\Modules\Workflow\WorkflowEventSubscriber
-     */
     public function testEventSubscriber(): void
     {
-        WorkflowProcess::reset();
-
         $workflow = WorkflowProcess::getProcess('hook_sample');
         $expected = 'hook_sample';
         $this->assertEquals($expected, $workflow->getName());
@@ -75,13 +77,8 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertCount($expected, $callbacks);
     }
 
-    /**
-     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
-     */
     public function testGetSubject_AnonTransitions(): void
     {
-        WorkflowProcess::reset();
-
         // create subject without context
         $subject = new WorkflowSubject('cdcollection', 5);
         $expected = 'cdcollection';
@@ -116,13 +113,8 @@ final class SymfonyWorkflowTest extends TestCase
         }
     }
 
-    /**
-     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
-     */
     public function testGetSubject_UserTransitions(): void
     {
-        WorkflowProcess::reset();
-
         // initialize session
         xarSession::init();
         //$_SESSION[SessionHandler::PREFIX.'role_id'] = 6;
@@ -172,9 +164,6 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertEquals($expected, $subject->getObject()->getContext());
     }
 
-    /**
-     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
-     */
     public function testGetSubject_WrongContext(): void
     {
         $transitionContext = [Workflow::DISABLE_ANNOUNCE_EVENT => true];

@@ -61,7 +61,8 @@ class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInt
         //$workflowName = $event->getWorkflowName();
         //$metadata = $event->getMetadata();
         $message = sprintf(
-            'Subject (id: "%s") had event "%s" for transition "%s" from "%s" to "%s" with %s callbacks',
+            '%s: Subject (id: "%s") had event "%s" for transition "%s" from "%s" to "%s" with %s callbacks',
+            'Workflow',
             isset($subject) ? $subject->getId() : '',
             $eventName,
             isset($transition) ? $transition->getName() : '',
