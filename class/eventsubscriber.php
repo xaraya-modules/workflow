@@ -12,11 +12,15 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;
+use xarLog;
+use Exception;
 
-class xarWorkflowEventSubscriber implements EventSubscriberInterface
+class WorkflowEventSubscriber implements EventSubscriberInterface
 {
     private static $eventNamePrefix = 'workflow.';
     private static $subscribedEvents = [];
@@ -122,7 +126,7 @@ class xarWorkflowEventSubscriber implements EventSubscriberInterface
         //workflow.guard
         if (empty($workflowName)) {
             $eventName = static::$eventNamePrefix . $eventType;
-        //workflow.[workflow name].guard
+            //workflow.[workflow name].guard
         } else {
             $eventName = static::$eventNamePrefix . $workflowName . '.' . $eventType;
             //workflow.[workflow name].guard.[transition name]
@@ -156,5 +160,16 @@ class xarWorkflowEventSubscriber implements EventSubscriberInterface
         //    'workflow.guard' => ['onGuardEvent'],
         //];
         return static::$subscribedEvents;
+    }
+
+    public static function getCallbackFunctions()
+    {
+        return static::$callbackFunctions;
+    }
+
+    public static function reset()
+    {
+        static::$subscribedEvents = [];
+        static::$callbackFunctions = [];
     }
 }

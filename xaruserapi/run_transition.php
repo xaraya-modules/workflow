@@ -11,6 +11,10 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowProcess;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+
 /**
  * the run transition user API function
  *
@@ -28,7 +32,7 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     $transitionName = $args['transition'];
 
     sys::import('modules.workflow.class.config');
-    if (!xarWorkflowConfig::hasWorkflowConfig($workflowName)) {
+    if (!WorkflowConfig::hasWorkflowConfig($workflowName)) {
         xarLog::message("No workflow found for '$transitionName' in '$workflowName'", xarLog::LEVEL_INFO);
         return false;
     }
@@ -56,17 +60,17 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     xarLog::message("We will trigger '$transitionName' for '$subjectId' in '$workflowName' here...", xarLog::LEVEL_INFO);
 
     // @checkme we DO actually need to require composer autoload here
-    xarWorkflowConfig::setAutoload();
+    WorkflowConfig::setAutoload();
 
     sys::import('modules.workflow.class.logger');
     sys::import('modules.workflow.class.process');
     sys::import('modules.workflow.class.subject');
-    //xarWorkflowProcess::setLogger(new xarWorkflowLogger());
+    //WorkflowProcess::setLogger(new WorkflowLogger());
 
-    $workflow = xarWorkflowProcess::getProcess($workflowName);
+    $workflow = WorkflowProcess::getProcess($workflowName);
 
     // @todo verify use of Xaraya $context with Symfony Workflow component
-    $subject = new xarWorkflowSubject($objectName, (int) $itemId);
+    $subject = new WorkflowSubject($objectName, (int) $itemId);
     $subject->setContext($context);
     // @checkme since we don't verify the state of the original object here, this will be triggered for
     // each hook event even if it has already been hooked before. So we will get the same trackerId as

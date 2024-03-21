@@ -14,16 +14,23 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow;
+
+use DataObjectFactory;
+use DataObjectLoader;
+use xarLog;
+use sys;
+
 sys::import('modules.workflow.class.tracker');
 
-class xarWorkflowHistory extends xarWorkflowTracker
+class WorkflowHistory extends WorkflowTracker
 {
     protected static $objectName = 'workflow_history';
     protected static $fieldList = ['tracker_id', 'workflow', 'user', 'object', 'item', 'transition', 'marking', 'updated', 'context'];
 
     public static function init(array $args = []) {}
 
-    // this method overrides the one in xarWorkflowTracker to get the history for trackerId(s)
+    // this method overrides the one in WorkflowTracker to get the history for trackerId(s)
     public static function getTrackerItems(int|array $trackerIds = [], array $paging = [])
     {
         $filter = [];

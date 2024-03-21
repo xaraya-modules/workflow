@@ -12,10 +12,12 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow\Traits;
+
 /**
- * For documentation purposes only - available via xarWorkflowRegistryTrait
+ * For documentation purposes only - available via RegistryTrait
  */
-interface xarWorkflowRegistryInterface
+interface RegistryInterface
 {
     public function hasWorkflow(string $workflowName): bool;
     public function getWorkflow(string $workflowName): mixed;
@@ -24,7 +26,7 @@ interface xarWorkflowRegistryInterface
     public function supportsWorkflow(string $workflowName): bool;
 }
 
-trait xarWorkflowRegistryTrait
+trait RegistryTrait
 {
     protected $workflows = [];
 

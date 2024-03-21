@@ -12,9 +12,7 @@
  * @author Workflow Module Development Team
  */
 
-sys::import('modules.workflow.class.config');
-sys::import('modules.workflow.class.eventsubscriber');
-sys::import('modules.workflow.class.logger');
+namespace Xaraya\Modules\Workflow;
 
 //use Psr\Log\LoggerInterface;
 use Symfony\Component\Workflow\Definition;
@@ -29,8 +27,14 @@ use Symfony\Component\Workflow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\EventListener\AuditTrailListener;
+use xarObject;
+use sys;
 
-class xarWorkflowProcess extends xarObject
+sys::import('modules.workflow.class.config');
+sys::import('modules.workflow.class.eventsubscriber');
+sys::import('modules.workflow.class.logger');
+
+class WorkflowProcess extends xarObject
 {
     public static $workflows = [];
     public static $dispatcher;
@@ -38,7 +42,7 @@ class xarWorkflowProcess extends xarObject
 
     public static function init(array $args = [])
     {
-        xarWorkflowConfig::init($args);
+        WorkflowConfig::init($args);
     }
 
     public static function setLogger($logger)
@@ -63,7 +67,7 @@ class xarWorkflowProcess extends xarObject
     // @checkme add subscribed events for each object supported by this workflow?
     public static function getEventSubscriber(string $workflowName, string $objectName, array $callbackList)
     {
-        $subscriber = new xarWorkflowEventSubscriber();
+        $subscriber = new WorkflowEventSubscriber();
         // this is the list of all possible events we might be interested in
         //$eventTypes = ['guard', 'leave', 'transition', 'enter', 'entered', 'completed', 'announce'];
         // add some predefined callbacks here, e.g. 'access' => 'update' means guardCheckAccess('update')
@@ -74,23 +78,23 @@ class xarWorkflowProcess extends xarObject
                 switch ($eventType) {
                     case 'admin':
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardCheckAdmin($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardCheckAdmin($callbackFuncs[$eventType]));
                         break;
                     case 'roles':
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardCheckRoles($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardCheckRoles($callbackFuncs[$eventType]));
                         break;
                     case 'access':
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardCheckAccess($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardCheckAccess($callbackFuncs[$eventType]));
                         break;
                     case 'property':
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::guardPropertyHandler($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardPropertyHandler($callbackFuncs[$eventType]));
                         break;
                     case 'update':
                         $eventName = $subscriber->addSubscribedEvent('completed', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::updatePropertyHandler($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::updatePropertyHandler($callbackFuncs[$eventType]));
                         break;
                     case 'guard':
                     case 'completed':
@@ -116,8 +120,8 @@ class xarWorkflowProcess extends xarObject
         }
         // this is where we add the successful transition to a new marking to the tracker
         $eventType = 'completed';
-        $eventName = $subscriber->addSubscribedEvent($eventType);
-        $subscriber->addCallbackFunction($eventName, xarWorkflowHandlers::setTrackerItem($deleteTracker));
+        $eventName = $subscriber->addSubscribedEvent($eventType, $workflowName);
+        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::setTrackerItem($deleteTracker));
         return $subscriber;
     }
 
@@ -150,7 +154,7 @@ class xarWorkflowProcess extends xarObject
                 foreach ($fromto['from'] as $from) {
                     $transitions[] = new Transition($transitionName, $from, $fromto['to']);
                 }
-            // @checkme not supported for state_machine, pick the first
+                // @checkme not supported for state_machine, pick the first
             } elseif ($workflowType == 'state_machine' && is_array($fromto['to']) && count($fromto['to']) > 1) {
                 $transitions[] = new Transition($transitionName, $fromto['from'], $fromto['to'][0]);
             } else {
@@ -171,7 +175,7 @@ class xarWorkflowProcess extends xarObject
     public static function buildWorkflow(string $workflowName, array $info = [])
     {
         if (empty($info)) {
-            $info = xarWorkflowConfig::getWorkflowConfig($workflowName);
+            $info = WorkflowConfig::getWorkflowConfig($workflowName);
         }
         if ($info['type'] == 'state_machine') {
             return static::buildStateMachine($workflowName, $info);
@@ -210,7 +214,7 @@ class xarWorkflowProcess extends xarObject
     public static function buildStateMachine(string $workflowName, array $info = [])
     {
         if (empty($info)) {
-            $info = xarWorkflowConfig::getWorkflowConfig($workflowName);
+            $info = WorkflowConfig::getWorkflowConfig($workflowName);
         }
         // @checkme add subscribed events for each object supported by this workflow?
         if (is_array($info['supports'])) {
@@ -250,7 +254,7 @@ class xarWorkflowProcess extends xarObject
         if ($workflow instanceof StateMachine) {
             // php test.php | dot -Tpng -o cd_loans.png -Tcmapx -o cd_loans.map
             //$dumper = new StateMachineGraphvizDumper();
-            $dumper = new xarWorkflowDumper();
+            $dumper = new WorkflowDumper();
             $dumper->setBaseURL($workflowName, $sitePrefix);
             return $dumper->dump($workflow->getDefinition(), null, ['node' => ['href' => '/'], 'edge' => ['href' => '/']]);
         }
@@ -297,7 +301,7 @@ class xarWorkflowProcess extends xarObject
     // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Workflow/Workflow.php
     public static function canTransition(string $workflowName, object $subject, string $transitionName)
     {
-        // @checkme the subject has its own method to check a transition, cfr. xarWorkflowTransitionTrait
+        // @checkme the subject has its own method to check a transition, cfr. TransitionTrait
         if (method_exists($subject, 'canTransition')) {
             return $subject->canTransition($workflowName, $transitionName);
         }
@@ -307,7 +311,7 @@ class xarWorkflowProcess extends xarObject
 
     public static function applyTransition(string $workflowName, object $subject, string $transitionName, array $context = [])
     {
-        // @checkme the subject has its own method to apply the transition, cfr. xarWorkflowTransitionTrait
+        // @checkme the subject has its own method to apply the transition, cfr. TransitionTrait
         if (method_exists($subject, 'applyTransition')) {
             return $subject->applyTransition($workflowName, $transitionName, $context);
         }
@@ -317,12 +321,20 @@ class xarWorkflowProcess extends xarObject
 
     public static function getEnabledTransitions(string $workflowName, object $subject)
     {
-        // @checkme the subject has its own method to get enabled transitions, cfr. xarWorkflowTransitionTrait
+        // @checkme the subject has its own method to get enabled transitions, cfr. TransitionTrait
         if (method_exists($subject, 'getEnabledTransitions')) {
             return $subject->getEnabledTransitions($workflowName);
         }
         $workflow = static::getProcess($workflowName);
         return $workflow->getEnabledTransitions($subject);
+    }
+
+    public static function reset()
+    {
+        static::$workflows = [];
+        static::$dispatcher = null;
+        static::$logger = null;
+        WorkflowEventSubscriber::reset();
     }
 
     // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Workflow/Registry.php

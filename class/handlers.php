@@ -12,7 +12,19 @@
  * @author Workflow Module Development Team
  */
 
-class xarWorkflowHandlers extends xarObject
+namespace Xaraya\Modules\Workflow;
+
+use DataObject;
+use DataObjectFactory;
+use xarCache;
+use xarLog;
+use xarObject;
+use xarRoles;
+use xarSession;
+use sys;
+use Exception;
+
+class WorkflowHandlers extends xarObject
 {
     public static function getObjectRef($subject, $eventName)
     {
@@ -52,13 +64,13 @@ class xarWorkflowHandlers extends xarObject
             // @checkme delete tracker at the end of this transition - pass along eventName to completed
             $deleteEventName = "workflow.$workflowName.delete.$transitionName";
             if (!empty($deleteTracker) && !empty($deleteTracker[$deleteEventName])) {
-                $trackerId = xarWorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
+                $trackerId = WorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
             } else {
-                $trackerId = xarWorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
+                $trackerId = WorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
             }
             $marking = implode(',', array_keys($event->getMarking()->getPlaces()));
             $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            $historyId = xarWorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
+            $historyId = WorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
         };
         return $handler;
     }
@@ -134,10 +146,11 @@ class xarWorkflowHandlers extends xarObject
             $objectRef = static::getObjectRef($event->getSubject(), $eventName);
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
+            $subjectId = $event->getSubject()->getId();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
             if (empty($objectRef) || !$objectRef->checkAccess($action, $objectRef->itemid, $userId)) {
                 $transitionName = $event->getTransition()->getName();
-                $message = "Sorry, you do not have '$action' access to this subject";
+                $message = "Sorry, you do not have '$action' access to subject '$subjectId' for event '$eventName'";
                 $event->setBlocked(true, $message);
                 xarLog::message("Transition $transitionName blocked: $message", xarLog::LEVEL_INFO);
             }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $config, $workflow, $subjectId, $userId, $place and $trackerId if available -->
+  <xar:if condition="empty($handlers)">
+    <xar:set name="handlers">xarMod::apiFunc('workflow', 'user', 'handlers')</xar:set>
+  </xar:if>
   <xar:foreach in="$config[$workflow]['transitions']" key="$name" value="$info">
     <xar:set name="from">is_array($info['from']) ? $info['from'] : [ $info['from'] ]</xar:set>
     <xar:if condition="!in_array($place, $from)">
@@ -9,12 +12,12 @@
     <!-- check for access based on config here -->
     <xar:set name="enabled">true</xar:set>
     <xar:if condition="!empty($info['admin'])">
-      <xar:if condition="!xarWorkflowHandlers::doCheckAdmin($info['admin'], $userId)">
+      <xar:if condition="!$handlers->doCheckAdmin($info['admin'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['roles'])">
-      <xar:if condition="!xarWorkflowHandlers::doCheckRoles($info['roles'], $userId)">
+      <xar:if condition="!$handlers->doCheckRoles($info['roles'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
@@ -25,7 +28,7 @@
         <xar:else/>
       <xar:set name="object">$pieces[0]</xar:set>
       </xar:if>
-      <xar:if condition="!xarWorkflowHandlers::doCheckAccess($object, $pieces[1], $info['access'], $userId)">
+      <xar:if condition="!$handlers->doCheckAccess($object, $pieces[1], $info['access'], $userId)">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
@@ -36,11 +39,11 @@
         <xar:else/>
       <xar:set name="object">$pieces[0]</xar:set>
       </xar:if>
-      <xar:if condition="!xarWorkflowHandlers::doCheckProperty($object, $pieces[1], $info['property'])">
+      <xar:if condition="!$handlers->doCheckProperty($object, $pieces[1], $info['property'])">
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
-    <xar:set name="label">xarWorkflowConfig::formatName($name)</xar:set>
+    <xar:set name="label">ucwords(str_replace('_', ' ', $name))</xar:set>
     <xar:if condition="!empty($enabled)">
       <xar:set name="params">['workflow' => $workflow, 'subjectId' => $subjectId]</xar:set>
       <xar:if condition="!empty($trackerId)">

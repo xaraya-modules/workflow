@@ -11,6 +11,10 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+
 /**
  * the test user function
  *
@@ -30,12 +34,12 @@ function workflow_user_test(array $args = [], $context = null)
     // @checkme we don't actually need to require composer autoload here
     sys::import('modules.workflow.class.config');
     try {
-        xarWorkflowConfig::checkAutoload();
-        //xarWorkflowConfig::setAutoload();
+        WorkflowConfig::checkAutoload();
+        //WorkflowConfig::setAutoload();
     } catch (Exception $e) {
         $data['warning'] = nl2br($e->getMessage());
     }
-    $data['config'] = xarWorkflowConfig::loadConfig();
+    $data['config'] = WorkflowConfig::loadConfig();
     $data['context'] = $context;
     $data['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
 
@@ -46,8 +50,9 @@ function workflow_user_test(array $args = [], $context = null)
     xarVar::fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
 
     if (!empty($data['subjectId'])) {
+        sys::import('modules.workflow.class.subject');
         [$objectName, $itemId] = explode('.', $data['subjectId'] . '.0');
-        $subject = new xarWorkflowSubject($objectName, (int) $itemId);
+        $subject = new WorkflowSubject($objectName, (int) $itemId);
         $subject->setContext($context);
         $data['objectref'] = $subject->getObject();
     }

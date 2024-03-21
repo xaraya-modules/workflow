@@ -5,18 +5,19 @@
 // See also https://pimcore.com/docs/pimcore/current/Development_Documentation/Workflow_Management/Configuration_Details/index.html
 
 sys::import('modules.workflow.class.handlers');
+use Xaraya\Modules\Workflow\WorkflowHandlers;
 
 // list of callback functions per workflow, transition & event type
 $callbackFuncs = [
     // here you can specify callback functions as transition blockers - expression language is not supported
-    'cd_loans.guard.request' => xarWorkflowHandlers::guardPropertyHandler([
+    'cd_loans.guard.request' => WorkflowHandlers::guardPropertyHandler([
         'cdcollection' => ['status' => 'available'],
     ]),
     // here you can specify callback functions to update the actual objects once the transition is completed
-    'cd_loans.completed.retrieve' => xarWorkflowHandlers::updatePropertyHandler([
+    'cd_loans.completed.retrieve' => WorkflowHandlers::updatePropertyHandler([
         'cdcollection' => ['status' => 'not available'],
     ]),
-    'cd_loans.completed.return' => xarWorkflowHandlers::updatePropertyHandler([
+    'cd_loans.completed.return' => WorkflowHandlers::updatePropertyHandler([
         'cdcollection' => ['status' => 'available'],
     ]),
 ];

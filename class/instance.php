@@ -16,4 +16,4 @@ namespace Xaraya\Modules\Workflow;
 
 use xarObject;
 
-class xarWorkflowInstance extends xarObject {}
+class WorkflowInstance extends xarObject {}

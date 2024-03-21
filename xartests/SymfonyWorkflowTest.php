@@ -3,7 +3,14 @@
 use PHPUnit\Framework\TestCase;
 use Xaraya\Context\Context;
 use Xaraya\Context\SessionContext;
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowEventSubscriber;
+use Xaraya\Modules\Workflow\WorkflowLogger;
+use Xaraya\Modules\Workflow\WorkflowProcess;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Modules\Workflow\WorkflowTracker;
 //use Xaraya\Sessions\SessionHandler;
+use Symfony\Component\Workflow\Workflow;
 
 final class SymfonyWorkflowTest extends TestCase
 {
@@ -21,22 +28,15 @@ final class SymfonyWorkflowTest extends TestCase
         //xarMod::init();
         // initialize users
         //xarUser::init();
-        sys::import('modules.workflow.class.process');
-        sys::import('modules.workflow.class.subject');
-        sys::import('modules.workflow.class.tracker');
-        //sys::import('modules.workflow.class.logger');
-        xarWorkflowProcess::setLogger(new xarWorkflowLogger());
+        //WorkflowProcess::setLogger(new WorkflowLogger());
         xarSession::setSessionClass(SessionContext::class);
     }
 
-    public static function tearDownAfterClass(): void
-    {
-        //xarSystemVars::set(sys::LAYOUT, 'BaseURI', null);
-    }
+    public static function tearDownAfterClass(): void {}
 
     public function testGetWorkflow(): void
     {
-        $workflow = xarWorkflowProcess::getProcess('cd_loans');
+        $workflow = WorkflowProcess::getProcess('cd_loans');
         $expected = 'cd_loans';
         $this->assertEquals($expected, $workflow->getName());
         $definition = $workflow->getDefinition();
@@ -46,16 +46,41 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertCount($expected, $definition->getTransitions());
     }
 
+    public function testEventSubscriber(): void
+    {
+        WorkflowProcess::reset();
+
+        $workflow = WorkflowProcess::getProcess('hook_sample');
+        $expected = 'hook_sample';
+        $this->assertEquals($expected, $workflow->getName());
+        $events = WorkflowEventSubscriber::getSubscribedEvents();
+        $expected = 2;
+        $this->assertCount($expected, $events);
+        $callbacks = WorkflowEventSubscriber::getCallbackFunctions();
+        $this->assertCount($expected, $callbacks);
+
+        $workflow = WorkflowProcess::getProcess('cd_loans');
+        $expected = 'cd_loans';
+        $this->assertEquals($expected, $workflow->getName());
+        $events = WorkflowEventSubscriber::getSubscribedEvents();
+        $expected = 9;
+        $this->assertCount($expected, $events);
+        $callbacks = WorkflowEventSubscriber::getCallbackFunctions();
+        $this->assertCount($expected, $callbacks);
+    }
+
     public function testGetSubject_AnonTransitions(): void
     {
+        WorkflowProcess::reset();
+
         // create subject without context
-        $subject = new xarWorkflowSubject('cdcollection', 5);
+        $subject = new WorkflowSubject('cdcollection', 5);
         $expected = 'cdcollection';
         $this->assertEquals($expected, $subject->getObject()->name);
         $this->assertEquals(null, $subject->getObject()->getContext());
 
         // initiate workflow
-        $workflow = xarWorkflowProcess::getProcess('cd_loans');
+        $workflow = WorkflowProcess::getProcess('cd_loans');
         $marking = $workflow->getMarking($subject);
         $expected = 1;
         $this->assertCount($expected, $marking->getPlaces());
@@ -66,30 +91,90 @@ final class SymfonyWorkflowTest extends TestCase
         $expected = 0;
         $transitions = $workflow->getEnabledTransitions($subject);
         $this->assertCount($expected, $transitions);
+
+        $expected = false;
+        $transition = "request";
+        $result = $workflow->can($subject, $transition);
+        $this->assertEquals($expected, $result);
+
+        $expected = 1;
+        $blockers = $workflow->buildTransitionBlockerList($subject, $transition);
+        $this->assertCount($expected, $blockers);
+        $expected = "Sorry, you do not have 'update' access to subject 'cdcollection.5' for event 'workflow.cd_loans.guard.request'";
+        foreach ($blockers as $blocker) {
+            $this->assertEquals($expected, $blocker->getMessage());
+            break;
+        }
     }
 
     public function testGetSubject_UserTransitions(): void
     {
+        WorkflowProcess::reset();
+
         // initialize session
         xarSession::init();
         //$_SESSION[SessionHandler::PREFIX.'role_id'] = 6;
-        $context = new Context(['hello' => 'world']);
-        xarSession::getInstance()->startSession($context, 'phpunit', 6);
+        $xarayaContext = new Context(['hello' => 'world']);
+        xarSession::getInstance()->startSession($xarayaContext, 'phpunit', 6);
 
-        // create subject with context
-        $subject = new xarWorkflowSubject('cdcollection', 5);
-        $subject->setContext($context);
+        // create subject with Xaraya context
+        $subject = new WorkflowSubject('cdcollection', 5);
+        $subject->setContext($xarayaContext);
 
         $expected = 'cdcollection';
         $this->assertEquals($expected, $subject->getObject()->name);
-        $this->assertEquals($context, $subject->getObject()->getContext());
+        $this->assertEquals($xarayaContext, $subject->getObject()->getContext());
+        $expected = 6;
+        $userId = $subject->getObject()->getContext()->getUserId();
+        $this->assertEquals($expected, $userId);
 
         // initiate workflow
-        $workflow = xarWorkflowProcess::getProcess('cd_loans');
+        $workflow = WorkflowProcess::getProcess('cd_loans');
 
         // get transitions for admin user (= guarded)
         $expected = 1;
         $transitions = $workflow->getEnabledTransitions($subject);
         $this->assertCount($expected, $transitions);
+        $expected = "request";
+        $this->assertEquals($expected, $transitions[0]->getName());
+
+        $expected = true;
+        $transition = "request";
+        $result = $workflow->can($subject, $transition);
+        $this->assertEquals($expected, $result);
+
+        $expected = 0;
+        $blockers = $workflow->buildTransitionBlockerList($subject, $transition);
+        $this->assertCount($expected, $blockers);
+
+        $expected = ["requested" => 1];
+        $transitionContext = [Workflow::DISABLE_ANNOUNCE_EVENT => true];
+        $marking = $workflow->apply($subject, "request", $transitionContext);
+        $this->assertEquals($expected, $marking->getPlaces());
+        $expected = $transitionContext;
+        $this->assertEquals($expected, $marking->getContext());
+        $this->assertEquals($expected, $subject->getContext());
+
+        // no update of object context with transition context
+        $expected = $xarayaContext;
+        $this->assertEquals($expected, $subject->getObject()->getContext());
+    }
+
+    public function testGetSubject_WrongContext(): void
+    {
+        $transitionContext = [Workflow::DISABLE_ANNOUNCE_EVENT => true];
+        // create subject with transition context
+        $subject = new WorkflowSubject('cdcollection', 5);
+        $subject->setContext($transitionContext);
+
+        $expected = 'cdcollection';
+        $this->assertEquals($expected, $subject->getObject()->name);
+        $this->assertEquals($transitionContext, $subject->getObject()->getContext());
+        $expected = 'Call to a member function getUserId() on array';
+        try {
+            $userId = $subject->getObject()->getContext()->getUserId();
+        } catch (Throwable $e) {
+            $this->assertEquals($expected, $e->getMessage());
+        }
     }
 }

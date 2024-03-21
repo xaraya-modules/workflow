@@ -11,12 +11,16 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+
+namespace Xaraya\Modules\Workflow\Traits;
+
 use Xaraya\Context\Context;
+use Exception;
 
 /**
-* For documentation purposes only - available via xarWorkflowMarkingTrait
+* For documentation purposes only - available via MarkingTrait
 */
-interface xarWorkflowMarkingInterface
+interface MarkingInterface
 {
     public function getId(): string;
     public function getMarking(): array|string|null;
@@ -25,7 +29,7 @@ interface xarWorkflowMarkingInterface
     public function setContext(Context|array $context = []): void;
 }
 
-trait xarWorkflowMarkingTrait
+trait MarkingTrait
 {
     protected $_workflowMarking;  // array for workflow or string for state_machine
     protected $_workflowContext;
@@ -62,6 +66,7 @@ trait xarWorkflowMarkingTrait
 
     public function setContext(Context|array $context = []): void
     {
+        // no update of object context with transition context
         $this->_workflowContext = $context;
     }
 }

@@ -20,10 +20,19 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow;
+
+use DataObjectFactory;
+use DataObjectLoader;
+use xarLog;
+use xarObject;
+use sys;
+use Exception;
+
 sys::import('modules.dynamicdata.class.objects.factory');
 sys::import('modules.dynamicdata.class.objects.loader');
 
-class xarWorkflowTracker extends xarObject
+class WorkflowTracker extends xarObject
 {
     protected static $objectName = 'workflow_tracker';
     protected static $fieldList = ['workflow', 'user', 'object', 'item', 'marking', 'updated'];
@@ -105,7 +114,7 @@ class xarWorkflowTracker extends xarObject
         return static::$count;
     }
 
-    // this method is overridden in xarWorkflowHistory to get the history for trackerId(s)
+    // this method is overridden in WorkflowHistory to get the history for trackerId(s)
     public static function getTrackerItems(int|array $trackerIds = [], array $paging = [])
     {
         // we have a list of internal trackerIds for the items that we want to get/update/delete for some reason

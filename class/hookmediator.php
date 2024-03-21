@@ -13,15 +13,20 @@
  * @author Workflow Module Development Team
  */
 
-//namespace Xaraya\Modules\Workflow\HookObservers;
+namespace Xaraya\Modules\Workflow\HookObservers;
 
-use Xaraya\Modules\Workflow\HookObservers\GenericObserver;
+use ixarEventSubject;
+use ixarHookSubject;
+use ApiHookSubject;
+use GuiHookSubject;
+use sys;
+use Exception;
 
 sys::import('modules.workflow.class.hookobservers.generic');
 sys::import('xaraya.structures.hooks.apisubject');
 sys::import('xaraya.structures.hooks.guisubject');
 
-class xarWorkflowHookMediator extends GenericObserver
+class HookMediator extends GenericObserver
 {
     private static $subjectNamePrefix = '';  // no prefix used by Xaraya event/hook subjects
     private static $registeredSubjects = [];
@@ -107,7 +112,7 @@ class xarWorkflowHookMediator extends GenericObserver
         //workflow.guard
         if (empty($workflowName)) {
             $subjectName = static::$subjectNamePrefix . $subjectType;
-        //workflow.[workflow name].guard
+            //workflow.[workflow name].guard
         } else {
             $subjectName = static::$subjectNamePrefix . $workflowName . '.' . $subjectType;
             //workflow.[workflow name].guard.[transition name]

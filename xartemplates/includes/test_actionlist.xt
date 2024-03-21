@@ -2,12 +2,13 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>
-    <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
+    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+  </xar:if>
+  <xar:if condition="empty($tracker)">
+    <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
   <xar:if condition="!empty($trackerId) and empty($workflow) and empty($item)">
-    <xar:set name="dummy">sys::import('modules.workflow.class.tracker')</xar:set>
-    <xar:set name="item">xarWorkflowTracker::getTrackerItem($trackerId)</xar:set>
+    <xar:set name="item">$tracker->getTrackerItem($trackerId)</xar:set>
   </xar:if>
   <xar:if condition="empty($workflow) and !empty($item)">
     <xar:set name="trackerId">$item['id']</xar:set>

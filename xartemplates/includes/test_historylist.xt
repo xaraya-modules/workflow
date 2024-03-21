@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId, $userId and $trackerId if available -->
-  <xar:set name="dummy">sys::import('modules.workflow.class.history')</xar:set>
+  <xar:if condition="empty($history)">
+    <xar:set name="history">xarMod::apiFunc('workflow', 'user', 'history')</xar:set>
+  </xar:if>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => '-updated']</xar:set>
-  <xar:set name="dummy">xarWorkflowHistory::setPaging($paging)</xar:set>
+  <xar:set name="dummy">$history->setPaging($paging)</xar:set>
   <xar:if condition="empty($trackerId) and !empty($item)">
     <xar:set name="trackerId">$item['id']</xar:set>
   </xar:if>
   <xar:if condition="!empty($trackerId)">
-    <xar:set name="items">xarWorkflowHistory::getTrackerItems($trackerId)</xar:set>
+    <xar:set name="items">$history->getTrackerItems($trackerId)</xar:set>
   <xar:elseif condition="!empty($subjectId)"/>
-    <xar:set name="items">xarWorkflowHistory::getSubjectItems($subjectId, $workflow, $userId)</xar:set>
+    <xar:set name="items">$history->getSubjectItems($subjectId, $workflow, $userId)</xar:set>
   <xar:elseif condition="!empty($workflow)"/>
-    <xar:set name="items">xarWorkflowHistory::getWorkflowItems($workflow, $userId)</xar:set>
+    <xar:set name="items">$history->getWorkflowItems($workflow, $userId)</xar:set>
   <xar:else/>
     <xar:set name="items">[]</xar:set>
   </xar:if>
@@ -48,8 +50,8 @@
             </a>&#160;
             <a href="#$filterlink#" title="Filter Subject #$currentId#">#$currentId#</a>
           </td>
-          <td>#xarWorkflowConfig::formatName($item['transition'])#</td>
-          <td>#xarWorkflowConfig::formatName($item['marking'])#</td>
+          <td>#ucwords(str_replace('_', ' ', $item['transition']))#</td>
+          <td>#ucwords(str_replace('_', ' ', $item['marking']))#</td>
           <td>#xarUser::getVar('name', $item['user'])#</td>
           <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
           #xarLocale::getFormattedTime('short',$item['updated'])#</td>
@@ -57,7 +59,7 @@
         </tr>
       </xar:foreach>
     </table>
-    <!-- Count: #xarWorkflowHistory::getCount()# -->
+    <!-- Count: #$history->getCount()# -->
   </fieldset>
   </xar:if>
 </xar:template>

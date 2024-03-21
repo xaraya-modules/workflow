@@ -32,21 +32,26 @@ sys::import('modules.workflow.class.subject');
 sys::import('modules.workflow.class.tracker');
 //sys::import('modules.workflow.class.logger');
 
-use Symfony\Component\Workflow\Workflow;
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowLogger;
+use Xaraya\Modules\Workflow\WorkflowProcess;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Sessions\SessionHandler;
+use Symfony\Component\Workflow\Workflow;
 
-//xarWorkflowProcess::setLogger(new xarWorkflowLogger());
+//WorkflowProcess::setLogger(new WorkflowLogger());
 
 //$sitePrefix = '/bermuda';
-//echo xarWorkflowProcess::dumpProcess('hook_sample', $sitePrefix);
+//echo WorkflowProcess::dumpProcess('hook_sample', $sitePrefix);
 //exit;
-$workflow = xarWorkflowProcess::getProcess('cd_loans');
+$workflow = WorkflowProcess::getProcess('cd_loans');
 
 // initialize session
 xarSession::init();
-$_SESSION[SessionHandler::PREFIX.'role_id'] = 6;
+$_SESSION[SessionHandler::PREFIX . 'role_id'] = 6;
 
-$subject = new xarWorkflowSubject('cdcollection', 5);
+$subject = new WorkflowSubject('cdcollection', 5);
 
 // initiate workflow
 $marking = $workflow->getMarking($subject);
@@ -79,10 +84,11 @@ $marking = $workflow->apply($subject, "request", [Workflow::DISABLE_ANNOUNCE_EVE
 echo "Marking: " . var_export($marking, true) . "\n";
 $context = $subject->getContext();
 echo "Context: " . var_export($context, true) . "\n";
+$transition = "approve";
 $transitions = $workflow->getEnabledTransition($subject, $transition);
-//$transitions = $workflow->buildTransitionBlockerList($subject, "request");
+//$transitions = $workflow->buildTransitionBlockerList($subject, "approve");
 echo "Transitions: " . var_export($transitions, true) . "\n";
-$items = xarWorkflowTracker::getItems("cd_loans", "cdcollection", 0, '', 6);
+$items = WorkflowTracker::getItems("cd_loans", "cdcollection", 0, '', 6);
 echo "Items: " . var_export($items, true) . "\n";
 $todo = [];
 foreach ($items as $id => $item) {
@@ -91,7 +97,7 @@ foreach ($items as $id => $item) {
 }
 echo "Todo: " . var_export($todo, true) . "\n";
 foreach ($todo as $object => $itemids) {
-    //$values = xarWorkflowTracker::getObjectValues($object, $itemids, ['status']);
-    $values = xarWorkflowTracker::getObjectValues($object, $itemids);
+    //$values = WorkflowTracker::getObjectValues($object, $itemids, ['status']);
+    $values = WorkflowTracker::getObjectValues($object, $itemids);
     echo "Values: " . var_export($values, true) . "\n";
 }

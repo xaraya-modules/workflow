@@ -19,11 +19,6 @@ use ObjectDescriptor;
 use xarSession;
 use xarVar;
 use sys;
-// @checkme remove once moved to the same namespace
-use xarWorkflowMarkingInterface;
-use xarWorkflowMarkingTrait;
-use xarWorkflowRegistryInterface;
-use xarWorkflowRegistryTrait;
 
 sys::import('modules.base.xarproperties.textarea');
 sys::import('modules.workflow.class.traits.markingtrait');
@@ -31,10 +26,10 @@ sys::import('modules.workflow.class.traits.registrytrait');
 sys::import('modules.workflow.class.config');
 sys::import('modules.workflow.class.tracker');
 
-class WorkflowsProperty extends TextAreaProperty implements xarWorkflowMarkingInterface, xarWorkflowRegistryInterface
+class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterface, Traits\RegistryInterface
 {
-    use xarWorkflowMarkingTrait;
-    use xarWorkflowRegistryTrait;
+    use Traits\MarkingTrait;
+    use Traits\RegistryTrait;
 
     public $id         = 18888;
     public $name       = 'workflows';
@@ -98,14 +93,14 @@ class WorkflowsProperty extends TextAreaProperty implements xarWorkflowMarkingIn
         }
         $data['userId'] = $this->objectref->getContext()?->getUserId() ?? xarSession::getVar('role_id');
         $data['subjectId'] = $this->getId();
-        // pass along objectref for xarWorkflowTracker::getItems()
+        // pass along objectref for WorkflowTracker::getItems()
         $data['objectref'] = $this->objectref;
-        // from xarWorkflowMarkingTrait
+        // from MarkingTrait
         $data['marking'] = $this->getMarking();
         $data['context'] = $this->getContext();
-        // from xarWorkflowRegistryTrait
+        // from RegistryTrait
         $data['workflows'] = $this->allWorkflows();
-        // from xarWorkflowTransitionTrait - handled via workflow-actions tag, showactions user api and test-actionlist template
+        // from TransitionTrait - handled via workflow-actions tag, showactions user api and test-actionlist template
         //$data['transitions'] = $this->getEnabledTransitions($workflow);
         return parent::showOutput($data);
     }

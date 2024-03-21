@@ -12,11 +12,13 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow;
+
 use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\Marking;
 
-class xarWorkflowDumper extends StateMachineGraphvizDumper
+class WorkflowDumper extends StateMachineGraphvizDumper
 {
     protected $baseURL = '?';
 

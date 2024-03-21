@@ -8,11 +8,12 @@
     <xar:elseif condition="!empty($layout) and $layout eq 'linebreak'"/>
         #nl2br($value)#
     <xar:elseif condition="!empty($workflows) and !empty($objectref)"/>
-        <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>
-        <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
-        <xar:set name="dummy">sys::import('modules.workflow.class.tracker')</xar:set>
+        <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+        <xar:if condition="empty($tracker)">
+            <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
+        </xar:if>
         <!-- @todo decide whether to show items for all users or only the current one -->
-        <xar:set name="items">xarWorkflowTracker::getItems('', $objectref->name, $objectref->itemid, '', $userId)</xar:set>
+        <xar:set name="items">$tracker->getItems('', $objectref->name, $objectref->itemid, '', $userId)</xar:set>
         <div>
         <xar:if condition="empty($items)">
             <!-- @checkme for each workflow for this subject, set to initial place with empty trackerId -->

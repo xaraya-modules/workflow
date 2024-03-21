@@ -11,6 +11,12 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowLogger;
+use Xaraya\Modules\Workflow\WorkflowProcess;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Modules\Workflow\WorkflowTracker;
+
 /**
  * the test user function - run the actual transition in the workflow here
  *
@@ -30,12 +36,12 @@ function workflow_user_test_run(array $args = [], $context = null)
     // @checkme we don't actually need to require composer autoload here
     sys::import('modules.workflow.class.config');
     try {
-        xarWorkflowConfig::checkAutoload();
-        //xarWorkflowConfig::setAutoload();
+        WorkflowConfig::checkAutoload();
+        //WorkflowConfig::setAutoload();
     } catch (Exception $e) {
         $data['warning'] = nl2br($e->getMessage());
     }
-    $data['config'] = xarWorkflowConfig::loadConfig();
+    $data['config'] = WorkflowConfig::loadConfig();
     $data['context'] = $context;
     $data['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
 
@@ -61,7 +67,7 @@ function workflow_user_test_run(array $args = [], $context = null)
     sys::import('modules.workflow.class.tracker');
 
     if (!empty($data['trackerId'])) {
-        $item = xarWorkflowTracker::getTrackerItem($data['trackerId']);
+        $item = WorkflowTracker::getTrackerItem($data['trackerId']);
         if (empty($item)) {
             $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';
             $vars = ['trackerId', 'user', 'test_run', 'workflow'];
@@ -75,18 +81,18 @@ function workflow_user_test_run(array $args = [], $context = null)
             $vars = ['subjectId', 'user', 'test_run', 'workflow'];
             throw new BadParameterException($vars, $msg);
         }
-        $items = xarWorkflowTracker::getSubjectItems($data['subjectId'], $data['workflow'], $data['userId']);
+        $items = WorkflowTracker::getSubjectItems($data['subjectId'], $data['workflow'], $data['userId']);
         if (!empty($items)) {
             // @checkme there can be only one :-)
             $item = array_values($items)[0];
             $data['place'] = $item['marking'];
             $data['trackerId'] = $item['id'];
         } else {
-            $data['place'] = xarWorkflowConfig::getInitialMarking($data['workflow']);
+            $data['place'] = WorkflowConfig::getInitialMarking($data['workflow']);
             $item = ['id' => 0, 'workflow' => $data['workflow'], 'object' => $objectName, 'item' => $itemId, 'user' => $data['userId'], 'marking' => $data['place'], 'updated' => time()];
         }
     } else {
-        //$subject = new xarWorkflowSubject();
+        //$subject = new WorkflowSubject();
         // initiate workflow
         //$marking = $workflow->getMarking($subject);
         throw new Exception('How did we end up here?');
@@ -100,8 +106,8 @@ function workflow_user_test_run(array $args = [], $context = null)
 
     // @checkme we DO actually need to require composer autoload here
     try {
-        //xarWorkflowConfig::checkAutoload();
-        xarWorkflowConfig::setAutoload();
+        //WorkflowConfig::checkAutoload();
+        WorkflowConfig::setAutoload();
     } catch (Exception $e) {
         $data['warning'] = nl2br($e->getMessage());
         return xarTpl::module('workflow', 'user', 'test', $data);
@@ -110,12 +116,12 @@ function workflow_user_test_run(array $args = [], $context = null)
     sys::import('modules.workflow.class.logger');
     sys::import('modules.workflow.class.process');
     sys::import('modules.workflow.class.subject');
-    xarWorkflowProcess::setLogger(new xarWorkflowLogger());
+    WorkflowProcess::setLogger(new WorkflowLogger());
 
-    $workflow = xarWorkflowProcess::getProcess($data['workflow']);
+    $workflow = WorkflowProcess::getProcess($data['workflow']);
 
     // @todo verify use of Xaraya $context with Symfony Workflow component
-    $subject = new xarWorkflowSubject($item['object'], (int) $item['item']);
+    $subject = new WorkflowSubject($item['object'], (int) $item['item']);
     $subject->setContext($context);
     if (!empty($data['trackerId'])) {
         // set current marking
@@ -131,7 +137,7 @@ function workflow_user_test_run(array $args = [], $context = null)
     if ($workflow->can($subject, $data['transition'])) {
         $marking = $workflow->apply($subject, $data['transition'], $args);
         $data['place'] = implode(', ', array_keys($marking->getPlaces()));
-        $data['message'] = "The transition of subject " . $subject->getId() . " to " . xarWorkflowConfig::formatName($data['place']) . " was successful";
+        $data['message'] = "The transition of subject " . $subject->getId() . " to " . WorkflowConfig::formatName($data['place']) . " was successful";
     } else {
         $blockers = $workflow->buildTransitionBlockerList($subject, $data['transition']);
         $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';

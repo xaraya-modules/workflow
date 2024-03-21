@@ -1,6 +1,6 @@
 <?php
 /**
- * Workflow Module Test Subject for Symfony Workflow tests - could use xarWorkflowTransitionTrait too
+ * Workflow Module Test Subject for Symfony Workflow tests - could use TransitionTrait too
  *
  * @package modules
  * @copyright (C) copyright-placeholder
@@ -12,13 +12,19 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow;
+
+use DataObject;
+use DataObjectFactory;
+use sys;
+
 sys::import('modules.workflow.class.traits.markingtrait');
 sys::import('modules.workflow.class.traits.transitiontrait');
 
-class xarWorkflowSubject implements xarWorkflowMarkingInterface
+class WorkflowSubject implements Traits\MarkingInterface
 {
     // @todo verify use of Xaraya $context with Symfony Workflow component
-    use xarWorkflowMarkingTrait;
+    use Traits\MarkingTrait;
 
     // @checkme create minimal objectref object for use in getId()
     public $objectref;
@@ -37,6 +43,7 @@ class xarWorkflowSubject implements xarWorkflowMarkingInterface
             $objectref = DataObjectFactory::getObject(
                 ['name' => $this->objectref->name,
                 'itemid' => $this->objectref->itemid],
+                // @todo make sure we have a Xaraya context here, and not a Symfony one set by transition
                 $this->getContext()
             );
             if (!empty($objectref)) {
@@ -50,9 +57,9 @@ class xarWorkflowSubject implements xarWorkflowMarkingInterface
     }
 }
 
-class xarWorkflowSubjectWithTransitions extends xarWorkflowSubject  // implements xarWorkflowTransitionInterface
+class WorkflowSubjectWithTransitions extends WorkflowSubject  // implements Traits\TransitionInterface
 {
-    use xarWorkflowTransitionTrait;
+    use Traits\TransitionTrait;
 
     public function getWorkflow(string $workflowName): mixed
     {

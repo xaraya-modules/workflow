@@ -11,6 +11,8 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+use Xaraya\Modules\Workflow\WorkflowConfig;
+
 /**
  * Update the configuration parameters of the module based on data from the modification form
  *
@@ -140,15 +142,15 @@ function workflow_admin_modifyconfig()
 
     // for Symfony Workflows build a list of transitions from initial marking
     sys::import('modules.workflow.class.config');
-    $config = xarWorkflowConfig::loadConfig();
+    $config = WorkflowConfig::loadConfig();
     //$data['transitions'] = [];
     foreach ($config as $workflowName => $info) {
         $start = $info['initial_marking'];
         $start = !is_array($start) ?: $start[0];
         $label = ($info['label'] ?? $workflowName) . " : $start";
-        $label = xarWorkflowConfig::formatName($label);
+        $label = WorkflowConfig::formatName($label);
         foreach ($info['transitions'] as $transitionName => $fromto) {
-            $name = xarWorkflowConfig::formatName($transitionName);
+            $name = WorkflowConfig::formatName($transitionName);
             if (is_array($fromto['from']) && in_array($start, $fromto['from'])) {
                 //$data['transitions'][$workflowName] ??= [];
                 //$data['transitions'][$workflowName][$transitionName] = "$label - $name";

@@ -1,6 +1,6 @@
 <?php
 /**
- * Workflow Module Transition Trait for Symfony Workflow tests - could be used in custom subject, cfr. xarWorkflowProcess
+ * Workflow Module Transition Trait for Symfony Workflow tests - could be used in custom subject, cfr. WorkflowProcess
  *
  * @package modules
  * @copyright (C) copyright-placeholder
@@ -12,21 +12,25 @@
  * @author Workflow Module Development Team
  */
 
+namespace Xaraya\Modules\Workflow\Traits;
+
+use sys;
+
 sys::import('modules.workflow.class.traits.registrytrait');
 
 /**
- * For documentation purposes only - available via xarWorkflowTransitionTrait
+ * For documentation purposes only - available via TransitionTrait
  */
-interface xarWorkflowTransitionInterface extends xarWorkflowRegistryInterface
+interface TransitionInterface extends RegistryInterface
 {
     public function canTransition(string $workflowName, string $transitionName): bool;
     public function applyTransition(string $workflowName, string $transitionName, array $context = []): mixed;
     public function getEnabledTransitions(string $workflowName): array;
 }
 
-trait xarWorkflowTransitionTrait
+trait TransitionTrait
 {
-    use xarWorkflowRegistryTrait;
+    use RegistryTrait;
 
     // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Workflow/Workflow.php
     public function canTransition(string $workflowName, string $transitionName): bool

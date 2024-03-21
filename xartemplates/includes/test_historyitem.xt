@@ -2,12 +2,13 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="dummy">sys::import('modules.workflow.class.config')</xar:set>
-    <xar:set name="config">xarWorkflowConfig::loadConfig()</xar:set>
+    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+  </xar:if>
+  <xar:if condition="empty($tracker)">
+    <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
   <xar:if condition="!empty($trackerId) and empty($workflow) and empty($item)">
-    <xar:set name="dummy">sys::import('modules.workflow.class.history')</xar:set>
-    <xar:set name="item">xarWorkflowTracker::getTrackerItem($trackerId)</xar:set>
+    <xar:set name="item">$tracker->getTrackerItem($trackerId)</xar:set>
   </xar:if>
   <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
   <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $item['tracker_id']])</xar:set>
@@ -55,7 +56,7 @@
         <label>Transition</label>
       </div>
       <div class="xar-col">
-        #xarWorkflowConfig::formatName($item['transition'])#
+        #ucwords(str_replace('_', ' ', $item['transition']))#
       </div>
     </div>
     <div class="xar-row">
@@ -64,7 +65,7 @@
       </div>
       <div class="xar-col">
         <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $item['marking']])</xar:set>
-        <xar:set name="where">xarWorkflowConfig::formatName($item['marking'])</xar:set>
+        <xar:set name="where">ucwords(str_replace('_', ' ', $item['marking']))</xar:set>
         <a href="#$placelink#" title="Filter Place #$where#">#$where#</a>
       </div>
     </div>

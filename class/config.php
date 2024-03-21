@@ -12,7 +12,14 @@
  * @author Workflow Module Development Team
  */
 
-class xarWorkflowConfig extends xarObject
+namespace Xaraya\Modules\Workflow;
+
+use xarObject;
+use xarServer;
+use sys;
+use Exception;
+
+class WorkflowConfig extends xarObject
 {
     public static $config = [];
 
@@ -45,16 +52,16 @@ class xarWorkflowConfig extends xarObject
 
     public static function checkAutoload()
     {
-        // @checkme we need to require composer autoload here
-        $root = sys::root();
-        // flat install supporting symlinks
-        if (empty($root)) {
-            $vendor = realpath(dirname(realpath(xarServer::getVar('SCRIPT_FILENAME'))) . '/../vendor');
-        } elseif ($root == sys::web() && is_dir($root . '../vendor')) {
-            $vendor = realpath($root . '../vendor');
+        // Adapted from sys::autoload()
+        if (empty(sys::$root)) {
+            // go back up to directory above bootstrap.php (for composer install with symlinks)
+            $vendor = dirname(__DIR__, 4) . '/vendor';
+        } elseif (sys::$root == sys::$web && is_dir(sys::$root . '../vendor')) {
+            $vendor = sys::$root . '../vendor';
         } else {
-            $vendor = realpath($root . 'vendor');
+            $vendor = sys::$root . 'vendor';
         }
+
         if (!file_exists($vendor . '/autoload.php')) {
             $message = <<<EOT
                 This test needs composer autoload to run the workflows
@@ -62,19 +69,18 @@ class xarWorkflowConfig extends xarObject
                 ...
                 $ head html/code/modules/workflow/xaruser/test_run.php
                 &lt;?php
-                sys::import('modules.workflow.class.config');
-                xarWorkflowConfig::setAutoload();
+                sys::autoload();
                 ...
                 EOT;
-            throw new Exception($message . "\nVendor: $root - $vendor\n");
+            throw new Exception($message . "\nVendor: $vendor\n");
         }
         return $vendor . '/autoload.php';
     }
 
     public static function setAutoload()
     {
-        $autoloadFile = static::checkAutoload();
-        require_once $autoloadFile;
+        static::checkAutoload();
+        sys::autoload();
     }
 
     public static function hasWorkflowConfig(string $workflowName)
