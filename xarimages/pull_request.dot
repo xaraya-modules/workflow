@@ -1,0 +1,21 @@
+digraph workflow {
+  ratio="compress" rankdir="LR"
+  node [fontsize="9" fontname="Arial" color="#333333" fillcolor="lightblue" fixedsize="false" width="1" href="/"];
+  edge [fontsize="9" fontname="Arial" color="#333333" arrowhead="normal" arrowsize="0.5" href="/"];
+
+  place_2b020927d3c6eb407223a1baa3d6ce3597a3f88d [label="Start", shape=circle style="filled" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=start"];
+  place_ab43a7c9cb5b2380afc4ddf8b3e2583169b39a02 [label="Coding", shape=circle href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=coding"];
+  place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 [label="Test", shape=circle href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=test"];
+  place_61e62b213a1a56f7695845df4fc372a10cb0a73e [label="Review", shape=circle href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=review"];
+  place_e8e2ace14fcedce073756444255d2cfe24f470af [label="Merged", shape=circle href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=merged"];
+  place_ea88fbaa99b73225752e2ef67593f775848160ad [label="Closed", shape=circle href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&place=closed"];
+  place_2b020927d3c6eb407223a1baa3d6ce3597a3f88d -> place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 [label="Submit" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=submit"];
+  place_ab43a7c9cb5b2380afc4ddf8b3e2583169b39a02 -> place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 [label="Update" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=update"];
+  place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 -> place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 [label="Update" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=update"];
+  place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 -> place_61e62b213a1a56f7695845df4fc372a10cb0a73e [label="Wait For Review" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=wait_for_review"];
+  place_61e62b213a1a56f7695845df4fc372a10cb0a73e -> place_a94a8fe5ccb19ba61c4c0873d391e987982fbbd3 [label="Update" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=update"];
+  place_61e62b213a1a56f7695845df4fc372a10cb0a73e -> place_ab43a7c9cb5b2380afc4ddf8b3e2583169b39a02 [label="Request Change" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=request_change"];
+  place_61e62b213a1a56f7695845df4fc372a10cb0a73e -> place_e8e2ace14fcedce073756444255d2cfe24f470af [label="Accept" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=accept"];
+  place_61e62b213a1a56f7695845df4fc372a10cb0a73e -> place_ea88fbaa99b73225752e2ef67593f775848160ad [label="Reject" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=reject"];
+  place_ea88fbaa99b73225752e2ef67593f775848160ad -> place_61e62b213a1a56f7695845df4fc372a10cb0a73e [label="Reopen" style="solid" href="/xaraya/index.php?module=workflow&type=user&func=test&workflow=pull_request&transition=reopen"];
+}

@@ -18,12 +18,14 @@ use Xaraya\Modules\Workflow\WorkflowDumper;
 /**
  * the dumper user API function
  *
+ * @uses \sys::autoload()
  * @uses WorkflowDumper
  * @author mikespub
  * @access public
  */
 function workflow_userapi_dumper(array $args = [], $context = null)
 {
+    sys::autoload();
     // @todo do something with $args and $context
     return new WorkflowDumper();
 }

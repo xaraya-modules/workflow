@@ -18,11 +18,13 @@ use Xaraya\Modules\Workflow\WorkflowEventSubscriber;
 /**
  * the eventsubscriber user API function
  *
+ * @uses \sys::autoload()
  * @uses WorkflowEventSubscriber
  * @author mikespub
  * @access public
  */
 function workflow_userapi_eventsubscriber(array $args = [], $context = null)
 {
+    sys::autoload();
     return new WorkflowEventSubscriber($args, $context);
 }

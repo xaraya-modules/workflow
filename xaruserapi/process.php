@@ -18,11 +18,13 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 /**
  * the process user API function
  *
+ * @uses \sys::autoload()
  * @uses WorkflowProcess
  * @author mikespub
  * @access public
  */
 function workflow_userapi_process(array $args = [], $context = null)
 {
+    sys::autoload();
     return new WorkflowProcess($args, $context);
 }

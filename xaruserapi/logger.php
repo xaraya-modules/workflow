@@ -18,12 +18,14 @@ use Xaraya\Modules\Workflow\WorkflowLogger;
 /**
  * the logger user API function
  *
+ * @uses \sys::autoload()
  * @uses WorkflowLogger
  * @author mikespub
  * @access public
  */
 function workflow_userapi_logger(array $args = [], $context = null)
 {
+    sys::autoload();
     // @todo do something with $args and $context
     $args['prefix'] ??= '';
     return new WorkflowLogger($args['prefix']);
