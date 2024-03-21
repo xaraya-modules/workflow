@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="../../xaraya-core/phpstan-bootstrap.php"
+         cacheDirectory=".phpunit.cache"
+         requireCoverageMetadata="true">
+    <testsuites>
+        <testsuite name="default">
+            <directory>xartests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <report>
+          <html outputDirectory="coverage"/>
+          <text outputFile="php://stdout" showOnlySummary="true"/>
+        </report>
+    </coverage>
+
+    <source>
+        <include>
+            <directory suffix=".php">class</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">lib/galaxia</directory>
+        </exclude>
+    </source>
+</phpunit>

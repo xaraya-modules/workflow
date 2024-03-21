@@ -81,7 +81,9 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
     /**
      * Show some default output for this property
      *
-     * @param mixed $data['value'] value of the property (default is the current value)
+     * @param array<string, mixed> $data
+     * with
+     *     $data['value'] value of the property (default is the current value)
      * @return string containing the HTML (or other) text to output in the BL template
      */
     public function showOutput(array $data = [])

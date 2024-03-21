@@ -38,7 +38,7 @@ function workflow_schedulerapi_activities(array $args = [], $context = null)
             if (!preg_match('/(\d+)(\w)/', $job['interval'], $matches)) {
                 continue;
             }
-            $count = $matches[1];
+            $count = intval($matches[1]);
             $interval = $matches[2];
             $skip = 0;
             switch ($interval) {

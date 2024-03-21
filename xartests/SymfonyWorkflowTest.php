@@ -34,6 +34,9 @@ final class SymfonyWorkflowTest extends TestCase
 
     public static function tearDownAfterClass(): void {}
 
+    /**
+     * @covers \Xaraya\Modules\Workflow\WorkflowProcess
+     */
     public function testGetWorkflow(): void
     {
         $workflow = WorkflowProcess::getProcess('cd_loans');
@@ -46,6 +49,9 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertCount($expected, $definition->getTransitions());
     }
 
+    /**
+     * @covers \Xaraya\Modules\Workflow\WorkflowEventSubscriber
+     */
     public function testEventSubscriber(): void
     {
         WorkflowProcess::reset();
@@ -69,6 +75,9 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertCount($expected, $callbacks);
     }
 
+    /**
+     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
+     */
     public function testGetSubject_AnonTransitions(): void
     {
         WorkflowProcess::reset();
@@ -107,6 +116,9 @@ final class SymfonyWorkflowTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
+     */
     public function testGetSubject_UserTransitions(): void
     {
         WorkflowProcess::reset();
@@ -160,6 +172,9 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertEquals($expected, $subject->getObject()->getContext());
     }
 
+    /**
+     * @covers \Xaraya\Modules\Workflow\WorkflowSubject
+     */
     public function testGetSubject_WrongContext(): void
     {
         $transitionContext = [Workflow::DISABLE_ANNOUNCE_EVENT => true];

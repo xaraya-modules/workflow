@@ -2,14 +2,12 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 2
+    level: 0
     paths:
-        - .
+        - lib/galaxia
     bootstrapFiles:
-        - ../../xaraya-core/phpstan-bootstrap.php
         - phpstan-bootstrap.php
     excludePaths:
-        - lib/galaxia/*
-        - vendor/*
+        - lib/galaxia/docs/*
     parallel:
         processTimeout: 300.0

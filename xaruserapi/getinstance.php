@@ -20,7 +20,7 @@
     @author Mike Dunn submitted by Court Shrock
     @access public
     @param $instaceId (required)
-    @return id workflow Instance
+    @return \Galaxia\Api\Instance workflow Instance
 */
 function workflow_userapi_getInstance($args)
 {
