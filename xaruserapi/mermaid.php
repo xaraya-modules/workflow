@@ -30,7 +30,10 @@ use Symfony\Component\Workflow\Dumper\MermaidDumper;
 function workflow_userapi_mermaid(array $args = [], $context = null)
 {
     sys::autoload();
-    $dumper = new MermaidDumper($args['type'] ?? 'statemachine');
+    $args['type'] ??= 'state_machine';
+    // see https://github.com/symfony/framework-bundle/blob/7.0/Command/WorkflowDumpCommand.php
+    $transitionType = ('workflow' === $args['type']) ? MermaidDumper::TRANSITION_TYPE_WORKFLOW : MermaidDumper::TRANSITION_TYPE_STATEMACHINE;
+    $dumper = new MermaidDumper($transitionType);
     $workflow = WorkflowProcess::getProcess($args['workflow']);
     if (!empty($args['subject'])) {
         return $dumper->dump($workflow->getDefinition(), $workflow->getMarking($args['subject']));

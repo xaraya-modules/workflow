@@ -125,11 +125,20 @@ function workflow_user_test_run(array $args = [], $context = null)
     $subject->setContext($context);
     if (!empty($data['trackerId'])) {
         // set current marking
-        $subject->setMarking($item['marking'], $item);
+        if (WorkflowProcess::isStateMachine($workflow)) {
+            $subject->setMarking($item['marking'], $item);
+        } else {
+            $places = explode(',', $item['marking']);
+            $marking = [];
+            foreach ($places as $here) {
+                $marking[$here] = 1;
+            }
+            $subject->setMarking($marking, $item);
+        }
     } else {
         // initiate workflow for this subject
         $marking = $workflow->getMarking($subject);
-        $data['place'] = implode(', ', $marking->getPlaces());
+        //$data['place'] = implode(', ', $marking->getPlaces());
     }
 
     $transitions = $workflow->getEnabledTransitions($subject);

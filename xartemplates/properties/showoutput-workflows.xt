@@ -23,11 +23,17 @@
                 <xar:workflow-actions name="actions" config="$config" item="$item" title="$place" template="$place"/>
             </xar:foreach>
         </xar:if>
+        <!-- split marking and repeat if it contains , for workflows -->
         <xar:foreach in="$items" value="$item">
-            <!-- @checkme either set item here again to include it in the template scope, or use subdata= in template tag below -->
-            <xar:set name="item">$item</xar:set>
-            <!-- xar:template file="test_trackeritem"/ -->
-            <xar:workflow-actions name="actions" config="$config" item="$item" title="$item['marking']" template="$item['marking']"/>
+            <xar:set name="places">explode(',', $item['marking'])</xar:set>
+            <xar:foreach in="$places" value="$here">
+                <xar:set name="dummy">$item['marking'] = $here</xar:set>
+                <!-- @checkme either set item here again to include it in the template scope, or use subdata= in template tag below -->
+                <xar:set name="item">$item</xar:set>
+                <xar:set name="title">ucwords(str_replace('_', ' ', $item['marking']))</xar:set>
+                <!-- xar:template file="test_trackeritem"/ -->
+                <xar:workflow-actions name="actions" config="$config" item="$item" title="$title" template="$item['marking']"/>
+            </xar:foreach>
         </xar:foreach>
         </div>
     <xar:elseif condition="!empty($value) and is_array($value)"/>

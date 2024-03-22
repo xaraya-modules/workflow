@@ -20,13 +20,26 @@ function workflow_config_loader($dirPath, $suffix = '-config.php')
             continue;
         }
         $filePath = $dirPath . '/' . $fileName;
-        $info = require $filePath;
-        if (empty($info) || empty($info['name'])) {
+        $info = workflow_config_loadfile($filePath);
+        if (empty($info)) {
             continue;
         }
+        $info['name'] ??= str_replace($suffix, '', $fileName);
         $config[$info['name']] = $info;
     }
     return $config;
+}
+
+/**
+ * Load workflow configuration file
+ *
+ * @param string $filePath
+ * @return array<string, mixed>
+ */
+function workflow_config_loadfile($filePath)
+{
+    $info = require $filePath;
+    return $info;
 }
 
 // return configuration of the workflow(s)

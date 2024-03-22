@@ -27,6 +27,9 @@ use Symfony\Component\Workflow\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\EventListener\AuditTrailListener;
+use Xaraya\DataObject\Import\DataObjectImporter;
+use VirtualObjectDescriptor;
+use Exception;
 
 /**
  * @uses \sys::autoload()
@@ -182,6 +185,10 @@ class WorkflowProcess extends WorkflowBase
         } else {
             $objectName = $info['supports'];
         }
+        $info['create_object'] ??= false;
+        if (!static::checkDataObject($workflowName, $objectName, $info['create_object'])) {
+            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
+        }
         $dispatcher = static::getEventDispatcher();
         // @todo we need at least ['workflow.completed'] + callbackList here
         $eventTypes = $info['events_to_dispatch'] ?? null;
@@ -218,6 +225,10 @@ class WorkflowProcess extends WorkflowBase
         } else {
             $objectName = $info['supports'];
         }
+        $info['create_object'] ??= false;
+        if (!static::checkDataObject($workflowName, $objectName, $info['create_object'])) {
+            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
+        }
         $dispatcher = static::getEventDispatcher();
         // @todo we need at least ['workflow.completed'] + callbackList here
         $eventTypes = $info['events_to_dispatch'] ?? null;
@@ -243,10 +254,64 @@ class WorkflowProcess extends WorkflowBase
         return $workflow;
     }
 
+    public static function isStateMachine(Workflow|StateMachine $workflow)
+    {
+        if ($workflow instanceof StateMachine) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function checkDataObject(string $workflowName, string $objectName, bool $create = false)
+    {
+        $args = VirtualObjectDescriptor::getObjectID(['name' => $objectName]);
+        if (!empty($args['objectid'])) {
+            return $args['objectid'];
+        }
+        if (empty($create)) {
+            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
+        }
+        return static::createDataObject($workflowName, $objectName);
+    }
+
+    public static function createDataObject(string $workflowName, string $objectName)
+    {
+        // create virtual object descriptor with id and title property
+        $descriptor = new VirtualObjectDescriptor(['name' => $objectName]);
+        $descriptor->addProperty([
+            'name' => 'id',
+            'type' => 'itemid',
+        ]);
+        $descriptor->addProperty([
+            'name' => 'title',
+            'type' => 'textbox',
+        ]);
+        // add workflows property with default value and status displayonly
+        $default = [$workflowName => []];
+        $descriptor->addProperty([
+            'name' => 'workflow',
+            'type' => 'workflows',
+            'defaultvalue' => json_encode($default),
+            'status' => 34,
+        ]);
+        // set datastore to dynamicdata here (instead of cache)
+        $descriptor->set('datastore', 'dynamicdata');
+        // import the dataobject and its properties in the database
+        return DataObjectImporter::createObject($descriptor);
+    }
+
+    public static function reset()
+    {
+        static::$workflows = [];
+        static::$dispatcher = null;
+        static::$logger = null;
+        WorkflowEventSubscriber::reset();
+    }
+
     public static function dumpProcess(string $workflowName, string $sitePrefix = '')
     {
         $workflow = static::getProcess($workflowName);
-        if ($workflow instanceof StateMachine) {
+        if (static::isStateMachine($workflow)) {
             // php test.php | dot -Tpng -o cd_loans.png -Tcmapx -o cd_loans.map
             //$dumper = new StateMachineGraphvizDumper();
             $dumper = new WorkflowDumper();
@@ -322,14 +387,6 @@ class WorkflowProcess extends WorkflowBase
         }
         $workflow = static::getProcess($workflowName);
         return $workflow->getEnabledTransitions($subject);
-    }
-
-    public static function reset()
-    {
-        static::$workflows = [];
-        static::$dispatcher = null;
-        static::$logger = null;
-        WorkflowEventSubscriber::reset();
     }
 
     // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Workflow/Registry.php

@@ -9,9 +9,10 @@
 return [
     'name' => 'pull_request',
     'label' => 'Pull Request',
-    'description' => "Experiment with hook events triggering workflow transitions",
+    'description' => "Pull Request",
     'type' => 'state_machine',
     'supports' => ['pull_requests'],  // DynamicData Object this workflow should apply to
+    'create_object' => false,  // create the DynamicData Object if it doesn't exist
     'initial_marking' => ['start'],
     'places' => [
         'start',

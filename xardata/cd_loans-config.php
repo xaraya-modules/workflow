@@ -36,6 +36,7 @@ return [
     //],
     //'metadata' => [],
     'supports' => ['cdcollection'],  // DynamicData Object this workflow should apply to
+    'create_object' => false,  // create the DynamicData Object if it doesn't exist
     // you can pass one or more event names, or pass an empty array to not dispatch any event
     //'events_to_dispatch' => [],
     'initial_marking' => ['available'],

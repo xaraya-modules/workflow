@@ -11,6 +11,7 @@ return [
     'description' => "Experiment with hook events triggering workflow transitions",
     'type' => 'state_machine',
     'supports' => ['sample'],  // DynamicData Object this workflow should apply to
+    'create_object' => false,  // create the DynamicData Object if it doesn't exist
     'initial_marking' => ['waiting'],
     'places' => [
         'waiting',

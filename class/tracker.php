@@ -80,6 +80,7 @@ class WorkflowTracker extends WorkflowBase
             }
         }
         if (!empty($marking)) {
+            // @todo verify format compared to setItem
             if (is_array($marking)) {
                 $filter[] = implode(",", ["marking", "in", implode(",", $marking)]);
             } else {
@@ -158,7 +159,7 @@ class WorkflowTracker extends WorkflowBase
         return $item;
     }
 
-    public static function getItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
+    public static function getItem(string $workflowName, string $objectName, int $itemId, string|array $marking, int $userId, int $trackerId = 0)
     {
         // we have the internal trackerId of the item that we want to get/update/delete for some reason
         if (!empty($trackerId)) {
@@ -177,8 +178,14 @@ class WorkflowTracker extends WorkflowBase
         return $oldItem;
     }
 
-    public static function setItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
+    public static function setItem(string $workflowName, string $objectName, int $itemId, string|array $marking, int $userId, int $trackerId = 0)
     {
+        // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Component/Workflow/MarkingStore/MethodMarkingStore.php
+        // for state_machine $subject->getMarking() returns the singleState place as string
+        // for workflow $subject->getMarking() returns the multiState array of getPlaces()
+        if (is_array($marking)) {
+            $marking = implode(',', array_keys($marking));
+        }
         $newItem = [
             'workflow' => $workflowName,
             'object' => $objectName,
@@ -204,7 +211,7 @@ class WorkflowTracker extends WorkflowBase
         return $trackerId;
     }
 
-    public static function deleteItem(string $workflowName, string $objectName, int $itemId, string $marking, int $userId, int $trackerId = 0)
+    public static function deleteItem(string $workflowName, string $objectName, int $itemId, string|array $marking, int $userId, int $trackerId = 0)
     {
         $oldItem = static::getItem($workflowName, $objectName, $itemId, '', $userId, $trackerId);
         if (empty($oldItem)) {
