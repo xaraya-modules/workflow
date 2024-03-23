@@ -16,7 +16,7 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 
 /**
- * the run transition user API function
+ * the run transition user API function - used by hook calls to workflow
  *
  * @author mikespub
  * @access public

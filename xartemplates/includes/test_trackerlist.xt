@@ -30,7 +30,7 @@
     <xar:set name="workflow">'cd_loans'</xar:set>
     <xar:set name="items">[]</xar:set>
   </xar:if>
-  <xar:set name="places">[]</xar:set>
+  <xar:set name="fromlist">[]</xar:set>
   <xar:if condition="empty($handlers)">
     <xar:set name="handlers">xarMod::apiFunc('workflow', 'user', 'handlers')</xar:set>
   </xar:if>
@@ -73,8 +73,8 @@
     -->
     <xar:set name="from">is_array($info['from']) ? $info['from'] : [ $info['from'] ]</xar:set>
     <xar:foreach in="$from" value="$where">
-      <xar:set name="dummy">$places[$where] ??= []</xar:set>
-      <xar:set name="dummy">$places[$where][$name] = $enabled</xar:set>
+      <xar:set name="dummy">$fromlist[$where] ??= []</xar:set>
+      <xar:set name="dummy">$fromlist[$where][$name] = $enabled</xar:set>
     </xar:foreach>
   </xar:foreach>
   <fieldset>
@@ -129,11 +129,14 @@
           </td>
           <td>#xarUser::getVar('name', $item['user'])#</td>
           <td>
-            <xar:if condition="!empty($place) and $place eq $item['marking']">
-              <strong>#ucwords(str_replace('_', ' ', $item['marking']))#</strong>
-            <xar:else/>
-              #ucwords(str_replace('_', ' ', $item['marking']))#
-            </xar:if>
+            <xar:set name="places">explode(',', $item['marking'])</xar:set>
+            <xar:foreach in="$places" value="$here">
+              <xar:if condition="!empty($place) and $place eq $here">
+                <strong>#ucwords(str_replace('_', ' ', $here))#</strong>&#160;
+              <xar:else/>
+                #ucwords(str_replace('_', ' ', $here))#&#160;
+              </xar:if>
+            </xar:foreach>
           </td>
           <!-- you can choose how to display the date and time here, e.g. show
              the time for the last 12 hours and the date for anything older -->
@@ -143,8 +146,8 @@
             <td>#xarLocale::getFormattedDate('medium',$item['updated'])#</td>
           </xar:if>
           <td>
-          <xar:if condition="!empty($places[$item['marking']])">
-            <xar:foreach in="$places[$item['marking']]" key="$name" value="$enabled">
+          <xar:if condition="!empty($fromlist[$item['marking']])">
+            <xar:foreach in="$fromlist[$item['marking']]" key="$name" value="$enabled">
               <xar:set name="label">ucwords(str_replace('_', ' ', $name))</xar:set>
               <xar:if condition="!empty($enabled)">
                 <xar:set name="runlink">xarServer::getModuleURL('workflow', 'user', 'test_run', $params + ['transition' => $name])</xar:set>

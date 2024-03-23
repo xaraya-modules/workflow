@@ -12,7 +12,7 @@
  * @author Workflow Module Development Team
  */
 /**
- * the run activity user API function
+ * the run activity user API function - used by hook calls to workflow
  *
  * @author mikespub
  * @access public
@@ -30,6 +30,7 @@ function workflow_userapi_run_activity($args)
 
     // Adapted from tiki-g-run_activity.php
     include(GALAXIA_LIBRARY . '/api.php');
+    /** @var \Galaxia\Api\Instance $instance */
 
     // TODO: evaluate why this is here
     global $__activity_completed;

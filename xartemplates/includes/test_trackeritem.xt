@@ -48,7 +48,10 @@
         <label>Current Place</label>
       </div>
       <div class="xar-col">
-        #ucwords(str_replace('_', ' ', $item['marking']))#
+        <xar:set name="places">explode(',', $item['marking'])</xar:set>
+        <xar:foreach in="$places" value="$here">
+          #ucwords(str_replace('_', ' ', $here))#&#160;
+        </xar:foreach>
       </div>
     </div>
     <div class="xar-row">

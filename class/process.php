@@ -19,6 +19,7 @@ use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\Dumper\GraphvizDumper;
 use Symfony\Component\Workflow\Dumper\StateMachineGraphvizDumper;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
+use Symfony\Component\Workflow\Metadata\InMemoryMetadataStore;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Transition;
 use Symfony\Component\Workflow\Validator\StateMachineValidator;
@@ -29,6 +30,7 @@ use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\EventListener\AuditTrailListener;
 use Xaraya\DataObject\Import\DataObjectImporter;
 use VirtualObjectDescriptor;
+use SplObjectStorage;
 use Exception;
 
 /**
@@ -131,36 +133,97 @@ class WorkflowProcess extends WorkflowBase
         //$eventTypes = ['guard', 'leave', 'transition', 'enter', 'entered', 'completed', 'announce'];
         // add some predefined callbacks here, e.g. 'access' => 'update' means guardCheckAccess('update')
         $checkTypes = ['guard', 'completed', 'admin', 'roles', 'access', 'property', 'update', 'delete'];
-        foreach ($info['transitions'] as $transitionName => $fromto) {
+        foreach ($info['transitions'] as $transitionName => $config) {
             foreach ($checkTypes as $checkType) {
-                if (!empty($fromto[$checkType])) {
+                if (!empty($config[$checkType])) {
                     $callbackList[$transitionName] ??= [];
-                    $callbackList[$transitionName][$checkType] = $fromto[$checkType];
+                    $callbackList[$transitionName][$checkType] = $config[$checkType];
                 }
             }
         }
         return $callbackList;
     }
 
+    public static function getDefinition(array $info)
+    {
+        $workflowMetadata = ['title' => $info['label']];
+        [$places, $placesMetadata] = static::getPlaces($info['places'], $info['type']);
+        [$transitions, $transitionsMetadata] = static::getTransitions($info['transitions'], $info['type']);
+        $metadataStore = new InMemoryMetadataStore($workflowMetadata, $placesMetadata, $transitionsMetadata);
+        $definition = new Definition($places, $transitions, $info['initial_marking'], $metadataStore);
+        return $definition;
+    }
+
+    public static function getPlaces(array $placesConfig, string $workflowType)
+    {
+        $places = [];
+        $metadata = [];
+        // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/FrameworkExtension.php#L917
+        foreach ($placesConfig as $placeName => $config) {
+            // we have a simple place string
+            if (is_numeric($placeName) && is_string($config)) {
+                $placeName = $config;
+                $metadata[$placeName] ??= [];
+                $metadata[$placeName]['label'] ??= WorkflowConfig::formatName($placeName);
+                $places[] = $placeName;
+                continue;
+            }
+            // we have a place with name (unused) - see dependencyinjection
+            if (is_array($config) && !empty($config['name'])) {
+                $placeName = $config['name'];
+            }
+            // we have a place with metadata - supports label and bg_color
+            if (is_array($config) && !empty($config['metadata'])) {
+                $metadata[$placeName] = $config['metadata'];
+            }
+            // add label to metadata for dump
+            $metadata[$placeName] ??= [];
+            $metadata[$placeName]['label'] ??= WorkflowConfig::formatName($placeName);
+            $places[] = $placeName;
+        }
+        return [$places, $metadata];
+    }
+
     public static function getTransitions(array $transitionsConfig, string $workflowType)
     {
         $transitions = [];
+        $metadata = new SplObjectStorage();
         // See https://github.com/symfony/symfony/blob/6.3/src/Symfony/Bundle/FrameworkBundle/DependencyInjection/FrameworkExtension.php#L917
-        foreach ($transitionsConfig as $transitionName => $fromto) {
+        foreach ($transitionsConfig as $transitionName => $config) {
             // @checkme this seems to mean from ALL by default for workflow instead of from ANY!?
-            //$transitions[] = new Transition($transitionName, $fromto['from'], $fromto['to']);
-            if (is_array($fromto['from']) && count($fromto['from']) > 1) {
-                foreach ($fromto['from'] as $from) {
-                    $transitions[] = new Transition($transitionName, $from, $fromto['to']);
+            //$transitions[] = new Transition($transitionName, $config['from'], $config['to']);
+            if (is_array($config['from']) && count($config['from']) > 1) {
+                if ($workflowType == 'state_machine') {
+                    foreach ($config['from'] as $from) {
+                        $transitions[] = new Transition($transitionName, $from, $config['to']);
+                        $meta = [];
+                        // we have a transition with metadata - supports label and color
+                        if (!empty($config['metadata'])) {
+                            $meta = $config['metadata'];
+                        }
+                        $meta['label'] ??= WorkflowConfig::formatName($transitionName);
+                        $metadata[end($transitions)] = $meta;
+                    }
+                    continue;
                 }
+                // ["approved by journalist", "approved by spellchecker"]
+                // @todo support alternative syntax for OR-ing with workflows
+                $transitions[] = new Transition($transitionName, $config['from'], $config['to']);
                 // @checkme not supported for state_machine, pick the first
-            } elseif ($workflowType == 'state_machine' && is_array($fromto['to']) && count($fromto['to']) > 1) {
-                $transitions[] = new Transition($transitionName, $fromto['from'], $fromto['to'][0]);
+            } elseif ($workflowType == 'state_machine' && is_array($config['to']) && count($config['to']) > 1) {
+                $transitions[] = new Transition($transitionName, $config['from'], $config['to'][0]);
             } else {
-                $transitions[] = new Transition($transitionName, $fromto['from'], $fromto['to']);
+                $transitions[] = new Transition($transitionName, $config['from'], $config['to']);
             }
+            $meta = [];
+            // we have a transition with metadata - supports label and color
+            if (!empty($config['metadata'])) {
+                $meta = $config['metadata'];
+            }
+            $meta['label'] ??= WorkflowConfig::formatName($transitionName);
+            $metadata[end($transitions)] = $meta;
         }
-        return $transitions;
+        return [$transitions, $metadata];
     }
 
     public static function getProcess(string $workflowName)
@@ -180,15 +243,8 @@ class WorkflowProcess extends WorkflowBase
             return static::buildStateMachine($workflowName, $info);
         }
         // @checkme add subscribed events for each object supported by this workflow?
-        if (is_array($info['supports'])) {
-            $objectName = $info['supports'][0];  // pick the first one for now...
-        } else {
-            $objectName = $info['supports'];
-        }
-        $info['create_object'] ??= false;
-        if (!static::checkDataObject($workflowName, $objectName, $info['create_object'])) {
-            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
-        }
+        $objectName = static::getDataObject($workflowName, $info);
+
         $dispatcher = static::getEventDispatcher();
         // @todo we need at least ['workflow.completed'] + callbackList here
         $eventTypes = $info['events_to_dispatch'] ?? null;
@@ -198,9 +254,7 @@ class WorkflowProcess extends WorkflowBase
         // @checkme do this *after* adding the subscribed events and callback functions
         $dispatcher->addSubscriber($subscriber);
 
-        $transitions = static::getTransitions($info['transitions'], $info['type']);
-
-        $definition = new Definition($info['places'], $transitions, $info['initial_marking']);
+        $definition = static::getDefinition($info);
 
         // See $info['marking_store'] for customisation per workflow - multiple_state here
         $markingStore = new MethodMarkingStore();
@@ -220,15 +274,8 @@ class WorkflowProcess extends WorkflowBase
             $info = WorkflowConfig::getWorkflowConfig($workflowName);
         }
         // @checkme add subscribed events for each object supported by this workflow?
-        if (is_array($info['supports'])) {
-            $objectName = $info['supports'][0];
-        } else {
-            $objectName = $info['supports'];
-        }
-        $info['create_object'] ??= false;
-        if (!static::checkDataObject($workflowName, $objectName, $info['create_object'])) {
-            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
-        }
+        $objectName = static::getDataObject($workflowName, $info);
+
         $dispatcher = static::getEventDispatcher();
         // @todo we need at least ['workflow.completed'] + callbackList here
         $eventTypes = $info['events_to_dispatch'] ?? null;
@@ -238,9 +285,7 @@ class WorkflowProcess extends WorkflowBase
         // @checkme do this *after* adding the subscribed events and callback functions
         $dispatcher->addSubscriber($subscriber);
 
-        $transitions = static::getTransitions($info['transitions'], $info['type']);
-
-        $definition = new Definition($info['places'], $transitions, $info['initial_marking']);
+        $definition = static::getDefinition($info);
 
         // See $info['marking_store'] for customisation per workflow - single_state here
         $markingStore = new MethodMarkingStore(true);
@@ -260,6 +305,24 @@ class WorkflowProcess extends WorkflowBase
             return true;
         }
         return false;
+    }
+
+    public static function getDataObject(string $workflowName, array $info = [])
+    {
+        if (empty($info)) {
+            $info = WorkflowConfig::getWorkflowConfig($workflowName);
+        }
+        // @checkme add subscribed events for each object supported by this workflow?
+        if (is_array($info['supports'])) {
+            $objectName = $info['supports'][0];
+        } else {
+            $objectName = $info['supports'];
+        }
+        $info['create_object'] ??= false;
+        if (!static::checkDataObject($workflowName, $objectName, $info['create_object'])) {
+            throw new Exception('Workflow ' . $workflowName . ' relies on unknown dataobject ' . $objectName);
+        }
+        return $objectName;
     }
 
     public static function checkDataObject(string $workflowName, string $objectName, bool $create = false)

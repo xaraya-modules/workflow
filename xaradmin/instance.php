@@ -125,6 +125,7 @@ function workflow_admin_instance()
     $acts = $instanceManager->get_instance_activities($_REQUEST['iid']);
     $tplData['acts'] = &$acts;
 
+    $instance = new \Galaxia\Api\Instance();
     $instance->getInstance($_REQUEST['iid']);
 
     // Process comments

@@ -19,7 +19,7 @@ return [
         'created',
         'updated',
         'deleted',
-        'displayed',
+        //'displayed',
         'closed',
     ],
     'transitions' => [
@@ -32,20 +32,16 @@ return [
             'to' => ['created'],
         ],
         'update_event' => [
-            'from' => ['waiting'],
+            'from' => ['created', 'updated'],
             'to' => ['updated'],
         ],
         'delete_event' => [
-            'from' => ['waiting'],
+            'from' => ['created', 'updated'],
             'to' => ['deleted'],
-        ],
-        'display_event' => [
-            'from' => ['waiting'],
-            'to' => ['displayed'],
         ],
         'acknowledge' => [
             //'from' => ['hooked'],
-            'from' => ['created', 'updated', 'deleted', 'displayed'],
+            'from' => ['created', 'updated', 'deleted'],
             'to' => ['closed'],
             'admin' => true,
             'delete' => true,

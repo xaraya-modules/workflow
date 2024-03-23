@@ -47,7 +47,7 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
         // Use the dummy datastore for this property
         $this->source = 'none';
 
-        // @checkme initialize workflows based on defaultvalue = {"loans":[]}
+        // @checkme initialize workflows based on defaultvalue = {"cd_loans":[]}
         $this->parseConfigValue($this->defaultvalue);
     }
 

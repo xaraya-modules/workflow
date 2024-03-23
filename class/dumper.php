@@ -32,7 +32,7 @@ class WorkflowDumper extends StateMachineGraphvizDumper
 
     public function formatName(string $name)
     {
-        return ucwords(str_replace('_', ' ', $name));
+        return WorkflowConfig::formatName($name);
     }
 
     protected function findPlaces(Definition $definition, bool $withMetadata, ?Marking $marking = null): array

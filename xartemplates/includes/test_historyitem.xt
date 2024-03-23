@@ -64,9 +64,12 @@
         <label>To Place</label>
       </div>
       <div class="xar-col">
-        <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $item['marking']])</xar:set>
-        <xar:set name="where">ucwords(str_replace('_', ' ', $item['marking']))</xar:set>
-        <a href="#$placelink#" title="Filter Place #$where#">#$where#</a>
+        <xar:set name="places">explode(',', $item['marking'])</xar:set>
+        <xar:foreach in="$places" value="$here">
+          <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $here])</xar:set>
+          <xar:set name="where">ucwords(str_replace('_', ' ', $here))</xar:set>
+          <a href="#$placelink#" title="Filter Place #$where#">#$where#</a>&#160;
+        </xar:foreach>
       </div>
     </div>
     <div class="xar-row">

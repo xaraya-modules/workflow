@@ -29,6 +29,7 @@ function workflow_userapi_showactivity($args)
     $tplData = [];
 
     include(GALAXIA_LIBRARY . '/api.php');
+    /** @var \Galaxia\Api\Instance $instance */
 
     if (empty($args['activityId'])) {
         return xarML("No activity found");

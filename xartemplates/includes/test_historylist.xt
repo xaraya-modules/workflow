@@ -51,7 +51,12 @@
             <a href="#$filterlink#" title="Filter Subject #$currentId#">#$currentId#</a>
           </td>
           <td>#ucwords(str_replace('_', ' ', $item['transition']))#</td>
-          <td>#ucwords(str_replace('_', ' ', $item['marking']))#</td>
+          <td>
+            <xar:set name="places">explode(',', $item['marking'])</xar:set>
+            <xar:foreach in="$places" value="$here">
+              #ucwords(str_replace('_', ' ', $here))#&#160;
+            </xar:foreach>
+          </td>
           <td>#xarUser::getVar('name', $item['user'])#</td>
           <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
           #xarLocale::getFormattedTime('short',$item['updated'])#</td>
