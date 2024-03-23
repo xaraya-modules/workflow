@@ -4,8 +4,13 @@
  *
  * Note: convert yaml to json online first to avoid needing yaml parser
  */
+namespace Xaraya\Modules\Publications;
 
-$json = '
+use Xaraya\Modules\Workflow\WorkflowUtils;
+use sys;
+sys::import('modules.workflow.class.utils');
+
+$jsonText = '
 {
     "article": {
         "type": "workflow",
@@ -91,55 +96,10 @@ $json = '
 }
 ';
 
-$data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+$workflowName = 'article';
+$objectName = 'wf_' . $workflowName;
 
-$workflow = 'article';
-
-$config = [];
-$config['name'] = $workflow;
-$config['type'] = 'workflow';
-$config['metadata'] = $data[$workflow]['metadata'] ?? [];
-$config['label'] = $config['metadata']['title'] ?? ucwords($workflow);
-$config['description'] = $config['metadata']['description'] ?? $config['label'];
-$config['supports'] = ['wf_' . $workflow];
-$config['create_object'] = true;
-$config['places'] = [];
-foreach (array_keys($data[$workflow]['places']) as $place) {
-    $config['places'][] = str_replace(' ', '_', $place);
-}
-$config['initial_marking'] = [$config['places'][0]];
-$config['transitions'] = [];
-foreach (array_keys($data[$workflow]['transitions']) as $transition) {
-    $name = str_replace(' ', '_', $transition);
-    $config['transitions'][$name] = [];
-    $from = $data[$workflow]['transitions'][$transition]['from'];
-    if (is_array($from)) {
-        $config['transitions'][$name]['from'] = [];
-        //$fromplaces = [];
-        foreach ($from as $place) {
-            // for workflow this means AND-ing!?
-            //$fromplaces[] = str_replace(' ', '_', $place);
-            // for workflow this means OR-ing!?
-            $config['transitions'][$name]['from'][] = str_replace(' ', '_', $place);
-        }
-        //$config['transitions'][$name]['from'][] = $fromplaces;
-    } else {
-        $config['transitions'][$name]['from'] = [str_replace(' ', '_', $from)];
-    }
-    $to = $data[$workflow]['transitions'][$transition]['to'];
-    if (is_array($to)) {
-        $config['transitions'][$name]['to'] = [];
-        foreach ($to as $place) {
-            $config['transitions'][$name]['to'][] = str_replace(' ', '_', $place);
-        }
-    } else {
-        $config['transitions'][$name]['to'] = [str_replace(' ', '_', $to)];
-    }
-    $metadata = $data[$workflow]['transitions'][$transition]['metadata'] ?? null;
-    if (!empty($metadata)) {
-        $config['transitions'][$name]['metadata'] = $metadata;
-    }
-}
+$config = WorkflowUtils::convertJsonToConfig($jsonText, $workflowName, $objectName);
 
 // return configuration of the workflow
 return $config;

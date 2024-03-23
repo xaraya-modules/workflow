@@ -16,7 +16,7 @@
     <xar:set name="userId">$item['user']</xar:set>
     <xar:set name="place">$item['marking']</xar:set>
     <xar:set name="updated">$item['updated']</xar:set>
-    <xar:set name="subjectId">implode('.', [$item['object'], (string) $item['item']])</xar:set>
+    <xar:set name="subjectId">$tracker->toSubjectId($item['object'], $item['item'])</xar:set>
   </xar:if>
   <xar:set name="params">['workflow' => $workflow, 'subjectId' => $subjectId]</xar:set>
   <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>

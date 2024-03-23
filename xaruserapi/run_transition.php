@@ -11,9 +11,12 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+sys::import('modules.workflow.class.config');
+sys::import('modules.workflow.class.tracker');
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Modules\Workflow\WorkflowTracker;
 
 /**
  * the run transition user API function - used by hook calls to workflow
@@ -31,7 +34,6 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     $subjectId = $args['subjectId'] ?? null;
     $transitionName = $args['transition'];
 
-    sys::import('modules.workflow.class.config');
     if (!WorkflowConfig::hasWorkflowConfig($workflowName)) {
         xarLog::message("No workflow found for '$transitionName' in '$workflowName'", xarLog::LEVEL_INFO);
         return false;
@@ -53,9 +55,9 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
         } else {
             $objectName = $info['name'];
         }
-        $subjectId = implode('.', [$objectName, $itemId]);
+        $subjectId = WorkflowTracker::toSubjectId($objectName, $itemId);
     } else {
-        [$objectName, $itemId] = explode('.', $subjectId . '.0');
+        [$objectName, $itemId] = WorkflowTracker::fromSubjectId($subjectId);
     }
     xarLog::message("We will trigger '$transitionName' for '$subjectId' in '$workflowName' here...", xarLog::LEVEL_INFO);
 
@@ -82,7 +84,7 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     // request transition
     if ($workflow->can($subject, $transitionName)) {
         $marking = $workflow->apply($subject, $transitionName, $args);
-        //$place = implode(', ', array_keys($marking->getPlaces()));
+        //$places = implode(', ', array_keys($marking->getPlaces()));
     } else {
         $blockers = $workflow->buildTransitionBlockerList($subject, $transitionName);
         $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';

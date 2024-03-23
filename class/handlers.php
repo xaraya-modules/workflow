@@ -34,7 +34,7 @@ class WorkflowHandlers extends WorkflowBase
         }
         $subjectId = $subject->getId();
         // @checkme assuming subjectId = objectName.itemId here
-        [$objectName, $itemId] = explode('.', (string) $subjectId . '.0');
+        [$objectName, $itemId] = static::fromSubjectId($subjectId);
         $context = null;
         if (method_exists($subject, 'getContext')) {
             $context = $subject->getContext();
@@ -48,6 +48,11 @@ class WorkflowHandlers extends WorkflowBase
         return $objectRef;
     }
 
+    public static function fromSubjectId(string $subjectId)
+    {
+        return WorkflowTracker::fromSubjectId($subjectId);
+    }
+
     // this is where we add the successful transition to a new marking to the tracker
     public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
     {
@@ -57,7 +62,7 @@ class WorkflowHandlers extends WorkflowBase
             $workflowName = $event->getWorkflowName();
             $subject = $event->getSubject();
             // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', (string) $subject->getId() . '.0');
+            [$objectName, $itemId] = static::fromSubjectId((string) $subject->getId());
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
@@ -69,7 +74,7 @@ class WorkflowHandlers extends WorkflowBase
             } else {
                 $trackerId = WorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
             }
-            $marking = implode(',', array_keys($event->getMarking()->getPlaces()));
+            $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
             $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $historyId = WorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
         };
@@ -202,7 +207,7 @@ class WorkflowHandlers extends WorkflowBase
                 throw new Exception($message);
             }
             // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', $subjectId . '.0');
+            [$objectName, $itemId] = static::fromSubjectId($subjectId);
             if (!array_key_exists($objectName, $propertyMapping)) {
                 $message = "Unexpected subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);
@@ -277,7 +282,7 @@ class WorkflowHandlers extends WorkflowBase
                 throw new Exception($message);
             }
             // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = explode('.', $subjectId . '.0');
+            [$objectName, $itemId] = static::fromSubjectId($subjectId);
             if (!array_key_exists($objectName, $propertyMapping)) {
                 $message = "Unexpected subject $subjectId";
                 xarLog::message("Event $eventName stopped: $message", xarLog::LEVEL_WARNING);

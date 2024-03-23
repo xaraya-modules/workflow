@@ -75,7 +75,7 @@ function workflow_user_test_run(array $args = [], $context = null)
         }
         $data['place'] = $item['marking'];
     } elseif (!empty($data['subjectId'])) {
-        [$objectName, $itemId] = explode('.', $data['subjectId'] . '.0');
+        [$objectName, $itemId] = WorkflowTracker::fromSubjectId($data['subjectId']);
         if (empty($objectName) || empty($itemId)) {
             $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';
             $vars = ['subjectId', 'user', 'test_run', 'workflow'];
@@ -128,7 +128,7 @@ function workflow_user_test_run(array $args = [], $context = null)
         if (WorkflowProcess::isStateMachine($workflow)) {
             $subject->setMarking($item['marking'], $item);
         } else {
-            $places = explode(',', $item['marking']);
+            $places = explode(WorkflowTracker::AND_OPERATOR, $item['marking']);
             $marking = [];
             foreach ($places as $here) {
                 $marking[$here] = 1;
@@ -138,15 +138,15 @@ function workflow_user_test_run(array $args = [], $context = null)
     } else {
         // initiate workflow for this subject
         $marking = $workflow->getMarking($subject);
-        //$data['place'] = implode(', ', $marking->getPlaces());
+        //$places = implode(', ', $marking->getPlaces());
     }
 
     $transitions = $workflow->getEnabledTransitions($subject);
     // request transition
     if ($workflow->can($subject, $data['transition'])) {
         $marking = $workflow->apply($subject, $data['transition'], $args);
-        $data['place'] = implode(', ', array_keys($marking->getPlaces()));
-        $data['message'] = "The transition of subject " . $subject->getId() . " to " . WorkflowConfig::formatName($data['place']) . " was successful";
+        $places = implode(', ', array_keys($marking->getPlaces()));
+        $data['message'] = "The transition of subject " . $subject->getId() . " to " . WorkflowConfig::formatName($places) . " was successful";
     } else {
         $blockers = $workflow->buildTransitionBlockerList($subject, $data['transition']);
         $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';

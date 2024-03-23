@@ -17,7 +17,7 @@
     <xar:if condition="empty($place)">
       <xar:set name="items">$tracker->getSubjectItems($subjectId, $workflow, $userId)</xar:set>
     <xar:else/>
-      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:set name="pieces">$tracker->fromSubjectId($subjectId)</xar:set>
       <xar:set name="items">$tracker->getItems($workflow, $pieces[0], (int) $pieces[1], $place, $userId)</xar:set>
     </xar:if>
   <xar:elseif condition="!empty($place)"/>
@@ -48,7 +48,7 @@
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['access']) and !empty($subjectId)">
-      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:set name="pieces">$handlers->fromSubjectId($subjectId)</xar:set>
       <xar:if condition="!empty($objectref)">
         <xar:set name="object">$objectref</xar:set>
       <xar:else/>
@@ -60,7 +60,7 @@
     </xar:if>
     <!-- this needs to be checked for each DataObject item, not overall
     <xar:if condition="!empty($info['property']) and !empty($subjectId)">
-      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:set name="pieces">$handlers->fromSubjectId($subjectId)</xar:set>
       <xar:if condition="!empty($objectref)">
         <xar:set name="object">$objectref</xar:set>
       <xar:else/>
@@ -93,7 +93,7 @@
       <xar:foreach in="$items" value="$item">
         <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
         <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $item['id']])</xar:set>
-        <xar:set name="currentId">implode('.', [$item['object'], (string) $item['item']])</xar:set>
+        <xar:set name="currentId">$tracker->toSubjectId($item['object'], $item['item'])</xar:set>
         <xar:set name="params">['workflow' => $workflow, 'subjectId' => $currentId]</xar:set>
         <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
         <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test_run', $params)</xar:set>
@@ -129,7 +129,7 @@
           </td>
           <td>#xarUser::getVar('name', $item['user'])#</td>
           <td>
-            <xar:set name="places">explode(',', $item['marking'])</xar:set>
+            <xar:set name="places">explode($tracker::AND_OPERATOR, $item['marking'])</xar:set>
             <xar:foreach in="$places" value="$here">
               <xar:if condition="!empty($place) and $place eq $here">
                 <strong>#ucwords(str_replace('_', ' ', $here))#</strong>&#160;

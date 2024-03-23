@@ -22,7 +22,7 @@
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['access']) and !empty($subjectId)">
-      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:set name="pieces">$handlers->fromSubjectId($subjectId)</xar:set>
       <xar:if condition="!empty($objectref)">
         <xar:set name="object">$objectref</xar:set>
         <xar:else/>
@@ -33,7 +33,7 @@
       </xar:if>
     </xar:if>
     <xar:if condition="!empty($info['property']) and !empty($subjectId)">
-      <xar:set name="pieces">explode('.', $subjectId . '.0')</xar:set>
+      <xar:set name="pieces">$handlers->fromSubjectId($subjectId)</xar:set>
       <xar:if condition="!empty($objectref)">
         <xar:set name="object">$objectref</xar:set>
         <xar:else/>

@@ -34,6 +34,9 @@ sys::import('modules.dynamicdata.class.objects.loader');
 
 class WorkflowTracker extends WorkflowBase
 {
+    // Switch to ; to signify AND instead of OR (which is already , in filters)
+    public const AND_OPERATOR = ';';
+
     protected static $objectName = 'workflow_tracker';
     protected static $fieldList = ['workflow', 'user', 'object', 'item', 'marking', 'updated'];
     protected static $paging = [];
@@ -84,7 +87,7 @@ class WorkflowTracker extends WorkflowBase
             if (is_array($marking)) {
                 $filter[] = implode(",", ["marking", "in", implode(",", $marking)]);
             } else {
-                $filter[] = implode(",", ["marking", "eq", $marking]);
+                $filter[] = implode(",", ["marking", "eq", (string) $marking]);
             }
         }
         // for paging params see DataObjectLoader = aligned with API params, not DD list params
@@ -130,7 +133,7 @@ class WorkflowTracker extends WorkflowBase
     public static function getSubjectItems(string $subjectId, string $workflowName, int $userId)
     {
         // get items for a particular subjectId = objectName.itemId or objectName for all DD object items
-        [$objectName, $itemId] = explode('.', $subjectId . '.0');
+        [$objectName, $itemId] = static::fromSubjectId($subjectId);
         return static::getItems($workflowName, $objectName, (int) $itemId, '', $userId);
     }
 
@@ -138,6 +141,17 @@ class WorkflowTracker extends WorkflowBase
     {
         // get items for a particular workflow
         return static::getItems($workflowName, '', 0, '', $userId);
+    }
+
+    public static function toSubjectId(string $objectName, int|string $itemId)
+    {
+        return implode('.', [$objectName, (string) $itemId]);
+    }
+
+    public static function fromSubjectId(string $subjectId)
+    {
+        [$objectName, $itemId] = explode('.', $subjectId . '.0');
+        return [$objectName, $itemId];
     }
 
     public static function getObjectValues(string $objectName, array $itemIds, array $fieldList = [])
@@ -184,7 +198,7 @@ class WorkflowTracker extends WorkflowBase
         // for state_machine $subject->getMarking() returns the singleState place as string
         // for workflow $subject->getMarking() returns the multiState array of getPlaces()
         if (is_array($marking)) {
-            $marking = implode(',', array_keys($marking));
+            $marking = implode(static::AND_OPERATOR, array_keys($marking));
         }
         $newItem = [
             'workflow' => $workflowName,

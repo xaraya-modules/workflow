@@ -39,7 +39,7 @@
       <xar:foreach in="$items" value="$item">
         <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
         <xar:set name="infolink">xarServer::getObjectURL('workflow_history', 'display', ['itemid' => $item['id']])</xar:set>
-        <xar:set name="currentId">implode('.', [$item['object'], $item['item']])</xar:set>
+        <xar:set name="currentId">$history->toSubjectId($item['object'], $item['item'])</xar:set>
         <xar:set name="params">['workflow' => $item['workflow'], 'subjectId' => $currentId]</xar:set>
         <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
         <tr>
@@ -52,7 +52,7 @@
           </td>
           <td>#ucwords(str_replace('_', ' ', $item['transition']))#</td>
           <td>
-            <xar:set name="places">explode(',', $item['marking'])</xar:set>
+            <xar:set name="places">explode($history::AND_OPERATOR, $item['marking'])</xar:set>
             <xar:foreach in="$places" value="$here">
               #ucwords(str_replace('_', ' ', $here))#&#160;
             </xar:foreach>

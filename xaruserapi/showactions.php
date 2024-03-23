@@ -11,6 +11,10 @@
  * @link http://xaraya.com/index.php/release/188.html
  * @author Workflow Module Development Team
  */
+sys::import('modules.workflow.class.config');
+sys::import('modules.workflow.class.tracker');
+use Xaraya\Modules\Workflow\WorkflowTracker;
+
 /**
  * show the actions available to you for this workflow, subjectId and place (called via <xar:workflow-actions tag)
  *
@@ -33,15 +37,16 @@ function workflow_userapi_showactions($args, $context = null)
         return '';
     }
 
-    sys::import('modules.workflow.class.config');
     $tplData = $args;
     if (!isset($tplData['userId'])) {
         // @todo get userId from $item['user'] here?
         $tplData['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
     }
 
-    if (!empty($args['item']) && !empty($args['item']['marking']) && str_contains($args['item']['marking'], ',')) {
-        $places = explode(',', $args['item']['marking']);
+    if (!empty($args['item']) &&
+        !empty($args['item']['marking']) &&
+        str_contains($args['item']['marking'], WorkflowTracker::AND_OPERATOR)) {
+        $places = explode(WorkflowTracker::AND_OPERATOR, $args['item']['marking']);
         $output = '';
         foreach ($places as $here) {
             $tplData['title'] = ucwords(str_replace('_', ' ', $here));
