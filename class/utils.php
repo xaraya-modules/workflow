@@ -14,58 +14,13 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use Symfony\Component\Workflow\WorkflowInterface;
 use sys;
 use JsonException;
 
 sys::import('modules.workflow.class.base');
-sys::import('modules.workflow.class.utils');
 
 class WorkflowUtils extends WorkflowBase
 {
-    /**
-     * Check if text contains 'OK'
-     * @todo use real spell checker ;-)
-     * @return bool
-     */
-    public static function checkSpelling(string $text)
-    {
-        if (str_contains($text, 'OK')) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Dummy spell checker service - @todo use real spell checker
-     * @param list<string> $fields object properties to spell check
-     * @param string $success transition name in case of success
-     * @param string $failure transition name in case of failure
-     * @return mixed
-     */
-    public static function spellChecker(WorkflowInterface $workflow, WorkflowSubject $subject, array $fields, string $success, string $failure)
-    {
-        $objectRef = $subject->getObject();
-        $values = $objectRef->getFieldValues($fields, 1);
-        $context = $subject->getContext() ?? [];
-        if ($context instanceof \ArrayObject) {
-            $context = $context->getArrayCopy();
-        }
-        $context['spellchecker'] ??= [];
-        $result = $success;
-        foreach ($fields as $field) {
-            if (!empty($values[$field])) {
-                if (static::checkSpelling($values[$field])) {
-                    $context['spellchecker'][$field] = 'Field ' . $field . ' is OK';
-                    continue;
-                }
-                $result = $failure;
-                $context['spellchecker'][$field] = 'Field ' . $field . ' is not OK';
-            }
-        }
-        return $workflow->apply($subject, $result, $context);
-    }
-
     /**
      * See https://github.com/lyrixx/SFLive-Paris2016-Workflow/blob/master/config/packages/workflow.yaml
      *
@@ -95,7 +50,7 @@ class WorkflowUtils extends WorkflowBase
         $config['places'] = static::convertPlaces($workflow['places']);
         $config['initial_marking'] = [$config['places'][0]];
         $config['transitions'] = static::convertTransitions($workflow['transitions']);
-        
+
         return $config;
     }
 

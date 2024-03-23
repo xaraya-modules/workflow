@@ -1,15 +1,22 @@
 <?php
 /**
+ * This workflow show-cases several special features:
+ *
+ * 1. it uses a multiState workflow instead of a singleState state machine
+ * 2. its configuration is loaded from a json file directly converted from a symfony workflow.yaml file
+ * 3. it has a callback function to automatically run a (dummy) spell checker once request_review is completed
+ */
+
+sys::import('modules.workflow.class.utils');
+sys::import('modules.workflow.xardata.spellchecker');
+use Xaraya\Modules\Workflow\WorkflowUtils;
+use Xaraya\Modules\Publications\SpellCheckerDummy;
+
+/**
  * See https://github.com/lyrixx/SFLive-Paris2016-Workflow/blob/master/config/packages/workflow.yaml
  *
- * Note: convert yaml to json online first to avoid needing yaml parser
+ * Note: convert workflow.yaml to json online first to avoid needing yaml parser
  */
-namespace Xaraya\Modules\Publications;
-
-use Xaraya\Modules\Workflow\WorkflowUtils;
-use sys;
-sys::import('modules.workflow.class.utils');
-
 $jsonText = '
 {
     "article": {
@@ -96,10 +103,23 @@ $jsonText = '
 }
 ';
 
+// list of callback functions per workflow, transition & event type
+$callbackFuncs = [
+    // here you can specify callback functions to run the spell checker once the transition is completed
+    'article.completed.request_review' => SpellCheckerDummy::startSpellCheckerHandler(
+        ['title'],
+        'spellchecker_approval',
+        ''
+    ),
+];
+
 $workflowName = 'article';
 $objectName = 'wf_' . $workflowName;
 
+// load configuration from json text
 $config = WorkflowUtils::convertJsonToConfig($jsonText, $workflowName, $objectName);
+// add callback function on completed event to start spell checker
+$config['transitions']['request_review']['completed'] = $callbackFuncs['article.completed.request_review'];
 
 // return configuration of the workflow
 return $config;

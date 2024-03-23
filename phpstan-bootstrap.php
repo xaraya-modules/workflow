@@ -13,6 +13,6 @@ if (!function_exists('xarML')) {
      */
     function xarML($rawstring, ...$args)
     {
-        return call_user_func_array(array('xarMLS', 'translate'), func_get_args());
+        return call_user_func_array(['xarMLS', 'translate'], func_get_args());
     }
 }
