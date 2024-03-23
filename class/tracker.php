@@ -83,10 +83,14 @@ class WorkflowTracker extends WorkflowBase
             }
         }
         if (!empty($marking)) {
-            // @todo verify format compared to setItem
             if (is_array($marking)) {
+                // for OR searches, this is currently unused
                 $filter[] = implode(",", ["marking", "in", implode(",", $marking)]);
+            } elseif (str_starts_with($marking, '%')) {
+                // @checkme use wildcard prefix for multiState workflow places - set in test_trackeritem/test_historyitem templates
+                $filter[] = implode(",", ["marking", "like", substr($marking, 1)]);
             } else {
+                // for AND searches, this already contains ; but it looks for an exact match so the order matters
                 $filter[] = implode(",", ["marking", "eq", (string) $marking]);
             }
         }

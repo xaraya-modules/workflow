@@ -64,9 +64,15 @@
         <label>To Place</label>
       </div>
       <div class="xar-col">
+        <!-- @checkme use wildcard prefix for multiState workflow places -->
+        <xar:if condition="$config[$item['workflow']]['type'] eq 'workflow'">
+          <xar:set name="prefix">'%'</xar:set>
+        <xar:else/>
+          <xar:set name="prefix">''</xar:set>
+        </xar:if>
         <xar:set name="places">explode($tracker::AND_OPERATOR, $item['marking'])</xar:set>
         <xar:foreach in="$places" value="$here">
-          <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $here])</xar:set>
+          <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $prefix . $here])</xar:set>
           <xar:set name="where">ucwords(str_replace('_', ' ', $here))</xar:set>
           <a href="#$placelink#" title="Filter Place #$where#">#$where#</a>&#160;
         </xar:foreach>
