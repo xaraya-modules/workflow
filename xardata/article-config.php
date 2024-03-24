@@ -107,9 +107,10 @@ $jsonText = '
 $callbackFuncs = [
     // here you can specify callback functions to run the spell checker once the transition is completed
     'article.completed.request_review' => SpellCheckerDummy::startSpellCheckerHandler(
-        ['title'],
-        'spellchecker_approval',
-        ''
+        ['title'],                // fields to spell check for the article dataobject
+        'spellchecker_approval',  // transition in case of success
+        '',                       // transition in case of failure
+        false                     // @todo queue this event for later processing or not
     ),
 ];
 

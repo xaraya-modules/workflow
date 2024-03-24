@@ -91,11 +91,11 @@ class WorkflowProcess extends WorkflowBase
                         break;
                     case 'property':
                         $eventName = $subscriber->addSubscribedEvent('guard', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardPropertyHandler($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::guardCheckProperty($callbackFuncs[$eventType]));
                         break;
                     case 'update':
                         $eventName = $subscriber->addSubscribedEvent('completed', $workflowName, $transitionName);
-                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::updatePropertyHandler($callbackFuncs[$eventType]));
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::updateProperty($callbackFuncs[$eventType]));
                         break;
                     case 'guard':
                     case 'completed':
@@ -122,7 +122,7 @@ class WorkflowProcess extends WorkflowBase
         // this is where we add the successful transition to a new marking to the tracker
         $eventType = 'completed';
         $eventName = $subscriber->addSubscribedEvent($eventType, $workflowName);
-        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::setTrackerItem($deleteTracker));
+        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::completeTransition($deleteTracker));
         return $subscriber;
     }
 

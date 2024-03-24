@@ -13,9 +13,9 @@
  */
 $modversion['name']           = 'workflow';
 $modversion['id']             = '188';
-$modversion['version']        = '2.4.1';
+$modversion['version']        = '2.5.0';
 $modversion['displayname']    = xarML('Workflow');
-$modversion['description']    = 'Workflow Module based on the Galaxia Workflow Engine';
+$modversion['description']    = 'Workflow Module based on the Symfony Workflow Component';
 $modversion['credits']        = '';
 $modversion['help']           = '';
 $modversion['changelog']      = '';

@@ -508,12 +508,16 @@ function workflow_init()
     #
     $module = 'workflow';
     $objects = [
-                     'workflow_roles',
-                     'workflow_processes',
-                     'workflow_activities',
-                     'workflow_instances',
-                     'workflow_instance_activities',
-                     ];
+        'workflow_roles',
+        'workflow_processes',
+        'workflow_activities',
+        'workflow_instances',
+        'workflow_instance_activities',
+        'workflow_tracker',
+        'workflow_history',
+        'workflow_queue',
+        //'cdcollection3',
+    ];
 
     if (!xarMod::apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
         return;
@@ -540,11 +544,10 @@ function workflow_init()
 
     // define privilege instances and masks
     $instances = [
-                       ['header' => 'external', // this keyword indicates an external "wizard"
-                             'query'  => xarController::URL('workflow', 'admin', 'privileges'),
-                             'limit'  => 0,
-                            ],
-                    ];
+        ['header' => 'external', // this keyword indicates an external "wizard"
+        'query'  => xarController::URL('workflow', 'admin', 'privileges'),
+        'limit'  => 0, ],
+    ];
     xarPrivileges::defineInstance('workflow', 'Item', $instances);
 
     # --------------------------------------------------------
@@ -620,6 +623,10 @@ function workflow_upgrade($oldversion)
             // no break
         case '2.4.1':
             // Code to upgrade from version 2.4.1 goes here
+            workflow_add_queue_object();
+
+        case '2.5.0':
+            // Code to upgrade from version 2.5.0 goes here
 
         case '3.0.0':
             break;
@@ -636,6 +643,18 @@ function workflow_activate()
 function workflow_deactivate()
 {
     return workflow_delete_new_hooks();
+}
+
+function workflow_add_queue_object()
+{
+    $module = 'workflow';
+    $objects = [
+        'workflow_queue',
+    ];
+
+    if (!xarMod::apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
+        return;
+    }
 }
 
 function workflow_create_new_hooks()
@@ -778,17 +797,17 @@ function workflow_delete()
     sys::import('xaraya.tableddl');
 
     $mytables = [
-                      'workflow_activities',
-                      'workflow_activity_roles',
-                      'workflow_instance_activities',
-                      'workflow_instance_comments',
-                      'workflow_instances',
-                      'workflow_processes',
-                      'workflow_roles',
-                      'workflow_transitions',
-                      'workflow_user_roles',
-                      'workflow_workitems',
-                     ];
+        'workflow_activities',
+        'workflow_activity_roles',
+        'workflow_instance_activities',
+        'workflow_instance_comments',
+        'workflow_instances',
+        'workflow_processes',
+        'workflow_roles',
+        'workflow_transitions',
+        'workflow_user_roles',
+        'workflow_workitems',
+    ];
 
     foreach ($mytables as $mytable) {
         // Generate the SQL to drop the table using the API

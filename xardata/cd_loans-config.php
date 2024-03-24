@@ -10,14 +10,14 @@ use Xaraya\Modules\Workflow\WorkflowHandlers;
 // list of callback functions per workflow, transition & event type
 $callbackFuncs = [
     // here you can specify callback functions as transition blockers - expression language is not supported
-    'cd_loans.guard.request' => WorkflowHandlers::guardPropertyHandler([
+    'cd_loans.guard.request' => WorkflowHandlers::guardCheckProperty([
         'cdcollection' => ['status' => 'available'],
     ]),
     // here you can specify callback functions to update the actual objects once the transition is completed
-    'cd_loans.completed.retrieve' => WorkflowHandlers::updatePropertyHandler([
+    'cd_loans.completed.retrieve' => WorkflowHandlers::updateProperty([
         'cdcollection' => ['status' => 'not available'],
     ]),
-    'cd_loans.completed.return' => WorkflowHandlers::updatePropertyHandler([
+    'cd_loans.completed.return' => WorkflowHandlers::updateProperty([
         'cdcollection' => ['status' => 'available'],
     ]),
 ];

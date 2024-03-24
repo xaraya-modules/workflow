@@ -45,6 +45,44 @@ class WorkflowConfig extends WorkflowBase
         return static::$config;
     }
 
+    /**
+     * Load workflow configuration(s) from *-config.php file(s) in this directory
+     *
+     * @param string $dirPath this directory
+     * @param string $suffix (default)
+     * @return array<string, mixed>
+     */
+    public static function loadDir($dirPath, $suffix = '-config.php')
+    {
+        $config = [];
+        $fileList = scandir($dirPath);
+        foreach ($fileList as $fileName) {
+            if (!str_ends_with($fileName, $suffix)) {
+                continue;
+            }
+            $filePath = $dirPath . '/' . $fileName;
+            $info = static::loadFile($filePath);
+            if (empty($info)) {
+                continue;
+            }
+            $info['name'] ??= str_replace($suffix, '', $fileName);
+            $config[$info['name']] = $info;
+        }
+        return $config;
+    }
+
+    /**
+     * Load workflow configuration file
+     *
+     * @param string $filePath
+     * @return array<string, mixed>
+     */
+    public static function loadFile($filePath)
+    {
+        $info = require $filePath;
+        return $info;
+    }
+
     public static function formatName(string $name)
     {
         return ucwords(str_replace('_', ' ', $name));

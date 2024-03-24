@@ -17,6 +17,7 @@ namespace Xaraya\Modules\Workflow;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use xarLog;
 use Exception;
 
@@ -38,21 +39,21 @@ class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInt
         'announce' => 'onAnnounceEvent',
     ];
 
-    public function callBack(Event|GuardEvent $event, string $eventName)
+    public function callBack(Event|GuardEvent $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         if (empty(self::$callbackFunctions[$eventName])) {
             return;
         }
         foreach (self::$callbackFunctions[$eventName] as $callbackFunc) {
             try {
-                $callbackFunc($event, $eventName);
+                $callbackFunc($event, $eventName, $dispatcher);
             } catch (Exception $e) {
                 xarLog::message("Error in callback for $eventName: " . $e->getMessage(), xarLog::LEVEL_INFO);
             }
         }
     }
 
-    public function logEvent(Event|GuardEvent $event, string $eventName)
+    public function logEvent(Event|GuardEvent $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         // @todo tie in with Xaraya event/hook system for some events
         $marking = $event->getMarking();
@@ -73,56 +74,56 @@ class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInt
         xarLog::message($message, xarLog::LEVEL_INFO);
     }
 
-    public function onGuardEvent(GuardEvent $event, string $eventName)
+    public function onGuardEvent(GuardEvent $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
         // this would be where we check the actual status of the subject, rather than the places
     }
 
-    public function onLeaveEvent(Event $event, string $eventName)
+    public function onLeaveEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
     }
 
-    public function onTransitionEvent(Event $event, string $eventName)
+    public function onTransitionEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
     }
 
-    public function onEnterEvent(Event $event, string $eventName)
+    public function onEnterEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
     }
 
-    public function onEnteredEvent(Event $event, string $eventName)
+    public function onEnteredEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
     }
 
-    public function onCompletedEvent(Event $event, string $eventName)
+    public function onCompletedEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
-        $subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        //$subject = $event->getSubject();
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
         // this is where we add the successful transition to a new marking to the tracker
         // this would be where we update the actual status of the subject, rather than the places
     }
 
-    public function onAnnounceEvent(Event $event, string $eventName)
+    public function onAnnounceEvent(Event $event, string $eventName, EventDispatcherInterface $dispatcher)
     {
         //$subject = $event->getSubject();
-        $this->logEvent($event, $eventName);
-        $this->callBack($event, $eventName);
+        $this->logEvent($event, $eventName, $dispatcher);
+        $this->callBack($event, $eventName, $dispatcher);
     }
 
     public static function getEventName(string $eventType, string $workflowName = '', string $specificName = '')

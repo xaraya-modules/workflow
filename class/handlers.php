@@ -53,34 +53,6 @@ class WorkflowHandlers extends WorkflowBase
         return WorkflowTracker::fromSubjectId($subjectId);
     }
 
-    // this is where we add the successful transition to a new marking to the tracker
-    public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
-    {
-        sys::import('modules.workflow.class.tracker');
-        sys::import('modules.workflow.class.history');
-        $handler = function ($event, $eventName) use ($deleteTracker, $roleId) {
-            $workflowName = $event->getWorkflowName();
-            $subject = $event->getSubject();
-            // @checkme assuming subjectId = objectName.itemId here
-            [$objectName, $itemId] = static::fromSubjectId((string) $subject->getId());
-            // @todo use $context if available?
-            //$context = $event->getSubject()->getContext();
-            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
-            $transitionName = $event->getTransition()->getName();
-            // @checkme delete tracker at the end of this transition - pass along eventName to completed
-            $deleteEventName = "workflow.$workflowName.delete.$transitionName";
-            if (!empty($deleteTracker) && !empty($deleteTracker[$deleteEventName])) {
-                $trackerId = WorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
-            } else {
-                $trackerId = WorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
-            }
-            $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
-            $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            $historyId = WorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
-        };
-        return $handler;
-    }
-
     // here you can specify callback functions as transition blockers - expression language is not supported
     public static function guardCheckAdmin(bool $admin, $roleId = null)
     {
@@ -107,7 +79,7 @@ class WorkflowHandlers extends WorkflowBase
         sys::import('modules.roles.class.roles');
         $parentRoleIds = static::getGroupRoleIds($groupUserNames);
         // @checkme we only look up the direct parents here
-        $handler = function ($event, $eventName) use ($parentRoleIds, $roleId) {
+        $handler = function ($event, $eventName, $dispatcher) use ($parentRoleIds, $roleId) {
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
@@ -148,7 +120,7 @@ class WorkflowHandlers extends WorkflowBase
     public static function guardCheckAccess(string $action, $roleId = null)
     {
         sys::import('modules.dynamicdata.class.objects.factory');
-        $handler = function ($event, $eventName) use ($action, $roleId) {
+        $handler = function ($event, $eventName, $dispatcher) use ($action, $roleId) {
             $objectRef = static::getObjectRef($event->getSubject(), $eventName);
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
@@ -179,23 +151,23 @@ class WorkflowHandlers extends WorkflowBase
         return $objectRef->checkAccess($action, $itemId, $userId);
     }
 
-    public static function guardSecurityCheck($mask, $catch = 0, $component = '', $instance = '', $module = '', $rolename = '', $realm = 0, $level = 0)
+    public static function guardCheckSecurity($mask, $catch = 0, $component = '', $instance = '', $module = '', $rolename = '', $realm = 0, $level = 0)
     {
         sys::import('modules.privileges.class.security');
         // Fallback for checkAccess:
         // return xarSecurity::check($mask,0,'Item',$this->moduleid.':'.$this->itemtype.':'.$itemid,'',$rolename);
     }
 
-    public static function doSecurityCheck()
+    public static function doCheckSecurity()
     {
         throw new Exception("Use xarSecurity::check() yourself :-)");
     }
 
     // this would be where we check the actual status of the subject, rather than the places
-    public static function guardPropertyHandler(array $propertyMapping, array $valueMapping = [])
+    public static function guardCheckProperty(array $propertyMapping, array $valueMapping = [])
     {
         sys::import('modules.dynamicdata.class.objects.factory');
-        $handler = function ($event, $eventName) use ($propertyMapping, $valueMapping) {
+        $handler = function ($event, $eventName, $dispatcher) use ($propertyMapping, $valueMapping) {
             $transitionName = $event->getTransition()->getName();
             //$places = $event->getMarking()->getPlaces();
             //$subject = $event->getSubject();
@@ -265,10 +237,10 @@ class WorkflowHandlers extends WorkflowBase
 
     // here you can specify callback functions to update the actual objects once the transition is completed
     // this would be where we update the actual status of the object, rather than the places of the subject
-    public static function updatePropertyHandler(array $propertyMapping, array $valueMapping = [])
+    public static function updateProperty(array $propertyMapping, array $valueMapping = [])
     {
         sys::import('modules.dynamicdata.class.objects.factory');
-        $handler = function ($event, $eventName) use ($propertyMapping, $valueMapping) {
+        $handler = function ($event, $eventName, $dispatcher) use ($propertyMapping, $valueMapping) {
             //$workflowName = $event->getWorkflowName();
             //$subject = $event->getSubject();
             //$transition = $event->getTransition();
@@ -298,5 +270,54 @@ class WorkflowHandlers extends WorkflowBase
             $id = $objectRef->updateItem($newItem);
         };
         return $handler;
+    }
+
+    // this is where we add the successful transition to a new marking to the tracker
+    public static function completeTransition(array $deleteTracker = [], $roleId = null)
+    {
+        return static::setTrackerItem($deleteTracker, $roleId);
+    }
+
+    public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
+    {
+        sys::import('modules.workflow.class.tracker');
+        sys::import('modules.workflow.class.history');
+        $handler = function ($event, $eventName, $dispatcher) use ($deleteTracker, $roleId) {
+            $workflowName = $event->getWorkflowName();
+            $subject = $event->getSubject();
+            // @checkme assuming subjectId = objectName.itemId here
+            [$objectName, $itemId] = static::fromSubjectId((string) $subject->getId());
+            // @todo use $context if available?
+            //$context = $event->getSubject()->getContext();
+            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+            $transitionName = $event->getTransition()->getName();
+            // @checkme delete tracker at the end of this transition - pass along eventName to completed
+            $deleteEventName = "workflow.$workflowName.delete.$transitionName";
+            if (!empty($deleteTracker) && !empty($deleteTracker[$deleteEventName])) {
+                $trackerId = WorkflowTracker::deleteItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
+            } else {
+                $trackerId = WorkflowTracker::setItem($workflowName, $objectName, (int) $itemId, $subject->getMarking(), (int) $userId);
+            }
+            $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
+            $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            $historyId = WorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
+        };
+        return $handler;
+    }
+
+    /**
+     * @deprecated 2.5.0 use WorkflowHandlers::guardCheckProperty() instead
+     */
+    public static function guardPropertyHandler(array $propertyMapping, array $valueMapping = [])
+    {
+        return static::guardCheckProperty($propertyMapping, $valueMapping);
+    }
+
+    /**
+     * @deprecated 2.5.0 use WorkflowHandlers::updateProperty() instead
+     */
+    public static function updatePropertyHandler(array $propertyMapping, array $valueMapping = [])
+    {
+        return static::updateProperty($propertyMapping, $valueMapping);
     }
 }

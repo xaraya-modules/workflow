@@ -79,11 +79,18 @@ class SpellCheckerDummy
      * is completed
      * Note: we could also trigger this via the workflow.article.entered.wait_for_spellchecker event
      */
-    public static function startSpellCheckerHandler(array $fields, string $success, string $failure)
+    public static function startSpellCheckerHandler(array $fields, string $success, string $failure, bool $queued = false)
     {
-        $handler = function ($event, $eventName) use ($fields, $success, $failure) {
-            $workflow = $event->getWorkflow();
+        // Note: we could do something with $dispatcher too
+        $handler = function ($event, $eventName, $dispatcher) use ($fields, $success, $failure, $queued) {
             $subject = $event->getSubject();
+            if ($queued) {
+                // @todo queue spell checker event
+                $message = "The spell checker is queued for subject " . $subject->getId();
+                xarLog::message("Event $eventName queued: $message", xarLog::LEVEL_INFO);
+                return;
+            }
+            $workflow = $event->getWorkflow();
             $marking = static::runSpellChecker($workflow, $subject, $fields, $success, $failure);
             if (!empty($marking)) {
                 $places = implode(', ', array_keys($marking->getPlaces()));
