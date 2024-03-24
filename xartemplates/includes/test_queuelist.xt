@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
+  <!-- this relies on $workflow, $subjectId and $userId if available -->
+  <xar:if condition="empty($queue)">
+    <xar:set name="queue">xarMod::apiFunc('workflow', 'user', 'queue')</xar:set>
+  </xar:if>
+  <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => '-updated']</xar:set>
+  <xar:set name="dummy">$queue->setPaging($paging)</xar:set>
+  <xar:if condition="!empty($subjectId)">
+    <xar:set name="items">$queue->getSubjectItems($subjectId, $workflow, $userId)</xar:set>
+  <xar:elseif condition="!empty($workflow)"/>
+    <xar:set name="items">$queue->getWorkflowItems($workflow, $userId)</xar:set>
+  <xar:else/>
+    <xar:set name="items">[]</xar:set>
+  </xar:if>
+  <xar:if condition="!empty($items)">
+  <fieldset>
+    <legend>
+      <xar:if condition="!empty($subjectId)">
+        Transition Event Queue [#$subjectId#]
+      <xar:else/>
+        Transition Event Queue
+      </xar:if>
+    </legend>
+    <table style="border-collapse: separate;">
+      <tr>
+        <th>Queue Id</th>
+        <th>Subject Id</th>
+        <th>Transition</th>
+        <th>To Place</th>
+        <th>User Name</th>
+        <th>Updated</th>
+      </tr>
+      <xar:foreach in="$items" value="$item">
+        <xar:set name="pieces">$queue->fromSubjectId($item['subject'])</xar:set>
+        <xar:set name="displaylink">xarServer::getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
+        <xar:set name="infolink">xarServer::getObjectURL('workflow_queue', 'display', ['itemid' => $item['id']])</xar:set>
+        <xar:set name="params">['workflow' => $item['workflow'], 'subjectId' => $item['subject']]</xar:set>
+        <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+        <tr>
+          <td><a href="#$infolink#" title="Info Queue (#$item['id']#)">#$item['id']#</a></td>
+          <td>
+            <a href="#$displaylink#" title="Display Subject #$item['subject']#">
+              <xar:img scope="theme" file="icons/display.png" class="xar-icon" alt="display"/>
+            </a>&#160;
+            <a href="#$filterlink#" title="Filter Subject #$item['subject']#">#$item['subject']#</a>
+          </td>
+          <td>#ucwords(str_replace('_', ' ', $item['transition']))#</td>
+          <td>
+            <xar:set name="places">explode($queue::AND_OPERATOR, $item['marking'])</xar:set>
+            <xar:foreach in="$places" value="$here">
+              #ucwords(str_replace('_', ' ', $here))#&#160;
+            </xar:foreach>
+          </td>
+          <td>#xarUser::getVar('name', $item['user'])#</td>
+          <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
+          #xarLocale::getFormattedTime('short',$item['updated'])#</td>
+        </tr>
+      </xar:foreach>
+    </table>
+    <div>
+      <xar:set name="queuelink">xarServer::getModuleURL('workflow', 'user', 'test_queue')</xar:set>
+      <xar:set name="label">'Process Queue'</xar:set>
+      <xar:button type="link" name="process" target="$queuelink" label="$label"/>
+    </div>
+    <!-- Count: #$queue->getCount()# -->
+  </fieldset>
+  </xar:if>
+</xar:template>

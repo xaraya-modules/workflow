@@ -67,7 +67,7 @@
       <type>textbox</type>
       <defaultvalue></defaultvalue>
       <source>dynamicdata</source>
-      <status>33</status>
+      <status>34</status>
       <translatable>0</translatable>
       <seq>5</seq>
       <configuration>a:3:{s:14:"display_layout";s:7:"default";s:12:"display_size";s:2:"50";s:17:"display_maxlength";s:3:"254";}</configuration>

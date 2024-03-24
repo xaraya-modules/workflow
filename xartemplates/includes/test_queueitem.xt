@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-  <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available -->
+  <!-- this relies on $config and $item from showdisplay or test_run, or on $workflow, $subjectId and $place if available -->
   <xar:if condition="empty($config)">
     <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <xar:if condition="empty($tracker)">
     <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
-  <xar:if condition="!empty($trackerId) and empty($workflow) and empty($item)">
-    <xar:set name="item">$tracker->getTrackerItem($trackerId)</xar:set>
-  </xar:if>
-  <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
-  <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $item['tracker_id']])</xar:set>
+  <xar:set name="pieces">$tracker->fromSubjectId($item['subject'])</xar:set>
+  <xar:set name="displaylink">xarServer::getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
   <xar:set name="params">['workflow' => $item['workflow']]</xar:set>
   <xar:set name="workflowlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
-  <xar:set name="currentId">$tracker->toSubjectId($item['object'], $item['item'])</xar:set>
-  <xar:set name="params">$params + ['subjectId' => $currentId]</xar:set>
+  <xar:set name="params">$params + ['subjectId' => $item['subject']]</xar:set>
   <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
-  <xar:set name="params">$params + ['trackerId' => $item['tracker_id']]</xar:set>
-  <xar:set name="trackerlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  <xar:set name="trackerItems">$tracker->getSubjectItems($item['subject'], $item['workflow'], $item['user'])</xar:set>
+  <xar:if condition="!empty($trackerItems)">
+    <!-- @checkme there should be only one -->
+    <xar:set name="trackerId">$trackerItems[0]['id']</xar:set>
+    <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $trackerId])</xar:set>
+    <xar:set name="params">$params + ['trackerId' => $trackerId]</xar:set>
+    <xar:set name="trackerlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  </xar:if>
   <fieldset>
     <legend><a href="#$workflowlink#">#$config[$item['workflow']]['label']#</a></legend>
     <div class="xar-row">
@@ -31,24 +33,13 @@
     </div>
     <div class="xar-row">
       <div class="xar-col">
-        <label>Tracker Id</label>
-      </div>
-      <div class="xar-col">
-        <a href="#$infolink#" title="Info Tracker (#$item['tracker_id']#) #$currentId#">
-          <xar:img scope="theme" file="icons/info.png" class="xar-icon" alt="info"/>
-        </a>&#160;
-        <a href="#$trackerlink#" title="Filter Tracker (#$item['tracker_id']#) #$currentId#">#$item['tracker_id']#</a>
-      </div>
-    </div>
-    <div class="xar-row">
-      <div class="xar-col">
         <label>Subject Id</label>
       </div>
       <div class="xar-col">
-        <a href="#$displaylink#" title="Display Subject #$currentId#">
+        <a href="#$displaylink#" title="Display Subject #$item['subject']#">
           <xar:img scope="theme" file="icons/display.png" class="xar-icon" alt="display"/>
         </a>&#160;
-        <a href="#$subjectlink#" title="Filter Subject #$currentId#">#$currentId#</a>
+        <a href="#$subjectlink#" title="Filter Subject #$item['subject']#">#$item['subject']#</a>
       </div>
     </div>
     <div class="xar-row">
@@ -97,12 +88,42 @@
     </div>
     <div class="xar-row">
       <div class="xar-col">
+        <label>Event Name</label>
+      </div>
+      <div class="xar-col">
+        #$item['event']#
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
         <label>Context</label>
       </div>
       <div class="xar-col">
         <xar:set name="decoded">json_decode($item['context'])</xar:set>
         <xar:set name="encoded">json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR)</xar:set>
         <pre>#$encoded#</pre>
+      </div>
+    </div>
+    <xar:if condition="!empty($trackerItems)">
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Tracker Id</label>
+      </div>
+      <div class="xar-col">
+        <a href="#$infolink#" title="Info Tracker (#$trackerId#) #$item['subject']#">
+          <xar:img scope="theme" file="icons/info.png" class="xar-icon" alt="info"/>
+        </a>&#160;
+        <a href="#$trackerlink#" title="Filter Tracker (#$trackerId#) #$item['subject']#">#$trackerId#</a>
+      </div>
+    </div>
+    </xar:if>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Actions</label>
+      </div>
+      <div class="xar-col">
+        Apply Transition - TODO<br/>
+        Discard Event - TODO<br/>
       </div>
     </div>
   </fieldset>

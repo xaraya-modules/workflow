@@ -110,7 +110,7 @@ $callbackFuncs = [
         ['title'],                // fields to spell check for the article dataobject
         'spellchecker_approval',  // transition in case of success
         '',                       // transition in case of failure
-        false                     // @todo queue this event for later processing or not
+        true                      // queue this event for later processing or not
     ),
 ];
 
@@ -121,6 +121,8 @@ $objectName = 'wf_' . $workflowName;
 $config = WorkflowUtils::convertJsonToConfig($jsonText, $workflowName, $objectName);
 // add callback function on completed event to start spell checker
 $config['transitions']['request_review']['completed'] = $callbackFuncs['article.completed.request_review'];
+// or queue the event for later processing here - @todo how to specify event handler then?
+//$config['transitions']['request_review']['queue'] = true;
 
 // return configuration of the workflow
 return $config;

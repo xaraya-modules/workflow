@@ -15,16 +15,22 @@
 namespace Xaraya\Modules\Publications;
 
 use Symfony\Component\Workflow\WorkflowInterface;
+use Xaraya\Modules\Workflow\WorkflowHandlers;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use xarLog;
 use sys;
 
 sys::import('modules.workflow.class.subject');
+sys::import('modules.workflow.class.handlers');
 
 /**
  * Dummy spell checker to show-case automatically running something on
  * the subject once a transition is completed (or we entered a place),
  * and possibly apply another transition to move the workflow forward
+ * in case of success and/or failure
+ *
+ * This can also be configured to queue the transition event for later
+ * processing e.g. by the scheduler module or manual queue processing
  */
 class SpellCheckerDummy
 {
@@ -44,8 +50,8 @@ class SpellCheckerDummy
     /**
      * Dummy spell checker service - @todo use real spell checker
      * @param list<string> $fields object properties to spell check
-     * @param string $success transition name in case of success
-     * @param string $failure transition name in case of failure
+     * @param string $success transition name in case of success (if any)
+     * @param string $failure transition name in case of failure (if any)
      * @return mixed
      */
     public static function runSpellChecker(WorkflowInterface $workflow, WorkflowSubject $subject, array $fields, string $success, string $failure)
@@ -76,19 +82,26 @@ class SpellCheckerDummy
 
     /**
      * Callback function to automatically start the spell checker once the request_review transition
-     * is completed
-     * Note: we could also trigger this via the workflow.article.entered.wait_for_spellchecker event
+     * is completed, or to queue the transition event for later processing
+     * Note: we could also trigger this via the workflow.article.entered.wait_for_spellchecker event (not used)
+     * @param list<string> $fields object properties to spell check
+     * @param string $success transition name in case of success (if any)
+     * @param string $failure transition name in case of failure (if any)
+     * @param bool $queued queue this transition event for later processing or not (default=false)
      */
     public static function startSpellCheckerHandler(array $fields, string $success, string $failure, bool $queued = false)
     {
         // Note: we could do something with $dispatcher too
         $handler = function ($event, $eventName, $dispatcher) use ($fields, $success, $failure, $queued) {
             $subject = $event->getSubject();
-            if ($queued) {
-                // @todo queue spell checker event
-                $message = "The spell checker is queued for subject " . $subject->getId();
+            $context = $event->getContext();
+            // @checkme let the event handler called for this transition know that we have been scheduled (or not)
+            if ($queued && empty($context['scheduled'])) {
+                // queue spell checker event
+                $queueId = WorkflowHandlers::doQueueEvent($event, $eventName, $dispatcher);
+                $message = "The spell checker is queued with id ($queueId) for subject " . $subject->getId();
                 xarLog::message("Event $eventName queued: $message", xarLog::LEVEL_INFO);
-                return;
+                return $queueId;
             }
             $workflow = $event->getWorkflow();
             $marking = static::runSpellChecker($workflow, $subject, $fields, $success, $failure);
@@ -99,6 +112,7 @@ class SpellCheckerDummy
                 $message = "The spell checker resulted in NO transition for subject " . $subject->getId();
             }
             xarLog::message("Event $eventName handled: $message", xarLog::LEVEL_INFO);
+            return true;
         };
         return $handler;
     }

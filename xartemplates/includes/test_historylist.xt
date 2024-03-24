@@ -60,7 +60,6 @@
           <td>#xarUser::getVar('name', $item['user'])#</td>
           <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
           #xarLocale::getFormattedTime('short',$item['updated'])#</td>
-          <td></td>
         </tr>
       </xar:foreach>
     </table>

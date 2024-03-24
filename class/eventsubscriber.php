@@ -44,6 +44,7 @@ class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInt
         if (empty(self::$callbackFunctions[$eventName])) {
             return;
         }
+        // @todo do we want to keep track of callback results here?
         foreach (self::$callbackFunctions[$eventName] as $callbackFunc) {
             try {
                 $callbackFunc($event, $eventName, $dispatcher);

@@ -167,14 +167,7 @@ class WorkflowTracker extends WorkflowBase
 
     public static function getTrackerItem(int $trackerId)
     {
-        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
-        $trackerId = $objectRef->getItem();
-        // @checkme bypass getValue() for properties here
-        $item = $objectRef->getFieldValues([], 1);
-        if (empty($item['workflow'])) {
-            return;
-        }
-        return $item;
+        return static::get($trackerId);
     }
 
     public static function getItem(string $workflowName, string $objectName, int $itemId, string|array $marking, int $userId, int $trackerId = 0)
@@ -214,12 +207,10 @@ class WorkflowTracker extends WorkflowBase
         ];
         $oldItem = static::getItem($workflowName, $objectName, $itemId, '', $userId, $trackerId);
         if (empty($oldItem)) {
-            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName]);
-            $trackerId = $objectRef->createItem($newItem);
+            $trackerId = static::create($newItem);
             xarLog::message("New tracker item $trackerId created");
         } elseif ($newItem['marking'] != $oldItem['marking']) {
-            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
-            $trackerId = $objectRef->updateItem($newItem);
+            $trackerId = static::update($oldItem['id'], $newItem);
             xarLog::message("Old tracker item $trackerId updated");
         } else {
             // nothing to do here
@@ -236,10 +227,46 @@ class WorkflowTracker extends WorkflowBase
             // nothing to do here
             $trackerId = 0;
         } else {
-            $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $oldItem['id']]);
-            $trackerId = $objectRef->deleteItem();
+            $trackerId = static::delete($oldItem['id']);
             xarLog::message("Old tracker item $trackerId deleted");
         }
+        return $trackerId;
+    }
+
+    /**
+     * Generic CRUD methods for all tracker dataobject items (inherited by history/queue/...
+     */
+
+    public static function create(array $item)
+    {
+        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName]);
+        $trackerId = $objectRef->createItem($item);
+        return $trackerId;
+    }
+
+    public static function get(int $trackerId)
+    {
+        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
+        $trackerId = $objectRef->getItem();
+        // @checkme bypass getValue() for properties here
+        $item = $objectRef->getFieldValues([], 1);
+        if (empty($item['workflow'])) {
+            return;
+        }
+        return $item;
+    }
+
+    public static function update(int $trackerId, array $item)
+    {
+        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
+        $trackerId = $objectRef->updateItem($item);
+        return $trackerId;
+    }
+
+    public static function delete(int $trackerId)
+    {
+        $objectRef = DataObjectFactory::getObject(['name' => static::$objectName, 'itemid' => $trackerId]);
+        $trackerId = $objectRef->deleteItem();
         return $trackerId;
     }
 }

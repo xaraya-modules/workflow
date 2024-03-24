@@ -33,6 +33,8 @@ function workflow_userapi_run_transition(array $args = [], $context = null)
     $workflowName = $args['workflow'];
     $subjectId = $args['subjectId'] ?? null;
     $transitionName = $args['transition'];
+    // @checkme let the event handler called for this transition know that we have been scheduled (or not)
+    //$args['scheduled'] ??= false;
 
     if (!WorkflowConfig::hasWorkflowConfig($workflowName)) {
         xarLog::message("No workflow found for '$transitionName' in '$workflowName'", xarLog::LEVEL_INFO);

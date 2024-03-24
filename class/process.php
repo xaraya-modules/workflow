@@ -97,6 +97,10 @@ class WorkflowProcess extends WorkflowBase
                         $eventName = $subscriber->addSubscribedEvent('completed', $workflowName, $transitionName);
                         $subscriber->addCallbackFunction($eventName, WorkflowHandlers::updateProperty($callbackFuncs[$eventType]));
                         break;
+                    case 'queue':
+                        $eventName = $subscriber->addSubscribedEvent('completed', $workflowName, $transitionName);
+                        $subscriber->addCallbackFunction($eventName, WorkflowHandlers::queueEvent($callbackFuncs[$eventType]));
+                        break;
                     case 'guard':
                     case 'completed':
                         $eventName = $subscriber->addSubscribedEvent($eventType, $workflowName, $transitionName);
@@ -132,7 +136,7 @@ class WorkflowProcess extends WorkflowBase
         // this is the list of all possible events we might be interested in
         //$eventTypes = ['guard', 'leave', 'transition', 'enter', 'entered', 'completed', 'announce'];
         // add some predefined callbacks here, e.g. 'access' => 'update' means guardCheckAccess('update')
-        $checkTypes = ['guard', 'completed', 'admin', 'roles', 'access', 'property', 'update', 'delete'];
+        $checkTypes = ['guard', 'completed', 'admin', 'roles', 'access', 'property', 'update', 'delete', 'queue'];
         foreach ($info['transitions'] as $transitionName => $config) {
             foreach ($checkTypes as $checkType) {
                 if (!empty($config[$checkType])) {

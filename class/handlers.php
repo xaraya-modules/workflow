@@ -57,7 +57,7 @@ class WorkflowHandlers extends WorkflowBase
     public static function guardCheckAdmin(bool $admin, $roleId = null)
     {
         if (empty($admin)) {
-            return;
+            return true;
         }
         // @checkme list of admin roles is pre-defined based on default role groups here
         $adminGroups = ['administrators', 'sitemanagers'];
@@ -85,12 +85,15 @@ class WorkflowHandlers extends WorkflowBase
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
             $parents = xarCache::getParents($userId);
             $intersect = array_intersect($parents, $parentRoleIds);
+            $result = true;
             if (empty($intersect)) {
                 $transitionName = $event->getTransition()->getName();
                 $message = "Sorry, you do not have the right roles";
                 $event->setBlocked(true, $message);
                 xarLog::message("Transition $transitionName blocked: $message", xarLog::LEVEL_INFO);
+                $result = false;
             }
+            return $result;
         };
         return $handler;
     }
@@ -126,12 +129,15 @@ class WorkflowHandlers extends WorkflowBase
             //$context = $event->getSubject()->getContext();
             $subjectId = $event->getSubject()->getId();
             $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+            $result = true;
             if (empty($objectRef) || !$objectRef->checkAccess($action, $objectRef->itemid, $userId)) {
                 $transitionName = $event->getTransition()->getName();
                 $message = "Sorry, you do not have '$action' access to subject '$subjectId' for event '$eventName'";
                 $event->setBlocked(true, $message);
                 xarLog::message("Transition $transitionName blocked: $message", xarLog::LEVEL_INFO);
+                $result = false;
             }
+            return $result;
         };
         return $handler;
     }
@@ -188,19 +194,23 @@ class WorkflowHandlers extends WorkflowBase
             if (!empty($itemId)) {
                 $id = $objectRef->getItem(['itemid' => $itemId]);
             }
+            $result = true;
             foreach ($propertyMapping[$objectName] as $propertyName => $match) {
                 if (!array_key_exists($propertyName, $objectRef->properties)) {
                     $message = "Sorry, this subject does not have property '$propertyName'";
                     $event->setBlocked(true, $message);
                     xarLog::message("Transition $transitionName blocked: $message", xarLog::LEVEL_INFO);
+                    $result = false;
                 }
                 $value = $objectRef->properties[$propertyName]->value;
                 if ($value != $match) {
                     $message = "Sorry, this subject has '$propertyName' = '$value' instead of '$match'";
                     $event->setBlocked(true, $message);
                     xarLog::message("Transition $transitionName blocked: $message", xarLog::LEVEL_INFO);
+                    $result = false;
                 }
             }
+            return $result;
         };
         return $handler;
     }
@@ -268,6 +278,7 @@ class WorkflowHandlers extends WorkflowBase
                 $newItem[$propertyName] = $value;
             }
             $id = $objectRef->updateItem($newItem);
+            return $id;
         };
         return $handler;
     }
@@ -276,6 +287,38 @@ class WorkflowHandlers extends WorkflowBase
     public static function completeTransition(array $deleteTracker = [], $roleId = null)
     {
         return static::setTrackerItem($deleteTracker, $roleId);
+    }
+
+    public static function queueEvent(bool $queued, $roleId = null)
+    {
+        sys::import('modules.workflow.class.queue');
+        $handler = function ($event, $eventName, $dispatcher) use ($queued, $roleId) {
+            if (empty($queued)) {
+                return null;
+            }
+            return static::doQueueEvent($event, $eventName, $dispatcher, $roleId);
+        };
+        return $handler;
+    }
+
+    public static function doQueueEvent($event, $eventName, $dispatcher, $roleId = null)
+    {
+        // @checkme let the event handler called for this transition know that we have been scheduled (or not)
+        $context = $event->getContext();
+        if (!empty($context['scheduled'])) {
+            return null;
+        }
+        $workflowName = $event->getWorkflowName();
+        $subject = $event->getSubject();
+        $subjectId = $subject->getId();
+        // @todo use $context if available?
+        //$context = $event->getSubject()->getContext();
+        $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+        $transitionName = $event->getTransition()->getName();
+        $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
+        $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $queueId = WorkflowQueue::addItem($workflowName, $subjectId, $eventName, $transitionName, $marking, (string) $context, (int) $userId);
+        return $queueId;
     }
 
     public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
@@ -301,6 +344,7 @@ class WorkflowHandlers extends WorkflowBase
             $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
             $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
             $historyId = WorkflowHistory::addItem((int) $trackerId, $workflowName, $objectName, (int) $itemId, $transitionName, $marking, (string) $context, (int) $userId);
+            return $historyId;
         };
         return $handler;
     }
