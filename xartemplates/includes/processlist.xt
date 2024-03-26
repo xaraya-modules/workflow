@@ -99,7 +99,7 @@
                     <td class="xar-align-center">
                       <xar:if condition="$items[$ix]['isActive']">
                         <xar:set name="imgtitle">xarML('active process')</xar:set>
-                        <xar:set name="imgalt"> (#xarML('active')#) </xar:set>
+                        <xar:set name="imgalt">xarML('active')</xar:set>
                         <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt="$imgalt" title="$imgtitle"/>
                       <xar:else/>
                         &#160;
@@ -108,11 +108,11 @@
                     <td class="xar-align-center">
                       <xar:if condition="$items[$ix]['isValid'] eq 0">
                         <xar:set name="imgtitle">xarML('invalid process')</xar:set>
-                        <xar:set name="imgalt">(#xarML('invalid')#)</xar:set>
+                        <xar:set name="imgalt">xarML('invalid')</xar:set>
                         <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/red_dot.gif" alt="$imgalt" title="$imgtitle"/>
                       <xar:else/>
                       <xar:set name="imgtitle">xarML('valid process')</xar:set>
-                      <xar:set name="imgalt">(#xarML('valid')#)</xar:set>
+                      <xar:set name="imgalt">xarML('valid')</xar:set>
                       <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/green_dot.gif" alt="$imgalt" title="$imgtitle"/>
                       </xar:if>
                     </td>

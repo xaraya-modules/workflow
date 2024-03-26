@@ -88,7 +88,7 @@
           <a href="#xarController::URL('workflow','admin','shared_source',['pid'=>$pid])#" class="#$linkclass#">
             <xar:set name="imgtitle">xarML('code')</xar:set>
             <xar:set name="imgalt">xarML('code')</xar:set>
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/></a>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/>
             Code
           </a>
         </li>
@@ -104,7 +104,7 @@
           <a href="#xarController::URL('workflow','admin','roles',['pid'=>$pid])#" class="#$linkclass#">
             <xar:set name="imgtitle">xarML('roles')</xar:set>
             <xar:set name="imgalt">xarML('roles')</xar:set>
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/myinfo.gif" alt="$imgalt" title="$imgtitle"/></a>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/myinfo.gif" alt="$imgalt" title="$imgtitle"/>
             Roles
           </a>
         </li>
@@ -120,7 +120,7 @@
           <a href="#xarController::URL('workflow','admin','graph',['pid'=>$pid])#" class="#$linkclass#">
             <xar:set name="imgtitle">xarML('graph')</xar:set>
             <xar:set name="imgalt">xarML('graph')</xar:set>
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/mode_tree.gif" alt="$imgalt" title="$imgtitle"/></a>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/mode_tree.gif" alt="$imgalt" title="$imgtitle"/>
             Graph
           </a>
         </li>
