@@ -1,0 +1,39 @@
+  <div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Module
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    <xar:template file="user_bar" type="module"/>
+    <div style="margin: auto;">
+      <h3>Workflow Test</h3>
+      {% if warning %}
+        <p><strong>Requirement:</strong>{{ warning }}</p>
+      {% endif %}
+      {% if message %}
+        <fieldset>
+          <legend>
+            Message
+          </legend>
+          <p>{{ message }}</p>
+        </fieldset>
+      {% endif %}
+      {{ include('@workflow/includes/workflowlist.html.twig') }}
+      {% if workflow %}
+        {{ include('@workflow/includes/trackerlist.html.twig') }}
+      {% endif %}
+      {% if trackerId or subjectId %}
+        {{ include('@workflow/includes/historylist.html.twig') }}
+      {% endif %}
+      {% if workflow or subjectId %}
+        {{ include('@workflow/includes/queuelist.html.twig') }}
+      {% endif %}
+      {% if workflow %}
+        {{ include('@workflow/includes/imagemap.html.twig') }}
+        <!--
+        {# include('@workflow/includes/transitionlist.html.twig') #}
+        -->
+      {% endif %}
+      {{ include('@workflow/includes/footer.html.twig') }}
+    </div>
+  </div>

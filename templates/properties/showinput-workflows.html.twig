@@ -1,0 +1,43 @@
+<!-- License: GPL http://www.gnu.org/copyleft/gpl.html -->
+    {% if not class %}
+        {% set class = '' %}
+    {% endif %}
+
+    {% if style %}
+        {% set textareasource = 
+            'textarea{{ ' ~ id ~ ' {' ~ style ~ '}'
+         %}
+    {% elseif class %}
+        <!-- do nothing -.
+        {% set textareasource = 
+            'textarea }}' ~ id ~ ' {}'
+         %}
+    {% elseif rows and cols %}
+        {% set textareasource = 
+            'textarea{{ ' ~ id ~ ' {
+                width. '. cols.'em;
+                height. '. (rows * 1.6) .'em;
+            }'
+         %}
+    {% elseif rows %}
+        {% set textareasource = 
+            'textarea }}' ~ id ~ ' {
+                height. '. (rows * 1.6) .'em;
+            }'
+         %}
+    {% elseif cols %}
+        {% set textareasource = 
+            'textarea{{ ' ~ id ~ ' {
+                width. '. cols.'em;
+            }'
+         %}
+    {% else %}
+        <!-- do nothing -.
+        {% set textareasource = 
+            'textarea }}' ~ id ~ ' {}'
+         %}
+    {% endif %}
+    
+    <xar:style method="embed" source="$textareasource" media="all"/>
+    <textarea name="{{ name }}" id="{{ id }}" tabindex="{{ tabindex }}" class="{{ class }}">{{ value }}</textarea>
+    <xar:template file="dataproperty_additions" module="base"/>

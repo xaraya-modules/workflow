@@ -1,0 +1,129 @@
+  <!-- this relies on $config and $item from showdisplay or test_run, or on $workflow, $subjectId and $place if available -->
+  {% if not config %}
+    {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+  {% endif %}
+  {% if not tracker %}
+    {% set tracker = xar_apifunc('workflow', 'user', 'tracker') %}
+  {% endif %}
+  {% set pieces = tracker.fromSubjectId(item['subject']) %}
+  {% set params = {'itemid': pieces[1]} %}
+  {% set displaylink = xar_objecturl(pieces[0], 'display', params) %}
+  {% set params = {'workflow': item['workflow']} %}
+  {% set workflowlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% set params = params + {'subjectId': item['subject']} %}
+  {% set subjectlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% set trackerItems = tracker.getSubjectItems(item['subject'], item['workflow'], item['user']) %}
+  {% if trackerItems %}
+    <!-- @checkme there should be only one -->
+    {% set trackerId = trackerItems[0]['id'] %}
+    {% set args = {'itemid': trackerId} %}
+    {% set infolink = xar_objecturl('workflow_tracker', 'display', args) %}
+    {% set params = params + {'trackerId': trackerId} %}
+    {% set trackerlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% endif %}
+  <fieldset>
+    <legend><a href="{{ workflowlink }}">{{ config[item['workflow']]['label'] }}</a></legend>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>History Id</label>
+      </div>
+      <div class="xar-col">
+        {{ item['id'] }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Subject Id</label>
+      </div>
+      <div class="xar-col">
+        <a href="{{ displaylink }}" title="Display Subject {{ item['subject'] }}">
+          {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+        </a>&#160;
+        <a href="{{ subjectlink }}" title="Filter Subject {{ item['subject'] }}">{{ item['subject'] }}</a>
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Transition</label>
+      </div>
+      <div class="xar-col">
+        {{ item['transition']|replace({'_':' '})|title }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>To Place</label>
+      </div>
+      <div class="xar-col">
+        <!-- @checkme use wildcard prefix for multiState workflow places -->
+        {% if config[item['workflow']]['type'] == 'workflow' %}
+          {% set prefix = '%' %}
+        {% else %}
+          {% set prefix = '' %}
+        {% endif %}
+        {% set places = item['marking']|split(constant('AND_OPERATOR', tracker)) %}
+        {% for here in places %}
+          {% set params = {'workflow': item['workflow'], 'place': prefix ~ here} %}
+          {% set placelink = xar_moduleurl('workflow', 'user', 'test', params) %}
+          {% set where = here|replace({'_':' '})|title %}
+          <a href="{{ placelink }}" title="Filter Place {{ where }}">{{ where }}</a>&#160;
+        {% endfor %}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>User Name</label>
+      </div>
+      <div class="xar-col">
+        {{ xar_username(item['user']) }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Updated</label>
+      </div>
+      <div class="xar-col">
+        {{ xar_localedate(item['updated']) }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Event Name</label>
+      </div>
+      <div class="xar-col">
+        {{ item['event'] }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Context</label>
+      </div>
+      <div class="xar-col">
+        {% set decoded = json_decode(item['context']) %}
+        {% set encoded = json_encode(decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR) %}
+        <pre>{{ encoded }}</pre>
+      </div>
+    </div>
+    {% if trackerItems %}
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Tracker Id</label>
+      </div>
+      <div class="xar-col">
+        <a href="{{ infolink }}" title="Info Tracker ({{ trackerId }}) {{ item['subject'] }}">
+          {{- xar_image({scope: "theme", file: "icons/info.png", class: "xar-icon", alt: "info"}) -}}
+        </a>&#160;
+        <a href="{{ trackerlink }}" title="Filter Tracker ({{ trackerId }}) {{ item['subject'] }}">{{ trackerId }}</a>
+      </div>
+    </div>
+    {% endif %}
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Actions</label>
+      </div>
+      <div class="xar-col">
+        Apply Transition - TODO<br/>
+        Discard Event - TODO<br/>
+      </div>
+    </div>
+  </fieldset>

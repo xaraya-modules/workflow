@@ -1,0 +1,22 @@
+<!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt -->
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+        {{ include('@workflow/objects/catnavigation.html.twig') }}
+    {% endif %}
+    <!-- The layout could be set directly or through inheritance (for example in the modify prop screen) -->
+    {% if not layout %}
+        {% set layout = 'default' %}
+    {% endif %}
+    {% if not userId %}
+        {% set userId = object.getContext()?.getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+    {% endif %}
+    {% if layout == 'default' %}
+        {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+        {% set item = [] %}
+        {% for name, property in properties %}
+            {% set item = item + {(name): property.value} %}
+        {% endfor %}
+        {{ include('@workflow/objects/test_historyitem.html.twig') }}
+    {% else %}
+        <!-- You can include your own layout here or specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype -->
+        <xar:template module="$tplmodule" file="display-$layout"/>
+    {% endif %}
