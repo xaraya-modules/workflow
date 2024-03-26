@@ -1,3 +1,6 @@
+{# @workflow/includes/historyitem.html.twig #}
+
+{% block historyitem %}
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available -->
   {% if not config %}
     {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
@@ -106,3 +109,4 @@
       </div>
     </div>
   </fieldset>
+{% endblock %}

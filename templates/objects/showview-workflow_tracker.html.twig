@@ -1,4 +1,7 @@
+{# @workflow/objects/showview-workflow_tracker.html.twig #}
+
 <!-- Adapted from dynamicdata/xartemplates/objects/showview.xt -->
+{% block showview_workflow_tracker %}
     <xar:style scope="module" module="dynamicdata" file="dd"/>
     {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
         {{ include('@workflow/objects/catnavigation.html.twig') }}
@@ -22,7 +25,7 @@
         {% set layout = 'default' %}
     {% endif %}
     {% if not userId %}
-        {% set userId = object.getContext()?.getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
     {% endif %}
     <xar:template module="$tplmodule" file="view-$layout"/>
     <!-- xar:template file="test_trackerlist"/ -->
@@ -46,3 +49,4 @@
         <!-- show the pager -->
         <xar:pager startnum="$object->startnum" itemsperpage="$object->numitems" total="$object->itemcount" urltemplate="$object->pagerurl"/>
     {% endif %}
+{% endblock %}

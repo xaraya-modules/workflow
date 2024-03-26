@@ -1,3 +1,6 @@
+{# @workflow/includes/actionbuttons.html.twig #}
+
+{% block actionbuttons %}
   <!-- this relies on $config, $workflow, $subjectId, $userId, $place and $trackerId if available -->
   {% if not handlers %}
     {% set handlers = xar_apifunc('workflow', 'user', 'handlers') %}
@@ -54,3 +57,4 @@
       {{- xar_button({type: "link", name: name, label: label, disabled: "disabled"}) -}}&#160;
     {% endif %}
   {% endfor %}
+{% endblock %}

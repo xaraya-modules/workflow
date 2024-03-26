@@ -1,3 +1,6 @@
+{# @workflow/includes/queueitem.html.twig #}
+
+{% block queueitem %}
   <!-- this relies on $config and $item from showdisplay or test_run, or on $workflow, $subjectId and $place if available -->
   {% if not config %}
     {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
@@ -127,3 +130,4 @@
       </div>
     </div>
   </fieldset>
+{% endblock %}

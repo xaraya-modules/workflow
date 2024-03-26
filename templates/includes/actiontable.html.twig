@@ -1,3 +1,6 @@
+{# @workflow/includes/actiontable.html.twig #}
+
+{% block actiontable %}
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available -->
   <table style="border-collapse: separate; width: 50%">
     <tr>
@@ -42,3 +45,4 @@
       </tr>
     {% endfor %}
   </table>
+{% endblock %}

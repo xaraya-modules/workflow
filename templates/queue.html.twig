@@ -1,4 +1,9 @@
-  <!-- this relies on $config and $item from test_run -->
+{# @workflow/queue.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+  <!-- this relies on $log and $warning from test_run -->
   <div class="xar-mod-head">
     <span class="xar-mod-title">
       Workflow Module
@@ -15,3 +20,4 @@
       {{ include('@workflow/includes/footer.html.twig') }}
     </div>
   </div>
+{% endblock %}

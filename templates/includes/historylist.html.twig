@@ -1,3 +1,6 @@
+{# @workflow/includes/historylist.html.twig #}
+
+{% block historylist %}
   <!-- this relies on $workflow, $subjectId, $userId and $trackerId if available -->
   {% if not history %}
     {% set history = xar_apifunc('workflow', 'user', 'history') %}
@@ -65,3 +68,4 @@
     {# <!-- Count: {{ history.getCount }} --> #}
   </fieldset>
   {% endif %}
+{% endblock %}

@@ -1,8 +1,10 @@
+{# @workflow/showactions.html.twig #}
 <!-- This is the template which will be shown when there is
      a xar:workflow-actions tag somewhere in the code
      The ideas is to use a layout attribute in tag tag to select the proper layout
      or to override the template based on the place name - see *-requested.xt
 -->
+{% block showactions %}
   {% if not layout or layout == 'default' %}
     {% if title is null %}
       {% set title = 'Action List' %}
@@ -22,3 +24,4 @@
     Not implemented yet
     This layout is undefined - please specify it in modules/workflow/xartemplates/user-showactions.xt
   {% endif %}
+{% endblock %}

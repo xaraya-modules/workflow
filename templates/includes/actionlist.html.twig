@@ -1,3 +1,6 @@
+{# @workflow/includes/actionlist.html.twig #}
+
+{% block actionlist %}
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   {% if not config %}
     {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
@@ -27,3 +30,4 @@
     {{ include('@workflow/includes/actionbuttons.html.twig') }}
     {# include('@workflow/includes/actiontable.html.twig') #}
   {% endif %}
+{% endblock %}

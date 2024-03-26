@@ -1,4 +1,7 @@
-<!-- this relies on $objectref, $workflows, $subjectId, $userId, $marking and $context if available -->
+{# @workflow/properties/showoutput-workflows.html.twig #}
+
+{% block showoutput_workflows %}
+    <!-- this relies on $objectref, $workflows, $subjectId, $userId, $marking and $context if available -->
     {% if layout and layout == 'preformat' %}
         <pre>
         {{ value }}
@@ -32,3 +35,4 @@
     {% else %}
         {{ value }}
     {% endif %}
+{% endblock %}

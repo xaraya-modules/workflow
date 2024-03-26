@@ -1,3 +1,6 @@
+{# @workflow/includes/queuelist.html.twig #}
+
+{% block queuelist %}
   <!-- this relies on $workflow, $subjectId and $userId if available -->
   {% if not queue %}
     {% set queue = xar_apifunc('workflow', 'user', 'queue') %}
@@ -65,3 +68,4 @@
     {# <!-- Count: {{ queue.getCount }} --> #}
   </fieldset>
   {% endif %}
+{% endblock %}

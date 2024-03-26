@@ -1,3 +1,6 @@
+{# @workflow/includes/transitionlist.html.twig #}
+
+{% block transitionlist %}
   <!-- this relies on $workflow, $subjectId, $place, $transition and $trackerId if available -->
   {% if not config %}
     {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
@@ -146,3 +149,4 @@
     <span>{{ guarded }} Guarded&#160;&#160;&#160;{{ updated }} Update Property&#160;&#160;&#160;{{ deleted }} Stop Tracker</span>
   </fieldset>
   {% endif %}
+{% endblock %}
