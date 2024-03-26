@@ -14,13 +14,14 @@
 
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Bridge\TemplateEngine\TwigBridge;
 
 /**
  * the test user function
  *
  * @author mikespub
  * @access public
- * @return array|void empty
+ * @return array|string|void empty
  */
 function workflow_user_test(array $args = [], $context = null)
 {
@@ -57,5 +58,24 @@ function workflow_user_test(array $args = [], $context = null)
         $data['objectref'] = $subject->getObject();
     }
 
-    return $data;
+    WorkflowConfig::setAutoload();
+
+    // add paths for Twig filesystem loader (with namespace)
+    // {{ include('@workflow/includes/trackeritem.html.twig') }}
+    $paths = [
+        'code/modules/workflow/templates' => 'workflow',
+    ];
+    // override default options for Twig environment
+    $options = [
+        //'cache' => sys::varpath() . '/cache/templates',
+        'debug' => true,
+    ];
+    // get $context from GUI/API function call or DataObject
+
+    $twigbridge = new TwigBridge($paths, $options, $context);
+    $twig = $twigbridge->getEnvironment();
+
+    $template = $twig->load('@workflow/test.html.twig');
+    return $template->render($data);
+    //return $data;
 }

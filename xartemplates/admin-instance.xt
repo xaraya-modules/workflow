@@ -86,7 +86,9 @@
                       <td class="odd">#$acts[$ix]['name']#
                         <xar:if condition="$acts[$ix]['isInteractive'] eq 1">
                           <a href="#xarController::URL('workflow','user','run_activity',['activityId' => $acts[$ix]['activityId'], 'iid' => $iid])#">
-                            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="#xarML('run')#" title="#xarML('run')#"/></a>
+                            <xar:set name="imgtitle">xarML('run')</xar:set>
+                            <xar:set name="imgalt">xarML('run')</xar:set>
+                            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="$imgalt" title="$imgtitle"/></a>
                         </xar:if>
                       </td>
                       <td class="odd">#$acts[$ix]['actstatus']#</td>
@@ -132,7 +134,9 @@
                   <input type="text" name="props[#$key#]" value="#$item#"/>
                 </xar:if>
                 <a href="#xarController::URL('workflow','admin','instance',['iid'=>$iid,'unsetprop'=>$key])#">
-                  <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="#xarML('del')#" title="#xarML('del')#"/>
+                  <xar:set name="imgtitle">xarML('del')</xar:set>
+                  <xar:set name="imgalt">xarML('del')</xar:set>
+                  <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="$imgalt" title="$imgtitle"/>
                 </a>
               </div>
             </xar:foreach>

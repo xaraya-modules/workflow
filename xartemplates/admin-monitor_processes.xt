@@ -101,16 +101,22 @@
                       </td>
                       <td style="text-align:center;">
                         <xar:if condition="$items[$ix]['isActive']">
-                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt=" (#xarML('active')#) " title="#xarML('active process')#"/>
-                          <xar:else/>
+                          <xar:set name="imgtitle">xarML('active process')</xar:set>
+                          <xar:set name="imgalt"> (#xarML('active')#) </xar:set>
+                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt="$imgalt" title="$imgtitle"/>
+                        <xar:else/>
                           &#160;
                         </xar:if>
                       </td>
                       <td style="text-align:center;">
                         <xar:if condition="$items[$ix]['isValid'] eq 0">
-                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/red_dot.gif" alt="(#xarML('invalid')#)" title="#xarML('invalid process')#"/>
-                          <xar:else/>
-                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/green_dot.gif" alt="(#xarML('valid')#)" title="#xarML('valid process')#"/>
+                          <xar:set name="imgtitle">xarML('invalid process')</xar:set>
+                          <xar:set name="imgalt">(#xarML('invalid')#)</xar:set>
+                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/red_dot.gif" alt="$imgalt" title="$imgtitle"/>
+                        <xar:else/>
+                          <xar:set name="imgtitle">xarML('valid process')</xar:set>
+                          <xar:set name="imgalt">(#xarML('valid')#)</xar:set>
+                            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/green_dot.gif" alt="$imgalt" title="$imgtitle"/>
                         </xar:if>
 
                       </td>

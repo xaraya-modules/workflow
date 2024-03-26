@@ -130,13 +130,17 @@
     
                     <td style="text-align: center;">
                       <a href="#xarController::URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="#xarML('code')#" title="#xarML('Code to execute when running this activity')#"/>
+                        <xar:set name="imgtitle">xarML('Code to execute when running this activity')</xar:set>
+                        <xar:set name="imgalt">xarML('code')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/></a>
                       </a>
                     </td>
                     <td style="text-align: center;">
                       <xar:if condition="$items[$ix]['isInteractive']">
                         <a class="link" href="#xarController::URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId'], 'template' => 1])#">
-                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/theme.gif" alt="#xarML('template')#" title="#xarML('Interface template for interactive activity')#"/>
+                          <xar:set name="imgtitle">xarML('Interface template for interactive activity')</xar:set>
+                          <xar:set name="imgalt">xarML('template')</xar:set>
+                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/theme.gif" alt="$imgalt" title="$imgtitle"/>
                         </a>
                       <xar:else/>
                         &#160;

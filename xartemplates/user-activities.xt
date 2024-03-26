@@ -88,8 +88,10 @@
                         #$items[$ix]['name']#
                       </xar:if>&#160;
                       <xar:if condition="$items[$ix]['isInteractive'] OR ($items[$ix]['type'] eq 'start') OR ($items[$ix]['type'] eq 'standalone')">
+                        <xar:set name="imgtitle">xarML('run activity')</xar:set>
+                        <xar:set name="imgalt">xarML('run')</xar:set>
                         <a href="#xarController::URL('workflow','user','run_activity',['activityId' => $items[$ix]['activityId']])#">
-                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="#xarML('run')#" title="#xarML('run activity')#"/>
+                          <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="$imgalt" title="$imgtitle"/>
                         </a>
                       </xar:if>
                     </td>

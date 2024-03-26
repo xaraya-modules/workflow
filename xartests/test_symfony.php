@@ -12,6 +12,11 @@
  * @author Workflow Module Development Team
  */
 
+if (php_sapi_name() !== 'cli') {
+    echo 'Workflow Module Test Script for Symfony Workflow tests';
+    return;
+}
+
 $baseDir = dirname(__DIR__);
 $baseDir = '/home/mikespub/xaraya-core';
 require_once $baseDir . '/vendor/autoload.php';

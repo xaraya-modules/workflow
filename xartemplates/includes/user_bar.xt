@@ -13,7 +13,9 @@
         </xar:if>
         <li class="#$tabclass#">
           <a href="#xarController::URL('workflow','user','main')#" class="#$linkclass#">
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/home.gif" class="xar-icon" alt="#xarML('workflows')#" title="#xarML('my workflows')#"/>
+            <xar:set name="imgtitle">xarML('my workflows')</xar:set>
+            <xar:set name="imgalt">xarML('workflows')</xar:set>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/home.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             My Workflow
           </a>
         </li>
@@ -27,7 +29,9 @@
         </xar:if>
         <li class="#$tabclass#">
           <a href="#xarController::URL('workflow','user','processes')#" class="#$linkclass#">
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/process.gif" class="xar-icon" alt="#xarML('processes')#" title="#xarML('user processes')#"/>
+            <xar:set name="imgtitle">xarML('user processes')</xar:set>
+            <xar:set name="imgalt">xarML('processes')</xar:set>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/process.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Processes
           </a>
         </li>
@@ -41,7 +45,9 @@
         </xar:if>
         <li class="#$tabclass#">
           <a href="#xarController::URL('workflow','user','activities')#" class="#$linkclass#">
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" class="xar-icon" alt="#xarML('activities')#" title="#xarML('user activities')#"/>
+            <xar:set name="imgtitle">xarML('user activities')</xar:set>
+            <xar:set name="imgalt">xarML('activities')</xar:set>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Activities
           </a>
         </li>
@@ -55,7 +61,9 @@
         </xar:if>
         <li class="#$tabclass#">
           <a href="#xarController::URL('workflow','user','instances')#" class="#$linkclass#">
-            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/instance.gif" class="xar-icon" alt="#xarML('instances')#" title="#xarML('user instances')#"/>
+            <xar:set name="imgtitle">xarML('user instances')</xar:set>
+            <xar:set name="imgalt">xarML('instances')</xar:set>
+            <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/instance.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Instances
           </a>
         </li>

@@ -66,7 +66,9 @@
                   <tr>
                     <td>
                       <a class="link" href="#xarController::URL('workflow','admin','activities',['pid'=>$pid,'activityId'=>$activityId,'remove_role'=>$roles[$ix]['roleId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="#xarML('del')#" title="#xarML('Delete role')#"/>
+                        <xar:set name="imgtitle">xarML('Delete role')</xar:set>
+                        <xar:set name="imgalt">xarML('del')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="$imgalt" title="$imgtitle"/>
                       </a>
                     </td>
                     <td>#$roles[$ix]['name']#</td>

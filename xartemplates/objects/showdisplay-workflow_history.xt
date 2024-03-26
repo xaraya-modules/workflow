@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-    <!-- License: GPL http://www.gnu.org/copyleft/gpl.html -->
     <!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt -->
     <xar:if condition="!empty($isprimary) and xarModHooks::isHooked('categories',$modname,$itemtype)">
         <xar:template file="catnavigation"/>
@@ -13,7 +12,6 @@
         <xar:set name="userId">$object->getContext()?->getUserId() ?? xarSession::getVar('role_id')</xar:set>
     </xar:if>
     <xar:if condition="$layout eq 'default'">
-        <!-- xar:set name="dummy">xarTpl::setPageTemplateName('user')</xar:set -->
         <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
         <xar:set name="item">[]</xar:set>
         <xar:foreach in="$properties" key="$name" value="$property">

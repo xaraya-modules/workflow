@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
-    <!-- License: GPL http://www.gnu.org/copyleft/gpl.html -->
     <!-- Adapted from dynamicdata/xartemplates/objects/showview.xt -->
     <xar:style scope="module" module="dynamicdata" file="dd"/>
     <xar:if condition="!empty($isprimary) and xarModHooks::isHooked('categories',$modname,$itemtype)">
@@ -11,8 +10,9 @@
         <xar:if condition="$object:checkAccess('create')">
             <div style="text-align: right;">
                 <xar:if condition="xarModVars::get('dynamicdata','use_module_icons')">
+                    <xar:set name="newtext">xarML('New')</xar:set>
                     <a href="#$newlink#" title="Create New #$object:label#">
-                        <xar:img scope="theme" file="icons/document-new.png" class="xar-icon" alt="#xarML('New')#"/>
+                        <xar:img scope="theme" file="icons/document-new.png" class="xar-icon" alt="$newtext"/>
                     </a>
                 <xar:else />
                     <a href="#$newlink#" title="Create New #$object:label#">Create New #$object:label#</a>
@@ -26,7 +26,6 @@
     <xar:if condition="empty($userId)">
         <xar:set name="userId">$object->getContext()?->getUserId() ?? xarSession::getVar('role_id')</xar:set>
     </xar:if>
-    <!-- xar:set name="dummy">xarTpl::setPageTemplateName('user')</xar:set -->
     <xar:template module="$tplmodule" file="view-$layout"/>
     <!-- xar:template file="test_trackerlist"/ -->
     <xar:if condition="empty($object:itemcount)">
@@ -39,7 +38,7 @@
             </xar:if>
             <xar:if condition="count($object:items) eq $object:numitems">
                 <div class="xar-halfwidth xar-floatright xar-align-right">
-                    <xar:set name="newtotal">$object->startnum+$object->numitems</xar:set>
+                    <xar:set name="newtotal">$object->startnum + $object->numitems</xar:set>
                     <xar:pager startnum="$object->startnum" itemsperpage="$object->numitems" total="$newtotal" urltemplate="$object->pagerurl" template="multipagenext"/>
                 </div>
             </xar:if>

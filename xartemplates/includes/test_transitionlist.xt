@@ -74,54 +74,6 @@
         </tr>
       </xar:foreach>
     </table>
-    <!-- show from place - transition 1 - transition 2 - ... with to place in cells -->
-    <!--
-    <table style="border-collapse: separate; width: 50%">
-      <tr>
-        <th>&#160;&#160;&#160;Transition<br/>From Place</th>
-        <xar:foreach in="$config[$workflow]['transitions']" key="$name" value="$info">
-          <xar:if condition="!empty($transition) and $transition eq $name">
-            <th><strong>#ucwords(str_replace('_', ' ', $name))#</strong></th>
-          <xar:else/>
-            <th>#ucwords(str_replace('_', ' ', $name))#</th>
-          </xar:if>
-        </xar:foreach>
-      </tr>
-      <xar:foreach in="$config[$workflow]['places']" value="$from">
-        <tr>
-          <xar:if condition="!empty($place) and $place eq $from">
-            <td><strong>#ucwords(str_replace('_', ' ', $from))#</strong></td>
-          <xar:else/>
-            <td>#ucwords(str_replace('_', ' ', $from))#</td>
-          </xar:if>
-          <xar:foreach in="$config[$workflow]['transitions']" key="$name" value="$info">
-            <xar:set name="to">is_array($info['to']) ? $info['to'][0] : $info['to']</xar:set>
-            <xar:if condition="is_array($info['from'])">
-              <td>
-              <xar:foreach in="$info['from']" value="$where">
-                <xar:if condition="$from eq $where">
-                  <xar:if condition="!empty($place) and $place eq $to">
-                    <strong>#ucwords(str_replace('_', ' ', $to))#</strong>
-                  <xar:else/>
-                    #ucwords(str_replace('_', ' ', $to))#
-                  </xar:if>
-                </xar:if>
-              </xar:foreach>
-              </td>
-            <xar:elseif condition="$from eq $info['from']"/>
-              <xar:if condition="!empty($place) and $place eq $to">
-                <td><strong>#ucwords(str_replace('_', ' ', $to))#</strong></td>
-              <xar:else/>
-                <td>#ucwords(str_replace('_', ' ', $to))#</td>
-              </xar:if>
-            <xar:else/>
-              <td>&#160;</td>
-            </xar:if>
-          </xar:foreach>
-        </tr>
-      </xar:foreach>
-    </table>
-    -->
     <!-- show from place - to place 1 - to place 2 - ... with transitions in cells -->
     <xar:set name="fromto">[]</xar:set>
     <xar:foreach in="$config[$workflow]['transitions']" key="$name" value="$info">
@@ -171,7 +123,7 @@
             <xar:if condition="$from eq $to">
               <td>-</td>
             <xar:elseif condition="!empty($fromto[$from][$to])"/>
-              <xar:if condition="!empty($transition) and strstr($fromto[$from][$to], $transition)">
+              <xar:if condition="!empty($transition) and str_contains($fromto[$from][$to], $transition)">
                 <td><strong>#ucwords(str_replace('_', ' ', $fromto[$from][$to]))#</strong></td>
               <xar:else/>
                 <td>#ucwords(str_replace('_', ' ', $fromto[$from][$to]))#</td>

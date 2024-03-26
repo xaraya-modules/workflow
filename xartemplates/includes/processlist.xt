@@ -98,16 +98,22 @@
                     <td class="xar-align-right">#$items[$ix]['version']#</td>
                     <td class="xar-align-center">
                       <xar:if condition="$items[$ix]['isActive']">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt="(#xarML('active')#)" title="#xarML('active process')#"/>
+                        <xar:set name="imgtitle">xarML('active process')</xar:set>
+                        <xar:set name="imgalt"> (#xarML('active')#) </xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt="$imgalt" title="$imgtitle"/>
                       <xar:else/>
                         &#160;
                       </xar:if>
                     </td>
                     <td class="xar-align-center">
                       <xar:if condition="$items[$ix]['isValid'] eq 0">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/red_dot.gif" alt="(#xarML('invalid')#)" title="#xarML('invalid process')#"/>
+                        <xar:set name="imgtitle">xarML('invalid process')</xar:set>
+                        <xar:set name="imgalt">(#xarML('invalid')#)</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/red_dot.gif" alt="$imgalt" title="$imgtitle"/>
                       <xar:else/>
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/green_dot.gif" alt="(#xarML('valid')#)" title="#xarML('valid process')#"/>
+                      <xar:set name="imgtitle">xarML('valid process')</xar:set>
+                      <xar:set name="imgalt">(#xarML('valid')#)</xar:set>
+                      <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/green_dot.gif" alt="$imgalt" title="$imgtitle"/>
                       </xar:if>
                     </td>
                     <td class="xar-align-center"><a href="#$baselink#&amp;sort_mode=#$sort_mode#&amp;newminor=#$items[$ix]['pId']#">
@@ -116,23 +122,33 @@
                         <span class="xar-accent-outline">x</span><span>.1</span></a></td>
                     <td class="xar-align-center">
                       <a href="#xarController::URL('workflow','admin','activities',['pid'=>$items[$ix]['pId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" alt="#xarML('activities')#" title="#xarML('activities')#"/></a>
+                        <xar:set name="imgtitle">xarML('activities')</xar:set>
+                        <xar:set name="imgalt">xarML('activities')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" alt="$imgalt" title="$imgtitle"/></a>
                     </td>
                     <td class="xar-align-center">
                       <a href="#xarController::URL('workflow','admin','shared_source',['pid'=>$items[$ix]['pId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="#xarML('code')#" title="#xarML('code')#"/></a>
+                        <xar:set name="imgtitle">xarML('code')</xar:set>
+                        <xar:set name="imgalt">xarML('code')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/></a>
                     </td>
                     <td class="xar-align-center">
                       <a href="#xarController::URL('workflow','admin','roles',['pid'=>$items[$ix]['pId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/myinfo.gif" alt="#xarML('roles')#" title="#xarML('roles')#"/></a>
+                        <xar:set name="imgtitle">xarML('roles')</xar:set>
+                        <xar:set name="imgalt">xarML('roles')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/myinfo.gif" alt="$imgalt" title="$imgtitle"/></a>
                     </td>
                     <td class="xar-align-center">
                       <a href="#xarController::URL('workflow','admin','graph',['pid'=>$items[$ix]['pId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/mode_tree.gif" title="#xarML('graph')#" alt="#xarML('graph')#"/></a>
+                        <xar:set name="imgtitle">xarML('graph')</xar:set>
+                        <xar:set name="imgalt">xarML('graph')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/mode_tree.gif" alt="$imgalt" title="$imgtitle"/></a>
                     </td>
                     <td class="xar-align-center">
                       <a class="link" href="#xarController::URL('workflow','admin','export_process',['pid'=>$items[$ix]['pId']])#">
-                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/export.gif" alt="#xarML('export')#" title="#xarML('export')#"/></a>
+                        <xar:set name="imgtitle">xarML('export')</xar:set>
+                        <xar:set name="imgalt">xarML('export')</xar:set>
+                        <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/export.gif" alt="$imgalt" title="$imgtitle"/></a>
                     </td>
                   </tr>
                 </xar:foreach>
