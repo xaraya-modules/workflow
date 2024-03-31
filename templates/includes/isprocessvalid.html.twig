@@ -1,0 +1,21 @@
+{# @workflow/includes/isprocessvalid.html.twig #}
+
+{% block isprocessvalid %}
+{% if pid > 0 %}
+    <h4>
+      {% if proc_info['isValid'] %}
+        {% set validtext = 'valid' %}
+        {% set imgtitle = xar_translate('valid') %}
+        {% set imgalt = xar_translate('valid') %}
+        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/green_dot.gif", alt: imgalt, title: imgtitle}) -}}
+        {% else %}
+        {% set validtext = 'invalid' %}
+        {% set imgtitle = xar_translate('invalid') %}
+        {% set imgalt = xar_translate('invalid') %}
+        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/red_dot.gif", alt: imgalt, title: imgtitle}) -}}
+      {% endif %}
+      This process is: 
+      {{ validtext }}
+    </h4>
+  {% endif %}
+{% endblock %}

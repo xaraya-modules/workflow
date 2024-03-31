@@ -1,0 +1,26 @@
+{# @workflow/includes/monitor_stats.html.twig #}
+
+{% block monitor_stats %}
+<div>
+      <fieldset>
+        <legend>
+          Statistics:
+        </legend>
+        <div  style="margin-bottom: 0.5em;">
+          <small>{{ stats['processes'] }}&#160;{{ xar_translate('processes') }}&#160;({{ stats['active_processes'] }}&#160;{{ xar_translate('active') }})&#160;({{ stats['running_processes'] }}&#160;{{ xar_translate('being run') }})</small>
+        </div>
+        <small>{{ xar_translate('Instances') }}: [
+          <a style="color:green;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_status': 'active'}) }}">{{ stats['active_instances'] }}&#160;{{ xar_translate('active') }}</a> ]
+        </small>
+        <small>[
+          <a style="color:black;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_status': 'completed'}) }}">{{ stats['completed_instances'] }}&#160;{{ xar_translate('completed') }}</a> ]
+        </small>
+        <small>[
+          <a style="color:grey;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_status': 'aborted'}) }}">{{ stats['aborted_instances'] }}&#160;{{ xar_translate('aborted') }}</a> ]
+        </small>
+        <small>[
+          <a style="color:red;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_status': 'exception'}) }}">{{ stats['exception_instances'] }}&#160;{{ xar_translate('exceptions') }}</a> ]
+        </small>
+      </fieldset>
+    </div>
+{% endblock %}

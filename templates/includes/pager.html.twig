@@ -1,0 +1,17 @@
+{# @workflow/includes/pager.html.twig #}
+
+{% block pager %}
+<div class="mini">
+    <div style="text-align: center;">
+      {% if prev_offset >= 0 %}
+        [<a class="prevnext" href="{{ xar_currenturl({'offset': prev_offset}) }}">{{ xar_translate('prev') }}</a>]&#160;
+      {% endif %}
+      {{ xar_translate('Page') }}: {{ actual_page }}/{{ cant_pages }}
+      {% if next_offset >= 0 %}
+        &#160;[<a class="prevnext" href="{{ xar_currenturl({'offset': next_offset}) }}">{{ xar_translate('next') }}</a>]
+      {% endif %}
+      <br/>
+      {{ xar_pager({startnum: offset, items_per_page: maxRecords, total: cant, urltemplate: url}) }}
+    </div>
+  </div>
+{% endblock %}

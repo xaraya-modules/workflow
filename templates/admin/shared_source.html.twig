@@ -1,0 +1,82 @@
+{# @workflow/admin/shared_source.html.twig #}
+
+{% block shared_source %}
+<div class="xar-mod-head"><span class="xar-mod-title">Workflow Administration</span></div>
+    <div class="xar-mod-body">
+        {# <!-- xar:style scope="module" module="workflow" file="codemirror/docs"/--> #}
+        {# <!-- {{ xar_javascript({module: "workflow", filename: "codemirror/codemirror.js", position: "head"}) }}--> #}
+        {{ include('@workflow/includes/admin-menu.html.twig') }}
+        {# <!-- Process navigation bar --> #}
+        {{ include('@workflow/includes/proc_bar.html.twig') }}
+
+      <form id='editsource' action="{{ xar_moduleurl('workflow','admin','shared_source') }}" method="post">
+
+        <fieldset>
+         <legend>Admin process sources</legend>
+              <div class="xar-form-input-wrapper-before">
+                  <label class="xar-form-label">
+                      Activity: 
+                  </label>
+                  <select name="activityId" onchange="document.getElementById('editsource').submit();">
+                  {% if activityId == 0 %}
+                      <option value="" selected="selected">Shared code</option>
+                  {% else %}
+                      <option value="">Shared code</option>
+                  {% endif %}
+
+                  {% for ix in items|keys %}
+                  {% if activityId == items[ix]['activityId'] %}
+                    <option value="{{ items[ix]['activityId'] }}" selected="selected">{{ items[ix]['name'] }}</option>
+                    {% else %}
+                    <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                  {% endif %}
+                  {% endfor %}
+                  </select>
+            </div>
+           <div class="xar-form-input-wrapper-before">
+              {% if activityId > 0 and act_info['isInteractive'] == 1 and template == 0 %}
+                <input type="submit" name='template' value="{{ xar_translate('Switch to template') }}"/>
+              {% endif %}
+              {% if activityId > 0 and act_info['isInteractive'] == 1 and template == 1 %}
+                <input type="submit" name='save' value="{{ xar_translate('Switch to code') }}"/>
+              {% endif %}
+              &#160;
+            </div>
+            <div class="xar-form-input-wrapper-before">
+                {% if template != 1 %}
+                    {{ xar_data_input({type: "codemirror", name: "source_data", value: data, tplmodule: "workflow", template: "codemirror-php"}) }}
+                {% else %}
+                    {{ xar_data_input({type: "codemirror", name: "source_data", value: data, tplmodule: "workflow", template: "codemirror-xml"}) }}
+                {% endif %}
+            </div>
+            {% if template != 1 %}
+                <div class="xar-form-input-wrapper-before">
+                   <p>
+                    <strong>Function wizard: </strong>
+                      <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'$instance->setNextUser(&quot;thisuser&quot;);');">Set next user</a> &#160;
+                      <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'$instance->get(&quot;thisprop&quot;);');">Get property</a>&#160;
+                      <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'$instance->set(&quot;thisprop&quot;,&quot;thisval&quot;);');">Set property</a>&#160;
+                      {% if act_info['isInteractive'] == 1 %}
+                        <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'$instance->complete();');">Complete</a>&#160;
+                        <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'if(isset($_REQUEST[&quot;save&quot;])){\n  $instance->complete();\n}');">Process form</a>&#160;
+                      {% endif %}
+                      {% if act_info['type'] == 'switch' %}
+                        <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'$instance->setNextActivity(&quot;thisact&quot;);');">Set Next act</a>&#160;
+                        <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'if(true) {\n    $instance->setNextActivity(&quot;thisact&quot;);\n}');">If:SetNextact</a>&#160;
+                        <a href="javascript:pos=editor.cursorPosition(true);editor.setLineContent(pos.line,'switch($instance->get(&quot;thisprop&quot;)){\n  case &quot;thisval&quot;:\n  $instance->setNextActivity(&quot;thisact&quot;);\n  break;\n}');">Switch construct</a>&#160;
+                      {% endif %}
+                    </p>
+                </div>
+            {% endif %}
+        </fieldset>
+             <div class="xar-form-input-wrapper-after">
+                <input type="hidden" name="pid" value="{{ pid }}"/>
+                <input type="hidden" name="source_name" value="{{ source_name }}"/>
+                <input type="submit" name='save' value="{{ xar_translate('Save') }}"/>&#160;
+                <input type="submit" name='cancel' value="{{ xar_translate('Cancel') }}"/>
+            </div>
+      </form>
+      {# <!-- Show a courtesy footer --> #}
+      {{ include('@workflow/includes/galaxfooter.html.twig') }}
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{# @workflow/includes/mapgroups.html.twig #}
+
+{% block mapgroups %}
+<div>
+      <fieldset>
+        <legend>Map groups to roles</legend>
+
+        <form method="post" action="{{ xar_moduleurl('workflow','admin','roles') }}">
+          <input type="hidden" name="pid" value="{{ pid }}"/>
+          <input type="hidden" name="offset" value="{{ offset }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <input type="hidden" name="sort_mode2" value="{{ sort_mode2 }}"/>
+          <input type="hidden" name="find" value="{{ find }}"/>
+          <table class="xar-halfwidth">
+            <tr>
+              <th>Operation</th>
+              <th>Group</th>
+              <th>Role</th>
+            </tr>
+            <tr>
+              <td>
+                <select name="op">
+                  <option value="add">Add</option>
+                  <option value="remove">Remove</option>
+                </select>
+              </td>
+              <td>
+                <select name="group">
+                  {% for ix in groups|keys %}
+                    <option value="{{ groups[ix]['id'] }}">{{ groups[ix]['name'] }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select name="role">
+                  {% for ix in roles|keys %}
+                    <option value="{{ roles[ix]['roleId'] }}">{{ roles[ix]['name'] }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+            </tr>
+          </table>
+          <div class="xar-form-input-wrapper-after">
+              {% set label = 'Map' %}
+              {{- xar_button({type: "submit", name: "mapg", label: label}) -}}
+          </div>
+        </form>
+      </fieldset>
+    </div>
+{% endblock %}

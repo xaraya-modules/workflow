@@ -1,0 +1,33 @@
+{# @workflow/includes/test_actionlist.html.twig #}
+
+{% block test_actionlist %}
+{# <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $userId, $place and $trackerId if available --> #}
+  {% if not config %}
+    {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+  {% endif %}
+  {% if not tracker %}
+    {% set tracker = xar_apifunc('workflow', 'user', 'tracker') %}
+  {% endif %}
+  {% if trackerId and not workflow and not item %}
+    {% set item = tracker.getTrackerItem(trackerId) %}
+  {% endif %}
+  {% if not workflow and item %}
+    {% set trackerId = item['id'] %}
+    {% set workflow = item['workflow'] %}
+    {% set userId = item['user'] %}
+    {% set place = item['marking'] %}
+    {% set updated = item['updated'] %}
+    {% set subjectId = tracker.toSubjectId(item['object'], item['item']) %}
+  {% endif %}
+  {% set params = {'workflow': workflow, 'subjectId': subjectId} %}
+  {% set subjectlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% if trackerId %}
+    {% set params = params + {'trackerId': trackerId} %}
+  {% endif %}
+  {% set trackerlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% if workflow and config[workflow] %}
+    <a href="{{ trackerlink }}">{{ config[workflow]['label'] }}</a>&#160;({{ trackerId }})
+    {{ include('@workflow/includes/test_actionbuttons.html.twig') }}
+    {# <!-- xar:template file="test_actiontable"/--> #}
+  {% endif %}
+{% endblock %}

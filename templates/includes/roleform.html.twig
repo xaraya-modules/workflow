@@ -1,0 +1,40 @@
+{# @workflow/includes/roleform.html.twig #}
+
+{% block roleform %}
+<div>
+  <fieldset>
+    <legend>
+      {% if roleId > 0 %}
+        Role details 
+      {% else %}
+        Add new role
+      {% endif %}
+    </legend>
+
+    <form action="{{ xar_moduleurl('workflow','admin','roles') }}" method="post">
+      <input type="hidden" name="pid" value="{{ pid }}"/>
+      <input type="hidden" name="roleId" value="{{ info['roleId'] }}"/>
+      <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+      <input type="hidden" name="sort_mode2" value="{{ sort_mode2 }}"/>
+      <input type="hidden" name="find" value="{{ find }}"/>
+      <input type="hidden" name="offset" value="{{ offset }}"/>
+      <div class="xar-form-input-wrapper">
+        <label class="xar-form-label">Name</label>
+        <input type="text" name="name" value="{{ info['name'] }}"/>
+      </div>
+      <div class ="xar-form-input-wrapper">
+        <label class="xar-form-label">Description</label>
+        <textarea name="description" rows="4" cols="60">{{ info['description'] }}</textarea>
+      </div>
+      <div class="xar-form-input-wrapper-after">
+        {% if roleId > 0 %}
+          <input type="submit" name="save" value="{{ xar_translate('Update') }}"/>
+          {% else %}
+          <input type="submit" name="save" value="{{ xar_translate('Save') }}"/>
+        {% endif %}
+      </div>
+    </form>
+  </fieldset>
+</div>
+
+{% endblock %}

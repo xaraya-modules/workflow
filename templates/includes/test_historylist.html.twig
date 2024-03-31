@@ -1,0 +1,70 @@
+{# @workflow/includes/test_historylist.html.twig #}
+
+{% block test_historylist %}
+{# <!-- this relies on $workflow, $subjectId, $userId and $trackerId if available --> #}
+  {% if not history %}
+    {% set history = xar_apifunc('workflow', 'user', 'history') %}
+  {% endif %}
+  {% set paging = {'limit': 10, 'count': false, 'offset': 0, 'order': '-updated'} %}
+  {% set dummy = history.setPaging(paging) %}
+  {% if not trackerId and item %}
+    {% set trackerId = item['id'] %}
+  {% endif %}
+  {% if trackerId %}
+    {% set items = history.getTrackerItems(trackerId) %}
+  {% elseif subjectId %}
+    {% set items = history.getSubjectItems(subjectId, workflow, userId) %}
+  {% elseif workflow %}
+    {% set items = history.getWorkflowItems(workflow, userId) %}
+  {% else %}
+    {% set items = [] %}
+  {% endif %}
+  {% if items %}
+  <fieldset>
+    <legend>
+      {% if trackerId %}
+        Transition History ({{ trackerId }})
+      {% else %}
+        Transition History [{{ subjectId }}]
+      {% endif %}
+    </legend>
+    <table style="border-collapse: separate;">
+      <tr>
+        <th>History Id</th>
+        <th>Subject Id</th>
+        <th>Transition</th>
+        <th>To Place</th>
+        <th>User Name</th>
+        <th>Updated</th>
+      </tr>
+      {% for item in items %}
+        {% set displaylink = xar_objecturl(item['object'], 'display', {'itemid': item['item']}) %}
+        {% set infolink = xar_objecturl('workflow_history', 'display', {'itemid': item['id']}) %}
+        {% set currentId = history.toSubjectId(item['object'], item['item']) %}
+        {% set params = {'workflow': item['workflow'], 'subjectId': currentId} %}
+        {% set filterlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+        <tr>
+          <td><a href="{{ infolink }}" title="Info History ({{ item['id'] }})">{{ item['id'] }}</a></td>
+          <td>
+            <a href="{{ displaylink }}" title="Display Subject {{ currentId }}">
+              {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+            </a>&#160;
+            <a href="{{ filterlink }}" title="Filter Subject {{ currentId }}">{{ currentId }}</a>
+          </td>
+          <td>{{ item['transition']|replace({'_':' '})|title }}</td>
+          <td>
+            {% set places = item['marking']|split(constant('AND_OPERATOR', history)) %}
+            {% for here in places %}
+              {{ here|replace({'_':' '})|title }}&#160;
+            {% endfor %}
+          </td>
+          <td>{{ xar_username(item['user']) }}</td>
+          <td>{{ xar_localedate(item['updated'], 'medium', '') }}
+          {{ xar_localedate(item['updated'], '', 'short') }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {# <!-- Count: {{ history.getCount() }} --> #}
+  </fieldset>
+  {% endif %}
+{% endblock %}

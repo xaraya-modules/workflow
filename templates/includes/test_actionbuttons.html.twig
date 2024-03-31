@@ -1,0 +1,60 @@
+{# @workflow/includes/test_actionbuttons.html.twig #}
+
+{% block test_actionbuttons %}
+{# <!-- this relies on $config, $workflow, $subjectId, $userId, $place and $trackerId if available --> #}
+  {% if not handlers %}
+    {% set handlers = xar_apifunc('workflow', 'user', 'handlers') %}
+  {% endif %}
+  {% for name, info in config[workflow]['transitions'] %}
+    {% set from = info['from'] is iterable ? info['from'] : [ info['from'] ] %}
+    {% if place not in from %}
+    {% else %}
+    {# <!-- check for access based on config here --> #}
+    {% set enabled = true %}
+    {% if info['admin'] %}
+      {% if not handlers.doCheckAdmin(info['admin'], userId) %}
+        {% set enabled = false %}
+      {% endif %}
+    {% endif %}
+    {% if info['roles'] %}
+      {% if not handlers.doCheckRoles(info['roles'], userId) %}
+        {% set enabled = false %}
+      {% endif %}
+    {% endif %}
+    {% if info['access'] and subjectId %}
+      {% set pieces = handlers.fromSubjectId(subjectId) %}
+      {% if objectref %}
+        {% set object = objectref %}
+        {% else %}
+      {% set object = pieces[0] %}
+      {% endif %}
+      {% if not handlers.doCheckAccess(object, pieces[1], info['access'], userId) %}
+        {% set enabled = false %}
+      {% endif %}
+    {% endif %}
+    {% if info['property'] and subjectId %}
+      {% set pieces = handlers.fromSubjectId(subjectId) %}
+      {% if objectref %}
+        {% set object = objectref %}
+        {% else %}
+      {% set object = pieces[0] %}
+      {% endif %}
+      {% if not handlers.doCheckProperty(object, pieces[1], info['property']) %}
+        {% set enabled = false %}
+      {% endif %}
+    {% endif %}
+    {% set label = name|replace({'_':' '})|title %}
+    {% if enabled %}
+      {% set params = {'workflow': workflow, 'subjectId': subjectId} %}
+      {% if trackerId %}
+        {% set params = params + {'trackerId': trackerId} %}
+      {% endif %}
+      {% set params = params + {'transition': name} %}
+      {% set runlink = xar_moduleurl('workflow', 'user', 'test_run', params) %}
+      {{- xar_button({type: "link", name: name, target: runlink, label: label}) -}}&#160;
+    {% else %}
+      {{- xar_button({type: "link", name: name, label: label, disabled: "disabled"}) -}}&#160;
+    {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endblock %}

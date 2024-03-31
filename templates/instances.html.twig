@@ -1,0 +1,32 @@
+{# @workflow/instances.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Module
+    </span>
+  </div>
+  <div class="xar-mod-body">
+{# <!-- This is the default template for the user instances function
+     it's parts are also used as the default layout parts for the
+     xar:workflow-instances custom tag.
+     See the file user-showinstances.xd file for the template for that tag.
+--> #}
+{# <!-- Show the user navigation bar --> #}
+    {{ include('@workflow/includes/user_bar.html.twig') }}
+{# <!-- Construct the list of instances for this user --> #}
+    <fieldset>
+      <legend>List of instances ({{ cant }})</legend>
+{# <!-- Show a filter on the instances --> #}
+      {{ include('@workflow/includes/instancefilter.html.twig') }}
+{# <!-- Show the actual list --> #}
+      {{ include('@workflow/includes/instancelist.html.twig') }}
+{# <!-- Show a page on the list --> #}
+      {{ include('@workflow/includes/pager.html.twig') }}
+    </fieldset>
+{# <!-- Show a courtesy footer --> #}
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

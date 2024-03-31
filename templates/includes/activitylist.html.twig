@@ -1,0 +1,169 @@
+{# @workflow/includes/activitylist.html.twig #}
+
+{% block activitylist %}
+<div>
+    <form action="{{ xar_moduleurl('workflow','admin','activities') }}" method="post">
+      <fieldset>
+        <legend>Process activities</legend>
+        <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+        <input type="hidden" name="pid" value="{{ pid }}"/>
+        <input type="hidden" name="activityId" value="{{ activityId }}"/>
+        <table>
+          <tr>
+            <td>Find</td>
+            <td>Type</td>
+            <td>Int</td>
+            <td>Routing</td>
+            <td>&#160;</td>
+          </tr>
+          <tr>
+            <td>
+              <input size="8" type="text" name="find" value="{{ find }}"/>
+            </td>
+            <td>
+              <select name="filter_type">
+                <option value="">all</option>
+                <option value="start">start</option>
+                <option value="end">end</option>
+                <option value="activity">activity</option>
+                <option value="switch">switch</option>
+                <option value="split">split</option>
+                <option value="join">join</option>
+                <option value="standalone">standalone</option>
+              </select>
+            </td>
+            <td>
+              <select name="filter_interactive">
+                <option value="">all</option>
+                <option value="y">Interactive</option>
+                <option value="n">Automatic</option>
+              </select>
+            </td>
+            <td>
+              <select name="filter_autoroute">
+                <option value="">all</option>
+                <option value="y">Auto routed</option>
+                <option value="n">Manual</option>
+              </select>
+            </td>
+            <td>
+              <input type="submit" name="filter" value="{{ xar_translate('Filter') }}"/>
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+
+    <form action="{{ xar_moduleurl('workflow','admin','activities') }}" method="post">
+        <fieldset>
+            <legend>Activities List</legend>
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            <input type="hidden" name="activityId" value="{{ activityId }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="where" value="{{ where }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+    
+            {# <!-- Little trick to get the base link into a variable, save some typing ahead --> #}
+            {% set params = {'pid': pid, 'find': find, 'where': where} %}
+            {% set baselink = xar_moduleurl('workflow','admin','activities',params) %}
+
+            <table style="border-collapse: separate; width: 99%">
+              <tr>
+                {% if sort_mode == 'flowNum_desc' %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=flowNum_asc">Nr.</a></th>
+                {% else %}
+                   <th><a href="{{ baselink }}&amp;sort_mode=flowNum_desc">Nr.</a></th>
+                {% endif %}
+                {% if sort_mode == 'name_desc' %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=name_asc">Name</a></th>
+                  {% else %}
+                  <th ><a href="{{ baselink }}&amp;sort_mode=name_desc">Name</a></th>
+                {% endif %}
+                {% if sort_mode == 'type_desc' %}
+                  <th ><a href="{{ baselink }}&amp;sort_mode=type_asc">Type</a></th>
+                  {% else %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=type_desc">Type</a></th>
+                {% endif %}
+                {% if sort_mode == 'isInteractive_desc' %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=isInteractive_asc">Interactive</a></th>
+                  {% else %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=isInteractive_desc">Interactive</a></th>
+                {% endif %}
+                {% if sort_mode == 'isAutoRouted_desc' %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=isAutoRouted_asc">Autoroute</a></th>
+                  {% else %}
+                  <th><a href="{{ baselink }}&amp;sort_mode=isAutoRouted_desc">Autoroute</a></th>
+                {% endif %}
+                <th>Code</th>
+                <th>Template</th>
+              </tr>
+              {% if items and items|length > 0 %}
+                {% for ix in items|keys %}
+                  {% set rowclass = 'xar-norm' %}
+                  {% if ix % 2 %}
+                    {% set rowclass = 'xar-alt' %}
+                  {% endif %}
+                  <tr class="{{ rowclass }}">
+                    <td style="text-align:right;">
+                      {{ items[ix]['flowNum'] }}
+                    </td>
+                    <td style="text-align:left;">
+                      <input type="checkbox" name="activity[{{ items[ix]['activityId'] }}]"/>&#160;
+                      <a href="{{ baselink }}&amp;sort_mode={{ sort_mode }}&amp;activityId={{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</a>
+                      {% if items[ix]['roles'] < 1 %}
+                        &#160;<small>(no roles)</small>
+                      {% endif %}
+                    </td>
+                    <td style="text-align:center;">
+                      {# <!-- Get an image for the activity --> #}
+                      {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
+                    </td>
+                    <td style="text-align:center;">
+                      {% set name = 'activity_inter[' ~ items[ix]['activityId'] ~ ']' %}
+                      {% set value = items[ix]['isInteractive'] %}
+                      {{ xar_data_input({type: "checkbox", name: name, value: value}) }}
+                    </td>
+                    <td style="text-align:center;">
+                      {% set name = 'activity_route[' ~ items[ix]['activityId'] ~ ']' %}
+                      {% set value = items[ix]['isAutoRouted'] %}
+                      {{ xar_data_input({type: "checkbox", name: name, value: value}) }}
+                    </td>
+    
+                    <td style="text-align: center;">
+                      <a href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': pid, 'activityId': items[ix]['activityId']}) }}">
+                        {% set imgtitle = xar_translate('Code to execute when running this activity') %}
+                        {% set imgalt = xar_translate('code') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/book.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                      </a>
+                    </td>
+                    <td style="text-align: center;">
+                      {% if items[ix]['isInteractive'] %}
+                        <a class="link" href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': pid, 'activityId': items[ix]['activityId'], 'template': 1}) }}">
+                          {% set imgtitle = xar_translate('Interface template for interactive activity') %}
+                          {% set imgalt = xar_translate('template') %}
+                          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/theme.gif", alt: imgalt, title: imgtitle}) -}}
+                        </a>
+                      {% else %}
+                        &#160;
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="6">
+                    No activities defined yet
+                  </td>
+                </tr>
+              {% endif %}
+            </table>
+              <div class="xar-form-input-wrapper-after">
+                  {% set label = 'Update' %}
+                  {{- xar_button({type: "submit", name: "update_act", label: label}) -}}&#160;&#160;
+                  {% set label = 'Delete selected' %}
+                  {{- xar_button({type: "submit", name: "delete_act", label: label}) -}}
+              </div>
+          </fieldset>
+      </form>
+  </div>
+{% endblock %}

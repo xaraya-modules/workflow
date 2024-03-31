@@ -1,0 +1,198 @@
+{# @workflow/admin/monitor_activities.html.twig #}
+
+{% block monitor_activities %}
+<div class="xar-mod-head">
+  <span class="xar-mod-title">
+    Workflow Administration
+  </span>
+</div>
+<div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+    {{ include('@workflow/includes/monitor_bar.html.twig') }}
+
+    <div style="margin: auto;">
+      <fieldset>
+        <legend>List of activities ({{ cant }})</legend>
+          <form style="margin-left: 1em;" id="filterf" action="{{ xar_moduleurl('workflow','admin','monitor_activities') }}" method="post">
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            <table>
+              <tr>
+                <td><small>process</small></td>
+                <td><small>activity</small></td>
+                <td><small>type</small></td>
+                <td><small>interact</small></td>
+                <td><small>route</small></td>
+                <td><small>description</small></td>
+                <td>&#160;</td>
+              </tr>
+              <tr>
+                <td>
+                    {{ xar_data_input({type: "dropdown", name: "filter_process", value: filter_process, options: all_procs, firstline: "All"}) }}
+                </td>
+                <td>
+                  <select name="filter_activity">
+                    {% if '' == filter_activity %}
+                      <option selected="selected" value="">All</option>
+                      {% else %}
+                      <option value="">All</option>
+                    {% endif %}
+                    {% for ix in all_acts|keys %}
+                      {% if all_acts[ix]['activityId'] == filter_activity %}
+                        <option selected="selected" value="{{ all_acts[ix]['activityId'] }}">{{ all_acts[ix]['name'] }}</option>
+                        {% else %}
+                        <option value="{{ all_acts[ix]['activityId'] }}">{{ all_acts[ix]['name'] }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="filter_type">
+                    {% if '' == filter_type %}
+                      <option selected="selected" value="">All</option>
+                      {% else %}
+                      <option value="">All</option>
+                    {% endif %}
+                    {% for ix in types|keys %}
+                      {% if types[ix] == filter_type %}
+                        <option selected="selected" value="{{ types[ix] }}">{{ types[ix] }}</option>
+                        {% else %}
+                        <option value="{{ types[ix] }}">{{ types[ix] }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="filter_isInteractive">
+                    {% if '' == filter_isInteractive %}
+                      <option selected="selected" value="">All</option>
+                      {% else %}
+                      <option value="">All</option>
+                    {% endif %}
+                    {% if 1 == filter_isInteractive %}
+                      <option value="1" selected="selected">Interactive</option>
+                      {% else %}
+                      <option value="1">Interactive</option>
+                  {% endif %}
+                  {% if 0 == filter_isInteractive %}
+                    <option value="0" selected="selected">Automatic</option>
+                    {% else %}
+                    <option value="0">Automatic</option>
+                  {% endif %}
+                </select>
+              </td>
+              <td>
+                <select name="filter_isAutoRouted">
+                  {% if '' == filter_isAutoRouted %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% if 0 == filter_isAutoRouted %}
+                    <option value="0" selected="selected">Manual</option>
+                    {% else %}
+                    <option value="0">Manual</option>
+                  {% endif %}
+                  {% if 1 == filter_isAutoRouted %}
+                    <option value="1" selected="selected">Automatic</option>
+                    {% else %}
+                    <option value="1">Automatic</option>
+                  {% endif %}
+                </select>
+              </td>
+              <td>
+                <input size="8" type="text" name="find" value="{{ find }}"/>
+              </td>
+
+              <td>
+                <input type="submit" name="filter" value="{{ xar_translate('filter') }}"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+
+        <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','monitor_activities') }}" method="post">
+          <input type="hidden" name="offset" value="{{ offset }}"/>
+          <input type="hidden" name="find" value="{{ find }}"/>
+          <input type="hidden" name="where" value="{{ where }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <table style="border-collapse: separate; width: 99%">
+            {% if items and items|length > 0 %}
+              <tr>
+                <th>Process</th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'name_asc'}) }}">Activity</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'type_asc'}) }}">Type</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'isInteractive_asc'}) }}">Interact</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'isAutoRouted_asc'}) }}">Route</a></th>
+                <th>Status</th>
+                <th>Duration of completed activities - min/avg/max</th>
+              </tr>
+              {% for ix in items|keys %}
+                <tr>
+                  <td style="text-align:left;">
+                    {{ items[ix]['procname'] }} {{ items[ix]['version'] }}
+                  </td>
+
+                  <td style="text-align:left;">
+                    {# <!-- Get an image for the activity --> #}
+                    {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
+                    <a class="link" href="{{ xar_moduleurl('workflow','admin','activities',{'pid': items[ix]['pId'],'activityId': items[ix]['activityId']}) }}">{{ items[ix]['name'] }}</a>
+                    {% if items[ix]['type'] == 'standalone' %}
+                      <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': items[ix]['activityId']}) }}">
+                        <img alt="{{ xar_translate('run') }}" title="{{ xar_translate('run activity') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}" border="0"/>
+                      </a>
+                    {% endif %}
+                    {% if items[ix]['type'] == 'start' %}
+                      <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': items[ix]['activityId'], 'createInstance': 1}) }}">
+                        <img alt="{{ xar_translate('run') }}" title="{{ xar_translate('run activity') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}" border="0"/>
+                      </a>
+                    {% endif %}
+                  </td>
+                  <td style="text-align:left;">{{ items[ix]['type'] }}</td>
+                  <td style="text-align:center;">{{ items[ix]['isInteractive'] }}</td>
+                  <td style="text-align:center;">{{ items[ix]['isAutoRouted'] }}</td>
+                  <td style="text-align:right;">
+                    <table >
+                      <tr>
+                        <td style="text-align:right;"><a style="color:green;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'active', 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['active_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:black;" href="{{ xar_moduleurl('workflow','admin','monitor_workitems',{'filter_process': items[ix]['pId'], 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['act_completed_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:grey;" href="{{ xar_moduleurl('workflow','admin','monitor_workitems',{'filter_process': items[ix]['pId'], 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['aborted_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:red;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'exception','filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['exception_instances'] }}</a></td>
+                      </tr>
+                      {# <!--
+                        <td style="text-align:right;"><a style="color:green;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'active', 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['active_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:black;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'completed', 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['completed_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:grey;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'aborted', 'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['aborted_instances'] }}</a></td>
+                        <td style="text-align:right;"><a style="color:red;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'exception','filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['exception_instances'] }}</a></td>
+                        --> #}
+                    </table>
+                  </td>
+
+                  <td style="text-align:left;">
+                    {% if items[ix]['duration'] %}
+                      {% if items[ix]['timescale']['min'] %}
+                        <img src="{{ xar_imageurl('bluepixel.gif') }}" width="{{ items[ix]['timescale']['min'] }}" height="10" alt="minimum" title="minimum = {{ items[ix]['duration']['min'] }}"/>
+                      {% endif %}
+                      {% if items[ix]['timescale']['avg'] %}
+                        <img src="{{ xar_imageurl('greenpixel.gif') }}" width="{{ items[ix]['timescale']['avg'] }}" height="10" alt="average" title="average = {{ items[ix]['duration']['avg'] }}"/>
+                      {% endif %}
+                      {% if items[ix]['timescale']['max'] %}
+                        <img src="{{ xar_imageurl('redpixel.gif') }}" width="{{ items[ix]['timescale']['max'] }}" height="10" alt="maximum" title="maximum = {{ items[ix]['duration']['max'] }}"/>
+                      {% endif %}
+                      {{ items[ix]['duration']['avg'] }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="7">No activities found</td></tr>
+            {% endif %}
+          </table>
+        </form>
+      </fieldset>
+      {{ include('@workflow/includes/pager.html.twig') }}
+      {{ include('@workflow/includes/monitor_stats.html.twig') }}
+      {{ include('@workflow/includes/galaxfooter.html.twig') }}
+    </div>
+  </div>
+{% endblock %}

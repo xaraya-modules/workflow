@@ -1,0 +1,94 @@
+{# @workflow/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+<div class="xar-mod-head"><span class="xar-mod-title">Workflow Administration</span></div>
+    <div class="xar-mod-body">
+        {{ include('@workflow/includes/admin-menu.html.twig') }}
+        <h2>Modify Configuration</h2>
+
+    <form method="post" action="{{ xar_moduleurl('workflow','admin','updateconfig') }}" enctype="application/x-www-form-urlencoded">
+        <fieldset>
+          <legend>General Options</legend>
+          {{ xar_data_form({object: module_settings}) }}
+        </fieldset>
+
+        <fieldset>
+          <legend>Configuration of Hooked Modules</legend>
+          <p>
+            <b>Description:</b> first enable workflow hooks for a particular module+itemtype,
+              then specify here which workflow process should be started when a particular hook is called
+              by that module+itemtype. Only non-interactive start activities can be used here...
+              Activity code can use $args['module'], $args['itemtype'] and $args['itemid'] as standard arguments to update the $instance.
+          </p>
+
+          <table border="0" cellpadding="8" cellspacing="0">
+            {% for modname, config in settings %}
+              <tr>
+                <td colspan="2"><b>{{ config['label'] }}</b></td>
+              </tr>
+              <tr>
+                <td><label for="settings[{{ modname }}.create]">Start Activity for Create Hook Calls</label></td>
+                <td>
+                  <select name="settings[{{ modname }}.create]" id="settings[{{ modname }}.create]">
+                    {% for id, name in activities %}
+                      {% if config['create'] == id %}
+                        <option value="{{ id }}" selected="selected">{{ name }}</option>
+                      {% else %}
+                        <option value="{{ id }}">{{ name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><label for="settings[{{ modname }}.update]">Start Activity for Update Hook Calls</label></td>
+                <td>
+                  <select name="settings[{{ modname }}.update]" id="settings[{{ modname }}.update]">
+                    {% for id, name in activities %}
+                      {% if config['update'] == id %}
+                        <option value="{{ id }}" selected="selected">{{ name }}</option>
+                      {% else %}
+                        <option value="{{ id }}">{{ name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td><label for="settings[{{ modname }}.delete]">Start Activity for Delete Hook Calls</label></td>
+                <td>
+                  <select name="settings[{{ modname }}.delete]" id="settings[{{ modname }}.delete]">
+                    {% for id, name in activities %}
+                      {% if config['delete'] == id %}
+                        <option value="{{ id }}" selected="selected">{{ name }}</option>
+                      {% else %}
+                        <option value="{{ id }}">{{ name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+          <p>Note: at the moment, only one activity can be started in each hook call from each module+itemtype.
+              If necessary, this can be modified but perhaps you might rethink your processes instead :-)</p>
+          <br/>
+        </fieldset>
+
+        <fieldset>
+          <legend>Configuration of Scheduled Activities</legend>
+          {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) %}
+            {{ include('@workflow/includes/scheduler.html.twig') }}
+          {% else %}
+            The scheduler module is not installed
+          {% endif %}
+        </fieldset>
+
+        <div class="xar-form-input-wrapper-after">
+            <input type="hidden" name="authid" id="authid" value="{{ authid }}"/>
+            <input type="submit" value="Update Workflow Configuration"/>
+        </div>
+    </form>
+
+    </div>
+{% endblock %}

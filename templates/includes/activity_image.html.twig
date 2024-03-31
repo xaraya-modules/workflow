@@ -1,0 +1,21 @@
+{# @workflow/includes/activity_image.html.twig #}
+
+{% block activity_image %}
+{% if type == 'start' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_circle.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'end' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_dbl_circle.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'activity' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_rectangle.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'switch' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_diamond.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'standalone' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_hexagon.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'split' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_triangle.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% elseif type == 'join' %}
+    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/mini_blue_inv_triangle.gif','module','workflow') }}" alt="{{ type }}" title="{{ type }}"/>
+  {% else %}
+    {{ type }}
+  {% endif %}
+{% endblock %}

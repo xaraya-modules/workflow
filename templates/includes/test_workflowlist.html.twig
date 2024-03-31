@@ -1,0 +1,65 @@
+{# @workflow/includes/test_workflowlist.html.twig #}
+
+{% block test_workflowlist %}
+{# <!-- this relies on $workflow, $subjectId, $place, $transition and $trackerId if available --> #}
+  {% if not config %}
+    {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+  {% endif %}
+  <fieldset>
+    <legend>
+      {% if workflow %}
+        {% set testlink = xar_moduleurl('workflow', 'user', 'test') %}
+        <a href="{{ testlink }}">List of workflows</a>
+      {% else %}
+        List of workflows
+      {% endif %}
+    </legend>
+    <table style="border-collapse: separate;">
+      <tr>
+        <th>Workflow</th>
+        <th>Subjects</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Places</th>
+        <th>Transitions</th>
+      </tr>
+      {% for name, info in config %}
+        {% set workflowlink = xar_moduleurl('workflow', 'user', 'test', {'workflow': name}) %}
+        <tr>
+          <td>
+              <a href="{{ workflowlink }}" title="Search Workflow {{ info['label'] }}">
+                {{- xar_image({scope: "theme", file: "icons/system-search.png", class: "xar-icon", alt: "search"}) -}}
+              </a>&#160;
+            {% if workflow and workflow == name %}
+              {% if trackerId or subjectId %}
+                <strong><a href="{{ workflowlink }}" title="Search Workflow {{ info['label'] }}">{{ info['label'] }}</a></strong>
+              {% else %}
+                <strong>{{ info['label'] }}</strong>
+              {% endif %}
+            {% else %}
+              <a href="{{ workflowlink }}">{{ info['label'] }}</a>
+            {% endif %}
+          </td>
+          <td>
+            {% for objectName in info['supports'] %}
+              {% set viewlink = xar_objecturl(objectName) %}
+              {% set subjectlink = xar_moduleurl('workflow', 'user', 'test', {'workflow': name, 'subjectId': objectName}) %}
+              <a href="{{ viewlink }}" title="View Subjects {{ objectName }}">
+                {{- xar_image({scope: "theme", file: "icons/item-list.png", class: "xar-icon", alt: "view"}) -}}
+              </a>&#160;
+              {% if subjectId and subjectId starts with objectName %}
+                <strong><a href="{{ subjectlink }}" title="Filter Subjects {{ objectName }}">{{ objectName }}</a></strong>
+              {% else %}
+                <a href="{{ subjectlink }}" title="Filter Subjects {{ objectName }}">{{ objectName }}</a>
+              {% endif %}<br/>
+            {% endfor %}
+          </td>
+          <td>{{ info['type']|replace({'_':' '})|title }}</td>
+          <td>{{ info['description'] }}</td>
+          <td>{{ info['places']|length }}</td>
+          <td>{{ info['transitions']|length }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </fieldset>
+{% endblock %}

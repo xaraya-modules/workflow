@@ -1,0 +1,25 @@
+{# @workflow/admin/activities.html.twig #}
+
+{% block activities %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Administration
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+
+{# <!-- Show the navigation bar --> #}
+    {{ include('@workflow/includes/proc_bar.html.twig') }}
+{# <!-- Show the list of activities --> #}
+    {% if activityId == 0 %}
+      {{ include('@workflow/includes/activitylist.html.twig') }}
+    {% endif %}
+{# <!-- Show the activity form --> #}
+    {{ include('@workflow/includes/activityform.html.twig') }}
+{# <!-- Show the list of transitions --> #}
+    {{ include('@workflow/includes/transitionlist.html.twig') }}
+{# <!-- Show a courtesy footer --> #}
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

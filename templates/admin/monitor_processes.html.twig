@@ -1,0 +1,162 @@
+{# @workflow/admin/monitor_processes.html.twig #}
+
+{% block monitor_processes %}
+<div class="xar-mod-head"><span class="xar-mod-title">Workflow Administration</span></div>
+    <div class="xar-mod-body">
+      {{ include('@workflow/includes/admin-menu.html.twig') }}
+
+      {# <!-- Include the monitoring navigation --> #}
+      {{ include('@workflow/includes/monitor_bar.html.twig') }}
+
+      <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','monitor_processes') }}" method="post">
+          <fieldset>
+            <legend>List of processes ({{ cant }})</legend>
+              <input type="hidden" name="offset" value="{{ offset }}"/>
+              <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+              <table>
+                <tr>
+                  <td><small>process</small></td>
+                  <td><small>active</small></td>
+                  <td><small>valid</small></td>
+                  <td><small>description</small></td>
+                  <td>&#160;</td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <select name="filter_process">
+                      {% if '' == filter_process %}
+                        <option selected="selected" value="">All</option>
+                        {% else %}
+                        <option value="">All</option>
+                      {% endif %}
+                      {% for ix in all_procs|keys %}
+                        {% if all_procs[ix]['pId'] == filter_process %}
+                          <option selected="selected" value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['name'] }} {{ all_procs[ix]['version'] }}</option>
+                          {% else %}
+                          <option value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['name'] }} {{ all_procs[ix]['version'] }}</option>
+                        {% endif %}
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <select name="filter_active">
+                      {% if '' == filter_active %}
+                        <option selected="selected" value="">All</option>
+                        {% else %}
+                        <option value="">All</option>
+                      {% endif %}
+                      {% if 1 == filter_active %}
+                        <option value="1" selected="selected">Active</option>
+                        {% else %}
+                        <option value="1">Active</option>
+                      {% endif %}
+                      {% if 0 == filter_active %}
+                        <option value="0" selected="selected">Inactive</option>
+                        {% else %}
+                        <option value="0">Inactive</option>
+                      {% endif %}
+                    </select>
+                  </td>
+                  <td>
+                    <select name="filter_valid">
+                      {% if '' == filter_valid %}
+                        <option selected="selected" value="">All</option>
+                        {% else %}
+                        <option value="">All</option>
+                      {% endif %}
+                      {% if 1 == filter_valid %}
+                        <option selected="selected" value="1">Valid</option>
+                        {% else %}
+                        <option value="1">Valid</option>
+                      {% endif %}
+                      {% if 0 == filter_valid %}
+                        <option selected="selected" value="0">Invalid</option>
+                        {% else %}
+                        <option value="0">Invalid</option>
+                      {% endif %}
+                    </select>
+                  </td>
+                  <td><input size="8" type="text" name="find" value="{{ find }}"/></td>
+                  <td><input type="submit" name="filter" value="{{ xar_translate('filter') }}"/></td>
+                </tr>
+              </table>
+
+              <table style="border-collapse: separate; width: 99%;">
+                {% if items and items|length > 0 %}
+                  <tr>
+                    <th><a class="tableheading" href="{{ xar_currenturl({'sort_mode': 'name_asc'}) }}">Process</a></th>
+                    <th>Activities</th>
+                    <th><a class="tableheading" href="{{ xar_currenturl({'sort_mode': 'isActive_asc'}) }}">Active</a></th>
+                    <th><a class="tableheading" href="{{ xar_currenturl({'sort_mode': 'isValid_asc'}) }}">Valid</a></th>
+                    <th>Instances</th>
+                    <th>Duration of completed processes - min/avg/max</th>
+                  </tr>
+                  {% for ix in items|keys %}
+                    <tr>
+                      <td>
+                        <a class="link" href="{{ xar_moduleurl('workflow','admin','processes',{'pid': items[ix]['pId']}) }}">{{ items[ix]['name'] }} {{ items[ix]['version'] }}</a>
+                      </td>
+                      <td style="text-align:right;">
+                        <a href="{{ xar_moduleurl('workflow','admin','monitor_activities',{'filter_process': items[ix]['pId']}) }}" class="link">{{ items[ix]['activities'] }}</a>
+                      </td>
+                      <td style="text-align:center;">
+                        {% if items[ix]['isActive'] %}
+                          {% set imgtitle = xar_translate('active process') %}
+                          {% set imgalt = xar_translate('active') %}
+                          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/refresh2.gif", alt: imgalt, title: imgtitle}) -}}
+                        {% else %}
+                          &#160;
+                        {% endif %}
+                      </td>
+                      <td style="text-align:center;">
+                        {% if items[ix]['isValid'] == 0 %}
+                          {% set imgtitle = xar_translate('invalid process') %}
+                          {% set imgalt = xar_translate('invalid') %}
+                          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/red_dot.gif", alt: imgalt, title: imgtitle}) -}}
+                        {% else %}
+                          {% set imgtitle = xar_translate('valid process') %}
+                          {% set imgalt = xar_translate('valid') %}
+                            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/green_dot.gif", alt: imgalt, title: imgtitle}) -}}
+                        {% endif %}
+
+                      </td>
+
+                      <td style="text-align:right;">
+                        <table >
+                          <tr>
+                            <td style="text-align:right;"><a style="color:green;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'active'}) }}">{{ items[ix]['active_instances'] }}</a></td>
+                            <td style="text-align:right;"><a style="color:black;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'completed'}) }}">{{ items[ix]['completed_instances'] }}</a></td>
+                            <td style="text-align:right;"><a style="color:grey;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'aborted'}) }}">{{ items[ix]['aborted_instances'] }}</a></td>
+                            <td style="text-align:right;"><a style="color:red;" href="{{ xar_moduleurl('workflow','admin','monitor_instances',{'filter_process': items[ix]['pId'], 'filter_status': 'exception'}) }}">{{ items[ix]['exception_instances'] }}</a></td>
+                          </tr>
+                        </table>
+                      </td>
+
+                      <td style="text-align:left;">
+                        {% if items[ix]['duration'] %}
+                          {% if items[ix]['timescale']['min'] %}<img src="{{ xar_imageurl('bluepixel.gif','module','workflow') }}" class="xar-noborder" width="{{ items[ix]['timescale']['min'] }}" height="10" alt="minimum" title="minimum = {{ items[ix]['duration']['min'] }}"/>{% endif %}
+                          {% if items[ix]['timescale']['avg'] %}<img src="{{ xar_imageurl('greenpixel.gif','module','workflow') }}" class="xar-noborder" width="{{ items[ix]['timescale']['avg'] }}" height="10" alt="average" title="average = {{ items[ix]['duration']['avg'] }}"/>{% endif %}
+                          {% if items[ix]['timescale']['max'] %}<img src="{{ xar_imageurl('redpixel.gif','module','workflow') }}" class="xar-noborder" width="{{ items[ix]['timescale']['max'] }}" height="10" alt="maximum" title="maximum = {{ items[ix]['duration']['max'] }}"/>{% endif %}
+                          {{ items[ix]['duration']['avg'] }}
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr>
+                    <td colspan="6">
+                      No processes found
+                    </td>
+                  </tr>
+                {% endif %}
+              </table>
+          </fieldset>
+        </form>
+
+        {{ include('@workflow/includes/pager.html.twig') }}
+        {{ include('@workflow/includes/monitor_stats.html.twig') }}
+        {{ include('@workflow/includes/galaxfooter.html.twig') }}
+
+    </div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{# @workflow/includes/activityform.html.twig #}
+
+{% block activityform %}
+<div class="xar-form-input-container">
+      <form action="{{ xar_moduleurl('workflow','admin','activities') }}" method="post">
+        <fieldset>
+          <legend>
+            {% if activityId > 0 %}
+              Activity details
+              {% else %}
+            Add new activity
+            {% endif %}
+          </legend>
+          
+          <input type="hidden" name="find" value="{{ find }}"/>
+          <input type="hidden" name="where" value="{{ where }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          
+          {{ xar_data_form({object: activity, tplmodule: "workflow"}) }}
+          
+          <div class="xar-form-input-wrapper">
+            <label class="xar-form-label">
+              Add transitions
+            </label>
+
+            <table style="width: 300px">
+              <tr>
+                <th>From:</th>
+                <th>To:</th>
+              </tr>
+              <tr>
+                <td>
+                  <select name="add_tran_from[]" multiple="multiple" size="5">
+                    {% for ix in items|keys %}
+                      {% if items[ix]['from'] %}
+                        <option value="{{ items[ix]['activityId'] }}" selected="selected">{{ items[ix]['name'] }}</option>
+                      {% else %}
+                        <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>
+                  <select name="add_tran_to[]" multiple="multiple" size="5">
+                    {% for ix in items|keys %}
+                      {% if items[ix]['to'] %}
+                        <option value="{{ items[ix]['activityId'] }}" selected="selected">{{ items[ix]['name'] }}</option>
+                      {% else %}
+                        <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="xar-form-input-wrapper">
+            <label class="xar-form-label">Roles</label>
+            {% if roles and roles|length > 0 %}
+              <table style="border-collapse: separate; width: 300px">
+                <tr>
+                  <th>Delete</th>
+                  <th>Role</th>
+                </tr>
+                {% for ix in roles|keys %}
+                  <tr>
+                    <td>
+                      <a class="link" href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid, 'activityId': activityId, 'remove_role': roles[ix}['roleId']]) }}">
+                        {% set imgtitle = xar_translate('Delete role') %}
+                        {% set imgalt = xar_translate('del') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/trash.gif", alt: imgalt, title: imgtitle}) -}}
+                      </a>
+                    </td>
+                    <td>{{ roles[ix]['name'] }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+              {% else %}
+              No roles associated to this activity
+            {% endif %}
+          </div>
+          <div class="xar-form-input-wrapper">
+            <label class="xar-form-label">Add role</label>
+            {% if all_roles|length %}
+              <select name="userole">
+                <option value="">Add new</option>
+                {% for ix in all_roles|keys %}
+                  <option value="{{ all_roles[ix]['roleId'] }}">{{ all_roles[ix]['name'] }}</option>
+                {% endfor %}
+              </select>
+            {% endif %}
+            <input type="text" name="rolename"/><input type="submit" name="addrole" value="{{ xar_translate('Add') }}"/>
+          </div>
+          <div class="xar-form-input-wrapper-after">
+            {% set pid = activity.properties['process_id'].value %}
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            {% if activityId > 0 %}
+              {% set label = 'Update' %}
+              {{- xar_button({type: "submit", name: "save_act", label: label}) -}}
+            {% else %}
+              {% set label = 'Create' %}
+              {{- xar_button({type: "submit", name: "save_act", label: label}) -}}
+            {% endif %}
+          </div>
+        </fieldset>
+      </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{# @workflow/includes/processlist.html.twig #}
+
+{% block processlist %}
+<div class="xar-form-input-wrapper">
+      <fieldset>
+        <legend>
+          List of processes ({{ cant }})
+        </legend>
+
+          {# <!-- Proces filtering --> #}
+          <div class="xar-form-input-container">
+          <form action="{{ xar_moduleurl('workflow','admin','monitor_processes') }}" method="post">
+            Find:<input size="8" type="text" name="find" value="{{ find }}"/>
+            &#160;
+            Process:
+            <select name="filter_name">
+              <option value="">All</option>
+              {% for ix in all_procs|keys %}
+                <option  value="{{ all_procs[ix]['name'] }}">{{ all_procs[ix]['name'] }}</option>
+              {% endfor %}
+            </select>
+            &#160;
+            Status:
+            <select name="filter_active">
+              <option value="">All</option>
+              <option value="y">Active</option>
+              <option value="n">Inactive</option>
+            </select>
+            &#160;
+
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            <input type="submit" name="filter" value="{{ xar_translate('Filter') }}"/>
+          </form>
+          </div>
+
+          {# <!-- List of processes --> #}
+          <div class="xar-form-input-container">
+          <form action="{{ xar_moduleurl('workflow','admin','processes') }}" method="post">
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="where" value="{{ where }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+
+            {# <!-- Little trick to get the base link into a variable, save some typing ahead --> #}
+            {% set params = {'find': find, 'where': where, 'offset': offset} %}
+            {% set baselink = xar_moduleurl('workflow','admin','processes',params) %}
+
+            <table style="border-collapse: separate; width: 99%;">
+              <tr>
+                <th>
+                  {% if sort_mode == 'name_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=name_asc">Name</a>
+                    {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=name_desc">Name</a>
+                  {% endif %}
+                </th>
+                <th>
+                  {% if sort_mode == 'version_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=version_asc">Version</a>
+                    {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=version_desc">Version</a>
+                  {% endif %}
+                </th>
+                <th>
+                  {% if sort_mode == 'isActive_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=isActive_asc">Active</a>
+                    {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=isActive_desc">Active</a>
+                  {% endif %}
+                </th>
+                <th>
+                  {% if sort_mode == 'isValid_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=isValid_asc">Valid</a>
+                    {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=isValid_desc">Valid</a>
+                  {% endif %}
+                </th>
+                <th colspan="2">New version</th>
+                <th>Activities</th>
+                <th>Code</th>
+                <th>Roles</th>
+                <th>Graph</th>
+                <th>Export</th>
+              </tr>
+
+              {% if items and items|length > 0 %}
+                {% for ix in items|keys %}
+                  {% set rowclass = 'xar-norm' %}
+                  {% if ix % 2 %}
+                    {% set rowclass = 'xar-alt' %}
+                  {% endif %}
+
+                  <tr class="{{ rowclass }}">
+                    <td valign="top">
+                      <input type="checkbox" name="process[{{ items[ix]['pId'] }}]"/>&#160;
+                      <a href="{{ baselink }}&amp;sort_mode={{ sort_mode }}&amp;pid={{ items[ix]['pId'] }}">{{ items[ix]['name'] }}</a>
+                    </td>
+                    <td class="xar-align-right">{{ items[ix]['version'] }}</td>
+                    <td class="xar-align-center">
+                      {% if items[ix]['isActive'] %}
+                        {% set imgtitle = xar_translate('active process') %}
+                        {% set imgalt = xar_translate('active') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/refresh2.gif", alt: imgalt, title: imgtitle}) -}}
+                      {% else %}
+                        &#160;
+                      {% endif %}
+                    </td>
+                    <td class="xar-align-center">
+                      {% if items[ix]['isValid'] == 0 %}
+                        {% set imgtitle = xar_translate('invalid process') %}
+                        {% set imgalt = xar_translate('invalid') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/red_dot.gif", alt: imgalt, title: imgtitle}) -}}
+                      {% else %}
+                      {% set imgtitle = xar_translate('valid process') %}
+                      {% set imgalt = xar_translate('valid') %}
+                      {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/green_dot.gif", alt: imgalt, title: imgtitle}) -}}
+                      {% endif %}
+                    </td>
+                    <td class="xar-align-center"><a href="{{ baselink }}&amp;sort_mode={{ sort_mode }}&amp;newminor={{ items[ix]['pId'] }}">
+                        <span>1.</span><span class="xar-accent-outline">x</span></a></td>
+                    <td><a href="{{ baselink }}&amp;sort_mode={{ sort_mode }}&amp;newmajor={{ items[ix]['pId'] }}">
+                        <span class="xar-accent-outline">x</span><span>.1</span></a></td>
+                    <td class="xar-align-center">
+                      <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': items[ix}['pId']]) }}">
+                        {% set imgtitle = xar_translate('activities') %}
+                        {% set imgalt = xar_translate('activities') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/activity.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                    </td>
+                    <td class="xar-align-center">
+                      <a href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': items[ix}['pId']]) }}">
+                        {% set imgtitle = xar_translate('code') %}
+                        {% set imgalt = xar_translate('code') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/book.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                    </td>
+                    <td class="xar-align-center">
+                      <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': items[ix}['pId']]) }}">
+                        {% set imgtitle = xar_translate('roles') %}
+                        {% set imgalt = xar_translate('roles') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/myinfo.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                    </td>
+                    <td class="xar-align-center">
+                      <a href="{{ xar_moduleurl('workflow','admin','graph',{'pid': items[ix}['pId']]) }}">
+                        {% set imgtitle = xar_translate('graph') %}
+                        {% set imgalt = xar_translate('graph') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/mode_tree.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                    </td>
+                    <td class="xar-align-center">
+                      <a class="link" href="{{ xar_moduleurl('workflow','admin','export_process',{'pid': items[ix}['pId']]) }}">
+                        {% set imgtitle = xar_translate('export') %}
+                        {% set imgalt = xar_translate('export') %}
+                        {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/export.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="15">No processes defined yet</td>
+                </tr>
+              {% endif %}
+            </table>
+              <div class="xar-form-input-wrapper-after">
+                  {% set label = 'Delete selected' %}
+                  {{- xar_button({type: "submit", name: "delete", label: label}) -}}
+              </div>
+          </form>
+          </div>
+      </fieldset>
+    </div>
+{% endblock %}

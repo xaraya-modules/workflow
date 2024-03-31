@@ -1,0 +1,51 @@
+{# @workflow/activity-running.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+      <span class="xar-mod-title">
+        Workflow Module
+      </span>
+      {{ include('@workflow/includes/user_bar.html.twig') }}
+    </div>
+  <div class="xar-mod-body">
+    <h3>
+      Running activity
+    </h3>
+    <div class="xar-norm-outline" style="padding: 0.5em 1em 0.5em; margin: auto;">
+      <table style="border-collapse: separate;">
+        <tr>
+          <th>
+            Process
+          </th>
+          <th>
+            Version
+          </th>
+          <th>
+            Activity
+          </th>
+        </tr>
+        <tr>
+          <td>{{ procname }}</td>
+          <td style="text-align: right;">{{ procversion }}</td>
+          <td>{{ actname }}</td>
+        </tr>
+      </table>
+      {% if mid %}{{ mid }}{% endif %}
+      {% if return_url %}
+        <p>
+          <a href="{{ return_url }}">
+            Return to previous page
+          </a>
+        </p>
+      {% endif %}
+      {% if hooks and hooks|length > 0 %}
+        {% for hookname, hookoutput in hooks %}
+        {{ hookoutput }}
+      {% endfor %}
+      {% endif %}
+    </div>
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

@@ -1,0 +1,206 @@
+{# @workflow/admin/monitor_instances.html.twig #}
+
+{% block monitor_instances %}
+<div class="xar-mod-head">
+  <span class="xar-mod-title">
+    Workflow Administration
+  </span>
+</div>
+
+<div class="xar-mod-body">
+  {{ include('@workflow/includes/admin-menu.html.twig') }}
+  {{ include('@workflow/includes/monitor_bar.html.twig') }}
+
+  <div style="margin: auto;">
+
+      <fieldset>
+        <legend>
+          List of instances ({{ cant }})
+        </legend>
+
+        <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','monitor_instances') }}" method="post">
+          <input type="hidden" name="offset" value="{{ offset }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <table>
+            <tr>
+              <td><small>process</small></td>
+              <td><small>owner</small></td>
+              <td><small>status</small></td>
+              <td><small>activity</small></td>
+              <td><small>user</small></td>
+              <td><small>properties</small></td>
+              <td>&#160;</td>
+            </tr>
+
+            <tr>
+              <td>
+                <select name="filter_process">
+                  {% if '' == filter_process %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% for ix in all_procs|keys %}
+                    {% if all_procs[ix]['pId'] == filter_process %}
+                      <option selected="selected" value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['name'] }} {{ all_procs[ix]['version'] }}</option>
+                      {% else %}
+                      <option value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['name'] }} {{ all_procs[ix]['version'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select name="filter_owner">
+                  {% if '' == filter_owner %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% for ix in owners|keys %}
+                    {% if owners[ix]['userId'] == filter_owner %}
+                      <option selected="selected" value="{{ owners[ix]['userId'] }}">{{ owners[ix]['user'] }}</option>
+                      {% else %}
+                      <option value="{{ owners[ix]['userId'] }}">{{ owners[ix]['user'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select name="filter_status">
+                  {% if '' == filter_status %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% for ix in statuses|keys %}
+                    {% if statuses[ix] == filter_status %}
+                      <option selected="selected" value="{{ statuses[ix] }}">{{ statuses[ix] }}</option>
+                      {% else %}
+                      <option value="{{ statuses[ix] }}">{{ statuses[ix] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select name="filter_activity">
+                  {% if '' == filter_activity %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% for ix in all_acts|keys %}
+                    {% if all_acts[ix]['activityId'] == filter_activity %}
+                      <option selected="selected" value="{{ all_acts[ix]['activityId'] }}">{{ all_acts[ix]['name'] }}</option>
+                      {% else %}
+                      <option value="{{ all_acts[ix]['activityId'] }}">{{ all_acts[ix]['name'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <select name="filter_user">
+                  {% if '' == filter_user %}
+                    <option selected="selected" value="">All</option>
+                    {% else %}
+                    <option value="">All</option>
+                  {% endif %}
+                  {% for ix in users|keys %}
+                    {% if users[ix]['userId'] == filter_user %}
+                      <option selected="selected" value="{{ users[ix]['userId'] }}">{{ users[ix]['user'] }}</option>
+                      {% else %}
+                      <option value="{{ users[ix]['userId'] }}">{{ users[ix]['user'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </td>
+              <td>
+                <input size="8" type="text" name="find" value="{{ find }}"/>
+              </td>
+
+              <td>
+                <input type="submit" name="filter" value="{{ xar_translate('filter') }}"/>
+              </td>
+            </tr>
+          </table>
+        </form>
+
+        <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','monitor_activities') }}" method="post">
+          <input type="hidden" name="offset" value="{{ offset }}"/>
+          <input type="hidden" name="find" value="{{ find }}"/>
+          <input type="hidden" name="where" value="{{ where }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <table style="border-collapse: separate; width: 99%">
+            {% if items and items|length > 0 %}
+              <tr>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'procname_asc'}) }}">Process</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'instanceId_asc'}) }}">Ins</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'owner_asc'}) }}">Owner</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'status_asc'}) }}">Status</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'name_asc'}) }}">Current Activity</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'user_asc'}) }}">User</a></th>
+                <th><a href="{{ xar_currenturl({'sort_mode': 'started_asc'}) }}">Start</a></th>
+                <th>Duration of this instance</th>
+              </tr>
+              {% for ix in items|keys %}
+                {% set rowclass = 'xar-norm' %}
+                {% if ix % 2 %}
+                  {% set rowclass = 'xar-alt' %}
+                {% endif %}
+                <tr class="{{ rowclass }}">
+                  <td style="text-align:left;">
+                    {{ items[ix]['procname'] }} {{ items[ix]['version'] }}
+                  </td>
+
+                  <td>
+                    <a class="link" href="{{ xar_moduleurl('workflow','admin','instance',{'iid': items[ix]['instanceId']}) }}">{{ items[ix]['instanceId'] }}</a>
+                  </td>
+
+                  <td style="text-align:left;">
+                    {{ items[ix]['owner'] }}
+                  </td>
+
+                  <td style="text-align:center;">
+                    {% if items[ix]['status'] == 'active' %}
+                      <span style="color:green;">{{ items[ix]['status'] }}</span>
+                      {% elseif items[ix]['status'] == 'completed' %}
+                      <span style="color:black;">{{ items[ix]['status'] }}</span>
+                      {% elseif items[ix]['status'] == 'aborted' %}
+                      <span style="color:grey;">{{ items[ix]['status'] }}</span>
+                      {% elseif items[ix]['status'] == 'exception' %}
+                      <span style="color:red;">{{ items[ix]['status'] }}</span>
+                      {% else %}
+                      {{ items[ix]['status'] }}
+                    {% endif %}
+                  </td>
+
+                  <td style="text-align:left;">
+                    {# <!-- Get an image for the activity --> #}
+                    {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
+                    {{ items[ix]['name'] }}
+                  </td>
+
+                  <td style="text-align:left;">{{ items[ix]['user'] }}</td>
+                  <td style="text-align:left;">{{ items[ix]['started'] }}</td>
+                  <td style="text-align:left;">
+                    {% if items[ix]['duration'] %}
+                      {% if items[ix]['timescale'] %}
+                        <img src="{{ xar_imageurl('bluepixel.gif') }}" width="{{ items[ix]['timescale'] }}" height="10" alt="duration" title="duration = {{ items[ix]['duration'] }}"/>
+                      {% endif %}
+                      {{ items[ix]['duration'] }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="8">No instances found</td></tr>
+            {% endif %}
+          </table>
+        </form>
+      </fieldset>
+
+      {{ include('@workflow/includes/pager.html.twig') }}
+      {{ include('@workflow/includes/monitor_stats.html.twig') }}
+      {{ include('@workflow/includes/galaxfooter.html.twig') }}
+    </div>
+  </div>
+{% endblock %}

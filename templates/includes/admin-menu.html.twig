@@ -1,0 +1,83 @@
+{# @workflow/includes/admin-menu.html.twig #}
+
+{% block admin_menu %}
+{#  Common Administration menu #}
+    {{ xar_style({scope: "module", module: "base", file: "tabs"}) }}
+
+    {% set request = xar_coremethod('xarController', 'getRequest').getInfo() %}
+    {% set activetab = request[2] %}
+    <div>
+      <ul class="xar-tabs">
+        {% if xar_security_check('AdminWorkflow') %}
+            {% if activetab == 'overview' %}
+              {% set tabclass = 'xar-tab-active' %}
+              {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+              {% set tabclass = 'xar-tab' %}
+              {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('workflow','admin','overview') }}" class="{{ linkclass }}">
+                Overview
+              </a>
+            </li>
+
+          {% if activetab == 'monitor_processes' or activetab == 'monitor_activities'
+            or activetab == 'monitor_instances' or activetab == 'monitor_workitems' %}
+                {% set tabclass = 'xar-tab-active' %}
+                {% set linkclass = 'xar-accent xar-accent-outline' %}
+          {% else %}
+              {% set tabclass = 'xar-tab' %}
+              {% set linkclass = 'xar-norm xar-norm-outline' %}
+          {% endif %}
+
+            <li class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('workflow','admin','monitor_processes') }}" class="{{ linkclass }}">
+                Workflow Monitoring
+              </a>
+            </li>
+
+            {% if activetab == 'processes' or activetab == 'activities'  or activetab == 'export_process'
+            or activetab == 'shared_source' or activetab == 'roles' or activetab == 'graph' %}
+              {% set tabclass = 'xar-tab-active' %}
+              {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+              {% set tabclass = 'xar-tab' %}
+              {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+
+            <li class="{{ tabclass }}">
+                <a href="{{ xar_moduleurl('workflow','admin','processes') }}" class="{{ linkclass }}">
+                    Manage Processes
+                </a>
+            </li>
+
+            {% if activetab == 'test_manage' %}
+              {% set tabclass = 'xar-tab-active' %}
+              {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+              {% set tabclass = 'xar-tab' %}
+              {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('workflow','admin','test_manage') }}" class="{{ linkclass }}">
+                New Workflows
+              </a>
+            </li>
+
+            {% if activetab == 'modifyconfig' %}
+              {% set tabclass = 'xar-tab-active' %}
+              {% set linkclass = 'xar-accent xar-accent-outline' %}
+            {% else %}
+              {% set tabclass = 'xar-tab' %}
+              {% set linkclass = 'xar-norm xar-norm-outline' %}
+            {% endif %}
+            <li class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('workflow','admin','modifyconfig') }}" class="{{ linkclass }}">
+                Modify Configuration
+              </a>
+            </li>
+        {% endif %}
+      </ul>
+    </div>
+{% endblock %}

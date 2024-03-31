@@ -1,0 +1,24 @@
+{# @workflow/admin/processes.html.twig #}
+
+{% block processes %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Administration
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+{# <!-- Show the navigation bar --> #}
+    {{ include('@workflow/includes/proc_bar.html.twig') }}
+{# <!-- Show the list of processes --> #}
+    {% if pid == 0 %}
+      {{ include('@workflow/includes/processlist.html.twig') }}
+{# <!-- Show the pager --> #}
+      {{ include('@workflow/includes/pager.html.twig') }}
+    {% endif %}
+{# <!-- Show the form for a process --> #}
+    {{ include('@workflow/includes/processform.html.twig') }}
+{# <!-- Show a courtesy footer --> #}
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

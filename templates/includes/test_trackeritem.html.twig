@@ -1,0 +1,84 @@
+{# @workflow/includes/test_trackeritem.html.twig #}
+
+{% block test_trackeritem %}
+{# <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available --> #}
+  {% if not config %}
+    {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
+  {% endif %}
+  {% if not tracker %}
+    {% set tracker = xar_apifunc('workflow', 'user', 'tracker') %}
+  {% endif %}
+  {% if trackerId and not workflow and not item %}
+    {% set item = tracker.getTrackerItem(trackerId) %}
+  {% endif %}
+  {% set displaylink = xar_objecturl(item['object'], 'display', {'itemid': item['item']}) %}
+  {% set infolink = xar_objecturl('workflow_tracker', 'display', {'itemid': item['id']}) %}
+  {% set params = {'workflow': item['workflow']} %}
+  {% set workflowlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% set currentId = tracker.toSubjectId(item['object'], item['item']) %}
+  {% set params = params + {'subjectId': currentId} %}
+  {% set subjectlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  {% set params = params + {'trackerId': item['id']} %}
+  {% set trackerlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+  <fieldset>
+    <legend><a href="{{ workflowlink }}">{{ config[item['workflow']]['label'] }}</a></legend>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Tracker Id</label>
+      </div>
+      <div class="xar-col">
+        <a href="{{ infolink }}" title="Info Tracker ({{ item['id'] }}) {{ currentId }}">
+          {{- xar_image({scope: "theme", file: "icons/info.png", class: "xar-icon", alt: "info"}) -}}
+        </a>&#160;
+        <a href="{{ trackerlink }}">{{ item['id'] }}</a>
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Subject Id</label>
+      </div>
+      <div class="xar-col">
+        <a href="{{ displaylink }}" title="Display Subject {{ currentId }}">
+          {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+        </a>&#160;
+        <a href="{{ subjectlink }}">{{ currentId }}</a>
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Current Place</label>
+      </div>
+      <div class="xar-col">
+        {# <!-- @checkme use wildcard prefix for multiState workflow places --> #}
+        {% if config[item['workflow']]['type'] == 'workflow' %}
+          {% set prefix = '%' %}
+        {% else %}
+          {% set prefix = '' %}
+        {% endif %}
+        {% set places = item['marking']|split(constant('AND_OPERATOR', tracker)) %}
+        {% for here in places %}
+          {% set placelink = xar_moduleurl('workflow', 'user', 'test', {'workflow': item['workflow'], 'place': prefix ~ here}) %}
+          {% set where = here|replace({'_':' '})|title %}
+          <a href="{{ placelink }}" title="Filter Place {{ where }}">{{ where }}</a>&#160;
+        {% endfor %}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>User Name</label>
+      </div>
+      <div class="xar-col">
+        {{ xar_username(item['user']) }}
+      </div>
+    </div>
+    <div class="xar-row">
+      <div class="xar-col">
+        <label>Last Updated</label>
+      </div>
+      <div class="xar-col">
+        {{ xar_localedate(item['updated'], 'medium', '') }}
+        {{ xar_localedate(item['updated'], '', 'short') }}
+      </div>
+    </div>
+  </fieldset>
+{% endblock %}

@@ -14,8 +14,9 @@
 /**
  * Test manage Symfony Workflows
  */
-function workflow_admin_test_manage()
+function workflow_admin_test_manage(array $args = [], $context = null)
 {
     $data = [];
+    $data['context'] = $context;
     return $data;
 }

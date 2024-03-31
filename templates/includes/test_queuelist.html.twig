@@ -1,0 +1,70 @@
+{# @workflow/includes/test_queuelist.html.twig #}
+
+{% block test_queuelist %}
+{# <!-- this relies on $workflow, $subjectId and $userId if available --> #}
+  {% if not queue %}
+    {% set queue = xar_apifunc('workflow', 'user', 'queue') %}
+  {% endif %}
+  {% set paging = {'limit': 10, 'count': false, 'offset': 0, 'order': '-updated'} %}
+  {% set dummy = queue.setPaging(paging) %}
+  {% if subjectId %}
+    {% set items = queue.getSubjectItems(subjectId, workflow, userId) %}
+  {% elseif workflow %}
+    {% set items = queue.getWorkflowItems(workflow, userId) %}
+  {% else %}
+    {% set items = [] %}
+  {% endif %}
+  {% if items %}
+  <fieldset>
+    <legend>
+      {% if subjectId %}
+        Transition Event Queue [{{ subjectId }}]
+      {% else %}
+        Transition Event Queue
+      {% endif %}
+    </legend>
+    <table style="border-collapse: separate;">
+      <tr>
+        <th>Queue Id</th>
+        <th>Subject Id</th>
+        <th>Transition</th>
+        <th>To Place</th>
+        <th>User Name</th>
+        <th>Updated</th>
+      </tr>
+      {% for item in items %}
+        {% set pieces = queue.fromSubjectId(item['subject']) %}
+        {% set displaylink = xar_objecturl(pieces[0], 'display', {'itemid': pieces[1]}) %}
+        {% set infolink = xar_objecturl('workflow_queue', 'display', {'itemid': item['id']}) %}
+        {% set params = {'workflow': item['workflow'], 'subjectId': item['subject']} %}
+        {% set filterlink = xar_moduleurl('workflow', 'user', 'test', params) %}
+        <tr>
+          <td><a href="{{ infolink }}" title="Info Queue ({{ item['id'] }})">{{ item['id'] }}</a></td>
+          <td>
+            <a href="{{ displaylink }}" title="Display Subject {{ item['subject'] }}">
+              {{- xar_image({scope: "theme", file: "icons/display.png", class: "xar-icon", alt: "display"}) -}}
+            </a>&#160;
+            <a href="{{ filterlink }}" title="Filter Subject {{ item['subject'] }}">{{ item['subject'] }}</a>
+          </td>
+          <td>{{ item['transition']|replace({'_':' '})|title }}</td>
+          <td>
+            {% set places = item['marking']|split(constant('AND_OPERATOR', queue)) %}
+            {% for here in places %}
+              {{ here|replace({'_':' '})|title }}&#160;
+            {% endfor %}
+          </td>
+          <td>{{ xar_username(item['user']) }}</td>
+          <td>{{ xar_localedate(item['updated'], 'medium', '') }}
+          {{ xar_localedate(item['updated'], '', 'short') }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <div>
+      {% set queuelink = xar_moduleurl('workflow', 'user', 'test_queue') %}
+      {% set label = 'Process Queue' %}
+      {{- xar_button({type: "link", name: "process", target: queuelink, label: label}) -}}
+    </div>
+    {# <!-- Count: {{ queue.getCount() }} --> #}
+  </fieldset>
+  {% endif %}
+{% endblock %}

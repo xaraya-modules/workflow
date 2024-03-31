@@ -3,13 +3,13 @@
 {% extends '@workflow/base.html.twig' %}
 
 {% block modulespace %}
-  <div class="xar-mod-head">
+<div class="xar-mod-head">
     <span class="xar-mod-title">
       Workflow Module
     </span>
   </div>
   <div class="xar-mod-body">
-    <xar:template file="user_bar" type="module"/>
+    {{ include('@workflow/includes/user_bar.html.twig') }}
     <div style="margin: auto;">
       <h3>Workflow Test</h3>
       {% if warning %}
@@ -23,23 +23,23 @@
           <p>{{ message }}</p>
         </fieldset>
       {% endif %}
-      {{ include('@workflow/includes/workflowlist.html.twig') }}
+      {{ include('@workflow/includes/test_workflowlist.html.twig') }}
       {% if workflow %}
-        {{ include('@workflow/includes/trackerlist.html.twig') }}
+        {{ include('@workflow/includes/test_trackerlist.html.twig') }}
       {% endif %}
       {% if trackerId or subjectId %}
-        {{ include('@workflow/includes/historylist.html.twig') }}
+        {{ include('@workflow/includes/test_historylist.html.twig') }}
       {% endif %}
       {% if workflow or subjectId %}
-        {{ include('@workflow/includes/queuelist.html.twig') }}
+        {{ include('@workflow/includes/test_queuelist.html.twig') }}
       {% endif %}
       {% if workflow %}
-        {{ include('@workflow/includes/imagemap.html.twig') }}
-        <!--
-        {# include('@workflow/includes/transitionlist.html.twig') #}
-        -->
+        {{ include('@workflow/includes/test_imagemap.html.twig') }}
+        {# <!--
+        {{ include('@workflow/includes/test_transitionlist.html.twig') }}
+        --> #}
       {% endif %}
-      {{ include('@workflow/includes/footer.html.twig') }}
+      {{ include('@workflow/includes/test_footer.html.twig') }}
     </div>
   </div>
 {% endblock %}

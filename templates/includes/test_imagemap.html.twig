@@ -1,0 +1,18 @@
+{# @workflow/includes/test_imagemap.html.twig #}
+
+{% block test_imagemap %}
+<div style="overflow: hidden">
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+    {% if subject %}
+      {% set mermaid = xar_apifunc('workflow', 'user', 'mermaid', {'workflow': workflow, 'subject': subject}) %}
+    {% else %}
+      {% set mermaid = xar_apifunc('workflow', 'user', 'mermaid', {'workflow': workflow}) %}
+    {% endif %}
+    <div class="mermaid">
+      {{ mermaid }}
+    </div>
+  </div>
+{% endblock %}

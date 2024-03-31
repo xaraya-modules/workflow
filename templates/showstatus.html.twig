@@ -1,0 +1,27 @@
+{# @workflow/showstatus.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+{# <!-- This is the template which will be shown when there is
+         a xar:workflow-status tag somewhere in the code
+         The ideas is to use a layout attribute in the tag to select the proper layout
+    --> #}
+    {% if not layout or layout == 'default' %}
+      {% if not title %}
+        {% set title = 'Workflow processes initiated by me' %}
+      {% endif %}
+      <fieldset>
+        <legend>
+          {{ title }}
+        </legend>
+        {# <!-- Include the default layout for the xar:workflow-status tag --> #}
+        {{ include('@workflow/includes/workflowlist.html.twig') }}
+      </fieldset>
+    {% else %}
+      {# <!-- Layout apparently had a value --> #}
+      Trying to use layout : {{ layout }}
+      Not implemented yet
+      This layout is undefined - please specify it in modules/workflow/xartemplates/user-showstatus.xd
+    {% endif %}
+{% endblock %}

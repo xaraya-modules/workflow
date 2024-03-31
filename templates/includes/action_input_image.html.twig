@@ -1,0 +1,23 @@
+{# @workflow/includes/action_input_image.html.twig #}
+
+{% block action_input_image %}
+{% if action == 'run' %}
+    <input type="image" name="run" value="1" title="{{ xar_translate('run instance') }}" alt="{{ xar_translate('run instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}"/>
+  {% elseif action == 'send' %}
+    <input type="image" name="send" value="1" title="{{ xar_translate('send instance') }}" alt="{{ xar_translate('send instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/linkto.gif','module','workflow') }}"/>
+  {% elseif action == 'exception' %}
+    <input type="image" name="exception" value="1" title="{{ xar_translate('exception handling') }}" alt="{{ xar_translate('exception handling') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/stop.gif','module','workflow') }}"/>
+  {% elseif action == 'resume' %}
+    <input type="image" name="resume" value="1" title="{{ xar_translate('resume instance') }}" alt="{{ xar_translate('resume instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/refresh2.gif','module','workflow') }}"/>
+  {% elseif action == 'abort' %}
+    <input type="image" name="abort" value="1" title="{{ xar_translate('abort instance') }}" alt="{{ xar_translate('abort instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/trash.gif','module','workflow') }}"/>
+  {% elseif action == 'release' %}
+    <input type="image" name="release" value="1" title="{{ xar_translate('release instance') }}" alt="{{ xar_translate('release instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/float.gif','module','workflow') }}"/>
+  {% elseif action == 'grab' %}
+    <input type="image" name="grab" value="1" title="{{ xar_translate('grab instance') }}" alt="{{ xar_translate('grab instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/fix.gif','module','workflow') }}"/>
+  {% elseif action == 'remove' %}
+    <input type="image" name="remove" value="1" title="{{ xar_translate('remove from list') }}" alt="{{ xar_translate('remove from list') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/select.gif','module','workflow') }}"/>
+  {% else %}
+    {{ action }}
+  {% endif %}
+{% endblock %}

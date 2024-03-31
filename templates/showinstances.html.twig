@@ -1,30 +1,27 @@
-{# @workflow/showactions.html.twig #}
+{# @workflow/showinstances.html.twig #}
 
 {% extends '@workflow/base.html.twig' %}
 
 {% block modulespace %}
 {# <!-- This is the template which will be shown when there is
-     a xar:workflow-actions tag somewhere in the code
+     a xar:workflow-instances tag somewhere in the code
      The ideas is to use a layout attribute in tag tag to select the proper layout
-     or to override the template based on the place name - see *-requested.xt
 --> #}
   {% if not layout or layout == 'default' %}
-    {% if title is null %}
-      {% set title = 'Action List' %}
+    {% if not title %}
+      {% set title = 'My Current Task List' %}
     {% endif %}
     <fieldset>
-      {% if title %}
       <legend>
         {{ title }}
       </legend>
-      {% endif %}
-      {# <!-- Produce the list of actions --> #}
-      {{ include('@workflow/includes/test_actionlist.html.twig') }}
+      {# <!-- Produce the list of instances --> #}
+      {{ include('@workflow/includes/instancelist.html.twig') }}
     </fieldset>
   {% else %}
     {# <!-- Layout apparently had a value --> #}
     Trying to use layout : {{ layout }}
     Not implemented yet
-    This layout is undefined - please specify it in modules/workflow/xartemplates/user-showactions.xt
+    This layout is undefined - please specify it in modules/workflow/xartemplates/user-showinstances.xd
   {% endif %}
 {% endblock %}

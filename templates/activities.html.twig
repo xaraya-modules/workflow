@@ -1,0 +1,132 @@
+{# @workflow/activities.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+      <span class="xar-mod-title">
+        Workflow Module
+      </span>
+      {{ include('@workflow/includes/user_bar.html.twig') }}
+    </div>
+
+    <div class="xar-mod-body">
+
+      <div style="margin: auto;">
+        <fieldset>
+          <legend>List of activities ({{ cant }})</legend>
+
+          <form action="{{ xar_moduleurl('workflow','user','activities') }}" method="post" id='fform'>
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            <table>
+              <tr>
+                <td><small>process</small></td>
+                <td><small>description</small></td>
+                <td>&#160;</td>
+              </tr>
+
+              <tr>
+                <td >
+                  <select onchange='javascript:getElementById("fform").submit();' name="filter_process">
+                    {% if '' == filter_process %}
+                      <option selected="selected" value="">All</option>
+                      {% else %}
+                      <option value="">All</option>
+                    {% endif %}
+                    {% for ix in all_procs|keys %}
+                      {% if all_procs[ix]['pId'] == filter_process %}
+                        <option selected="selected" value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['procname'] }} {{ all_procs[ix]['version'] }}</option>
+                        {% else %}
+                        <option value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['procname'] }} {{ all_procs[ix]['version'] }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+                <td ><input size="8" type="text" name="find" value="{{ find }}"/></td>
+                <td ><input type="submit" name="filter" value="{{ xar_translate('filter') }}"/></td>
+              </tr>
+            </table>
+          </form>
+
+          <form action="{{ xar_moduleurl('workflow','user','activities') }}" method="post">
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="where" value="{{ where }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            <table style="border-collapse:separate;">
+              {% if items and items|length > 0 %}
+                <tr>
+                  <th>
+                    {% if sort_mode == 'procname_desc' %}
+                      <a href="{{ xar_currenturl({'sort_mode': 'procname_asc'}) }}">Process</a>
+                      {% else %}
+                      <a href="{{ xar_currenturl({'sort_mode': 'procname_desc'}) }}">Process</a>
+                    {% endif %}
+                  </th>
+                  <th>Version</th>
+                  <th>
+                    {% if sort_mode == 'name_desc' %}
+                      <a href="{{ xar_currenturl({'sort_mode': 'name_asc'}) }}">Activity</a>
+                      {% else %}
+                      <a href="{{ xar_currenturl({'sort_mode': 'name_desc'}) }}">Activity</a>
+                    {% endif %}
+                  </th>
+                  <th>Instances</th>
+                </tr>
+                {% for ix in items|keys %}
+                  {% set rowclass = 'xar-norm' %}
+                  {% if ix % 2 %}
+                    {% set rowclass = 'xar-alt' %}
+                  {% endif %}
+                  <tr class="{{ rowclass }}">
+                    <td>{{ items[ix]['procname'] }}</td>
+                    <td style="text-align: right;">{{ items[ix]['version'] }}</td>
+                    <td style="text-align:left;">
+                      {# <!-- Get an image for the activity --> #}
+                      {{ include('@workflow/includes/activity_image.html.twig', items[ix]) }}
+                      {% if items[ix]['instances'] > 0 %}
+                        <a href="{{ xar_moduleurl('workflow','user','instances',{'filter_process': items[ix]['pId'],'filter_activity': items[ix]['activityId']}) }}">{{ items[ix]['name'] }}</a>
+                        {% else %}
+                        {{ items[ix]['name'] }}
+                      {% endif %}&#160;
+                      {% if items[ix]['isInteractive'] or (items[ix]['type'] == 'start') or (items[ix]['type'] == 'standalone') %}
+                        {% set imgtitle = xar_translate('run activity') %}
+                        {% set imgalt = xar_translate('run') %}
+                        <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': items[ix]['activityId']}) }}">
+                          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/next.gif", alt: imgalt, title: imgtitle}) -}}
+                        </a>
+                      {% endif %}
+                    </td>
+                    <td style="text-align:right;">
+                      {{ items[ix]['instances'] }}
+                    </td>
+                  </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="3">
+                    No activities found
+                  </td>
+                </tr>
+              {% endif %}
+            </table>
+          </form>
+        </fieldset>
+        {{ include('@workflow/includes/pager.html.twig') }}
+      </div>
+
+      {% if graph %}
+        <div style="text-align: center">
+          {% if map %}
+            <img src="{{ graph }}" alt="{{ procname }}" usemap="#procmap"/>
+            <map name="procmap">{{ map }}</map>
+            {% else %}
+            <img src="{{ graph }}" alt="{{ procname }}"/>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {{ include('@workflow/includes/galaxfooter.html.twig') }}
+    </div>
+{% endblock %}

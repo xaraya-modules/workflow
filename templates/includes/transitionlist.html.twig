@@ -1,152 +1,121 @@
 {# @workflow/includes/transitionlist.html.twig #}
 
 {% block transitionlist %}
-  <!-- this relies on $workflow, $subjectId, $place, $transition and $trackerId if available -->
-  {% if not config %}
-    {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
-  {% endif %}
-  {% if workflow and config[workflow] and not trackerId and not subjectId %}
-  <fieldset>
-    <legend>
-      Transitions
-    </legend>
-    {% set guarded = '(?)' %}
-    {% set updated = '[+]' %}
-    {% set deleted = '|x|' %}
-    <!-- show transition - from place - to place - change status in rows -->
-    <table style="border-collapse: separate; width: 50%">
-      <tr>
-        <th>Transition</th>
-        <th>From Place</th>
-        <th>To Place</th>
-        <th>Guarded</th>
-        <th>Update Property</th>
-        <th>Stop Tracker</th>
-      </tr>
-      {% for name, info in config[workflow]['transitions'] %}
-        <!-- @checkme state machine only supports 1 to, @todo don't use 2 for status change -->
-        {% set to = (info['to'] is iterable) ? info['to'][0] : info['to'] %}
-        <tr>
-          {% if transition and transition == name %}
-            <td><strong>{{ name|replace({'_':' '})|title }}</strong></td>
-          {% else %}
-            <td>{{ name|replace({'_':' '})|title }}</td>
-          {% endif %}
-          {% if info['from'] is iterable %}
-            <td>
-            {% for from in info['from'] %}
-              {% if place and place == from %}
-               <strong>{{ from|replace({'_':' '})|title }}</strong><br/>
+<div>
+        <fieldset>
+          <legend>Process Transitions</legend>
+
+          {# <!-- Filter form --> #}
+          <form action="{{ xar_moduleurl('workflow','admin','activities') }}" method="post" id='filtran'>
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            <input type="hidden" name="activityId" value="{{ activityId }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="where" value="{{ where }}"/>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">From:</label>
+              <select name="filter_tran_name" onchange="javascript:document.getElementById('filtran').submit();">
+                {% if filter_tran_name == '' %}
+                  <option value="" selected="selected">All</option>
+                  {% else %}
+                  <option value="">All</option>
+                {% endif %}
+                {% for ix in items|keys %}
+                  {% if filter_tran_name == items[ix]['activityId'] %}
+                    <option value="{{ items[ix]['activityId'] }}" selected="selected">{{ items[ix]['name'] }}</option>
+                    {% else %}
+                    <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <input type="submit" name="filter_tran" value="{{ xar_translate('Filter') }}"/>
+            </div>
+          </form>
+          {# <!-- End filter form --> #}
+
+          <form action="{{ xar_moduleurl('workflow','admin','activities') }}" method="post">
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            <input type="hidden" name="activityId" value="{{ activityId }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="where" value="{{ where }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+
+            {# <!-- Little trick to get the base link into a variable, save some typing ahead --> #}
+            {% set params = {'pid': pid, 'find': find, 'where': where} %}
+            {% set baselink = xar_moduleurl('workflow','admin','activities',params) %}
+
+            <table style="border-collapse: separate; width: 99%">
+              <tr>
+                <th>
+                  {# <!--
+                  {% if sort_mode == 'actFromName_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=actFromName_asc">Origin</a>
+                  {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=actFromName_desc">Origin</a>
+                  {% endif %}
+                  --> #}
+                  From
+                </th>
+                <th>&#160;</th>
+                <th>
+                  {# <!--
+                  {% if sort_mode == 'actToName_desc' %}
+                    <a href="{{ baselink }}&amp;sort_mode=actToName_asc">To</a>
+                  {% else %}
+                    <a href="{{ baselink }}&amp;sort_mode=actToName_desc">To</a>
+                  {% endif %}
+                  --> #}
+                  To
+                </th>
+              </tr>
+              {% if transitions and transitions|length > 0 %}
+                {% for ix in transitions|keys %}
+                  {% set rowclass = 'xar-norm' %}
+                  {% if ix % 2 %}
+                    {% set rowclass = 'xar-alt' %}
+                  {% endif %}
+
+                  <tr class="{{ rowclass }}">
+                    <td>
+                      <input type="checkbox" name="transition[{{ transitions[ix]['actFromId'] }}_{{ transitions[ix]['actToId'] }}]"/>&#160;
+                      <a href="{{ baselink }}&amp;activityId={{ transitions[ix]['actFromId'] }}">{{ transitions[ix]['actFromName'] }}</a>
+                    </td>
+                    <td>
+                      <img src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}" alt="to" />
+                    </td>
+                    <td>
+                      <a href="{{ baselink }}&amp;activityId={{ transitions[ix]['actToId'] }}">{{ transitions[ix]['actToName'] }}</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td>
+                    <select name="actFromId">
+                      {% for ix in items|keys %}
+                        <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                  <td>
+                    <img src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}" alt="to" />
+                  </td>
+                  <td>
+                    <select name="actToId">
+                      {% for ix in items|keys %}
+                        <option value="{{ items[ix]['activityId'] }}">{{ items[ix]['name'] }}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="submit" name="add_trans" value="{{ xar_translate('Add transition') }}"/>
+                  </td>
+                </tr>
               {% else %}
-                {{ from|replace({'_':' '})|title }}<br/>
+                <tr><td colspan="3">No transitions defined yet</td></tr>
               {% endif %}
-            {% endfor %}
-            </td>
-          {% elseif place and place == info['from'] %}
-            <td><strong>{{ info['from']|replace({'_':' '})|title }}</strong></td>
-          {% else %}
-            <td>{{ info['from']|replace({'_':' '})|title }}</td>
-          {% endif %}
-          {% if place and place == to %}
-            <td><strong>{{ to|replace({'_':' '})|title }}</strong></td>
-          {% else %}
-            <td>{{ to|replace({'_':' '})|title }}</td>
-          {% endif %}
-          {% if info['admin'] or info['roles'] or info['access'] or info['property'] or info['guard'] %}
-            <td>{{ guarded }}</td>
-          {% else %}
-            <td>&#160;</td>
-          {% endif %}
-        <!-- @checkme state machine only supports 1 to, use 2 for status change -->
-          {% if info['to'] is iterable and info['to']|length > 1 %}
-            {% if place and place == info['to'][1] %}
-              <td>{{ updated }}&#160;<strong>{{ info['to'][1]|replace({'_':' '})|title }}</strong></td>
-            {% else %}
-              <td>{{ updated }}&#160;{{ info['to'][1]|replace({'_':' '})|title }}</td>
-            {% endif %}
-          {% else %}
-            <td></td>
-          {% endif %}
-          {% if info['delete'] %}
-            <td>{{ deleted }}</td>
-          {% else %}
-            <td>&#160;</td>
-          {% endif %}
-        </tr>
-      {% endfor %}
-    </table>
-    <!-- show from place - to place 1 - to place 2 - ... with transitions in cells -->
-    {% set fromto = [] %}
-    {% for name, info in config[workflow]['transitions'] %}
-      <!-- @checkme state machine only supports 1 to, @todo don't use 2 for status change -->
-      {% set to = (info['to'] is iterable) ? info['to'][0] : info['to'] %}
-      {% if info['from'] is iterable %}
-        {% for from in info['from'] %}
-          {% set dummy = fromto[from] ??= [] %}
-          {% set dummy = fromto[from][to] = name %}
-          {% if info['admin'] or info['roles'] or info['access'] or info['property'] or info['guard'] %}
-            {% set dummy = fromto[from][to] = guarded ~ ' ' ~ fromto[from][to] %}
-          {% endif %}
-          {% if info['update'] or info['completed'] or (info['to'] is iterable and info['to']|length > 1) %}
-            {% set dummy = fromto[from][to] .= ' ' ~ updated %}
-          {% endif %}
-          {% if info['delete'] %}
-            {% set dummy = fromto[from][to] .= ' ' ~ deleted %}
-          {% endif %}
-        {% endfor %}
-      {% else %}
-        {% set dummy = fromto[info['from']] ??= [] %}
-        {% set dummy = fromto[info['from']][to] = name %}
-        {% if info['admin'] or info['roles'] or info['access'] or info['property'] or info['guard'] %}
-          {% set dummy = fromto[info['from']][to] = guarded ~ ' ' ~ fromto[info['from']][to] %}
-        {% endif %}
-        {% if info['update'] or info['completed'] or (info['to'] is iterable and info['to']|length > 1) %}
-          {% set dummy = fromto[info['from']][to] .= ' ' ~ updated %}
-        {% endif %}
-        {% if info['delete'] %}
-          {% set dummy = fromto[info['from']][to] .= ' ' ~ deleted %}
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    <table style="border-collapse: separate; width: 50%">
-      <tr>
-        <th>From Place</th>
-        <th colspan="{{ config[workflow]['places']|length }}">{{- xar_image({scope: "theme", file: "icons/go-next.png", class: "xar-icon", alt: "go-next"}) -}}&#160;Available Transitions From Place To Place&#160;{{- xar_image({scope: "theme", file: "icons/go-jump.png", class: "xar-icon", alt: "go-jump"}) -}}</th>
-      </tr>
-      {% for from in config[workflow]['places'] %}
-        <tr>
-          {% if place and place == from %}
-            <td><strong>{{ from|replace({'_':' '})|title }}</strong></td>
-          {% else %}
-            <td>{{ from|replace({'_':' '})|title }}</td>
-          {% endif %}
-          {% for to in config[workflow]['places'] %}
-            {% if from == to %}
-              <td>-</td>
-            {% elseif fromto[from][to] %}
-              {% if transition and transition in fromto[from][to] %}
-                <td><strong>{{ fromto[from][to]|replace({'_':' '})|title }}</strong></td>
-              {% else %}
-                <td>{{ fromto[from][to]|replace({'_':' '})|title }}</td>
-              {% endif %}
-            {% else %}
-              <td>&#160;</td>
-            {% endif %}
-          {% endfor %}
-        </tr>
-      {% endfor %}
-      <tr>
-        <th>&#160;&#160;&#160;To Place</th>
-        {% for to in config[workflow]['places'] %}
-          {% if place and place == to %}
-            <th><strong>{{ to|replace({'_':' '})|title }}</strong></th>
-          {% else %}
-            <th>{{ to|replace({'_':' '})|title }}</th>
-          {% endif %}
-        {% endfor %}
-      </tr>
-    </table>
-    <span>{{ guarded }} Guarded&#160;&#160;&#160;{{ updated }} Update Property&#160;&#160;&#160;{{ deleted }} Stop Tracker</span>
-  </fieldset>
-  {% endif %}
+            </table>
+          <div class="xar-form-input-wrapper-after">
+              {% set label = 'Delete selected' %}
+              {{- xar_button({type: "submit", name: "delete_tran", label: label}) -}}
+          </div>
+          </form>
+        </fieldset>
+    </div>
 {% endblock %}

@@ -1,0 +1,73 @@
+{# @workflow/includes/instancefilter.html.twig #}
+
+{% block instancefilter %}
+<form action="{{ xar_moduleurl('workflow','user','instances') }}" method="post">
+      <input type="hidden" name="offset" value="{{ offset }}"/>
+      <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+      <table>
+        <tr>
+          <td><small>process</small></td>
+          <td><small>status</small></td>
+          <td><small>user</small></td>
+          <td><small>description</small></td>
+          <td >&#160;</td>
+        </tr>
+
+        <tr>
+          <td>
+            <select name="filter_process">
+              {% if '' == filter_process %}
+                <option selected="selected" value="">All</option>
+                {% else %}
+                <option value="">All</option>
+              {% endif %}
+              {% for ix in all_procs|keys %}
+                {% if all_procs[ix]['pId'] == filter_process %}
+                  <option selected="selected" value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['procname'] }}&#160;{{ all_procs[ix]['version'] }}</option>
+                  {% else %}
+                  <option value="{{ all_procs[ix]['pId'] }}">{{ all_procs[ix]['procname'] }}&#160;{{ all_procs[ix]['version'] }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </td>
+          <td >
+            <select name="filter_status">
+              {% if '' == filter_status %}
+                <option selected="selected" value="">All</option>
+                {% else %}
+                <option value="">All</option>
+              {% endif %}
+              {% for ix in statuses|keys %}
+                {% if statuses[ix] == filter_status %}
+                  <option selected="selected" value="{{ statuses[ix] }}">{{ xar_translate(statuses[ix]) }}</option>
+                  {% else %}
+                  <option value="{{ statuses[ix] }}">{{ xar_translate(statuses[ix]) }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </td>
+          <td >
+            <select name="filter_user">
+              {% if '' == filter_user %}
+                <option selected="selected" value="">All</option>
+                {% else %}
+                <option value="">All</option>
+              {% endif %}
+              {% if '*' == filter_user %}
+                <option selected="selected" value="*">*</option>
+                {% else %}
+                <option value="*">*</option>
+              {% endif %}
+              {% if userId == filter_user %}
+                <option selected="selected" value="{{ userId }}">{{ user }}</option>
+                {% else %}
+                <option value="{{ userId }}">{{ user }}</option>
+              {% endif %}
+            </select>
+          </td>
+          <td><input size="8" type="text" name="find" value="{{ find }}"/></td>
+          <td><input type="submit" name="filter" value="{{ xar_translate('filter') }}"/></td>
+        </tr>
+      </table>
+    </form>
+{% endblock %}

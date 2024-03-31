@@ -1,7 +1,7 @@
 {# @workflow/properties/showoutput-workflows.html.twig #}
 
 {% block showoutput_workflows %}
-    <!-- this relies on $objectref, $workflows, $subjectId, $userId, $marking and $context if available -->
+{# <!-- this relies on $objectref, $workflows, $subjectId, $userId, $marking and $context if available --> #}
     {% if layout and layout == 'preformat' %}
         <pre>
         {{ value }}
@@ -13,25 +13,25 @@
         {% if not tracker %}
             {% set tracker = xar_apifunc('workflow', 'user', 'tracker') %}
         {% endif %}
-        <!-- @todo decide whether to show items for all users or only the current one -->
+        {# <!-- @todo decide whether to show items for all users or only the current one --> #}
         {% set items = tracker.getItems('', objectref.name, objectref.itemid, '', userId) %}
         <div>
         {% if not items %}
-            <!-- @checkme for each workflow for this subject, set to initial place with empty trackerId -->
+            {# <!-- @checkme for each workflow for this subject, set to initial place with empty trackerId --> #}
             {% for workflow, info in workflows %}
                 {% set place = config[workflow]['initial_marking'][0] %}
-                {% set item = {'id': 0, 'workflow': workflow, 'object': objectref.name, 'item': objectref.itemid, 'user': userId, 'marking': place, 'updated': time()} %}
-                <xar:workflow-actions name="actions" config="$config" item="$item" title="$place" template="$place"/>
+                {% set item = {'id': 0, 'workflow': workflow, 'object': objectref.name, 'item': objectref.itemid, 'user': userId, 'marking': place, 'updated': date().getTimestamp()} %}
+                {{ xar_workflow_actions({name: "actions", config: config, item: item, title: place, template: place}) }}
             {% endfor %}
         {% endif %}
-        <!-- split marking and repeat if it contains , for workflows -->
+        {# <!-- split marking and repeat if it contains , for workflows --> #}
         {% for item in items %}
-            <!-- xar:template file="test_trackeritem"/ -->
-            <xar:workflow-actions name="actions" config="$config" item="$item" title="$item['marking']" template="$item['marking']"/>
+            {# <!-- xar:template file="test_trackeritem"/ --> #}
+            {{ xar_workflow_actions({name: "actions", config: config, item: item, title: item['marking'], template: item['marking']}) }}
         {% endfor %}
         </div>
     {% elseif value and value is iterable %}
-        <pre>{{ json_encode(value, JSON_PRETTY_PRINT) }}</pre>
+        <pre>{{ value|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
     {% else %}
         {{ value }}
     {% endif %}

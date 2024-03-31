@@ -1,0 +1,86 @@
+{# @workflow/includes/user_bar.html.twig #}
+
+{% block user_bar %}
+{{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
+    {% set func = xar_coremethod('xarController', 'getVar', ['func']) %}
+
+      <ul class="xar-tabs">
+        {% if func == 'main' or func is null or func == '' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','user','main') }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('my workflows') %}
+            {% set imgalt = xar_translate('workflows') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/home.gif", class: "xar-icon", alt: imgalt, title: imgtitle}) -}}
+            My Workflow
+          </a>
+        </li>
+        
+        {% if func == 'processes' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','user','processes') }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('user processes') %}
+            {% set imgalt = xar_translate('processes') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/process.gif", class: "xar-icon", alt: imgalt, title: imgtitle}) -}}
+            Processes
+          </a>
+        </li>
+
+        {% if func == 'activities' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','user','activities') }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('user activities') %}
+            {% set imgalt = xar_translate('activities') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/activity.gif", class: "xar-icon", alt: imgalt, title: imgtitle}) -}}
+            Activities
+          </a>
+        </li>
+
+        {% if func == 'instances' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','user','instances') }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('user instances') %}
+            {% set imgalt = xar_translate('instances') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/instance.gif", class: "xar-icon", alt: imgalt, title: imgtitle}) -}}
+            Instances
+          </a>
+        </li>
+
+        {% if func == 'test' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','user','test') }}" class="{{ linkclass }}">
+            {{- xar_image({scope: "theme", file: "icons/move.png", class: "xar-icon", alt: "test"}) -}}
+            Test New Workflows
+          </a>
+        </li>
+      </ul>
+{% endblock %}

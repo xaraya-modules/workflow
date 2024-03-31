@@ -1,0 +1,154 @@
+{# @workflow/includes/proc_bar.html.twig #}
+
+{% block proc_bar %}
+{{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
+    {% set func = xar_coremethod('xarController', 'getVar', ['func']) %}
+
+    <ul class="xar-tabs">
+        <li class="help">Process:</li>
+        {% if func == 'processes' and pid == 0 %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','processes') }}" class="{{ linkclass }}">
+            <img src="{{ xar_imageurl('index.gif') }}" alt="{{ xar_translate('processlist') }}" title="{{ xar_translate('processlist') }}"/>
+            View Processes
+          </a>
+        </li>
+
+      {% if pid > 0 %}
+        {# <!-- Show the deactivate and activate if the process is valid --> #}
+        {% set tabclass = 'xar-tab' %}
+        {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% if proc_info['isActive'] %}
+          <li class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid, 'deactivate_proc': pid}) }}" class="{{ linkclass }}">
+              {% set imgtitle = xar_translate('stop') %}
+              {% set imgalt = xar_translate('stop') %}
+              {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/stop.gif", alt: imgalt, title: imgtitle}) -}}
+              Deactivate Process
+             </a>
+          </li>
+        {% else %}
+          {% if proc_info['isValid'] %}
+            <li class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid, 'activate_proc': pid}) }}" class="{{ linkclass }}">
+                {% set imgtitle = xar_translate('activate') %}
+                {% set imgalt = xar_translate('activate') %}
+                {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/refresh2.gif", alt: imgalt, title: imgtitle}) -}}
+                Activate Process
+               </a>
+            </li>
+          {% endif %}
+        {% endif %}
+
+        {% if func == 'processes' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','processes',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('edit') %}
+            {% set imgalt = xar_translate('edit') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/change.gif", alt: imgalt, title: imgtitle}) -}}
+            Process Details
+          </a>
+        </li>
+
+        {% if func == 'activities' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('activities') %}
+            {% set imgalt = xar_translate('activities') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/activity.gif", alt: imgalt, title: imgtitle}) -}}
+            Activities
+          </a>
+        </li>
+
+        {% if func == 'shared_source' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('code') %}
+            {% set imgalt = xar_translate('code') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/book.gif", alt: imgalt, title: imgtitle}) -}}
+            Code
+          </a>
+        </li>
+
+        {% if func == 'roles' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('roles') %}
+            {% set imgalt = xar_translate('roles') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/myinfo.gif", alt: imgalt, title: imgtitle}) -}}
+            Roles
+          </a>
+        </li>
+
+        {% if func == 'graph' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','graph',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('graph') %}
+            {% set imgalt = xar_translate('graph') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/mode_tree.gif", alt: imgalt, title: imgtitle}) -}}
+            Graph
+          </a>
+        </li>
+
+        {% if func == 'export' %}
+          {% set tabclass = 'xar-tab-active' %}
+          {% set linkclass = 'xar-accent xar-accent-outline' %}
+        {% else %}
+          {% set tabclass = 'xar-tab' %}
+          {% set linkclass = 'xar-norm xar-norm-outline' %}
+        {% endif %}
+        <li class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('workflow','admin','export_process',{'pid': pid}) }}" class="{{ linkclass }}">
+            {% set imgtitle = xar_translate('export') %}
+            {% set imgalt = xar_translate('export') %}
+            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/export.gif", alt: imgalt, title: imgtitle}) -}}
+            Export
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+
+    {# <!-- We can only show the process if we have one --> #}
+    {% if pid > 0 %}
+      <h2>{{ proc_info['name'] }}: version {{ proc_info['version'] }}</h2>
+
+      {# <!-- Show a list of errors, if any, to complete this process --> #}
+      {{ include('@workflow/includes/processerrors.html.twig') }}
+    {% endif %}
+{% endblock %}

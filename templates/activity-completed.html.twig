@@ -1,0 +1,38 @@
+{# @workflow/activity-completed.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+      <span class="xar-mod-title">
+        Workflow Module
+      </span>
+      {{ include('@workflow/includes/user_bar.html.twig') }}
+    </div>
+  <div class="xar-mod-body">
+    <h3>
+      Activity Completed
+    </h3>
+    <div class="xar-norm-outline" style="padding: 0.5em 1em 0.5em; margin: auto;">
+      <table style="border-collapse: separate;">
+        <tr>
+          <th>
+            Process
+          </th>
+          <th>
+            Version
+          </th>
+          <th>
+            Activity
+          </th>
+        </tr>
+        <tr>
+          <td>{{ procname }}</td>
+          <td style="text-align: right;">{{ procversion }}</td>
+          <td>{{ actname }}</td>
+        </tr>
+      </table>
+    </div>
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

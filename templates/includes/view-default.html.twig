@@ -1,0 +1,62 @@
+{# @workflow/includes/view-default.html.twig #}
+
+{% block view_default %}
+{# <!-- TODO: multi-column output --> #}
+    <table class="xar-table">
+        <tr>
+            {% for name in properties|keys %}
+                <th class="xar-form-textlong">
+                    <a href="{{ sorturl }}={{ name }}">
+                        {{ xar_data_label({property: properties[name]}) }}
+                    </a>
+                </th>
+            {% endfor %}
+            {% if not linkfield %}
+                <th class="xar-form-textlong" style="text-align: center;">Actions</th>
+            {% endif %}
+        </tr>
+        {{ include('@dynamicdata/includes/table_filter.html.twig') }}
+        {% set item_no = 0 %}
+        {% for itemid, fields in items %}
+            {% set item_no = item_no+1 %}
+            {% set rowclass = 'xar-norm' %}
+            {% if item_no % 2 == 0 %}
+                {% set rowclass = 'xar-alt' %}
+            {% endif %}
+            <tr class="{{ rowclass }}">
+                {# <!-- we could use xar:data-display here too, instead of looping over fields ourselves --> #}
+                {% for name in properties|keys %}
+                    <td>
+                        {% if not fields[name] %}&#160; 
+                        {% elseif linkfield and linkfield == name and links[itemid]['display'] %}
+                            <a href="{{ links[itemid]['display']['olink'] }}" title="{{ links[itemid]['display']['otitle'] }}">
+                                {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                            </a>
+                        {% else %}
+                            {{ xar_data_output({property: properties[name], _itemid: itemid, value: fields[name]}) }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                {% if not linkfield %}
+                    <td class="xar-align-center">
+                        {% if links[itemid] and links[itemid]|length > 0 %}
+                            {% for otype, option in links[itemid] %}
+                                {% if option['olink'] %}
+                                    {% if option['oicon'] %}
+                                        {% set imgfile = 'icons/' ~ option['oicon'] %}
+                                        <a href="{{ option['olink'] }}" title="{{ option['otitle'] }}">{{- xar_image({scope: "theme", file: imgfile, class: "xar-icon", alt: otype}) -}}</a>&#160;
+                                    {% else %}
+                                        {{ option['ojoin'] }} 
+                                        <a href="{{ option['olink'] }}">{{ option['otitle'] }}</a>
+                                    {% endif %}
+                                {% else %}
+                                    {{ option['ojoin'] }} {{ option['otitle'] }}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}&#160;{% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

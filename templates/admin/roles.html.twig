@@ -1,0 +1,36 @@
+{# @workflow/admin/roles.html.twig #}
+
+{% block roles %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Administration
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+{# <!-- Show the navigation bar --> #}
+    {{ include('@workflow/includes/proc_bar.html.twig') }}
+{# <!-- Show the list of roles --> #}
+    {% if roleId == 0 %}
+      {{ include('@workflow/includes/roleslist.html.twig') }}
+    {% endif %}
+{# <!-- Show the role form --> #}
+    {{ include('@workflow/includes/roleform.html.twig') }}
+    {% if roles|length > 0 %}
+{# <!-- Map users to roles --> #}
+      {{ include('@workflow/includes/mapusers.html.twig') }}
+{# <!-- Map groups to roles --> #}
+      {{ include('@workflow/includes/mapgroups.html.twig') }}
+      {% else %}
+      <h4>
+        Warning
+      </h4>
+      No roles are defined yet so no roles can be mapped
+      <br/>
+    {% endif %}
+{# <!-- Show a list of mappings --> #}
+    {{ include('@workflow/includes/maplist.html.twig') }}
+{# <!-- Show a courtesy footer --> #}
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

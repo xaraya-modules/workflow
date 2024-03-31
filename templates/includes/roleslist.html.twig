@@ -1,0 +1,73 @@
+{# @workflow/includes/roleslist.html.twig #}
+
+{% block roleslist %}
+<div>
+      <fieldset>
+        <legend>Process roles</legend>
+        <form action="{{ xar_moduleurl('workflow','admin','roles') }}" method="post">
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <input type="hidden" name="pid" value="{{ pid }}"/>
+          <input type="hidden" name="roleId" value="{{ info['roleId'] }}"/>
+          <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+          <input type="hidden" name="sort_mode2" value="{{ sort_mode2 }}"/>
+          <input type="hidden" name="find" value="{{ find }}"/>
+          <input type="hidden" name="offset" value="{{ offset }}"/>
+          <table class="xar-fullwidth" style="border-collapse: separate;">
+            <tr>
+              {% if sort_mode2 == 'name_desc' %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': sort_mode, 'sort_mode2': 'name_asc'}) }}">
+                    Name
+                  </a>
+                </th>
+                {% else %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': sort_mode, 'sort_mode2': 'name_desc'}) }}">
+                    Name
+                  </a>
+                </th>
+              {% endif %}
+              {% if sort_mode2 == 'description_desc' %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': sort_mode, 'sort_mode2': 'description_asc'}) }}">
+                    Description
+                  </a>
+                </th>
+                {% else %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': sort_mode, 'sort_mode2': 'description_desc'}) }}">
+                    Description
+                  </a>
+                </th>
+              {% endif %}
+            </tr>
+            {% if items and items|length > 0 %}
+              {% for ix in items|keys %}
+                {% set rowclass = 'xar-norm' %}
+                {% if ix % 2 %}
+                  {% set rowclass = 'xar-alt' %}
+                {% endif %}
+
+                <tr class="{{ rowclass }}">
+                  <td>
+                    <input type="checkbox" name="role[{{ items[ix]['roleId'] }}]"/>&#160;
+                    <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'roleId': items[ix]['roleId']}) }}">{{ items[ix]['name'] }}</a>
+                  </td>
+                  <td>
+                    {{ items[ix]['description'] }}
+                  </td>
+                </tr>
+              {% endfor %}
+              {% else %}
+              <tr><td colspan="3">No roles defined yet</td>
+              </tr>
+            {% endif %}
+          </table>
+          <div class="xar-form-input-wrapper-after">
+              {% set label = 'Delete selected' %}
+              {{- xar_button({type: "submit", name: "delete", label: label}) -}}
+          </div>
+        </form>
+      </fieldset>
+    </div>
+{% endblock %}

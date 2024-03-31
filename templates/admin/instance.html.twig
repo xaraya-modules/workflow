@@ -1,0 +1,175 @@
+{# @workflow/admin/instance.html.twig #}
+
+{% block instance %}
+<div class="xar-mod-body">
+      {{ include('@workflow/includes/admin-menu.html.twig') }}
+      {{ include('@workflow/includes/monitor_bar.html.twig') }}
+      <div style="margin: auto;">
+        <fieldset>
+          <legend>
+            Instance: {{ ins_info['instanceId'] }} (Process: {{ proc_info['name'] }} {{ proc_info['version'] }})
+          </legend>
+
+          <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','instance') }}" method="post">
+            <input type="hidden" name="iid" value="{{ iid }}"/>
+
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Created</label>
+              <label>{{ ins_info.started }}</label>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Workitems</label>
+              <a href="{{ xar_moduleurl('workflow','admin','monitor_workitems',{'filter_instance': ins_info['instanceId']}) }}">{{ ins_info['workitems'] }}</a>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Status</label>
+              <select name="status">
+                {% if ins_info['status'] == 'active' %}
+                  <option value="active" selected="selected">active</option>
+                  {% else %}
+                  <option value="active">active</option>
+                {% endif %}
+                {% if ins_info['status'] == 'exception' %}
+                  <option value="exception" selected="selected">exception</option>
+                  {% else %}
+                  <option value="exception">exception</option>
+                {% endif %}
+                {% if ins_info['status'] == 'completed' %}
+                  <option value="completed" selected="selected">completed</option>
+                  {% else %}
+                  <option value="completed">completed</option>
+                {% endif %}
+                {% if ins_info['status'] == 'aborted' %}
+                  <option value="aborted" selected="selected">aborted</option>
+                  {% else %}
+                  <option value="aborted">aborted</option>
+                {% endif %}
+              </select>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Owner</label>
+              <select name="owner">
+                {% if ins_info['owner'] == '*' %}
+                  <option value="*" selected="selected">*</option>
+                  {% else %}
+                  <option value="*">*</option>
+                {% endif %}
+                {% for ix in users|keys %}
+                  {% if users[ix]['userId'] == ins_info['owner'] %}
+                    <option value="{{ users[ix]['userId'] }}" selected="selected">{{ users[ix]['user'] }}</option>
+                    {% else %}
+                    <option value="{{ users[ix]['userId'] }}">{{ users[ix]['user'] }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Send all to</label>
+              <select name="sendto">
+                <option value="">Don't move</option>
+                {% for ix in activities|keys %}
+                  <option value="{{ activities[ix]['activityId'] }}">{{ activities[ix]['name'] }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label class="xar-form-label">Activities</label>
+              {% if acts|length %}
+                <table style="width: 400px">
+                  <tr>
+                    <th>Activity</th>
+                    <th>Act status</th>
+                    <th>User</th>
+                  </tr>
+
+                  {% for ix in acts|keys %}
+                    <tr>
+                      <td class="odd">{{ acts[ix]['name'] }}
+                        {% if acts[ix]['isInteractive'] == 1 %}
+                          <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': acts[ix]['activityId'], 'iid': iid}) }}">
+                            {% set imgtitle = xar_translate('run') %}
+                            {% set imgalt = xar_translate('run') %}
+                            {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/next.gif", alt: imgalt, title: imgtitle}) -}}</a>
+                        {% endif %}
+                      </td>
+                      <td class="odd">{{ acts[ix]['actstatus'] }}</td>
+                      <td class="odd">
+                        <select name="acts[{{ acts[ix]['activityId'] }}]">
+                          {% if acts[ix]['user'] == '*' %}
+                            <option value="*" selected="selected">*</option>
+                            {% else %}
+                            <option value="*">*</option>
+                          {% endif %}
+                          {% for ix2 in users|keys %}
+                            {% if users[ix2]['userId'] == acts[ix]['user'] %}
+                              <option value="{{ users[ix2]['userId'] }}" selected="selected">{{ users[ix2]['user'] }}</option>
+                              {% else %}
+                              <option value="{{ users[ix2]['userId'] }}">{{ users[ix2]['user'] }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              {% else %}
+                &#160;
+              {% endif %}
+            </div>
+            <div class="xar-form-input-wrapper-after">
+              <input type="submit" name="save" value="{{ xar_translate('update') }}"/>
+            </div>
+          </form>
+        </fieldset>
+
+        <fieldset>
+          <legend>Properties</legend>
+          <form style="margin-left: 1em;" action="{{ xar_moduleurl('workflow','admin','instance') }}" method="post">
+            <input type="hidden" name="iid" value="{{ iid }}"/>
+            {% for key, item in props %}
+              <div class="xar-form-input-wrapper">
+                <label class="xar-form-label">{{ key }}</label>
+                {% if item|length > 80 %}
+                  <textarea name="props[{{ key }}]" cols="80" rows="10">{{ item }}</textarea>
+                {% else %}
+                  <input type="text" name="props[{{ key }}]" value="{{ item }}"/>
+                {% endif %}
+                <a href="{{ xar_moduleurl('workflow','admin','instance',{'iid': iid, 'unsetprop': key}) }}">
+                  {% set imgtitle = xar_translate('del') %}
+                  {% set imgalt = xar_translate('del') %}
+                  {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/trash.gif", alt: imgalt, title: imgtitle}) -}}
+                </a>
+              </div>
+            {% endfor %}
+            <div class="xar-form-input-wrapper-after">
+              <input type="submit" name="saveprops" value="{{ xar_translate('update') }}"/>
+            </div>
+          </form>
+        </fieldset>
+
+        <fieldset>
+          <legend>Add property</legend>
+          <form style="margin-left:1em;" action="{{ xar_moduleurl('workflow','admin','instance') }}" method="post">
+            <input type="hidden" name="iid" value="{{ iid }}"/>
+            <div class="xar-form-input-wrapper">
+              <label for="propname" class="xar-form-label">
+                Name
+              </label>
+              <input id="propname" type="text" name="name"/>
+            </div>
+            <div class="xar-form-input-wrapper">
+              <label for="propvalue" class="xar-form-label">
+                Value
+              </label>
+              {% set empty = '' %}
+              <textarea id="propvalue" name="value" rows="4" cols="80">{{ empty }}</textarea>
+            </div>
+            <div class="xar-form-input-wrapper-after">
+              <input type="submit" name="addprop" value="{{ xar_translate('add') }}"/>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </div>
+    {# <!-- xar:template file="instance_comments" type="module"/--> #}
+{% endblock %}

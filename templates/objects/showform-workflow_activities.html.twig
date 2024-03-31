@@ -1,28 +1,32 @@
+{# @workflow/objects/showform-workflow_activities.html.twig #}
+
+{% block showform_workflow_activities %}
 <input type="hidden" name="activityId" value="{{ properties['id'].value }}"/>          
     <input type="hidden" name="pid" value="{{ properties['process_id'].value }}"/>          
-    <xar:data-input property="$properties['id']" hidden="hidden"/>          
-    <xar:data-input property="$properties['process_id']" hidden="hidden"/>          
-    <xar:data-input property="$properties['normalized_name']" hidden="hidden"/>          
-    <xar:data-input property="$properties['flow_number']" hidden="hidden"/>          
-    <xar:data-input property="$properties['last_modified']" hidden="hidden"/>          
+    {{ xar_data_input({property: properties['id'], hidden: "hidden"}) }}          
+    {{ xar_data_input({property: properties['process_id'], hidden: "hidden"}) }}          
+    {{ xar_data_input({property: properties['normalized_name'], hidden: "hidden"}) }}          
+    {{ xar_data_input({property: properties['flow_number'], hidden: "hidden"}) }}          
+    {{ xar_data_input({property: properties['last_modified'], hidden: "hidden"}) }}          
     <div class="xar-form-input-wrapper">
-        <xar:data-label property="$properties['name']" for="id" class="xar-form-label"/>          
-        <xar:data-input property="$properties['name']"/>          
+        {{ xar_data_label({property: properties['name'], for: "id", class: "xar-form-label"}) }}          
+        {{ xar_data_input({property: properties['name']}) }}          
     </div>
     <div class="xar-form-input-wrapper">
-        <xar:data-label property="$properties['description']" for="id" class="xar-form-label"/>          
-        <xar:data-input property="$properties['description']"/>          
+        {{ xar_data_label({property: properties['description'], for: "id", class: "xar-form-label"}) }}          
+        {{ xar_data_input({property: properties['description']}) }}          
     </div>
     <div class="xar-form-input-wrapper">
-        <xar:data-label property="$properties['type']" for="id" class="xar-form-label"/>          
-        <xar:data-input property="$properties['type']"/>          
+        {{ xar_data_label({property: properties['type'], for: "id", class: "xar-form-label"}) }}          
+        {{ xar_data_input({property: properties['type']}) }}          
     </div>
     <div class="xar-form-input-wrapper">
-        <xar:data-label property="$properties['interactive']" for="id" class="xar-form-label"/>          
-        <xar:data-input property="$properties['interactive']"/>          
+        {{ xar_data_label({property: properties['interactive'], for: "id", class: "xar-form-label"}) }}          
+        {{ xar_data_input({property: properties['interactive']}) }}          
     </div>
     <div class="xar-form-input-wrapper">
         {% set label = 'Automatically routed' %}
-        <xar:data-label property="$properties['autorouted']" label="$label" for="id" class="xar-form-label"/>          
-        <xar:data-input property="$properties['autorouted']"/>          
+        {{ xar_data_label({property: properties['autorouted'], label: label, for: "id", class: "xar-form-label"}) }}          
+        {{ xar_data_input({property: properties['autorouted']}) }}          
     </div>
+{% endblock %}

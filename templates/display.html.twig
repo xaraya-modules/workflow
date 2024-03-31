@@ -1,0 +1,77 @@
+{# @workflow/display.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+        <span class="xar-mod-title">
+            Workflow
+        </span>
+    </div>
+
+
+    <div>
+        <h3>
+            Workflow activities
+        </h3>
+        <h4>
+            Start a new process
+        </h4>
+        <table style="width: 90%">
+            <tr>
+                <th style="width: 10%">
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+            </tr>
+            {% for activity in activities %}
+                {# <!--  Only start activities for now --> #}
+                {% if activity['type'] != 'start' and activity['type'] != 'standalone' %}
+                {# <!--  Only activities where I am the owner or user, or which are open to all --> #}
+                {% elseif activity['roles'] and (xar_coremethod('xarSession' in 'getVar',activity['roles']) or '*' in activity['roles']) %}
+                {% else %}
+                <tr>
+                    <td>
+                        <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': activity['id']}) }}">{{ activity['name'] }}</a>
+                    </td>
+                    <td>
+                        {% if activity['description'] %}
+                            {{ activity['description'] }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        {% if items %}
+            <h4>
+                Complete a begun process
+            </h4>
+            <table style="width: 300px">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Instance
+                    </th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td>
+                            <a href="{{ xar_moduleurl('workflow','user','run_activity',{'activityId': item['activity'],'iid': item['instance_id']}) }}">
+                                <input type="image" name="run" value="1" title="{{ xar_translate('run instance') }}" src="{{ xar_imageurl('../lib/galaxia/img/icons/next.gif','module','workflow') }}"/>
+                                {{ xar_data_output({property: properties['activity'], value: item['activity']}) }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ xar_data_output({property: properties['instance_id'], value: item['instance_id']}) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{# @workflow/main.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Module
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/user_bar.html.twig') }}
+    <div style="margin: auto;">
+        <h3>Available Processes</h3>
+        {{ xar_data_input({type: "listing", objectname: "workflow_processes", fieldlist: "name,version,valid,active,last_modified"}) }}
+        <p>
+          {% set concepts = xar_fileurl('xardocs/concepts.htm','module','workflow') %}
+          {% set manual = xar_fileurl('xardocs/manual.htm','module','workflow') %}
+          See the <a href="{{ concepts }}">introduction</a> and <a href="{{ manual }}">user manual</a> of
+          Galaxia for more details on what this module is all about, and how to use it.
+        </p>
+    {# <!-- Show the tasklist for this user --> #}
+          <xar:workflow-instances/>
+    {# <!-- Show the on-going processes that the user started --> #}
+          <xar:workflow-status notstatus="completed,aborted" title="On-going workflow processes initiated by me" sort_mode="started_desc"/>
+    {# <!-- Show the completed processes that the user started, with customized fieldlist and empty actionlist --> #}
+          <xar:workflow-status status="completed,aborted" title="Completed workflow processes initiated by me" sort_mode="started_desc" fieldlist="procname,version,instanceId,started,status,ended" actionlist=""/>
+          {{ include('@workflow/includes/galaxfooter.html.twig') }}
+    </div>
+  </div>
+{% endblock %}

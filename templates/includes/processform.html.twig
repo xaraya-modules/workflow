@@ -1,0 +1,74 @@
+{# @workflow/includes/processform.html.twig #}
+
+{% block processform %}
+{# <!-- Determine whether we are adding a new process --> #}
+    {% if pid > 0 %}
+      {% set formtitle = 'Process details' %}
+    {% else %}
+      {% set formtitle = 'Add process' %}
+    {% endif %}
+    <form action="{{ xar_moduleurl('workflow','admin','processes') }}" method="post">
+      <fieldset>
+        <legend>{{ formtitle }}</legend>
+
+        <input type="hidden" name="version" value="{{ proc_info['version'] }}"/>
+        <input type="hidden" name="pid" value="{{ proc_info['pId'] }}"/>
+        <input type="hidden" name="offset" value="{{ offset }}"/>
+        <input type="hidden" name="where" value="{{ where }}"/>
+        <input type="hidden" name="find" value="{{ find }}"/>
+        <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+
+        {# <!-- Show an edit form for the process --> #}
+        <div class="xar-form-input-wrapper">
+          <label class="xar-form-label">Version:</label>
+          {{ proc_info.version }}
+        </div>
+        <div class="xar-form-input-wrapper">
+          <label for="processname" class="xar-form-label">Process Name</label>
+          <input id="processname" type="text" maxlength="80" name="name" value="{{ proc_info['name'] }}" size="55"/>
+        </div>
+        <div class="xar-form-input-wrapper">
+          <label for="processdescription" class="xar-form-label">Description</label>
+          <textarea id="processdescription" rows="5" cols="55" name="description">{{ proc_info['description'] }}</textarea>
+        </div>
+        <div class="xar-form-input-wrapper-after">
+          {{ xar_data_input({type: "checkbox", name: "isActive", checked: proc_info['isActive']}) }}
+          &#10;
+          <label>Active</label>
+        </div>
+        <div class="xar-form-input-wrapper-after">
+          {{ xar_data_input({type: "checkbox", name: "isSingleton", checked: proc_info['isSingleton']}) }}
+          &#10;
+          <label>Only one instance per user</label>
+        </div>
+        <div class="xar-form-input-wrapper-after">
+          {% if pid > 0 %}
+            {% set save = 'Update' %}
+          {% else %}
+            {% set save = 'Create' %}
+          {% endif %}
+          <input type="submit" name="save" value="{{ save }}"/>
+        </div>
+      </fieldset>
+    </form>
+
+
+    {# <!-- Or an upload form --> #}
+    {% if pid == 0 %}
+      <fieldset>
+        <legend>
+          Or upload a process using this form
+        </legend>
+        <form enctype="multipart/form-data" action="{{ xar_moduleurl('workflow','admin','processes') }}" method="post">
+          <input type="hidden" name="MAX_FILE_SIZE" value="10000000000000"/>
+          <div class="xar-form-input-wrapper">
+            <label for="processfile" class="xar-form-label">Upload file:</label>
+            <input  id="processfile" size="40" name="userfile1" type="file"/>
+          </div>
+          <div class="xar-form-input-wrapper-after">
+            <input type="submit" name="upload" value="{{ xar_translate('Upload') }}"/>
+          </div>
+        </form>
+      </fieldset>
+    {% endif %}
+{% endblock %}

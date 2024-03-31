@@ -1,0 +1,19 @@
+{# @workflow/admin/test_manage.html.twig #}
+
+{% block test_manage %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Administration
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+    <h2>Manage New Workflows</h2>
+    <p>
+      Try out the test <a href="{{ xar_moduleurl('workflow', 'user', 'test') }}">user interface</a>
+    </p>
+    {{ include('@workflow/includes/test_workflowlist.html.twig') }}
+    {# <!-- Show a courtesy footer --> #}
+    {{ include('@workflow/includes/test_footer.html.twig') }}
+  </div>
+{% endblock %}

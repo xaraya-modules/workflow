@@ -60,6 +60,10 @@ function workflow_user_test(array $args = [], $context = null)
 
     WorkflowConfig::setAutoload();
 
+    /**
+     * This is handled automatically by xarTpl::module() now,
+     * as long as we pass it the context incl. twig (or not)
+     * 
     // add paths for Twig filesystem loader (with namespace)
     // {{ include('@workflow/includes/trackeritem.html.twig') }}
     $paths = [
@@ -77,5 +81,9 @@ function workflow_user_test(array $args = [], $context = null)
 
     $template = $twig->load('@workflow/test.html.twig');
     return $template->render($data);
-    //return $data;
+     */
+    // force using twig if not defined yet
+    //$data['context']['twig'] ??= true;
+
+    return $data;
 }

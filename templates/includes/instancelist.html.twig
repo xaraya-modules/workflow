@@ -1,19 +1,29 @@
-{# @workflow/includes/workflowlist.html.twig #}
+{# @workflow/includes/instancelist.html.twig #}
 
-{% block workflowlist %}
+{% block instancelist %}
 {% if items and items|length > 0 %}
-    {% set fieldlabel = {'procname': 'Process', 'version': 'Version', 'instanceId': 'Inst', 'owner': 'Owner', 'started': 'Start', 'ended': 'End', 'status': 'Status', 'name': 'Current Activity', 'user': 'Assigned To'} %}
+    {% if offset is null %}{% set offset = 0 %}{% endif %}
+    {% if find is null %}{% set find = '' %}{% endif %}
+    {% if where is null %}{% set where = '' %}{% endif %}
+    {% if sort_mode is null %}{% set sort_mode = 'procname_asc' %}{% endif %}
+
+    {% set fieldlabel = {'procname': 'Process', 'version': 'Version', 'instanceId': 'Inst', 'owner': 'Owner', 'started': 'Start', 'ended': 'End', 'status': 'Status', 'name': 'Activity', 'user': 'User'} %}
     {% if fieldlist is null %}
-        {% set fieldlist = ['procname', 'version', 'instanceId', 'started', 'status', 'name', 'user'] %}
+        {% set fieldlist = ['procname', 'instanceId', 'owner', 'name', 'user', 'started'] %}
     {% endif %}
     {% set actionlabel = {'run': 'Run', 'send': 'Send', 'exception': 'Except', 'resume': 'Resume', 'abort': 'Abort', 'release': 'Release', 'remove': 'Seen'} %}
     {% if actionlist is null %}
-        {% set actionlist = ['run', 'exception', 'resume', 'abort', 'release', 'remove'] %}
+        {% set actionlist = ['run', 'send', 'exception', 'resume', 'abort', 'release'] %}
     {% endif %}
+
     <table style="border-collapse: separate; width: 99%">
       <tr>
         {% for field in fieldlist %}
-          <th>{{ fieldlabel[field] }}</th>
+          {% if sort_mode == field ~ '_desc' %}
+            <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_asc'}) }}">{{ fieldlabel[field] }}</a></th>
+          {% else %}
+            <th><a href="{{ xar_currenturl({'sort_mode': field ~ '_desc'}) }}">{{ fieldlabel[field] }}</a></th>
+          {% endif %}
         {% endfor %}
         {% if actionlist %}
           <th>Actions</th>
@@ -78,27 +88,31 @@
               <td>
                 <input type="hidden" name="iid" value="{{ item['instanceId'] }}"/>
                 <input type="hidden" name="aid" value="{{ item['activityId'] }}"/>
-                <input type="hidden" name="return_url" value="{{ return_url }}"/>
+                <input type="hidden" name="return_url" value=""/>
               {# <!-- Caution: action checks differ between instancelist and workflowlist --> #}
-              {# <!-- If an instance activity is not already assigned to the current user, we don't know if he has the right role here --> #}
+              {# <!-- We do know that the current user has the right role here --> #}
                 {% for action in actionlist %}
                   {# <!-- Get an input image for the action --> #}
                   {% set info = {'action': action} %}
                   {% if action == 'run' %}
-                    {% if item['isInteractive'] == 1 and item['status'] == 'active' and item['user'] == userId %}
+                    {% if item['isInteractive'] == 1 and item['status'] == 'active' %}
                       <input type="hidden" name="activityId" value="{{ item['activityId'] }}"/>
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
+                  {% elseif action == 'send' %}
+                    {% if item['isAutoRouted'] == 0 and item['actstatus'] == 'completed' %}
+                      {{ include('@workflow/includes/action_input_image.html.twig', info) }}
+                    {% endif %}
                   {% elseif action == 'exception' %}
-                    {% if item['status'] != 'aborted' and item['status'] != 'exception' and item['status'] != 'completed' %}
+                    {% if item['status'] != 'aborted' and item['status'] != 'exception' and item['user'] == userId %}
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'resume' %}
-                    {% if item['status'] == 'exception' %}
+                    {% if item['status'] == 'exception' and item['user'] == userId %}
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'abort' %}
-                    {% if item['status'] != 'aborted' and item['status'] != 'completed' %}
+                    {% if item['status'] != 'aborted' and item['user'] == userId %}
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'release' %}
@@ -106,7 +120,7 @@
                       {# <!-- reverse current action --> #}
                       {% set info = {'action': 'grab'} %}
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
-                    {% elseif item['status'] == 'active' and item['user'] == userId %}
+                    {% elseif item['status'] == 'active' %}
                       {{ include('@workflow/includes/action_input_image.html.twig', info) }}
                     {% endif %}
                   {% elseif action == 'remove' %}
@@ -124,9 +138,7 @@
       {% endfor %}
     </table>
   {% else %}
-    No workflows found
+    No instances found
   {% endif %}
-
-
 
 {% endblock %}

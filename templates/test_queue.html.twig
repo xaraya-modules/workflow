@@ -1,0 +1,23 @@
+{# @workflow/test_queue.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+{# <!-- this relies on $config and $item from test_run --> #}
+  <div class="xar-mod-head">
+    <span class="xar-mod-title">
+      Workflow Module
+    </span>
+  </div>
+  <div class="xar-mod-body">
+    {{ include('@workflow/includes/user_bar.html.twig') }}
+    <div style="margin: auto;">
+      <h3>Workflow Event Queue Processing</h3>
+      {% if warning %}
+        <p><strong>Requirement:</strong>{{ warning }}</p>
+      {% endif %}
+      <pre>{{ log }}</pre>
+      {{ include('@workflow/includes/test_footer.html.twig') }}
+    </div>
+  </div>
+{% endblock %}

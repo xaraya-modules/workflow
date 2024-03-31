@@ -1,0 +1,92 @@
+{# @workflow/includes/maplist.html.twig #}
+
+{% block maplist %}
+<div>
+      <fieldset>
+        <legend>List of mappings</legend>
+        <form action="{{ xar_moduleurl('workflow','admin','roles') }}" method="post">
+          <div>
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="sort_mode2" value="{{ sort_mode2 }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            Find:<input size="8" type="text" name="find" value="{{ find }}"/>
+            <input type="submit" name="filter" value="{{ xar_translate('find') }}"/>
+          </div>
+        </form>
+        <form action="{{ xar_moduleurl('workflow','admin','roles') }}" method="post">
+          <div>
+            <input type="hidden" name="pid" value="{{ pid }}"/>
+            <input type="hidden" name="offset" value="{{ offset }}"/>
+            <input type="hidden" name="find" value="{{ find }}"/>
+            <input type="hidden" name="sort_mode" value="{{ sort_mode }}"/>
+            <input type="hidden" name="sort_mode2" value="{{ sort_mode2 }}"/>
+          </div>
+          <table class="xar-halfwidth" style="border-collapse: separate;">
+            <tr>
+              {% if sort_mode == 'name_desc' %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': 'name_asc'}) }}">
+                    Role
+                  </a>
+                </th>
+              {% else %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': 'name_desc'}) }}">
+                    Role
+                  </a>
+                </th>
+              {% endif %}
+              {% if sort_mode == 'user_desc' %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': 'user_asc'}) }}">
+                    User
+                  </a>
+                </th>
+              {% else %}
+                <th>
+                  <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': pid, 'find': find, 'offset': offset, 'sort_mode': 'user_desc'}) }}">
+                    User
+                  </a>
+                </th>
+              {% endif %}
+            </tr>
+            {% if mapitems and mapitems|length > 0 %}
+              {% for ix in mapitems|keys %}
+                {% set rowclass = 'xar-norm' %}
+                {% if ix % 2 %}
+                  {% set rowclass = 'xar-alt' %}
+                {% endif %}
+                <tr class="{{ rowclass }}">
+                  <td>
+                      {% if mapitems[ix]['roleId'] is not null %}
+                          <input type="checkbox" name="map[{{ mapitems[ix]['userId'] }}:::{{ mapitems[ix]['roleId'] }}]"/>
+                      {% endif %}&#160;
+                    {{ mapitems[ix]['name'] }}
+                  </td>
+                  <td>
+                    {% if mapitems[ix]['user'] == '' %}
+                      "Anonymous"
+                    {% elseif mapitems[ix]['login'] == mapitems[ix]['user'] %}
+                      {{ mapitems[ix]['user'] }}
+                    {% else %}
+                      [{{ mapitems[ix]['login'] }}] {{ mapitems[ix]['user'] }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr><td colspan="3">No mappings defined yet</td>
+              </tr>
+            {% endif %}
+          </table>
+          <div class="xar-form-input-wrapper-after">
+              {% set label = 'Delete selected' %}
+              {{- xar_button({type: "submit", name: "delete_map", label: label}) -}}
+          </div>
+        </form>
+      </fieldset>
+      {# <!-- Show the pager --> #}
+      {{ include('@workflow/includes/pager.html.twig') }}
+    </div>
+{% endblock %}

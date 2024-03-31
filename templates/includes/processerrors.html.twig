@@ -1,0 +1,38 @@
+{# @workflow/includes/processerrors.html.twig #}
+
+{% block processerrors %}
+{% if pid > 0 %}
+{# <!-- If this process is incomplete show a list of things which need fixing befor the process is valid --> #}
+    <fieldset>
+      <legend>
+        {% if proc_info['isValid'] %}
+          {% set validtext = 'valid' %}
+          {% set imgtitle = xar_translate('valid') %}
+          {% set imgalt = xar_translate('valid') %}
+          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/green_dot.gif", alt: imgalt, title: imgtitle}) -}}
+          {% else %}
+          {% set validtext = 'invalid' %}
+          {% set imgtitle = xar_translate('invalid') %}
+          {% set imgalt = xar_translate('invalid') %}
+          {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/red_dot.gif", alt: imgalt, title: imgtitle}) -}}
+        {% endif %}
+        This process is: 
+        {{ validtext }}
+      </legend>
+      {% if errors|length > 0 %}
+        {% for loop_key1, loop_item1 in errors %}{% set loop_index1 = loop.index %}
+          {% set rowclass = 'xar-norm' %}
+          {% if loop_index1 % 2 %}
+            {% set rowclass = 'xar-alt' %}
+          {% endif %}
+          <small class="{{ rowclass }}">{{ loop_item1 }}</small>
+          <br/>
+        {% endfor %}
+        {% else %}
+        <small class="xar-norm">
+          No process errors detected
+        </small>
+      {% endif %}
+    </fieldset>
+  {% endif %}
+{% endblock %}

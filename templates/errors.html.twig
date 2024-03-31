@@ -1,0 +1,54 @@
+{# @workflow/errors.html.twig #}
+
+{% extends '@workflow/base.html.twig' %}
+
+{% block modulespace %}
+<div class="xar-mod-head"><span class="xar-mod-title">User Error</span></div>
+    <div class="xar-mod-body">
+        <fieldset>
+            <legend>Workflow Problem</legend>
+            {% set label = 'System Message' %}
+            <img src="{{ xar_imageurl('user-error.png','base') }}" alt="{{ label }}" width="96" height="96" class="xar-module-icon"/>
+            {% if layout is null %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    {% if msg is not null %}
+                        {{ msg }}
+                    {% else %}
+                        No error message is available.
+                        <br />
+                        Please contact the system administrator.
+                    {% endif %}
+                </div>                    
+            {% elseif layout == 'no_cookies' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    You must enable cookies on your browser to run Xaraya.
+                    <br />
+                    Check the browser configuration options to make sure cookies are enabled.
+            {% elseif layout == 'unknown_activity' %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    Sorry! A page could not be found
+                    <br />
+                    {% set seedetail = xar_coremethod('xarSession', 'getVar', ['role_id']) == xar_modvar('roles', 'admin') %}
+                    {% if id and seedetail %}
+                    Activity ID couldn not be matched: {{ id }}
+                    {% else %}
+                        Please contact the system administrator.
+                    {% endif %}
+                </div>
+                </div>
+            {% else %}
+                <div style="margin-top: 20px; margin-left: 20px">
+                    No error message is available.
+                    <br />
+                    Please contact the system administrator.
+                </div>                    
+            {% endif %}                
+        </fieldset>
+        <fieldset>
+            <div class="xar-form-input-wrapper-after">
+                {% set label = 'Go back' %}
+                {{- xar_button({type: "cancel", label: label}) -}}
+            </div>
+        </fieldset>
+    </div>
+{% endblock %}

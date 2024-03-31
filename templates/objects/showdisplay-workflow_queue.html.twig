@@ -1,11 +1,11 @@
 {# @workflow/objects/showdisplay-workflow_queue.html.twig #}
 
-<!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt -->
 {% block showdisplay_workflow_queue %}
+{# <!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt --> #}
     {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
-        {{ include('@workflow/objects/catnavigation.html.twig') }}
+        {{ include('@workflow/includes/catnavigation.html.twig') }}
     {% endif %}
-    <!-- The layout could be set directly or through inheritance (for example in the modify prop screen) -->
+    {# <!-- The layout could be set directly or through inheritance (for example in the modify prop screen) --> #}
     {% if not layout %}
         {% set layout = 'default' %}
     {% endif %}
@@ -18,9 +18,9 @@
         {% for name, property in properties %}
             {% set item = item + {(name): property.value} %}
         {% endfor %}
-        {{ include('@workflow/objects/test_queueitem.html.twig') }}
+        {{ include('@workflow/includes/test_queueitem.html.twig') }}
     {% else %}
-        <!-- You can include your own layout here or specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype -->
-        <xar:template module="$tplmodule" file="display-$layout"/>
+        {# <!-- You can include your own layout here or specify a separate template, e.g. if you want to handle individual fields differently for a particular module / itemtype --> #}
+        {{ include('@' ~ tplmodule ~ '/includes/display-' ~ layout ~ '.html.twig') }}
     {% endif %}
 {% endblock %}

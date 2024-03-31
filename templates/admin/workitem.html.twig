@@ -1,0 +1,61 @@
+{# @workflow/admin/workitem.html.twig #}
+
+{% block workitem %}
+<div class="xar-mod-body">
+    {{ include('@workflow/includes/admin-menu.html.twig') }}
+    {{ include('@workflow/includes/monitor_bar.html.twig') }}
+
+    <fieldset>
+      <legend>
+        Workitem information
+      </legend>
+      <table style="border-collapse:separate; width: 99%">
+        <tr>
+          <th>Id</th>
+          <th>Number</th>
+          <th>Process</th>
+          <th>Activity</th>
+          <th>User</th>
+          <th>Started</th>
+          <th>Duration</th>
+        </tr>
+        <tr>
+          <td>{{ wi['itemId'] }}</td>
+          <td>{{ wi['orderId'] }}</td>
+          <td>{{ wi['procname'] }}&#160;{{ wi['version'] }}</td>
+          <td>{{ wi['type'] }}&#160;{{ wi['name'] }}</td>
+          <td>{{ wi['user'] }}</td>
+          <td>{{ xar_localedate(wi['started'], 'long', '') }}&#160;{{ xar_localedate(wi['started'], '', 'long') }}</td>
+          <td>{{ wi['duration'] }}</td>
+        </tr>
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>
+        Properties
+      </legend>
+      <table style="border-collapse: separate;">
+        <tr>
+          <th>
+            Property
+          </th>
+          <th>
+            Value
+          </th>
+        </tr>
+        {% for loop_key1, loop_item1 in wi['properties'] %}{% set loop_index1 = loop.index %}
+          {% set rowclass = 'xar-norm' %}
+          {% if loop_index1 % 2 %}
+            {% set rowclass = 'xar-alt' %}
+          {% endif %}
+          <tr class="{{ rowclass }}">
+            <td>{{ loop_key1 }}</td>
+            <td>{{ loop_item1 }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </fieldset>
+    {{ include('@workflow/includes/monitor_stats.html.twig') }}
+    {{ include('@workflow/includes/galaxfooter.html.twig') }}
+  </div>
+{% endblock %}

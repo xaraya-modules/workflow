@@ -1,0 +1,48 @@
+{# @workflow/includes/test_actiontable.html.twig #}
+
+{% block test_actiontable %}
+{# <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $place and $trackerId if available --> #}
+  <table style="border-collapse: separate; width: 50%">
+    <tr>
+      <th>Transition</th>
+      <th>From Place</th>
+      <th>To Place</th>
+      <th>Change Status</th>
+    </tr>
+    {% for name, info in config[workflow]['transitions'] %}
+      {% set from = info['from'] is iterable ? info['from'] : [ info['from'] ] %}
+      {% if place not in from %}
+      {% else %}
+      {# <!-- @checkme state machine only supports 1 to, use 2 for status change --> #}
+      {% set to = info['to'] is iterable ? info['to'][0] : info['to'] %}
+      <tr>
+        <td>{{ name|title }}</td>
+        <td>
+          {% for where in from %}
+            {% if place and place == where %}
+             <strong>{{ where }}</strong><br/>
+            {% else %}
+              {{ where }}<br/>
+            {% endif %}
+          {% endfor %}
+        </td>
+        {% if place and place == to %}
+          <td><strong>{{ to }}</strong></td>
+        {% else %}
+          <td>{{ to }}</td>
+        {% endif %}
+	  {# <!-- @checkme state machine only supports 1 to, use 2 for status change --> #}
+        {% if info['to'] is iterable and info['to']|length > 1 %}
+          {% if place and place == info['to'][1] %}
+            <td><strong>{{ info['to'][1] }}</strong></td>
+          {% else %}
+            <td>{{ info['to'][1] }}</td>
+          {% endif %}
+        {% else %}
+          <td></td>
+        {% endif %}
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </table>
+{% endblock %}
