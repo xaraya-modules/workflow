@@ -3,14 +3,14 @@
 {% block showview_workflow_tracker %}
 {# <!-- Adapted from dynamicdata/xartemplates/objects/showview.xt --> #}
     {{ xar_style({scope: "module", module: "dynamicdata", file: "dd"}) }}
-    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', ['categories',modname,itemtype]) %}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories',modname,itemtype) %}
         {{ include('@workflow/includes/catnavigation.html.twig') }}
     {% endif %}
     {# <!-- You can give a custom 'newlink' argument to showView() higher up --> #}
     {% if isprimary and newlink %}
         {% if object.checkAccess('create') %}
             <div style="text-align: right;">
-                {% if xar_modvar('dynamicdata', 'use_module_icons') %}
+                {% if xar_modulevar('dynamicdata', 'use_module_icons') %}
                     {% set newtext = xar_translate('New') %}
                     <a href="{{ newlink }}" title="Create New {{ object.label }}">
                         {{- xar_image({scope: "theme", file: "icons/document-new.png", class: "xar-icon", alt: newtext}) -}}
@@ -25,7 +25,7 @@
         {% set layout = 'default' %}
     {% endif %}
     {% if not userId %}
-        {% set userId = object.getContext().getUserId() ?? xar_coremethod('xarSession', 'getVar', ['role_id']) %}
+        {% set userId = xar_userid(object.getContext()) %}
     {% endif %}
     {{ include('@' ~ tplmodule ~ '/includes/view-' ~ layout ~ '.html.twig') }}
     {# <!-- xar:template file="test_trackerlist"/ --> #}

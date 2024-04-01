@@ -28,7 +28,7 @@
                 <div style="margin-top: 20px; margin-left: 20px">
                     Sorry! A page could not be found
                     <br />
-                    {% set seedetail = xar_coremethod('xarSession', 'getVar', ['role_id']) == xar_modvar('roles', 'admin') %}
+                    {% set seedetail = xar_userid() == xar_modulevar('roles', 'admin') %}
                     {% if id and seedetail %}
                     Activity ID couldn not be matched: {{ id }}
                     {% else %}

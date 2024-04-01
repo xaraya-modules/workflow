@@ -39,7 +39,7 @@
         <td>
           <input type="hidden" name="jobs[{{ id }}][lastrun]" value="{{ job['lastrun'] }}"/>
           {% if job['lastrun'] %}
-            {{ xar_coremethod('xarLocale', 'formatDate', ['%x %X %z',job['lastrun']]) }}
+            {{ xar_coremethod('xarLocale', 'formatDate', '%x %X %z',job['lastrun']) }}
           {% endif %}
         </td>
         <td>

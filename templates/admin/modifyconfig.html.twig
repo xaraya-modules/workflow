@@ -77,7 +77,7 @@
 
         <fieldset>
           <legend>Configuration of Scheduled Activities</legend>
-          {% if xar_coremethod('xarMod', 'isAvailable', ['scheduler']) %}
+          {% if xar_coremethod('xarMod', 'isAvailable', 'scheduler') %}
             {{ include('@workflow/includes/scheduler.html.twig') }}
           {% else %}
             The scheduler module is not installed

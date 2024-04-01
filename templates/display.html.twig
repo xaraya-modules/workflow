@@ -30,7 +30,7 @@
                 {# <!--  Only start activities for now --> #}
                 {% if activity['type'] != 'start' and activity['type'] != 'standalone' %}
                 {# <!--  Only activities where I am the owner or user, or which are open to all --> #}
-                {% elseif activity['roles'] and (xar_coremethod('xarSession' in 'getVar',activity['roles']) or '*' in activity['roles']) %}
+                {% elseif activity['roles'] and (xar_userid() in activity['roles'] or '*' in activity['roles']) %}
                 {% else %}
                 <tr>
                     <td>

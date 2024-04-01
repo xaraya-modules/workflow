@@ -2,7 +2,7 @@
 
 {% block monitor_bar %}
 {{ xar_style({scope: "module", module: "base", file: "tabs"}) }}
-    {% set func = xar_coremethod('xarController', 'getVar', ['func']) %}
+    {% set func = xar_coremethod('xarController', 'getVar', 'func') %}
 
     <ul class="xar-tabs">
       {% if func == 'monitor_processes' %}

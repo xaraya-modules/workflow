@@ -7,7 +7,7 @@
         {{ value }}
         </pre>
     {% elseif layout and layout == 'linebreak' %}
-        {{ nl2br(value) }}
+        {{ value|nl2br }}
     {% elseif workflows and objectref %}
         {% set config = xar_apifunc('workflow', 'user', 'getconfig') %}
         {% if not tracker %}

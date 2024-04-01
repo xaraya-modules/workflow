@@ -2,7 +2,7 @@
 
 {% block user_bar %}
 {{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
-    {% set func = xar_coremethod('xarController', 'getVar', ['func']) %}
+    {% set func = xar_coremethod('xarController', 'getVar', 'func') %}
 
       <ul class="xar-tabs">
         {% if func == 'main' or func is null or func == '' %}
