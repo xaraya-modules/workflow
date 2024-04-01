@@ -24,7 +24,7 @@
           <table border="0" cellpadding="8" cellspacing="0">
             {% for modname, config in settings %}
               <tr>
-                <td colspan="2"><b>{{ config['label'] }}</b></td>
+                <td colspan="2"><b>{{ config['label']|raw }}</b></td>
               </tr>
               <tr>
                 <td><label for="settings[{{ modname }}.create]">Start Activity for Create Hook Calls</label></td>

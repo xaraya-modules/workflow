@@ -122,31 +122,31 @@
                     <td><a href="{{ baselink }}&amp;sort_mode={{ sort_mode }}&amp;newmajor={{ items[ix]['pId'] }}">
                         <span class="xar-accent-outline">x</span><span>.1</span></a></td>
                     <td class="xar-align-center">
-                      <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': items[ix}['pId']]) }}">
+                      <a href="{{ xar_moduleurl('workflow','admin','activities',{'pid': items[ix]['pId']}) }}">
                         {% set imgtitle = xar_translate('activities') %}
                         {% set imgalt = xar_translate('activities') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/activity.gif", alt: imgalt, title: imgtitle}) -}}</a>
                     </td>
                     <td class="xar-align-center">
-                      <a href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': items[ix}['pId']]) }}">
+                      <a href="{{ xar_moduleurl('workflow','admin','shared_source',{'pid': items[ix]['pId']}) }}">
                         {% set imgtitle = xar_translate('code') %}
                         {% set imgalt = xar_translate('code') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/book.gif", alt: imgalt, title: imgtitle}) -}}</a>
                     </td>
                     <td class="xar-align-center">
-                      <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': items[ix}['pId']]) }}">
+                      <a href="{{ xar_moduleurl('workflow','admin','roles',{'pid': items[ix]['pId']}) }}">
                         {% set imgtitle = xar_translate('roles') %}
                         {% set imgalt = xar_translate('roles') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/myinfo.gif", alt: imgalt, title: imgtitle}) -}}</a>
                     </td>
                     <td class="xar-align-center">
-                      <a href="{{ xar_moduleurl('workflow','admin','graph',{'pid': items[ix}['pId']]) }}">
+                      <a href="{{ xar_moduleurl('workflow','admin','graph',{'pid': items[ix]['pId']}) }}">
                         {% set imgtitle = xar_translate('graph') %}
                         {% set imgalt = xar_translate('graph') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/mode_tree.gif", alt: imgalt, title: imgtitle}) -}}</a>
                     </td>
                     <td class="xar-align-center">
-                      <a class="link" href="{{ xar_moduleurl('workflow','admin','export_process',{'pid': items[ix}['pId']]) }}">
+                      <a class="link" href="{{ xar_moduleurl('workflow','admin','export_process',{'pid': items[ix]['pId']}) }}">
                         {% set imgtitle = xar_translate('export') %}
                         {% set imgalt = xar_translate('export') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/export.gif", alt: imgalt, title: imgtitle}) -}}</a>

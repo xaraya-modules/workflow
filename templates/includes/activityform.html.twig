@@ -66,7 +66,7 @@
                 {% for ix in roles|keys %}
                   <tr>
                     <td>
-                      <a class="link" href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid, 'activityId': activityId, 'remove_role': roles[ix}['roleId']]) }}">
+                      <a class="link" href="{{ xar_moduleurl('workflow','admin','activities',{'pid': pid, 'activityId': activityId, 'remove_role': roles[ix]['roleId']}) }}">
                         {% set imgtitle = xar_translate('Delete role') %}
                         {% set imgalt = xar_translate('del') %}
                         {{- xar_image({scope: "module", module: "workflow", file: "../lib/galaxia/img/icons/trash.gif", alt: imgalt, title: imgtitle}) -}}
