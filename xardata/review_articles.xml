@@ -45,18 +45,14 @@ $itemtype = $instance->get('itemtype');
 $itemid = $instance->get('itemid');
 if (empty($itemid) || !is_numeric($itemid)) {
     $msg = xarML('Invalid article #(1)', xarVar::prepForDisplay($itemid));
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM',
-                   new SystemException($msg));
-    return;
+    throw new BadParameterException(null, $msg);
 }
 
 // Retrieve the item
 $article = xarMod::apiFunc('articles','user','get', array('aid' => $itemid));
 if (empty($article)) {
     $msg = xarML('Unable to find article #(1)', xarVar::prepForDisplay($itemid));
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM',
-                   new SystemException($msg));
-    return;
+    throw new BadParameterException(null, $msg);
 }
 
 // Security check
@@ -66,9 +62,7 @@ $input['mask'] = 'EditArticles';
 if (!xarMod::apiFunc('articles','user','checksecurity',$input)) {
     $msg = xarML('You have no permission to modify article #(1)',
                  xarVar::prepForDisplay($itemid));
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'NO_PERMISSION',
-                   new SystemException($msg));
-    return;
+    throw new BadParameterException(null, $msg);
 }
 unset($input);
 
@@ -182,19 +176,14 @@ $itemtype = $instance->get('itemtype');
 $itemid = $instance->get('itemid');
 if (empty($itemid) || !is_numeric($itemid)) {
     $msg = xarML('Invalid article #(1)', xarVar::prepForDisplay($itemid));
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM',
-                   new SystemException($msg));
-    return;
+    throw new BadParameterException(null, $msg);
 }
 
 // Retrieve the module item
 $article = xarMod::apiFunc('articles','user','get', array('aid' => $itemid));
 if (empty($article)) {
     $msg = xarML('Unable to find article #(1)', xarVar::prepForDisplay($itemid));
-
-    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM',
-                   new SystemException($msg));
-    return;
+    throw new BadParameterException(null, $msg);
 }
 $article['ptid'] = $article['pubtypeid'];
 

@@ -17,7 +17,6 @@
  * @param $args['objectid'] ID of the object (must be the module name here !!)
  * @param $args['extrainfo'] extra information
  * @return bool true on success, false on failure
- * @raise BAD_PARAM, NO_PERMISSION, DATABASE_ERROR
  */
 function workflow_adminapi_removehook(array $args = [], $context = null)
 {

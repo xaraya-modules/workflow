@@ -17,7 +17,6 @@
  * @param $args['objectid'] ID of the object
  * @param $args['extrainfo'] extra information
  * @return array extrainfo array
- * @raise BAD_PARAM, NO_PERMISSION, DATABASE_ERROR
  */
 function workflow_adminapi_createhook(array $args = [], $context = null)
 {
