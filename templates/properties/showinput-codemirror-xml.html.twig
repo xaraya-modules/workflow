@@ -22,10 +22,11 @@
     {% if not cols %}
         {% set cols = 0 %}
     {% endif %}
-    <div style="clear:both; border: 1px dotted black; padding: 3px; background-color: ##F8F8F8">
-        <xar.data-input type="textarea" id="name" name="name" style="style" rows="rows" cols="cols" value="value"/>
+    <div style="clear:both; border: 1px dotted black; padding: 3px; background-color: #F8F8F8">
+        {{ xar_data_input({type: "textarea", id: name, name: name, style: style, rows: rows, cols: cols, value: value}) }}
     </div>
     
+    {# @todo implement in function #}
     {% set path = dirname(xar_fileurl('codemirrorui/js/codemirror-ui.js','property','codemirror')) %}
     <script>
       var textarea = document.getElementById('{{ name }}');

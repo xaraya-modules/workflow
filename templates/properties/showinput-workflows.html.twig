@@ -6,26 +6,26 @@
     {% endif %}
 
     {% if style %}
-        {% set textareasource = 'textarea{{ ' ~ id ~ ' {' ~ style ~ '}' %}
+        {% set textareasource = 'textarea' ~ id ~ ' {' ~ style ~ '}' %}
     {% elseif class %}
-        {# <!-- do nothing -.
-        {% set textareasource = 'textarea }}' ~ id ~ ' {}' %}
+        {# <!-- do nothing --> #}
+        {% set textareasource = 'textarea' ~ id ~ ' {}' %}
     {% elseif rows and cols %}
-        {% set textareasource = 'textarea{{ ' ~ id ~ ' {
-                width. '. cols.'em;
-                height. '. (rows * 1.6) .'em;
+        {% set textareasource = 'textarea' ~ id ~ ' {
+                width: ' ~ cols ~ 'em;
+                height: ' ~ (rows * 1.6)|round ~ 'em;
             }' %}
     {% elseif rows %}
-        {% set textareasource = 'textarea }}' ~ id ~ ' {
-                height. '. (rows * 1.6) .'em;
+        {% set textareasource = 'textarea' ~ id ~ ' {
+                height: ' ~ (rows * 1.6)|round ~ 'em;
             }' %}
     {% elseif cols %}
-        {% set textareasource = 'textarea{{ ' ~ id ~ ' {
-                width. '. cols.'em;
+        {% set textareasource = 'textarea' ~ id ~ ' {
+                width: '~  cols ~ 'em;
             }' %}
     {% else %}
-        {# <!-- do nothing -.
-        {% set textareasource = 'textarea }}' ~ id ~ ' {}' %}
+        {# <!-- do nothing --> #}
+        {% set textareasource = 'textarea' ~ id ~ ' {}' %}
     {% endif %}
     
     {{ xar_style({method: "embed", source: textareasource, media: "all"}) }}
