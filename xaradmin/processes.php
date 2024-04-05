@@ -21,7 +21,7 @@ sys::import('modules.workflow.lib.galaxia.api');
  * @author mikespub
  * @access public
  */
-function workflow_admin_processes()
+function workflow_admin_processes(array $args = [], $context = null)
 {
     xarLog::message('WF: workflow_admin_processes ');
     // Security Check

@@ -17,7 +17,7 @@
  * @author the Workflow module development team
  * @return array containing the menulinks for the main menu items.
  */
-function workflow_userapi_getmenulinks()
+function workflow_userapi_getmenulinks(array $args = [], $context = null)
 {
     $menulinks = [];
 

@@ -18,7 +18,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_userapi_findinstances($args)
+function workflow_userapi_findinstances(array $args = [], $context = null)
 {
     // Common setup for Galaxia environment
     sys::import('modules.workflow.lib.galaxia.config');

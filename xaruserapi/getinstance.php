@@ -22,7 +22,7 @@
     @param $instaceId (required)
     @return \Galaxia\Api\Instance workflow Instance
 */
-function workflow_userapi_getInstance($args)
+function workflow_userapi_getInstance(array $args = [], $context = null)
 {
     sys::import('modules.workflow.lib.galaxia.config');
 

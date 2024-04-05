@@ -63,7 +63,7 @@ function workflow_user_test(array $args = [], $context = null)
     /**
      * This is handled automatically by xarTpl::module() now,
      * as long as we pass it the context incl. twig (or not)
-     * 
+     *
     // add paths for Twig filesystem loader (with namespace)
     // {{ include('@workflow/includes/trackeritem.html.twig') }}
     $paths = [

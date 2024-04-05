@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_userapi_showactivity($args)
+function workflow_userapi_showactivity(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow', 0)) {

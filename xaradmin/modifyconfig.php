@@ -20,7 +20,7 @@ use Xaraya\Modules\Workflow\WorkflowConfig;
  * @access public
  * @return array|void true on success or void on failure
  */
-function workflow_admin_modifyconfig()
+function workflow_admin_modifyconfig(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {
@@ -52,13 +52,11 @@ function workflow_admin_modifyconfig()
             // we have hooks for individual item types here
             if (!isset($value[0])) {
                 // Get the list of all item types for this module (if any)
-                $mytypes = xarMod::apiFunc(
-                    $modname,
-                    'user',
-                    'getitemtypes',
-                    // don't throw an exception if this function doesn't exist
-                    []
-                );
+                try {
+                    $mytypes = xarMod::apiFunc($modname, 'user', 'getitemtypes');
+                } catch (Exception $e) {
+                    $mytypes = [];
+                }
                 foreach ($value as $itemtype => $val) {
                     $create = xarModVars::get('workflow', "$modname.$itemtype.create");
                     if (empty($create)) {

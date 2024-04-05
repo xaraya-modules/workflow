@@ -18,14 +18,14 @@
  * @access public
  * @return bool|void true on success or void on falure
  */
-function workflow_admin_main()
+function workflow_admin_main(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {
         return;
     }
 
-    xarController::redirect(xarController::URL('workflow', 'admin', 'processes'));
+    xarController::redirect(xarController::URL('workflow', 'admin', 'processes'), null, $context);
     // success
     return true;
 }

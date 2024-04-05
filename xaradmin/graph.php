@@ -21,7 +21,7 @@ sys::import('modules.workflow.lib.galaxia.api');
  * @author mikespub
  * @access public
  */
-function workflow_admin_graph()
+function workflow_admin_graph(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {

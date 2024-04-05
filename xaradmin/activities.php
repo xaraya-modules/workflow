@@ -19,7 +19,7 @@ sys::import('modules.dynamicdata.class.objects.factory');
  * @author mikespub
  * @access public
  */
-function workflow_admin_activities()
+function workflow_admin_activities(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {
@@ -303,13 +303,23 @@ function workflow_admin_activities()
         xarVar::fetch('activate_proc', 'int', $activate_proc, 0, xarVar::NOT_REQUIRED);
         if ($activate_proc) {
             $process->activate();
-            xarController::redirect(xarController::URL('workflow', 'admin', 'activities', ['pid' => $data['pid']]));
+            xarController::redirect(xarController::URL(
+                'workflow',
+                'admin',
+                'activities',
+                ['pid' => $data['pid']]
+            ), null, $context);
             return true;
         }
         xarVar::fetch('deactivate_proc', 'int', $deactivate_proc, 0, xarVar::NOT_REQUIRED);
         if ($deactivate_proc) {
             $process->deactivate();
-            xarController::redirect(xarController::URL('workflow', 'admin', 'activities', ['pid' => $data['pid']]));
+            xarController::redirect(xarController::URL(
+                'workflow',
+                'admin',
+                'activities',
+                ['pid' => $data['pid']]
+            ), null, $context);
             return true;
         }
     }

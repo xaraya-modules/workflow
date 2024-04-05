@@ -18,7 +18,7 @@ sys::import('modules.workflow.lib.galaxia.api');
  * @author mikespub
  * @access public
  */
-function workflow_admin_shared_source()
+function workflow_admin_shared_source(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {

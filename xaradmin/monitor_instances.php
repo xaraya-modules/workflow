@@ -20,7 +20,7 @@ sys::import('modules.base.class.pager');
  * @author mikespub
  * @access public
  */
-function workflow_admin_monitor_instances()
+function workflow_admin_monitor_instances(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {

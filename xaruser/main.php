@@ -18,7 +18,7 @@
  * @access public
  * @return array|void empty
  */
-function workflow_user_main()
+function workflow_user_main(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {

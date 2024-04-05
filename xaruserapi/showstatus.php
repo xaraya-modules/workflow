@@ -18,7 +18,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_userapi_showstatus($args)
+function workflow_userapi_showstatus(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow', 0)) {

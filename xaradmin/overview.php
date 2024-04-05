@@ -14,7 +14,7 @@
 /**
  * Overview displays standard Overview page
  */
-function workflow_admin_overview()
+function workflow_admin_overview(array $args = [], $context = null)
 {
     $data = [];
     //just return to main function that displays the overview

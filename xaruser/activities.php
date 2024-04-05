@@ -20,7 +20,7 @@ sys::import('modules.base.class.pager');
  * @author mikespub
  * @access public
  */
-function workflow_user_activities()
+function workflow_user_activities(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {

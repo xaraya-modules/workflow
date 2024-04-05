@@ -20,7 +20,7 @@
   @param $activityName the name of the activity you need an id for (required)
   @return int workflow activityid
 */
-function workflow_userapi_getActivityId($args)
+function workflow_userapi_getActivityId(array $args = [], $context = null)
 {
     extract($args);
 

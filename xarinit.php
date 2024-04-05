@@ -625,6 +625,7 @@ function workflow_upgrade($oldversion)
             // Code to upgrade from version 2.4.1 goes here
             workflow_add_queue_object();
 
+            // no break
         case '2.5.0':
             // Code to upgrade from version 2.5.0 goes here
 

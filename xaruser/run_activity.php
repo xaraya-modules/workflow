@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_user_run_activity()
+function workflow_user_run_activity(array $args = [], $context = null)
 {
     xarLog::message("Running activity");
     // Security Check
@@ -170,22 +170,22 @@ function workflow_user_run_activity()
         if (!empty($_REQUEST['return_url'])) {
             //--------------------------------------------- We have a return_url; send us there
 
-            xarController::redirect($_REQUEST['return_url']);
+            xarController::redirect($_REQUEST['return_url'], null, $context);
         } elseif (empty($instance->instanceId)) {
             //--------------------------------------------- No return_url or instance given. go to the activities page
 
-            xarController::redirect(xarController::URL('workflow', 'user', 'activities'));
+            xarController::redirect(xarController::URL('workflow', 'user', 'activities'), null, $context);
         } else {
             //--------------------------------------------- No return_url, but an instance given. go to the instances page
 
-            xarController::redirect(xarController::URL('workflow', 'user', 'display'));
+            xarController::redirect(xarController::URL('workflow', 'user', 'display'), null, $context);
         }
         return true;
         //    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
     } elseif (!isset($_REQUEST['auto']) && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
         //---------------------------------------------  Case of a completed standalone activity <-- REVIEW THIS
 
-        xarController::redirect($_REQUEST['return_url']);
+        xarController::redirect($_REQUEST['return_url'], null, $context);
         return true;
     } else {
         //        if (!isset($_REQUEST['auto']) && $activity->isInteractive()) {

@@ -12,7 +12,7 @@
  * @author Marc Lutolf <mfl@netspan.ch>
  */
 
-function workflow_user_display()
+function workflow_user_display(array $args = [], $context = null)
 {
     if (!xarSecurity::check('ReadWorkflow')) {
         return;

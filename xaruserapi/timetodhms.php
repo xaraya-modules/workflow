@@ -1,6 +1,6 @@
 <?php
 
-function workflow_userapi_timetodhms($args)
+function workflow_userapi_timetodhms(array $args = [], $context = null)
 {
     extract($args);
     if (!isset($format)) {

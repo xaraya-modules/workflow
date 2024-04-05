@@ -14,7 +14,7 @@
 /**
  * Update configuration
  */
-function workflow_admin_updateconfig()
+function workflow_admin_updateconfig(array $args = [], $context = null)
 {
     // Confirm authorisation code
     if (!xarSec::confirmAuthKey()) {
@@ -108,7 +108,7 @@ function workflow_admin_updateconfig()
         $itemid = $data['module_settings']->updateItem();
     }
 
-    xarController::redirect(xarController::URL('workflow', 'admin', 'modifyconfig'));
+    xarController::redirect(xarController::URL('workflow', 'admin', 'modifyconfig'), null, $context);
 
     return true;
 }

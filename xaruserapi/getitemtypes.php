@@ -16,7 +16,7 @@
  *
  * @return array containing the item types and their description
  */
-function workflow_userapi_getitemtypes($args)
+function workflow_userapi_getitemtypes(array $args = [], $context = null)
 {
     $itemtypes = [];
 

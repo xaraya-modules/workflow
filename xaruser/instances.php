@@ -20,7 +20,7 @@ sys::import('modules.base.class.pager');
  * @author mikespub
  * @access public
  */
-function workflow_user_instances()
+function workflow_user_instances(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('ReadWorkflow')) {
@@ -56,7 +56,7 @@ function workflow_user_instances()
                 }
             }
             if (!empty($return_url)) {
-                xarController::redirect($return_url);
+                xarController::redirect($return_url, null, $context);
                 return true;
             }
         }
@@ -97,7 +97,7 @@ function workflow_user_instances()
     }
 
     if ($action && !empty($_REQUEST['return_url'])) {
-        xarController::redirect($_REQUEST['return_url']);
+        xarController::redirect($_REQUEST['return_url'], null, $context);
         return true;
     }
 

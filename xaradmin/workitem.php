@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_admin_workitem()
+function workflow_admin_workitem(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {

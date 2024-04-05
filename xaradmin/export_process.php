@@ -17,7 +17,7 @@
  * @author mikespub
  * @access public
  */
-function workflow_admin_export_process()
+function workflow_admin_export_process(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminWorkflow')) {
