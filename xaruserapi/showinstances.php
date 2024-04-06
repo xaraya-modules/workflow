@@ -139,6 +139,7 @@ function workflow_userapi_showinstances(array $args = [], $context = null)
             $tplData['actionlist'] = [];
         }
     }
+    $tplData['context'] ??= $context;
 
     if (!empty($args['template'])) {
         return xarTpl::module('workflow', 'user', 'showinstances', $tplData, $args['template']);

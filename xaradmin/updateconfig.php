@@ -103,6 +103,7 @@ function workflow_admin_updateconfig(array $args = [], $context = null)
     $data['module_settings']->getItem();
     $isvalid = $data['module_settings']->checkInput();
     if (!$isvalid) {
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'admin', 'modifyconfig', $data);
     } else {
         $itemid = $data['module_settings']->updateItem();

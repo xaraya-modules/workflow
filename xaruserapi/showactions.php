@@ -42,6 +42,7 @@ function workflow_userapi_showactions($args, $context = null)
         // @todo get userId from $item['user'] here?
         $tplData['userId'] = $context?->getUserId() ?? xarSession::getVar('role_id');
     }
+    $tplData['context'] ??= $context;
 
     if (!empty($args['item']) &&
         !empty($args['item']['marking']) &&

@@ -46,12 +46,14 @@ function workflow_user_run_activity(array $args = [], $context = null)
     // load then the compiled version of the activity
     if (!isset($_REQUEST['activityId'])) {
         $data['msg'] =  xarML("No workflow activity indicated");
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'user', 'errors', $data);
     }
 
     $activity = \Galaxia\Api\WorkflowActivity::get($_REQUEST['activityId']);
     if (empty($activity)) {
         $data['msg'] = xarML("Invalid workflow activity specified");
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'user', 'errors', $data);
     }
     $process = new \Galaxia\Api\Process($activity->getProcessId());
@@ -76,6 +78,7 @@ function workflow_user_run_activity(array $args = [], $context = null)
         if (!$canrun) {
             var_dump($act_roles);
             $data['msg'] =  xarML("You can't execute this activity");
+            $data['context'] ??= $context;
             return xarTpl::module('workflow', 'user', 'errors', $data);
         }
     }
@@ -250,5 +253,6 @@ function workflow_user_run_activity(array $args = [], $context = null)
             $template = 'completed';
         }
     }
+    $data['context'] ??= $context;
     return xarTpl::module('workflow', 'user', 'activity', $data, $template);
 }

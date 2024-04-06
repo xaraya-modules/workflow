@@ -41,6 +41,7 @@ function workflow_admin_roles(array $args = [], $context = null)
     }
     if (empty($pid)) {
         $data['msg'] =  xarML("No process indicated");
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'admin', 'errors', $data);
     }
     $data['pid'] =  $pid;

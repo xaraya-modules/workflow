@@ -136,6 +136,7 @@ function workflow_userapi_showstatus(array $args = [], $context = null)
             $tplData['actionlist'] = [];
         }
     }
+    $tplData['context'] ??= $context;
 
     if (!empty($args['template'])) {
         return xarTpl::module('workflow', 'user', 'showstatus', $tplData, $args['template']);

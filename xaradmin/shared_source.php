@@ -35,6 +35,7 @@ function workflow_admin_shared_source(array $args = [], $context = null)
 
     if (!isset($_REQUEST['pid'])) {
         $data['msg'] =  xarML("No process indicated");
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'admin', 'errors', $data);
     }
 

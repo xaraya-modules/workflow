@@ -39,6 +39,7 @@ function workflow_admin_activities(array $args = [], $context = null)
     }
     if (empty($data['pid'])) {
         $data['msg'] =  xarML("No process indicated");
+        $data['context'] ??= $context;
         return xarTpl::module('workflow', 'admin', 'errors', $data);
     }
 
@@ -147,6 +148,7 @@ function workflow_admin_activities(array $args = [], $context = null)
         $name = $data['activity']->properties['name']->value;
         if ($process->hasActivity($name) && $data['activityId'] == 0) {
             $data['msg'] =  xarML("Activity name already exists");
+            $data['context'] ??= $context;
             return xarTpl::module('workflow', 'admin', 'errors', $data);
         }
 

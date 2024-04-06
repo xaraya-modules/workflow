@@ -84,6 +84,7 @@ function workflow_admin_processes(array $args = [], $context = null)
 
             if (\Galaxia\Api\Process::exists($process_data['name'], $process_data['version'])) {
                 $data['msg'] =  xarML("The process name already exists");
+                $data['context'] ??= $context;
                 return xarTpl::module('workflow', 'admin', 'errors', $data);
             } else {
                 $_REQUEST['pid'] = $processManager->import_process($process_data);
@@ -119,6 +120,7 @@ function workflow_admin_processes(array $args = [], $context = null)
         // If process is known and we're not updating, error out.
         if (\Galaxia\Api\Process::Exists($_REQUEST['name'], $_REQUEST['version']) && $_REQUEST['pid'] == 0) {
             $data['msg'] =  xarML("Process already exists");
+            $data['context'] ??= $context;
             return xarTpl::module('workflow', 'admin', 'errors', $data);
         }
 
