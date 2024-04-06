@@ -28,9 +28,10 @@ $modversion['user']           = 1;
 $modversion['class']          = 'Utility';
 $modversion['category']       = 'Miscellaneous';
 $modversion['namespace']      = 'Xaraya\Modules\Workflow';
+$modversion['twigtemplates']  = true;
 $modversion['dependencyinfo'] = [
     0 => [
-            'name' => 'Xaraya Core',
-            'version_ge' => '2.4.1',
-         ],
+        'name' => 'Xaraya Core',
+        'version_ge' => '2.4.1',
+    ],
 ];
