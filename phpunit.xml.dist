@@ -3,10 +3,10 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          bootstrap="../../xaraya-core/phpstan-bootstrap.php"
          cacheDirectory=".phpunit.cache"
-         requireCoverageMetadata="true">
+         requireCoverageMetadata="false">
     <testsuites>
         <testsuite name="default">
-            <directory>xartests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
