@@ -2,7 +2,7 @@
 
 {% block showdisplay_workflow_queue %}
 {# <!-- Adapted from dynamicdata/xartemplates/objects/showdisplay.xt --> #}
-    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories',modname,itemtype) %}
+    {% if isprimary and xar_coremethod('xarModHooks', 'isHooked', 'categories', modname, itemtype) %}
         {{ include('@workflow/includes/catnavigation.html.twig') }}
     {% endif %}
     {# <!-- The layout could be set directly or through inheritance (for example in the modify prop screen) --> #}
