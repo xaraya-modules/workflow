@@ -8,7 +8,8 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "conflict": {
         "xaraya/core": "<2.4.1"
     },
