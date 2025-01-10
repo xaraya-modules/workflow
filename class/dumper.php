@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Graphviz Dumper for Symfony Workflow
  *

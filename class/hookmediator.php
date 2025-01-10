@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Hook Mediator to direct Event/Hook Subjects from Xaraya to the right Workflow Hook Observer(s)
  * and/or Symfony EventDispatcher(s) (WIP)

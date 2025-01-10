@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Tracker for Symfony Workflow events
  *

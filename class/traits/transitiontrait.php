@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Transition Trait for Symfony Workflow tests - could be used in custom subject, cfr. WorkflowProcess
  *

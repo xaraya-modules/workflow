@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module PSR-3 LoggerInterface compliant bridge to xarLog::message() for Symfony & other packages
  *

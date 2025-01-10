@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Queue for Symfony Workflow events
  *

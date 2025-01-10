@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Generic API/GUI Hook Observer
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Utilities for Symfony Workflow events
  *

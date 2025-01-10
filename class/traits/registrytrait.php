@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Registry Trait for Symfony Workflow tests
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Process Creation for Symfony Workflow events
  *

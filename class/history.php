@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module History for Symfony Workflow events
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Test Subject for Symfony Workflow tests - could use TransitionTrait too
  *
@@ -44,7 +45,7 @@ class WorkflowSubject implements Traits\MarkingInterface
         if ($build && !$this->objectref instanceof DataObject && strpos($this->objectref->name, ':') === false) {
             $objectref = DataObjectFactory::getObject(
                 ['name' => $this->objectref->name,
-                'itemid' => $this->objectref->itemid],
+                    'itemid' => $this->objectref->itemid],
                 // @todo make sure we have a Xaraya context here, and not a Symfony one set by transition
                 $this->getContext()
             );

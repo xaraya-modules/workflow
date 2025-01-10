@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Marking Trait for Symfony Workflow tests
  *

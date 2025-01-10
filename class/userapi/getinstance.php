@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @package modules\workflow
+ * @category Xaraya Web Applications Framework
+ * @version 2.5.7
+ * @copyright see the html/credits.html file in this release
+ * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
+ * @link https://github.com/mikespub/xaraya-modules
+**/
+
+namespace Xaraya\Modules\Workflow\UserApi;
+
+use Xaraya\Modules\MethodClass;
+use xarSecurity;
+use sys;
+use BadParameterException;
+
+sys::import('xaraya.modules.method');
+
+/**
+ * workflow userapi getinstance function
+ */
+class GetinstanceMethod extends MethodClass
+{
+    /** functions imported by bermuda_cleanup */
+
+    /**
+     * Addition to the workflow module when there is a need
+     * to retrieve the actual instance rather than just an
+     * array of values. This can be used in conjunction with
+     * the "findinstances" api.
+     * @author Mike Dunn submitted by Court Shrock
+     * @access public
+     * @param mixed $instaceId (required)
+     * @return \Galaxia\Api\Instance workflow Instance
+     */
+    public function __invoke(array $args = [])
+    {
+        sys::import('modules.workflow.lib.galaxia.config');
+
+        //make sure this user an access this instance
+        if (!xarSecurity::check('ReadWorkflow')) {
+            return;
+        }
+
+        extract($args);
+
+        //if not instance is set send this back we cannon continue
+        if (!isset($instanceId)) {
+            return;
+        }
+
+        //check to see if this hasn't alredy been done
+        if (!function_exists("getInstance")) {
+            include_once(GALAXIA_LIBRARY . '/api.php');
+        }
+
+        $inst = new \Galaxia\Api\Instance();
+        $inst->getInstance($instanceId);
+
+        return $inst;
+    }
+}

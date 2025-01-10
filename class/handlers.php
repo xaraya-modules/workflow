@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Callback Handlers for Symfony Workflow events
  *
