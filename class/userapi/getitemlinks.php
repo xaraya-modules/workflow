@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSession;
 use xarController;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi getitemlinks function
+ * @extends MethodClass<UserApi>
  */
 class GetitemlinksMethod extends MethodClass
 {

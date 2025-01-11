@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
+
+use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
 use sys;
 use BadParameterException;
@@ -19,6 +21,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow user displayhook function
+ * @extends MethodClass<UserGui>
  */
 class DisplayhookMethod extends MethodClass
 {

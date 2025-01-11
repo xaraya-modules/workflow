@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Symfony\Component\Workflow\Dumper\MermaidDumper;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\MethodClass;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi mermaid function
+ * @extends MethodClass<UserApi>
  */
 class MermaidMethod extends MethodClass
 {

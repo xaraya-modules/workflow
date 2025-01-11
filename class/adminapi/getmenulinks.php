@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminApi;
 
+
+use Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarController;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow adminapi getmenulinks function
+ * @extends MethodClass<AdminApi>
  */
 class GetmenulinksMethod extends MethodClass
 {

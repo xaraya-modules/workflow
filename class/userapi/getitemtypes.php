@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarController;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi getitemtypes function
+ * @extends MethodClass<UserApi>
  */
 class GetitemtypesMethod extends MethodClass
 {

@@ -19,6 +19,17 @@ sys::import('modules.workflow.class.userapi');
 
 /**
  * Handle the workflow user GUI
+ *
+ * @method mixed activities(array $args)
+ * @method mixed display(array $args)
+ * @method mixed displayhook(array $args)
+ * @method mixed instances(array $args)
+ * @method mixed main(array $args)
+ * @method mixed processes(array $args)
+ * @method mixed runActivity(array $args)
+ * @method mixed test(array $args)
+ * @method mixed testQueue(array $args)
+ * @method mixed testRun(array $args)
  * @extends UserGuiClass<Module>
  */
 class UserGui extends UserGuiClass

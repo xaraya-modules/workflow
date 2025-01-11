@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminApi;
 
+
+use Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow adminapi removehook function
+ * @extends MethodClass<AdminApi>
  */
 class RemovehookMethod extends MethodClass
 {

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminGui;
 
+
+use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarController;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow admin main function
+ * @extends MethodClass<AdminGui>
  */
 class MainMethod extends MethodClass
 {

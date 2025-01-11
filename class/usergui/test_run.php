@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
+
+use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\Workflow\WorkflowProcess;
@@ -29,6 +31,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow user test_run function
+ * @extends MethodClass<UserGui>
  */
 class TestRunMethod extends MethodClass
 {

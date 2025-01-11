@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
+
+use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarLog;
 use xarSecurity;
@@ -27,6 +29,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow user run_activity function
+ * @extends MethodClass<UserGui>
  */
 class RunActivityMethod extends MethodClass
 {

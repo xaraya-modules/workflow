@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\MethodClass;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi process function
+ * @extends MethodClass<UserApi>
  */
 class ProcessMethod extends MethodClass
 {

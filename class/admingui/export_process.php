@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminGui;
 
+
+use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow admin export_process function
+ * @extends MethodClass<AdminGui>
  */
 class ExportProcessMethod extends MethodClass
 {

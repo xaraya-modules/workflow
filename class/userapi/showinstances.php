@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarUser;
@@ -25,6 +27,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi showinstances function
+ * @extends MethodClass<UserApi>
  */
 class ShowinstancesMethod extends MethodClass
 {

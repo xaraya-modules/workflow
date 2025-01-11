@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowHistory;
 use Xaraya\Modules\MethodClass;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi history function
+ * @extends MethodClass<UserApi>
  */
 class HistoryMethod extends MethodClass
 {

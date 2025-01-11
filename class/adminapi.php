@@ -18,6 +18,12 @@ sys::import('xaraya.modules.adminapi');
 
 /**
  * Handle the workflow admin API
+ *
+ * @method mixed createhook(array $args)
+ * @method mixed deletehook(array $args)
+ * @method mixed getmenulinks(array $args)
+ * @method mixed removehook(array $args)
+ * @method mixed updatehook(array $args)
  * @extends AdminApiClass<Module>
  */
 class AdminApi extends AdminApiClass

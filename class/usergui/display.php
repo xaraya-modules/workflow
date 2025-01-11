@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
+
+use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarTpl;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow user display function
+ * @extends MethodClass<UserGui>
  */
 class DisplayMethod extends MethodClass
 {

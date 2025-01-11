@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
@@ -27,6 +29,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi run_transition function
+ * @extends MethodClass<UserApi>
  */
 class RunTransitionMethod extends MethodClass
 {

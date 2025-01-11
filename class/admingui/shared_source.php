@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminGui;
 
+
+use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarTpl;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow admin shared_source function
+ * @extends MethodClass<AdminGui>
  */
 class SharedSourceMethod extends MethodClass
 {

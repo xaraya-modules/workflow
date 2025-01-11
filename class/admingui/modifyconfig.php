@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Workflow\AdminGui;
 
+
+use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
@@ -25,6 +27,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * workflow admin modifyconfig function
+ * @extends MethodClass<AdminGui>
  */
 class ModifyconfigMethod extends MethodClass
 {
