@@ -14,7 +14,7 @@ namespace Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

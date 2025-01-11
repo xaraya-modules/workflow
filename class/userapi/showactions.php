@@ -11,6 +11,7 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarSession;
@@ -41,7 +42,7 @@ class ShowactionsMethod extends MethodClass
      * @param mixed $this->getContext() not available in template tag
      * @return string
      */
-    public function __invoke($args)
+    public function __invoke(array $args = [])
     {
         // Security Check
         if (!xarSecurity::check('ReadWorkflow', 0)) {

@@ -11,6 +11,11 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
+use Xaraya\Modules\Workflow\WorkflowConfig;
+use Xaraya\Modules\Workflow\WorkflowLogger;
+use Xaraya\Modules\Workflow\WorkflowProcess;
+use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarSession;
@@ -18,6 +23,7 @@ use xarVar;
 use xarTpl;
 use sys;
 use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

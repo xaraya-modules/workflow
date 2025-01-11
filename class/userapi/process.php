@@ -11,6 +11,7 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
+use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\MethodClass;
 use sys;
 use BadParameterException;

@@ -25,6 +25,8 @@ use xarPrivileges;
 use xarMasks;
 use xarHooks;
 use xarModHooks;
+use DataObjectDescriptor;
+use DataObjectFactory;
 use sys;
 use Exception;
 
