@@ -44,7 +44,7 @@ class DisplayMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
         xarTpl::setPageTitle('Display Activities');

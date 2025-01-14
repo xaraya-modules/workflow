@@ -40,7 +40,7 @@ class TestQueueMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 

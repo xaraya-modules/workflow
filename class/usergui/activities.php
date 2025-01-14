@@ -41,7 +41,7 @@ class ActivitiesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -54,7 +54,7 @@ class ActivitiesMethod extends MethodClass
 
         // Initialize some stuff
         $user = xarUser::getVar('id');
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
 
         // Filtering data to be received by request and
         // used to build the where part of a query
@@ -147,8 +147,7 @@ class ActivitiesMethod extends MethodClass
                             $index = $actid2item[$actid];
                             $item = $data['items'][$index];
                             if ($item['instances'] > 0) {
-                                $url = xarController::URL(
-                                    'workflow',
+                                $url = $this->getUrl(
                                     'user',
                                     'instances',
                                     ['filter_process' => $info['pId']]
@@ -156,7 +155,7 @@ class ActivitiesMethod extends MethodClass
                                 $mapline = preg_replace('/href=".*?activityId/', 'href="' . $url . '&amp;filter_activity', $mapline);
                                 $map .= $mapline;
                             } elseif ($item['isInteractive'] && ($item['type'] == 'start' || $item['type'] == 'standalone')) {
-                                $url = xarController::URL('workflow', 'user', 'run_activity');
+                                $url = $this->getUrl('user', 'run_activity');
                                 $mapline = preg_replace('/href=".*?activityId/', 'href="' . $url . '&amp;activityId', $mapline);
                                 $map .= $mapline;
                             }

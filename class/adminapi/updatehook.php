@@ -31,8 +31,9 @@ class UpdatehookMethod extends MethodClass
 
     /**
      * start an update activity for a module item - hook for ('item','update','API')
-     * @param mixed $args ['objectid'] ID of the object
-     * @param mixed $args ['extrainfo'] extra information
+     * @param array<mixed> $args
+     * @var mixed $objectid ID of the object
+     * @var mixed $extrainfo extra information
      * @return bool true on success, false on failure
      */
     public function __invoke(array $args = [])
@@ -52,13 +53,13 @@ class UpdatehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = xarModVars::get('workflow', "$modname.$itemtype.update");
+            $activityId = $this->getModVar("$modname.$itemtype.update");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', "$modname.update");
+            $activityId = $this->getModVar("$modname.update");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', 'default.update');
+            $activityId = $this->getModVar('default.update');
         }
         if (empty($activityId)) {
             return $extrainfo;

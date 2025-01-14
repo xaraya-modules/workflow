@@ -30,7 +30,7 @@ class TransitionMethod extends MethodClass
 
     /**
      * the transition user API function
-     * @uses \WorkflowTransition
+     * @uses WorkflowTransition
      * @author mikespub
      * @access public
      */

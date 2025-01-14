@@ -42,7 +42,7 @@ class ModifyconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -52,10 +52,10 @@ class ModifyconfigMethod extends MethodClass
         $data['module_settings'] = xarMod::apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'workflow']);
         $data['module_settings']->getItem();
 
-        $create = xarModVars::get('workflow', 'default.create');
-        $update = xarModVars::get('workflow', 'default.update');
-        $delete = xarModVars::get('workflow', 'default.delete');
-        $data['settings']['default'] = ['label' => xarML('Default configuration'),
+        $create = $this->getModVar('default.create');
+        $update = $this->getModVar('default.update');
+        $delete = $this->getModVar('default.delete');
+        $data['settings']['default'] = ['label' => $this->translate('Default configuration'),
             'create' => $create,
             'update' => $update,
             'delete' => $delete, ];
@@ -77,15 +77,15 @@ class ModifyconfigMethod extends MethodClass
                         $mytypes = [];
                     }
                     foreach ($value as $itemtype => $val) {
-                        $create = xarModVars::get('workflow', "$modname.$itemtype.create");
+                        $create = $this->getModVar("$modname.$itemtype.create");
                         if (empty($create)) {
                             $create = '';
                         }
-                        $update = xarModVars::get('workflow', "$modname.$itemtype.update");
+                        $update = $this->getModVar("$modname.$itemtype.update");
                         if (empty($update)) {
                             $update = '';
                         }
-                        $delete = xarModVars::get('workflow', "$modname.$itemtype.delete");
+                        $delete = $this->getModVar("$modname.$itemtype.delete");
                         if (empty($delete)) {
                             $delete = '';
                         }
@@ -93,29 +93,29 @@ class ModifyconfigMethod extends MethodClass
                             $type = $mytypes[$itemtype]['label'];
                             $link = $mytypes[$itemtype]['url'];
                         } else {
-                            $type = xarML('type #(1)', $itemtype);
+                            $type = $this->translate('type #(1)', $itemtype);
                             $link = xarController::URL($modname, 'user', 'view', ['itemtype' => $itemtype]);
                         }
-                        $data['settings']["$modname.$itemtype"] = ['label' => xarML('Configuration for #(1) module - <a href="#(2)">#(3)</a>', $modname, $link, $type),
+                        $data['settings']["$modname.$itemtype"] = ['label' => $this->translate('Configuration for #(1) module - <a href="#(2)">#(3)</a>', $modname, $link, $type),
                             'create' => $create,
                             'update' => $update,
                             'delete' => $delete, ];
                     }
                 } else {
-                    $create = xarModVars::get('workflow', "$modname.create");
+                    $create = $this->getModVar("$modname.create");
                     if (empty($create)) {
                         $create = '';
                     }
-                    $update = xarModVars::get('workflow', "$modname.update");
+                    $update = $this->getModVar("$modname.update");
                     if (empty($update)) {
                         $update = '';
                     }
-                    $delete = xarModVars::get('workflow', "$modname.delete");
+                    $delete = $this->getModVar("$modname.delete");
                     if (empty($delete)) {
                         $delete = '';
                     }
                     $link = xarController::URL($modname, 'user', 'main');
-                    $data['settings'][$modname] = ['label' => xarML('Configuration for <a href="#(1)">#(2)</a> module', $link, $modname),
+                    $data['settings'][$modname] = ['label' => $this->translate('Configuration for <a href="#(1)">#(2)</a> module', $link, $modname),
                         'create' => $create,
                         'update' => $update,
                         'delete' => $delete, ];
@@ -184,7 +184,7 @@ class ModifyconfigMethod extends MethodClass
         // workflow activities to run when. Other modules will typically have 1 job that corresponds
         // to 1 API function, so they won't need this...
 
-        $serialjobs = xarModVars::get('workflow', 'jobs');
+        $serialjobs = $this->getModVar('jobs');
         if (!empty($serialjobs)) {
             $data['jobs'] = unserialize($serialjobs);
         } else {
@@ -216,7 +216,7 @@ class ModifyconfigMethod extends MethodClass
             $data['interval'] = '';
         }
 
-        $data['authid'] = xarSec::genAuthKey();
+        $data['authid'] = $this->genAuthKey();
         return $data;
     }
 }

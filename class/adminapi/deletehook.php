@@ -31,8 +31,9 @@ class DeletehookMethod extends MethodClass
 
     /**
      * start a delete activity for a module item - hook for ('item','delete','API')
-     * @param mixed $args ['objectid'] ID of the object
-     * @param mixed $args ['extrainfo'] extra information
+     * @param array<mixed> $args
+     * @var mixed $objectid ID of the object
+     * @var mixed $extrainfo extra information
      * @return bool true on success, false on failure
      */
     public function __invoke(array $args = [])
@@ -52,13 +53,13 @@ class DeletehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = xarModVars::get('workflow', "$modname.$itemtype.delete");
+            $activityId = $this->getModVar("$modname.$itemtype.delete");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', "$modname.delete");
+            $activityId = $this->getModVar("$modname.delete");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', 'default.delete');
+            $activityId = $this->getModVar('default.delete');
         }
         if (empty($activityId)) {
             return $extrainfo;

@@ -35,7 +35,6 @@ class ShowactionsMethod extends MethodClass
      * show the actions available to you for this workflow, subjectId and place (called via <xar:workflow-actions tag)
      * <xar:workflow-actions name="actions" config="$config" item="$item" title="$item['marking']" template="$item['marking']"/>
      * @param array<string,mixed> $args
-     * with
      *     $args['name'] actions
      *     $args['config'] workflows config
      *     $args['item'] workflow tracker item
@@ -48,7 +47,7 @@ class ShowactionsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow', 0)) {
+        if (!$this->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 

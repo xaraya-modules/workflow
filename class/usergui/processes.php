@@ -40,7 +40,7 @@ class ProcessesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -53,7 +53,7 @@ class ProcessesMethod extends MethodClass
 
         // Initialize some stuff
         $user = xarUser::getVar('id');
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
 
         // Filtering data to be received by request and
         // used to build the where part of a query

@@ -30,7 +30,7 @@ class GetconfigMethod extends MethodClass
 
     /**
      * the getconfig user API function
-     * @uses \WorkflowConfig::loadConfig()
+     * @uses WorkflowConfig::loadConfig()
      * @author mikespub
      * @access public
      */

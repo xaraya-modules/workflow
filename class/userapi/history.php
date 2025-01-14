@@ -30,7 +30,7 @@ class HistoryMethod extends MethodClass
 
     /**
      * the history user API function
-     * @uses \WorkflowHistory
+     * @uses WorkflowHistory
      * @author mikespub
      * @access public
      */

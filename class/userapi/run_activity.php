@@ -36,7 +36,7 @@ class RunActivityMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -56,7 +56,7 @@ class RunActivityMethod extends MethodClass
         // parameter and get the activity information
         // load then the compiled version of the activity
         if (!isset($args['activityId'])) {
-            throw new Exception(xarML("No workflow activity indicated"));
+            throw new Exception($this->translate("No workflow activity indicated"));
         }
 
         $activity = \Galaxia\Api\WorkflowActivity::get($args['activityId']);

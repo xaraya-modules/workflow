@@ -30,7 +30,7 @@ class MarkingMethod extends MethodClass
 
     /**
      * the marking user API function
-     * @uses \WorkflowMarking
+     * @uses WorkflowMarking
      * @author mikespub
      * @access public
      */

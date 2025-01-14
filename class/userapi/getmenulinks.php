@@ -39,42 +39,22 @@ class GetmenulinksMethod extends MethodClass
         $menulinks = [];
 
         // Security Check
-        if (xarSecurity::check('ReadWorkflow', 0)) {
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'user',
-                'display'
-            ),
-                'title' => xarML('Links to all the available interactive processes'),
-                'label' => xarML('Runnable Activities'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'user',
-                'processes'
-            ),
-                'title' => xarML('View your workflow processes'),
-                'label' => xarML('Processes'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'user',
-                'activities'
-            ),
-                'title' => xarML('View your workflow activities'),
-                'label' => xarML('Activities'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'user',
-                'instances'
-            ),
-                'title' => xarML('View your workflow instances'),
-                'label' => xarML('Instances'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'user',
-                'test'
-            ),
-                'title' => xarML('View your workflow test'),
-                'label' => xarML('Test New Workflows'), ];
+        if ($this->checkAccess('ReadWorkflow', 0)) {
+            $menulinks[] = ['url'   => $this->getUrl('user', 'display'),
+                'title' => $this->translate('Links to all the available interactive processes'),
+                'label' => $this->translate('Runnable Activities'), ];
+            $menulinks[] = ['url'   => $this->getUrl('user', 'processes'),
+                'title' => $this->translate('View your workflow processes'),
+                'label' => $this->translate('Processes'), ];
+            $menulinks[] = ['url'   => $this->getUrl('user', 'activities'),
+                'title' => $this->translate('View your workflow activities'),
+                'label' => $this->translate('Activities'), ];
+            $menulinks[] = ['url'   => $this->getUrl('user', 'instances'),
+                'title' => $this->translate('View your workflow instances'),
+                'label' => $this->translate('Instances'), ];
+            $menulinks[] = ['url'   => $this->getUrl('user', 'test'),
+                'title' => $this->translate('View your workflow test'),
+                'label' => $this->translate('Test New Workflows'), ];
         }
 
         return $menulinks;

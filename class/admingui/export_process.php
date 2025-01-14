@@ -37,12 +37,12 @@ class ExportProcessMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         $data = [];
-        if (!xarVar::fetch('pid', 'int', $data['processid'], 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('pid', 'int', $data['processid'], 0, xarVar::NOT_REQUIRED)) {
             return;
         }
 

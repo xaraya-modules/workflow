@@ -30,7 +30,7 @@ class QueueMethod extends MethodClass
 
     /**
      * the queue user API function
-     * @uses \WorkflowQueue
+     * @uses WorkflowQueue
      * @author mikespub
      * @access public
      */

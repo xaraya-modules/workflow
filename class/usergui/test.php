@@ -42,7 +42,7 @@ class TestMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -60,11 +60,11 @@ class TestMethod extends MethodClass
         $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
 
-        xarVar::fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
-        xarVar::fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
-        xarVar::fetch('subjectId', 'isset', $data['subjectId'], null, xarVar::NOT_REQUIRED);
-        xarVar::fetch('place', 'isset', $data['place'], null, xarVar::NOT_REQUIRED);
-        xarVar::fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
+        $this->fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
+        $this->fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
+        $this->fetch('subjectId', 'isset', $data['subjectId'], null, xarVar::NOT_REQUIRED);
+        $this->fetch('place', 'isset', $data['place'], null, xarVar::NOT_REQUIRED);
+        $this->fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
 
         if (!empty($data['subjectId'])) {
             sys::import('modules.workflow.class.subject');

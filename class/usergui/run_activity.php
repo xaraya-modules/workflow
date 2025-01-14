@@ -45,7 +45,7 @@ class RunActivityMethod extends MethodClass
         xarLog::message("Running activity");
         // Security Check
         // CHECKME: what if an activity is Auto? (probably nothing different)
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -68,14 +68,14 @@ class RunActivityMethod extends MethodClass
         // parameter and get the activity information
         // load then the compiled version of the activity
         if (!isset($_REQUEST['activityId'])) {
-            $data['msg'] =  xarML("No workflow activity indicated");
+            $data['msg'] =  $this->translate("No workflow activity indicated");
             $data['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'user', 'errors', $data);
         }
 
         $activity = \Galaxia\Api\WorkflowActivity::get($_REQUEST['activityId']);
         if (empty($activity)) {
-            $data['msg'] = xarML("Invalid workflow activity specified");
+            $data['msg'] = $this->translate("Invalid workflow activity specified");
             $data['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'user', 'errors', $data);
         }
@@ -100,7 +100,7 @@ class RunActivityMethod extends MethodClass
             }
             if (!$canrun) {
                 var_dump($act_roles);
-                $data['msg'] =  xarML("You can't execute this activity");
+                $data['msg'] =  $this->translate("You can't execute this activity");
                 $data['context'] ??= $this->getContext();
                 return xarTpl::module('workflow', 'user', 'errors', $data);
             }
@@ -144,7 +144,7 @@ class RunActivityMethod extends MethodClass
         if (isset($_REQUEST['__removecomment'])) {
             $__comment = $instance->get_instance_comment($_REQUEST['__removecomment']);
 
-            if ($__comment['user'] == $user or xarSecurity::check('AdminWorkflow', 0)) {
+            if ($__comment['user'] == $user or $this->checkAccess('AdminWorkflow', 0)) {
                 $instance->remove_instance_comment($_REQUEST['__removecomment']);
             }
         }
@@ -196,22 +196,22 @@ class RunActivityMethod extends MethodClass
             if (!empty($_REQUEST['return_url'])) {
                 //--------------------------------------------- We have a return_url; send us there
 
-                xarController::redirect($_REQUEST['return_url'], null, $this->getContext());
+                $this->redirect($_REQUEST['return_url']);
             } elseif (empty($instance->instanceId)) {
                 //--------------------------------------------- No return_url or instance given. go to the activities page
 
-                xarController::redirect(xarController::URL('workflow', 'user', 'activities'), null, $this->getContext());
+                $this->redirect($this->getUrl('user', 'activities'));
             } else {
                 //--------------------------------------------- No return_url, but an instance given. go to the instances page
 
-                xarController::redirect(xarController::URL('workflow', 'user', 'display'), null, $this->getContext());
+                $this->redirect($this->getUrl('user', 'display'));
             }
             return true;
             //    } elseif (!isset($_REQUEST['auto']) && $activity->isInteractive() && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
         } elseif (!isset($_REQUEST['auto']) && $activity->getType() == 'standalone' && !empty($_REQUEST['return_url'])) {
             //---------------------------------------------  Case of a completed standalone activity <-- REVIEW THIS
 
-            xarController::redirect($_REQUEST['return_url'], null, $this->getContext());
+            $this->redirect($_REQUEST['return_url']);
             return true;
         } else {
             //        if (!isset($_REQUEST['auto']) && $activity->isInteractive()) {
@@ -248,8 +248,7 @@ class RunActivityMethod extends MethodClass
                     $item['module'] = 'workflow';
                     $item['itemtype'] = $activity->getProcessId();
                     $item['itemid'] = $instance->getInstanceId();
-                    $item['returnurl'] = xarController::URL(
-                        'workflow',
+                    $item['returnurl'] = $this->getUrl(
                         'user',
                         'run_activity',
                         ['activityId' => $activity->getActivityId(),

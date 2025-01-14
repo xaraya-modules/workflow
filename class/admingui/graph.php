@@ -41,14 +41,14 @@ class GraphMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $tplData = [];
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
         // Adapted from tiki-g-admin_processes.php
 
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
@@ -79,8 +79,7 @@ class GraphMethod extends MethodClass
                 xarLog::message("WF: graph files exist");
                 $map = join('', file($mapfile));
 
-                $url = xarController::URL(
-                    'workflow',
+                $url = $this->getUrl(
                     'admin',
                     'activities',
                     ['pid' => $info['pId']]

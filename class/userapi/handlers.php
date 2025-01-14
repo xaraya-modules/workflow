@@ -30,7 +30,7 @@ class HandlersMethod extends MethodClass
 
     /**
      * the handlers user API function
-     * @uses \WorkflowHandlers
+     * @uses WorkflowHandlers
      * @author mikespub
      * @access public
      */

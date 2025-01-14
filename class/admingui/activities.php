@@ -40,7 +40,7 @@ class ActivitiesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -52,11 +52,11 @@ class ActivitiesMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
 
-        if (!xarVar::fetch('pid', 'int', $data['pid'], null, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('pid', 'int', $data['pid'], null, xarVar::NOT_REQUIRED)) {
             return;
         }
         if (empty($data['pid'])) {
-            $data['msg'] =  xarML("No process indicated");
+            $data['msg'] =  $this->translate("No process indicated");
             $data['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'admin', 'errors', $data);
         }
@@ -74,7 +74,7 @@ class ActivitiesMethod extends MethodClass
 
         // Retrieve activity info if we are editing, assign to
         // default values when creating a new activity
-        if (!xarVar::fetch('activityId', 'int', $data['activityId'], 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('activityId', 'int', $data['activityId'], 0, xarVar::NOT_REQUIRED)) {
             return;
         }
         if (!empty($data['activityId'])) {
@@ -110,7 +110,7 @@ class ActivitiesMethod extends MethodClass
 
         $role_to_add = 0;
         // Add a role to the process
-        if (!xarVar::fetch('addrole', 'int', $data['addrole'], 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('addrole', 'int', $data['addrole'], 0, xarVar::NOT_REQUIRED)) {
             return;
         }
         if (isset($addrole)) {
@@ -165,7 +165,7 @@ class ActivitiesMethod extends MethodClass
             */
             $name = $data['activity']->properties['name']->value;
             if ($process->hasActivity($name) && $data['activityId'] == 0) {
-                $data['msg'] =  xarML("Activity name already exists");
+                $data['msg'] =  $this->translate("Activity name already exists");
                 $data['context'] ??= $this->getContext();
                 return xarTpl::module('workflow', 'admin', 'errors', $data);
             }
@@ -292,7 +292,7 @@ class ActivitiesMethod extends MethodClass
         // ---------------------------------------
         // Update all activities at once
 
-        if (!xarVar::fetch('update_act', 'isset', $update_act, null, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('update_act', 'isset', $update_act, null, xarVar::NOT_REQUIRED)) {
             return;
         }
         if ($update_act) {
@@ -320,26 +320,24 @@ class ActivitiesMethod extends MethodClass
 
         // If its valid and requested to activate or deactivate, do so
         if ($valid) {
-            xarVar::fetch('activate_proc', 'int', $activate_proc, 0, xarVar::NOT_REQUIRED);
+            $this->fetch('activate_proc', 'int', $activate_proc, 0, xarVar::NOT_REQUIRED);
             if ($activate_proc) {
                 $process->activate();
-                xarController::redirect(xarController::URL(
-                    'workflow',
+                $this->redirect($this->getUrl(
                     'admin',
                     'activities',
                     ['pid' => $data['pid']]
-                ), null, $this->getContext());
+                ));
                 return true;
             }
-            xarVar::fetch('deactivate_proc', 'int', $deactivate_proc, 0, xarVar::NOT_REQUIRED);
+            $this->fetch('deactivate_proc', 'int', $deactivate_proc, 0, xarVar::NOT_REQUIRED);
             if ($deactivate_proc) {
                 $process->deactivate();
-                xarController::redirect(xarController::URL(
-                    'workflow',
+                $this->redirect($this->getUrl(
                     'admin',
                     'activities',
                     ['pid' => $data['pid']]
-                ), null, $this->getContext());
+                ));
                 return true;
             }
         }

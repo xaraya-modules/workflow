@@ -31,7 +31,7 @@ class DumperMethod extends MethodClass
     /**
      * the dumper user API function
      * @uses \sys::autoload()
-     * @uses \WorkflowDumper
+     * @uses WorkflowDumper
      * @author mikespub
      * @access public
      */

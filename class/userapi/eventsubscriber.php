@@ -31,7 +31,7 @@ class EventsubscriberMethod extends MethodClass
     /**
      * the eventsubscriber user API function
      * @uses \sys::autoload()
-     * @uses \WorkflowEventSubscriber
+     * @uses WorkflowEventSubscriber
      * @author mikespub
      * @access public
      */

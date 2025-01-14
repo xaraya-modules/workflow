@@ -43,26 +43,26 @@ class MonitorWorkitemsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
         // Adapted from tiki-g-monitor_workitems.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!xarVar::fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('filter_activity', 'str', $data['filter_activity'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_activity', 'str', $data['filter_activity'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('filter_user', 'str', $data['filter_user'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_user', 'str', $data['filter_user'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('filter_instance', 'str', $data['filter_instance'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_instance', 'str', $data['filter_instance'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
 

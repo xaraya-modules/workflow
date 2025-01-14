@@ -32,8 +32,9 @@ class GetitemlinksMethod extends MethodClass
 
     /**
      * utility function to pass individual item links to whoever
-     * @param mixed $args ['itemtype'] item type (optional)
-     * @param mixed $args ['itemids'] array of item ids to get
+     * @param array<mixed> $args
+     * @var mixed $itemtype item type (optional)
+     * @var mixed $itemids array of item ids to get
      * @return array containing the itemlink(s) for the item(s).
      */
     public function __invoke(array $args = [])
@@ -78,13 +79,12 @@ class GetitemlinksMethod extends MethodClass
                 continue;
             }
             $item = $items['data'][$itemid2key[$itemid]];
-            $itemlinks[$itemid] = ['url'   => xarController::URL(
-                'workflow',
+            $itemlinks[$itemid] = ['url'   => $this->getUrl(
                 'user',
                 'instances',
                 ['filter_process' => $itemtype]
             ),
-                'title' => xarML('Display Instance'),
+                'title' => $this->translate('Display Instance'),
                 'label' => xarVar::prepForDisplay($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']), ];
         }
         return $itemlinks;

@@ -69,7 +69,7 @@ class Installer extends InstallerClass
      */
     public function init()
     {
-        if (!xarVar::fetch('loadexample', 'checkbox', $loadexample, 1, xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('loadexample', 'checkbox', $loadexample, 1, xarVar::NOT_REQUIRED)) {
             return;
         }
 
@@ -578,13 +578,13 @@ class Installer extends InstallerClass
         #
         # Set up modvars
         #
-        xarModVars::set('workflow', 'default.create', 0);
-        xarModVars::set('workflow', 'default.update', 0);
-        xarModVars::set('workflow', 'default.delete', 0);
+        $this->setModVar('default.create', 0);
+        $this->setModVar('default.update', 0);
+        $this->setModVar('default.delete', 0);
 
-        xarModVars::set('workflow', 'SupportShortURLs', 0);
-        xarModVars::set('workflow', 'items_per_page', 20);
-        xarModVars::set('workflow', 'seenlist', '');
+        $this->setModVar('SupportShortURLs', 0);
+        $this->setModVar('items_per_page', 20);
+        $this->setModVar('seenlist', '');
 
         # --------------------------------------------------------
         #
@@ -596,7 +596,7 @@ class Installer extends InstallerClass
         // define privilege instances and masks
         $instances = [
             ['header' => 'external', // this keyword indicates an external "wizard"
-                'query'  => xarController::URL('workflow', 'admin', 'privileges'),
+                'query'  => $this->getUrl('admin', 'privileges'),
                 'limit'  => 0, ],
         ];
         xarPrivileges::defineInstance('workflow', 'Item', $instances);

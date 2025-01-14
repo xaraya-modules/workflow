@@ -39,7 +39,7 @@ class InstanceMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -53,7 +53,7 @@ class InstanceMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/api.php');
 
         if (!isset($_REQUEST['iid'])) {
-            $tplData['msg'] =  xarML("No instance indicated");
+            $tplData['msg'] =  $this->translate("No instance indicated");
             $tplData['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'admin', 'errors', $tplData);
         }

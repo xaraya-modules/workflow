@@ -42,14 +42,14 @@ class MonitorInstancesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $tplData = [];
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
         // Adapted from tiki-g-monitor_instances.php
 
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');

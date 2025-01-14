@@ -38,7 +38,7 @@ class WorkitemMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -51,7 +51,7 @@ class WorkitemMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
         if (!isset($_REQUEST['itemId'])) {
-            $tplData['msg'] =  xarML("No item indicated");
+            $tplData['msg'] =  $this->translate("No item indicated");
 
             $tplData['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'admin', 'errors', $tplData);

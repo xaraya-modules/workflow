@@ -36,7 +36,7 @@ class MermaidMethod extends MethodClass
      * See https://github.com/lyrixx/SFLive-Paris2016-Workflow/blob/master/src/Twig/WorkflowExtension.php
      * @todo add interaction? - see https://mermaid.js.org/syntax/flowchart.html#interaction
      * @uses \sys::autoload()
-     * @uses \WorkflowProcess
+     * @uses WorkflowProcess
      * @return string
      */
     public function __invoke(array $args = [])

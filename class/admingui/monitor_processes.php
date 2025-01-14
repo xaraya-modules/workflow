@@ -41,24 +41,24 @@ class MonitorProcessesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
 
         // Adapted from tiki-g-monitor_processes.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!xarVar::fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('filter_active', 'str', $data['filter_active'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_active', 'str', $data['filter_active'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('filter_valid', 'str', $data['filter_valid'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('filter_valid', 'str', $data['filter_valid'], '', xarVar::NOT_REQUIRED)) {
             return;
         }
 

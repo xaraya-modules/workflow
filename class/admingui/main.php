@@ -38,11 +38,11 @@ class MainMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
-        xarController::redirect(xarController::URL('workflow', 'admin', 'processes'), null, $this->getContext());
+        $this->redirect($this->getUrl('admin', 'processes'));
         // success
         return true;
     }

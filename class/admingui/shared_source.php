@@ -38,7 +38,7 @@ class SharedSourceMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -51,7 +51,7 @@ class SharedSourceMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
         if (!isset($_REQUEST['pid'])) {
-            $data['msg'] =  xarML("No process indicated");
+            $data['msg'] =  $this->translate("No process indicated");
             $data['context'] ??= $this->getContext();
             return xarTpl::module('workflow', 'admin', 'errors', $data);
         }
@@ -105,7 +105,7 @@ class SharedSourceMethod extends MethodClass
         }
 
         //First of all save
-        xarVar::fetch('source_data', 'str', $source_data, '', xarVar::NOT_REQUIRED);
+        $this->fetch('source_data', 'str', $source_data, '', xarVar::NOT_REQUIRED);
         if (!empty($source_data)) {
             $source_data = htmlspecialchars_decode($source_data);
             //var_dump($source);exit;

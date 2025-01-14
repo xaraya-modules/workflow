@@ -30,7 +30,7 @@ class TrackerMethod extends MethodClass
 
     /**
      * the tracker user API function
-     * @uses \WorkflowTracker
+     * @uses WorkflowTracker
      * @author mikespub
      * @access public
      */

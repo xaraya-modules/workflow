@@ -39,42 +39,22 @@ class GetmenulinksMethod extends MethodClass
         $menulinks = [];
 
         // Security Check
-        if (xarSecurity::check('AdminWorkflow', 0)) {
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'admin',
-                'overview'
-            ),
-                'title' => xarML('Overview of the Workflow module'),
-                'label' => xarML('Overview'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'admin',
-                'monitor_processes'
-            ),
-                'title' => xarML('Monitor the workflow processes'),
-                'label' => xarML('Monitoring'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'admin',
-                'processes'
-            ),
-                'title' => xarML('Edit the workflow processes'),
-                'label' => xarML('Manage Processes'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'admin',
-                'test_manage'
-            ),
-                'title' => xarML('Manage New Workflows'),
-                'label' => xarML('New Workflows'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'workflow',
-                'admin',
-                'modifyconfig'
-            ),
-                'title' => xarML('Modify the workflow configuration'),
-                'label' => xarML('Modify Config'), ];
+        if ($this->checkAccess('AdminWorkflow', 0)) {
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'overview'),
+                'title' => $this->translate('Overview of the Workflow module'),
+                'label' => $this->translate('Overview'), ];
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'monitor_processes'),
+                'title' => $this->translate('Monitor the workflow processes'),
+                'label' => $this->translate('Monitoring'), ];
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'processes'),
+                'title' => $this->translate('Edit the workflow processes'),
+                'label' => $this->translate('Manage Processes'), ];
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'test_manage'),
+                'title' => $this->translate('Manage New Workflows'),
+                'label' => $this->translate('New Workflows'), ];
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'modifyconfig'),
+                'title' => $this->translate('Modify the workflow configuration'),
+                'label' => $this->translate('Modify Config'), ];
         }
 
         return $menulinks;

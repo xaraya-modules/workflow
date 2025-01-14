@@ -30,7 +30,7 @@ class DefinitionMethod extends MethodClass
 
     /**
      * the definition user API function
-     * @uses \WorkflowDefinition
+     * @uses WorkflowDefinition
      * @author mikespub
      * @access public
      */

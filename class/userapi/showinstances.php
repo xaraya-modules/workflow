@@ -41,7 +41,7 @@ class ShowinstancesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow', 0)) {
+        if (!$this->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 

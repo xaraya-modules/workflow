@@ -56,13 +56,13 @@ class TimetodhmsMethod extends MethodClass
         if (!empty($format)) {
             // decide on some format :-)
         } elseif (!empty($days)) {
-            $out = xarML('#(1)d #(2)h #(3)m #(4)s', $days, $hours, $minutes, $seconds);
+            $out = $this->translate('#(1)d #(2)h #(3)m #(4)s', $days, $hours, $minutes, $seconds);
         } elseif (!empty($hours)) {
-            $out = xarML('#(1)h #(2)m #(3)s', $hours, $minutes, $seconds);
+            $out = $this->translate('#(1)h #(2)m #(3)s', $hours, $minutes, $seconds);
         } elseif (!empty($minutes)) {
-            $out = xarML('#(1)m #(2)s', $minutes, $seconds);
+            $out = $this->translate('#(1)m #(2)s', $minutes, $seconds);
         } elseif (!empty($seconds)) {
-            $out = xarML('#(1)s', $seconds);
+            $out = $this->translate('#(1)s', $seconds);
         } else {
             $out = '';
         }

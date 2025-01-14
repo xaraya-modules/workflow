@@ -30,7 +30,7 @@ class ConfigMethod extends MethodClass
 
     /**
      * the config user API function
-     * @uses \WorkflowConfig
+     * @uses WorkflowConfig
      * @author mikespub
      * @access public
      */

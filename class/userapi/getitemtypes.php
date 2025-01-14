@@ -46,9 +46,8 @@ class GetitemtypesMethod extends MethodClass
 
         foreach ($processes as $process) {
             $itemtypes[$process['pId']] = ['label' => xarVar::prepForDisplay($process['name'] . ' ' . $process['version']),
-                'title' => xarVar::prepForDisplay(xarML('View Process')),
-                'url'   => xarController::URL(
-                    'workflow',
+                'title' => xarVar::prepForDisplay($this->translate('View Process')),
+                'url'   => $this->getUrl(
                     'user',
                     'activities',
                     ['filter_process' => $process['pId']]

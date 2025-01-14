@@ -45,22 +45,22 @@ class InstancesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('ReadWorkflow')) {
+        if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
-
+        $usergui = $this->getParent();
 
         // Initialize some stuff
         $user = xarUser::getVar('id');
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
 
         if (isset($_REQUEST['run']) || isset($_REQUEST['run_x'])) {
-            return xarMod::guiFunc('workflow', 'user', 'run_activity');
+            return $usergui->runActivity();
         }
 
         if (isset($_REQUEST['remove']) || isset($_REQUEST['remove_x'])) {
-            xarVar::fetch('iid', 'isset', $iid, '', xarVar::NOT_REQUIRED);
-            xarVar::fetch('return_url', 'isset', $return_url, '', xarVar::NOT_REQUIRED);
+            $this->fetch('iid', 'isset', $iid, '', xarVar::NOT_REQUIRED);
+            $this->fetch('return_url', 'isset', $return_url, '', xarVar::NOT_REQUIRED);
             if (!empty($iid)) {
                 if (xarUser::isLoggedIn()) {
                     $seenlist = xarModUserVars::get('workflow', 'seenlist');
@@ -78,7 +78,7 @@ class InstancesMethod extends MethodClass
                     }
                 }
                 if (!empty($return_url)) {
-                    xarController::redirect($return_url, null, $this->getContext());
+                    $this->redirect($return_url);
                     return true;
                 }
             }
@@ -119,7 +119,7 @@ class InstancesMethod extends MethodClass
         }
 
         if ($action && !empty($_REQUEST['return_url'])) {
-            xarController::redirect($_REQUEST['return_url'], null, $this->getContext());
+            $this->redirect($_REQUEST['return_url']);
             return true;
         }
 

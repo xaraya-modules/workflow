@@ -31,7 +31,7 @@ class LoggerMethod extends MethodClass
     /**
      * the logger user API function
      * @uses \sys::autoload()
-     * @uses \WorkflowLogger
+     * @uses WorkflowLogger
      * @author mikespub
      * @access public
      */

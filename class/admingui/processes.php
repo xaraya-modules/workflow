@@ -43,14 +43,14 @@ class ProcessesMethod extends MethodClass
     {
         xarLog::message('WF: workflow_admin_processes ');
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $data = [];
-        $maxRecords = xarModVars::get('workflow', 'items_per_page');
+        $maxRecords = $this->getModVar('items_per_page');
 
         // Adapted from tiki-g-admin_processes.php
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
@@ -101,7 +101,7 @@ class ProcessesMethod extends MethodClass
                 $process_data = $processManager->unserialize_process($xml);
 
                 if (\Galaxia\Api\Process::exists($process_data['name'], $process_data['version'])) {
-                    $data['msg'] =  xarML("The process name already exists");
+                    $data['msg'] =  $this->translate("The process name already exists");
                     $data['context'] ??= $this->getContext();
                     return xarTpl::module('workflow', 'admin', 'errors', $data);
                 } else {
@@ -137,13 +137,13 @@ class ProcessesMethod extends MethodClass
 
             // If process is known and we're not updating, error out.
             if (\Galaxia\Api\Process::Exists($_REQUEST['name'], $_REQUEST['version']) && $_REQUEST['pid'] == 0) {
-                $data['msg'] =  xarML("Process already exists");
+                $data['msg'] =  $this->translate("Process already exists");
                 $data['context'] ??= $this->getContext();
                 return xarTpl::module('workflow', 'admin', 'errors', $data);
             }
 
-            xarVar::fetch('isSingleton', 'int', $vars['isSingleton'], 0, xarVar::NOT_REQUIRED);
-            xarVar::fetch('isActive', 'int', $vars['isActive'], 0, xarVar::NOT_REQUIRED);
+            $this->fetch('isSingleton', 'int', $vars['isSingleton'], 0, xarVar::NOT_REQUIRED);
+            $this->fetch('isActive', 'int', $vars['isActive'], 0, xarVar::NOT_REQUIRED);
 
             // Replace the info on the process with the new values (or create them)
             $pid = $processManager->replace_process($_REQUEST['pid'], $vars);

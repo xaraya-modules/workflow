@@ -31,8 +31,9 @@ class CreatehookMethod extends MethodClass
 
     /**
      * start a create activity for a module item - hook for ('item','create','GUI')
-     * @param mixed $args ['objectid'] ID of the object
-     * @param mixed $args ['extrainfo'] extra information
+     * @param array<mixed> $args
+     * @var mixed $objectid ID of the object
+     * @var mixed $extrainfo extra information
      * @return array extrainfo array
      */
     public function __invoke(array $args = [])
@@ -47,13 +48,13 @@ class CreatehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = xarModVars::get('workflow', "$modname.$itemtype.create");
+            $activityId = $this->getModVar("$modname.$itemtype.create");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', "$modname.create");
+            $activityId = $this->getModVar("$modname.create");
         }
         if (empty($activityId)) {
-            $activityId = xarModVars::get('workflow', 'default.create');
+            $activityId = $this->getModVar('default.create');
         }
         if (empty($activityId)) {
             return $extrainfo;

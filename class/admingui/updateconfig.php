@@ -40,16 +40,16 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Confirm authorisation code
-        if (!xarSec::confirmAuthKey()) {
+        if (!$this->confirmAuthKey()) {
             return;
         }
         // Security Check
-        if (!xarSecurity::check('AdminWorkflow')) {
+        if (!$this->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Get parameters
-        xarVar::fetch('settings', 'isset', $settings, '', xarVar::DONT_SET);
+        $this->fetch('settings', 'isset', $settings, '', xarVar::DONT_SET);
         if (empty($settings)) {
             $settings = [];
         }
@@ -57,7 +57,7 @@ class UpdateconfigMethod extends MethodClass
             xarModVars::set('workflow', $key, $val);
         }
 
-        if (!xarVar::fetch('jobs', 'isset', $jobs, [], xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('jobs', 'isset', $jobs, [], xarVar::NOT_REQUIRED)) {
             return;
         }
         if (empty($jobs)) {
@@ -70,10 +70,10 @@ class UpdateconfigMethod extends MethodClass
             }
         }
         $serialjobs = serialize($savejobs);
-        xarModVars::set('workflow', 'jobs', $serialjobs);
+        $this->setModVar('jobs', $serialjobs);
 
         if (xarMod::isAvailable('scheduler')) {
-            if (!xarVar::fetch('interval', 'str:1', $interval, '', xarVar::NOT_REQUIRED)) {
+            if (!$this->fetch('interval', 'str:1', $interval, '', xarVar::NOT_REQUIRED)) {
                 return;
             }
             // see if we have a scheduler job running to execute workflow activities
@@ -132,7 +132,7 @@ class UpdateconfigMethod extends MethodClass
             $itemid = $data['module_settings']->updateItem();
         }
 
-        xarController::redirect(xarController::URL('workflow', 'admin', 'modifyconfig'), null, $this->getContext());
+        $this->redirect($this->getUrl('admin', 'modifyconfig'));
 
         return true;
     }

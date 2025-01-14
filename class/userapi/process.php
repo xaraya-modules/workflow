@@ -31,7 +31,7 @@ class ProcessMethod extends MethodClass
     /**
      * the process user API function
      * @uses \sys::autoload()
-     * @uses \WorkflowProcess
+     * @uses WorkflowProcess
      * @author mikespub
      * @access public
      */

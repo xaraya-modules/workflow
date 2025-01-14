@@ -30,7 +30,7 @@ class SubjectMethod extends MethodClass
 
     /**
      * the subject user API function
-     * @uses \WorkflowSubject
+     * @uses WorkflowSubject
      * @author mikespub
      * @access public
      */

@@ -30,7 +30,7 @@ class RegistryMethod extends MethodClass
 
     /**
      * the registry user API function
-     * @uses \WorkflowRegistry
+     * @uses WorkflowRegistry
      * @author mikespub
      * @access public
      */
