@@ -67,6 +67,6 @@ class WorkflowSubjectWithTransitions extends WorkflowSubject  // implements Trai
     public function getWorkflow(string $workflowName): mixed
     {
         // @todo get the actual workflow here instead of the workflowsproperty config
-        return $this->workflows[$workflowName];
+        return $this->workflows[$workflowName] ?? null;
     }
 }

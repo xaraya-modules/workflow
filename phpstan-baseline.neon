@@ -1,6 +1,181 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: class/adminapi/createhook.php
+
+		-
+			message: "#^Variable \\$extrainfo might not be defined\\.$#"
+			count: 10
+			path: class/adminapi/createhook.php
+
+		-
+			message: "#^Variable \\$objectid might not be defined\\.$#"
+			count: 2
+			path: class/adminapi/createhook.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: class/adminapi/deletehook.php
+
+		-
+			message: "#^Variable \\$extrainfo might not be defined\\.$#"
+			count: 10
+			path: class/adminapi/deletehook.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: class/adminapi/removehook.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: class/adminapi/updatehook.php
+
+		-
+			message: "#^Variable \\$extrainfo might not be defined\\.$#"
+			count: 10
+			path: class/adminapi/updatehook.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 13
+			path: class/admingui/activities.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/activities.php
+
+		-
+			message: "#^Variable \\$roleManager might not be defined\\.$#"
+			count: 3
+			path: class/admingui/activities.php
+
+		-
+			message: "#^Variable \\$vars might not be defined\\.$#"
+			count: 1
+			path: class/admingui/activities.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 2
+			path: class/admingui/export_process.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 3
+			path: class/admingui/graph.php
+
+		-
+			message: "#^Variable \\$process might not be defined\\.$#"
+			count: 1
+			path: class/admingui/graph.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 3
+			path: class/admingui/graph.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/instance.php
+
+		-
+			message: "#^Variable \\$instanceManager might not be defined\\.$#"
+			count: 10
+			path: class/admingui/instance.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/instance.php
+
+		-
+			message: "#^Variable \\$roleManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/instance.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 2
+			path: class/admingui/instance.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 3
+			path: class/admingui/modifyconfig.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 5
+			path: class/admingui/monitor_activities.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 13
+			path: class/admingui/monitor_instances.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 3
+			path: class/admingui/monitor_processes.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 6
+			path: class/admingui/monitor_workitems.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 3
+			path: class/admingui/processes.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 9
+			path: class/admingui/processes.php
+
+		-
+			message: "#^Constant _XAR_ID_UNREGISTERED not found\\.$#"
+			count: 1
+			path: class/admingui/roles.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 2
+			path: class/admingui/roles.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/roles.php
+
+		-
+			message: "#^Variable \\$roleManager might not be defined\\.$#"
+			count: 11
+			path: class/admingui/roles.php
+
+		-
+			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			count: 3
+			path: class/admingui/shared_source.php
+
+		-
+			message: "#^Variable \\$processManager might not be defined\\.$#"
+			count: 1
+			path: class/admingui/shared_source.php
+
+		-
+			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			count: 2
+			path: class/admingui/workitem.php
+
+		-
 			message: "#^Variable \\$marking in isset\\(\\) always exists and is not nullable\\.$#"
 			count: 1
 			path: class/eventsubscriber.php
@@ -21,241 +196,211 @@ parameters:
 			path: class/handlers.php
 
 		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
-			count: 2
-			path: xaradmin/export_process.php
-
-		-
-			message: "#^Variable \\$activityManager might not be defined\\.$#"
-			count: 3
-			path: xaradmin/graph.php
-
-		-
-			message: "#^Variable \\$process might not be defined\\.$#"
+			message: "#^Constructor of class Xaraya\\\\Modules\\\\Workflow\\\\HookObservers\\\\GenericObserver has an unused parameter \\$args\\.$#"
 			count: 1
-			path: xaradmin/graph.php
+			path: class/hookobservers/generic.php
 
 		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
-			count: 3
-			path: xaradmin/graph.php
-
-		-
-			message: "#^Variable \\$activityManager might not be defined\\.$#"
+			message: "#^Comparison operation \"\\<\" between non\\-empty\\-array\\|int\\<min, \\-1\\>\\|int\\<1, max\\> and 0 results in an error\\.$#"
 			count: 1
-			path: xaradmin/instance.php
-
-		-
-			message: "#^Variable \\$instance might not be defined\\.$#"
-			count: 5
-			path: xaradmin/instance.php
-
-		-
-			message: "#^Variable \\$instanceManager might not be defined\\.$#"
-			count: 10
-			path: xaradmin/instance.php
-
-		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
-			count: 1
-			path: xaradmin/instance.php
-
-		-
-			message: "#^Variable \\$roleManager might not be defined\\.$#"
-			count: 1
-			path: xaradmin/instance.php
-
-		-
-			message: "#^Variable \\$user might not be defined\\.$#"
-			count: 2
-			path: xaradmin/instance.php
+			path: class/tracker.php
 
 		-
 			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 3
-			path: xaradmin/modifyconfig.php
-
-		-
-			message: "#^Variable \\$data might not be defined\\.$#"
-			count: 5
-			path: xaradmin/monitor_activities.php
-
-		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 5
-			path: xaradmin/monitor_activities.php
-
-		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 13
-			path: xaradmin/monitor_instances.php
-
-		-
-			message: "#^Variable \\$data might not be defined\\.$#"
-			count: 3
-			path: xaradmin/monitor_processes.php
-
-		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 3
-			path: xaradmin/monitor_processes.php
-
-		-
-			message: "#^Variable \\$data might not be defined\\.$#"
-			count: 4
-			path: xaradmin/monitor_workitems.php
-
-		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 6
-			path: xaradmin/monitor_workitems.php
-
-		-
-			message: "#^Variable \\$activityManager might not be defined\\.$#"
-			count: 3
-			path: xaradmin/processes.php
-
-		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
-			count: 9
-			path: xaradmin/processes.php
-
-		-
-			message: "#^Constant _XAR_ID_UNREGISTERED not found\\.$#"
 			count: 1
-			path: xaradmin/roles.php
+			path: class/userapi/findinstances.php
 
 		-
-			message: "#^Variable \\$activityManager might not be defined\\.$#"
-			count: 2
-			path: xaradmin/roles.php
-
-		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$activityName$#"
 			count: 1
-			path: xaradmin/roles.php
-
-		-
-			message: "#^Variable \\$roleManager might not be defined\\.$#"
-			count: 11
-			path: xaradmin/roles.php
-
-		-
-			message: "#^Variable \\$activityManager might not be defined\\.$#"
-			count: 3
-			path: xaradmin/shared_source.php
-
-		-
-			message: "#^Variable \\$processManager might not be defined\\.$#"
-			count: 1
-			path: xaradmin/shared_source.php
+			path: class/userapi/getactivityid.php
 
 		-
 			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 2
-			path: xaradmin/workitem.php
+			count: 1
+			path: class/userapi/getactivityid.php
 
 		-
-			message: "#^Variable \\$extrainfo might not be defined\\.$#"
-			count: 10
-			path: xaradminapi/createhook.php
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$instaceId$#"
+			count: 1
+			path: class/userapi/getinstance.php
 
 		-
-			message: "#^Variable \\$objectid might not be defined\\.$#"
-			count: 2
-			path: xaradminapi/createhook.php
-
-		-
-			message: "#^Variable \\$extrainfo might not be defined\\.$#"
-			count: 10
-			path: xaradminapi/deletehook.php
-
-		-
-			message: "#^Variable \\$extrainfo might not be defined\\.$#"
-			count: 10
-			path: xaradminapi/updatehook.php
-
-		-
-			message: "#^Variable \\$GUI might not be defined\\.$#"
-			count: 2
-			path: xaruser/activities.php
-
-		-
-			message: "#^Variable \\$extrainfo might not be defined\\.$#"
-			count: 4
-			path: xaruser/displayhook.php
-
-		-
-			message: "#^Variable \\$GUI might not be defined\\.$#"
-			count: 8
-			path: xaruser/instances.php
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: class/userapi/getitemlinks.php
 
 		-
 			message: "#^Variable \\$GUI might not be defined\\.$#"
 			count: 1
-			path: xaruser/processes.php
-
-		-
-			message: "#^Variable \\$instance might not be defined\\.$#"
-			count: 7
-			path: xaruser/run_activity.php
-
-		-
-			message: "#^Variable \\$args on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: xaruser/test.php
-
-		-
-			message: "#^Variable \\$args on left side of \\?\\? always exists and is not nullable\\.$#"
-			count: 1
-			path: xaruser/test_run.php
+			path: class/userapi/getitemlinks.php
 
 		-
 			message: "#^Variable \\$processMonitor might not be defined\\.$#"
 			count: 1
-			path: xaruserapi/findinstances.php
+			path: class/userapi/getitemtypes.php
 
 		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
+			message: "#^Variable \\$instance in PHPDoc tag @var does not match any global variable\\: \\$__activity_completed$#"
 			count: 1
-			path: xaruserapi/getactivityid.php
-
-		-
-			message: "#^Variable \\$GUI might not be defined\\.$#"
-			count: 1
-			path: xaruserapi/getitemlinks.php
-
-		-
-			message: "#^Variable \\$processMonitor might not be defined\\.$#"
-			count: 1
-			path: xaruserapi/getitemtypes.php
+			path: class/userapi/run_activity.php
 
 		-
 			message: "#^Variable \\$instance might not be defined\\.$#"
 			count: 4
-			path: xaruserapi/run_activity.php
+			path: class/userapi/run_activity.php
 
 		-
-			message: "#^Variable \\$instance might not be defined\\.$#"
-			count: 6
-			path: xaruserapi/showactivity.php
+			message: "#^PHPDoc tag @param has invalid value \\(mixed \\$this\\-\\>getContext\\(\\) not available in template tag\\)\\: Unexpected token \"\\$this\", expected variable at offset 612$#"
+			count: 1
+			path: class/userapi/showactions.php
 
 		-
 			message: "#^Variable \\$GUI might not be defined\\.$#"
 			count: 1
-			path: xaruserapi/showinstances.php
+			path: class/userapi/showinstances.php
 
 		-
 			message: "#^Variable \\$processMonitor might not be defined\\.$#"
 			count: 1
-			path: xaruserapi/showstatus.php
+			path: class/userapi/showstatus.php
 
 		-
 			message: "#^Variable \\$out might not be defined\\.$#"
 			count: 1
-			path: xaruserapi/timetodhms.php
+			path: class/userapi/timetodhms.php
 
 		-
 			message: "#^Variable \\$time might not be defined\\.$#"
 			count: 1
-			path: xaruserapi/timetodhms.php
+			path: class/userapi/timetodhms.php
+
+		-
+			message: "#^Variable \\$GUI might not be defined\\.$#"
+			count: 2
+			path: class/usergui/activities.php
+
+		-
+			message: "#^Variable \\$extrainfo might not be defined\\.$#"
+			count: 4
+			path: class/usergui/displayhook.php
+
+		-
+			message: "#^Method Xaraya\\\\Modules\\\\Workflow\\\\UserGui\\:\\:runActivity\\(\\) invoked with 0 parameters, 1 required\\.$#"
+			count: 1
+			path: class/usergui/instances.php
+
+		-
+			message: "#^Variable \\$GUI might not be defined\\.$#"
+			count: 8
+			path: class/usergui/instances.php
+
+		-
+			message: "#^Variable \\$GUI might not be defined\\.$#"
+			count: 1
+			path: class/usergui/processes.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$ended\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$nextActivity\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$nextUser\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$owner\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$pId\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$properties\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$started\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$status\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Access to an undefined property object\\:\\:\\$workitems\\.$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getInstanceId\\(\\)\\.$#"
+			count: 2
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Variable \\$instance in PHPDoc tag @var does not match any global variable\\: \\$__activity_completed$#"
+			count: 1
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 7
+			path: class/usergui/run_activity.php
+
+		-
+			message: "#^Variable \\$args on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: class/usergui/test.php
+
+		-
+			message: "#^Variable \\$args on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: class/usergui/test_queue.php
+
+		-
+			message: "#^Variable \\$args on left side of \\?\\? always exists and is not nullable\\.$#"
+			count: 1
+			path: class/usergui/test_run.php
+
+		-
+			message: "#^Call to an undefined method Xaraya\\\\Sessions\\\\SessionInterface\\:\\:startSession\\(\\)\\.$#"
+			count: 1
+			path: tests/SymfonyWorkflowTest.php
+
+		-
+			message: "#^Anonymous function has an unused use \\$failure\\.$#"
+			count: 1
+			path: xardata/spellchecker.php
+
+		-
+			message: "#^Anonymous function has an unused use \\$fields\\.$#"
+			count: 1
+			path: xardata/spellchecker.php
+
+		-
+			message: "#^Anonymous function has an unused use \\$queued\\.$#"
+			count: 1
+			path: xardata/spellchecker.php
+
+		-
+			message: "#^Anonymous function has an unused use \\$success\\.$#"
+			count: 1
+			path: xardata/spellchecker.php
+
+		-
+			message: "#^Method Xaraya\\\\Modules\\\\Publications\\\\SpellCheckerDummy\\:\\:checkSpelling\\(\\) should return bool but return statement is missing\\.$#"
+			count: 1
+			path: xardata/spellchecker.php
