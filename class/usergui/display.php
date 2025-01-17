@@ -47,7 +47,8 @@ class DisplayMethod extends MethodClass
         if (!$this->checkAccess('ReadWorkflow')) {
             return;
         }
-        xarTpl::setPageTitle('Display Activities');
+        $usergui = $this->getParent();
+        $usergui->setPageTitle('Display Activities');
 
         // Get all the activities
         sys::import('modules.dynamicdata.class.objects.factory');
