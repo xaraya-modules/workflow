@@ -41,14 +41,14 @@ class GraphMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $tplData = [];
-        $maxRecords = $this->getModVar('items_per_page');
+        $maxRecords = $this->mod()->getVar('items_per_page');
         // Adapted from tiki-g-admin_processes.php
 
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
@@ -60,7 +60,7 @@ class GraphMethod extends MethodClass
         }
 
         if ($_REQUEST["pid"]) {
-            xarLog::message("WORKFLOW: Getting process");
+            $this->log()->message("WORKFLOW: Getting process");
             $process = new \Galaxia\Api\Process($_REQUEST['pid']);
             $procNName = $process->getNormalizedName();
 
@@ -71,15 +71,15 @@ class GraphMethod extends MethodClass
 
             if (!file_exists($process->getGraph()) or !file_exists($mapfile)) {
                 // Try to build it
-                xarLog::message("WF: need to build graph files");
+                $this->log()->message("WF: need to build graph files");
                 $activityManager->build_process_graph($_REQUEST['pid']);
             }
 
             if (file_exists($process->getGraph()) && file_exists($mapfile)) {
-                xarLog::message("WF: graph files exist");
+                $this->log()->message("WF: graph files exist");
                 $map = join('', file($mapfile));
 
-                $url = $this->getUrl(
+                $url = $this->mod()->getURL(
                     'admin',
                     'activities',
                     ['pid' => $info['pId']]

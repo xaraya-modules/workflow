@@ -8,7 +8,7 @@ if (empty($instance->instanceId)) {
     if (isset($_REQUEST['iid'])) {
         $instance->getInstance($_REQUEST['iid']);
     } else {
-        $tplData['msg'] = \xarML("No instance indicated");
+        $tplData['msg'] = \xarMLS::translate("No instance indicated");
         return \xarTpl::module('workflow', 'admin', 'errors', $tplData);
     }
 }

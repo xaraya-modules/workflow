@@ -39,7 +39,7 @@ class ShowactivityMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow', 0)) {
+        if (!$this->sec()->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 
@@ -51,7 +51,7 @@ class ShowactivityMethod extends MethodClass
         /** @var \Galaxia\Api\Instance $instance */
 
         if (empty($args['activityId'])) {
-            return $this->translate("No activity found");
+            return $this->ml("No activity found");
         }
 
         $activity = \Galaxia\Api\WorkflowActivity::get($args['activityId']);
@@ -82,7 +82,7 @@ class ShowactivityMethod extends MethodClass
                 }
             }
             if (!$canrun) {
-                return $this->translate("You can't execute this activity");
+                return $this->ml("You can't execute this activity");
             }
         }
 

@@ -40,24 +40,24 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Confirm authorisation code
-        if (!$this->confirmAuthKey()) {
+        if (!$this->sec()->confirmAuthKey()) {
             return;
         }
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Get parameters
-        $this->fetch('settings', 'isset', $settings, '', xarVar::DONT_SET);
+        $this->var()->check('settings', $settings);
         if (empty($settings)) {
             $settings = [];
         }
         foreach ($settings as $key => $val) {
-            xarModVars::set('workflow', $key, $val);
+            $this->mod()->setVar($key, $val);
         }
 
-        if (!$this->fetch('jobs', 'isset', $jobs, [], xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('jobs', $jobs, 'isset', [])) {
             return;
         }
         if (empty($jobs)) {
@@ -70,10 +70,10 @@ class UpdateconfigMethod extends MethodClass
             }
         }
         $serialjobs = serialize($savejobs);
-        $this->setModVar('jobs', $serialjobs);
+        $this->mod()->setVar('jobs', $serialjobs);
 
-        if (xarMod::isAvailable('scheduler')) {
-            if (!$this->fetch('interval', 'str:1', $interval, '', xarVar::NOT_REQUIRED)) {
+        if ($this->mod()->isAvailable('scheduler')) {
+            if (!$this->var()->find('interval', $interval, 'str:1', '')) {
                 return;
             }
             // see if we have a scheduler job running to execute workflow activities
@@ -127,12 +127,12 @@ class UpdateconfigMethod extends MethodClass
         $isvalid = $data['module_settings']->checkInput();
         if (!$isvalid) {
             $data['context'] ??= $this->getContext();
-            return xarTpl::module('workflow', 'admin', 'modifyconfig', $data);
+            return $this->mod()->template('modifyconfig', $data);
         } else {
             $itemid = $data['module_settings']->updateItem();
         }
 
-        $this->redirect($this->getUrl('admin', 'modifyconfig'));
+        $this->ctl()->redirect($this->mod()->getURL('admin', 'modifyconfig'));
 
         return true;
     }

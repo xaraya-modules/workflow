@@ -43,25 +43,25 @@ class RolesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $data = [];
-        $maxRecords = $this->getModVar('items_per_page');
+        $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Adapted from tiki-g-admin_roles.php
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
-        if (!$this->fetch('pid', 'id', $pid)) {
+        if (!$this->var()->find('pid', $pid, 'id')) {
             return;
         }
         if (empty($pid)) {
-            $data['msg'] =  $this->translate("No process indicated");
+            $data['msg'] =  $this->ml("No process indicated");
             $data['context'] ??= $this->getContext();
-            return xarTpl::module('workflow', 'admin', 'errors', $data);
+            return $this->mod()->template('errors', $data);
         }
         $data['pid'] =  $pid;
 
@@ -71,7 +71,7 @@ class RolesMethod extends MethodClass
         $proc_info['graph'] = $process->getGraph();
 
         // Role ID set?
-        if (!$this->fetch('roleId', 'id', $roleId, 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('roleId', $roleId, 'id', 0)) {
             return;
         }
         if ($roleId) {
@@ -227,7 +227,7 @@ class RolesMethod extends MethodClass
         $data['proc_info'] =  $proc_info;
 
         // $data['pager'] = xarTplPager::getPager($data['offset'],$mapitems['cant'],$url,$maxRecords);
-        $data['url'] = $this->getUrl( 'admin', 'roles', ['pid' => $data['pid'],'offset' => '%%']);
+        $data['url'] = $this->mod()->getURL( 'admin', 'roles', ['pid' => $data['pid'],'offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

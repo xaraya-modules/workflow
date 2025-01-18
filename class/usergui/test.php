@@ -42,7 +42,7 @@ class TestMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -60,11 +60,11 @@ class TestMethod extends MethodClass
         $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
 
-        $this->fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('subjectId', 'isset', $data['subjectId'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('place', 'isset', $data['place'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
+        $this->var()->find('workflow', $data['workflow']);
+        $this->var()->find('trackerId', $data['trackerId']);
+        $this->var()->find('subjectId', $data['subjectId']);
+        $this->var()->find('place', $data['place']);
+        $this->var()->find('transition', $data['transition']);
 
         if (!empty($data['subjectId'])) {
             sys::import('modules.workflow.class.subject');

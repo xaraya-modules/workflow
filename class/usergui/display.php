@@ -44,11 +44,10 @@ class DisplayMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
-        $usergui = $this->getParent();
-        $usergui->setPageTitle('Display Activities');
+        $this->tpl()->setPageTitle('Display Activities');
 
         // Get all the activities
         sys::import('modules.dynamicdata.class.objects.factory');

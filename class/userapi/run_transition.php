@@ -43,7 +43,7 @@ class RunTransitionMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
         $workflowName = $args['workflow'];
@@ -53,7 +53,7 @@ class RunTransitionMethod extends MethodClass
         //$args['scheduled'] ??= false;
 
         if (!WorkflowConfig::hasWorkflowConfig($workflowName)) {
-            xarLog::message("No workflow found for '$transitionName' in '$workflowName'", xarLog::LEVEL_INFO);
+            $this->log()->info("No workflow found for '$transitionName' in '$workflowName'");
             return false;
         }
 
@@ -66,7 +66,7 @@ class RunTransitionMethod extends MethodClass
             $moduleId = $args['module_id'] ?? xarMod::getRegID($moduleName);
             $info = DataObjectDescriptor::getObjectID(['moduleid' => $moduleId, 'itemtype' => $itemType]);
             if (empty($info) || empty($info['name'])) {
-                xarLog::message("No object associated with module '$moduleName' ($moduleId) itemtype '$itemType' for '$transitionName' in '$workflowName'", xarLog::LEVEL_INFO);
+                $this->log()->info("No object associated with module '$moduleName' ($moduleId) itemtype '$itemType' for '$transitionName' in '$workflowName'");
                 // @checkme create fake objectName for module:itemtype if no object is available for now?
                 //return false;
                 $objectName = "$moduleName:$itemType";
@@ -77,7 +77,7 @@ class RunTransitionMethod extends MethodClass
         } else {
             [$objectName, $itemId] = WorkflowTracker::fromSubjectId($subjectId);
         }
-        xarLog::message("We will trigger '$transitionName' for '$subjectId' in '$workflowName' here...", xarLog::LEVEL_INFO);
+        $this->log()->info("We will trigger '$transitionName' for '$subjectId' in '$workflowName' here...");
 
         // @checkme we DO actually need to require composer autoload here
         WorkflowConfig::setAutoload();

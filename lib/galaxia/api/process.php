@@ -63,7 +63,7 @@ class Process extends Base
         // DB
         $query = "update " . self::tbl('processes') . " set isActive=? where pId=?";
         $this->query($query, [$value ? 1 : 0,$this->pId]);
-        $msg = sprintf(\xarML('Process %d has been (de)-activated'), $this->pId);
+        $msg = sprintf(\xarMLS::translate('Process %d has been (de)-activated'), $this->pId);
         // Object
         $this->active = $value;
         $this->notify_all(3, $msg);

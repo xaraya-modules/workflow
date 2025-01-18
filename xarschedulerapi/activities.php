@@ -23,7 +23,7 @@ function workflow_schedulerapi_activities(array $args = [], $context = null)
     // workflow activities to run when. Other modules will typically have 1 job that corresponds
     // to 1 API function, so they won't need this...
 
-    $log = xarML('Starting scheduled workflow activities') . "\n";
+    $log = xarMLS::translate('Starting scheduled workflow activities') . "\n";
     $serialjobs = xarModVars::get('workflow', 'jobs');
     if (!empty($serialjobs)) {
         $jobs = unserialize($serialjobs);
@@ -72,7 +72,7 @@ function workflow_schedulerapi_activities(array $args = [], $context = null)
                 continue;
             }
         }
-        $log .= xarML('Workflow activity #(1)', $job['activity']) . ' ';
+        $log .= xarMLS::translate('Workflow activity #(1)', $job['activity']) . ' ';
         if (!xarMod::apiFunc(
             'workflow',
             'user',
@@ -80,17 +80,17 @@ function workflow_schedulerapi_activities(array $args = [], $context = null)
             ['activityId' => $job['activity']],
             $context
         )) {
-            $jobs[$id]['result'] = xarML('failed');
-            $log .= xarML('failed');
+            $jobs[$id]['result'] = xarMLS::translate('failed');
+            $log .= xarMLS::translate('failed');
         } else {
-            $jobs[$id]['result'] = xarML('OK');
-            $log .= xarML('succeeded');
+            $jobs[$id]['result'] = xarMLS::translate('OK');
+            $log .= xarMLS::translate('succeeded');
         }
         $jobs[$id]['lastrun'] = $now - 60; // remove the margin here
         $hasrun[] = $id;
         $log .= "\n";
     }
-    $log .= xarML('Finished scheduled workflow activities');
+    $log .= xarMLS::translate('Finished scheduled workflow activities');
 
     // we didn't run anything, so return now
     if (count($hasrun) == 0) {

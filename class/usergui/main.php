@@ -37,7 +37,7 @@ class MainMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
 

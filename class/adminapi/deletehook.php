@@ -53,13 +53,13 @@ class DeletehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = $this->getModVar("$modname.$itemtype.delete");
+            $activityId = $this->mod()->getVar("$modname.$itemtype.delete");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar("$modname.delete");
+            $activityId = $this->mod()->getVar("$modname.delete");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar('default.delete');
+            $activityId = $this->mod()->getVar('default.delete');
         }
         if (empty($activityId)) {
             return $extrainfo;

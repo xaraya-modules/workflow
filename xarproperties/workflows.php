@@ -16,6 +16,7 @@ namespace Xaraya\Modules\Workflow;
 
 use TextAreaProperty;
 use ObjectDescriptor;
+use xarMLS;
 use xarSession;
 use xarVar;
 use sys;
@@ -90,7 +91,7 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
         // check if we are in preview mode for the object itself
         xarVar::fetch('preview', 'isset', $data['preview'], null, xarVar::DONT_SET);
         if (!empty($data['preview'])) {
-            return xarML('Preview');
+            return xarMLS::translate('Preview');
         }
         $data['userId'] = $this->objectref->getContext()?->getUserId() ?? xarSession::getVar('role_id');
         $data['subjectId'] = $this->getId();

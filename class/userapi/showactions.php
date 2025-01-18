@@ -47,7 +47,7 @@ class ShowactionsMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow', 0)) {
+        if (!$this->sec()->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 
@@ -66,15 +66,15 @@ class ShowactionsMethod extends MethodClass
             foreach ($places as $here) {
                 $tplData['title'] = ucwords(str_replace('_', ' ', $here));
                 $tplData['item']['marking'] = $here;
-                $output .= xarTpl::module('workflow', 'user', 'showactions', $tplData, $here);
+                $output .= $this->mod()->template('showactions', $tplData, $here);
             }
             return $output;
         }
 
         if (!empty($args['template'])) {
-            return xarTpl::module('workflow', 'user', 'showactions', $tplData, $args['template']);
+            return $this->mod()->template('showactions', $tplData, $args['template']);
         } else {
-            return xarTpl::module('workflow', 'user', 'showactions', $tplData);
+            return $this->mod()->template('showactions', $tplData);
         }
     }
 }

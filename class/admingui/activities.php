@@ -40,7 +40,7 @@ class ActivitiesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
@@ -52,13 +52,13 @@ class ActivitiesMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
 
-        if (!$this->fetch('pid', 'int', $data['pid'], null, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('pid', $data['pid'], 'int')) {
             return;
         }
         if (empty($data['pid'])) {
-            $data['msg'] =  $this->translate("No process indicated");
+            $data['msg'] =  $this->ml("No process indicated");
             $data['context'] ??= $this->getContext();
-            return xarTpl::module('workflow', 'admin', 'errors', $data);
+            return $this->mod()->template('errors', $data);
         }
 
         // Create a dataobject of this activity for displaying, saving etc.
@@ -74,7 +74,7 @@ class ActivitiesMethod extends MethodClass
 
         // Retrieve activity info if we are editing, assign to
         // default values when creating a new activity
-        if (!$this->fetch('activityId', 'int', $data['activityId'], 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('activityId', $data['activityId'], 'int', 0)) {
             return;
         }
         if (!empty($data['activityId'])) {
@@ -110,7 +110,7 @@ class ActivitiesMethod extends MethodClass
 
         $role_to_add = 0;
         // Add a role to the process
-        if (!$this->fetch('addrole', 'int', $data['addrole'], 0, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('addrole', $data['addrole'], 'int', 0)) {
             return;
         }
         if (isset($addrole)) {
@@ -165,9 +165,9 @@ class ActivitiesMethod extends MethodClass
             */
             $name = $data['activity']->properties['name']->value;
             if ($process->hasActivity($name) && $data['activityId'] == 0) {
-                $data['msg'] =  $this->translate("Activity name already exists");
+                $data['msg'] =  $this->ml("Activity name already exists");
                 $data['context'] ??= $this->getContext();
-                return xarTpl::module('workflow', 'admin', 'errors', $data);
+                return $this->mod()->template('errors', $data);
             }
 
             //--------------------------------------------- Save or create the item
@@ -292,7 +292,7 @@ class ActivitiesMethod extends MethodClass
         // ---------------------------------------
         // Update all activities at once
 
-        if (!$this->fetch('update_act', 'isset', $update_act, null, xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('update_act', $update_act)) {
             return;
         }
         if ($update_act) {
@@ -320,20 +320,20 @@ class ActivitiesMethod extends MethodClass
 
         // If its valid and requested to activate or deactivate, do so
         if ($valid) {
-            $this->fetch('activate_proc', 'int', $activate_proc, 0, xarVar::NOT_REQUIRED);
+            $this->var()->find('activate_proc', $activate_proc, 'int', 0);
             if ($activate_proc) {
                 $process->activate();
-                $this->redirect($this->getUrl(
+                $this->ctl()->redirect($this->mod()->getURL(
                     'admin',
                     'activities',
                     ['pid' => $data['pid']]
                 ));
                 return true;
             }
-            $this->fetch('deactivate_proc', 'int', $deactivate_proc, 0, xarVar::NOT_REQUIRED);
+            $this->var()->find('deactivate_proc', $deactivate_proc, 'int', 0);
             if ($deactivate_proc) {
                 $process->deactivate();
-                $this->redirect($this->getUrl(
+                $this->ctl()->redirect($this->mod()->getURL(
                     'admin',
                     'activities',
                     ['pid' => $data['pid']]

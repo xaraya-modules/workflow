@@ -79,12 +79,12 @@ class GetitemlinksMethod extends MethodClass
                 continue;
             }
             $item = $items['data'][$itemid2key[$itemid]];
-            $itemlinks[$itemid] = ['url'   => $this->getUrl(
+            $itemlinks[$itemid] = ['url'   => $this->mod()->getURL(
                 'user',
                 'instances',
                 ['filter_process' => $itemtype]
             ),
-                'title' => $this->translate('Display Instance'),
+                'title' => $this->ml('Display Instance'),
                 'label' => xarVar::prepForDisplay($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']), ];
         }
         return $itemlinks;

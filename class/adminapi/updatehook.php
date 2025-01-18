@@ -53,13 +53,13 @@ class UpdatehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = $this->getModVar("$modname.$itemtype.update");
+            $activityId = $this->mod()->getVar("$modname.$itemtype.update");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar("$modname.update");
+            $activityId = $this->mod()->getVar("$modname.update");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar('default.update');
+            $activityId = $this->mod()->getVar('default.update');
         }
         if (empty($activityId)) {
             return $extrainfo;

@@ -30,7 +30,7 @@ use Xaraya\Modules\Workflow\WorkflowQueue;
 function workflow_schedulerapi_transitions(array $args = [], $context = null)
 {
     sys::autoload();
-    $log = xarML('Starting scheduled workflow transitions') . "\n";
+    $log = xarMLS::translate('Starting scheduled workflow transitions') . "\n";
     // let the event handler called for this transition know that we have been scheduled
     if (empty($args['scheduled'])) {
         $args['scheduled'] = 'scheduler';

@@ -280,7 +280,7 @@ class ProcessManager extends BaseManager
         $am->build_process_graph($pid);
         unset($am);
         unset($rm);
-        $msg = sprintf(\xarML('Process %s %s imported'), $process->getName(), $process->getVersion());
+        $msg = sprintf(\xarMLS::translate('Process %s %s imported'), $process->getName(), $process->getVersion());
         $this->notify_all(2, $msg);
         return $pid;
     }
@@ -464,7 +464,7 @@ class ProcessManager extends BaseManager
         // And finally remove the proc
         $query = "delete from " . self::tbl('processes') . " where pId=?";
         $this->query($query, [$pId]);
-        $msg = sprintf(\xarML('Process %s removed'), $name);
+        $msg = sprintf(\xarMLS::translate('Process %s removed'), $name);
         $this->notify_all(5, $msg);
 
         return true;
@@ -508,7 +508,7 @@ class ProcessManager extends BaseManager
             if ($newname != $oldname) {
                 rename(GALAXIA_PROCESSES . "/$oldname", GALAXIA_PROCESSES . "/$newname");
             }
-            $msg = sprintf(\xarML('Process %s has been updated'), $vars['name']);
+            $msg = sprintf(\xarMLS::translate('Process %s has been updated'), $vars['name']);
             $this->notify_all(3, $msg);
         } else {
             unset($vars['pId']);
@@ -559,7 +559,7 @@ class ProcessManager extends BaseManager
                 $aM->replace_activity($pId, 0, $vars1);
                 $aM->replace_activity($pId, 0, $vars2);
             }
-            $msg = sprintf(\xarML('Process %s has been created'), $vars['name']);
+            $msg = sprintf(\xarMLS::translate('Process %s has been created'), $vars['name']);
             $this->notify_all(4, $msg);
         }
         // Get the id

@@ -48,13 +48,13 @@ class CreatehookMethod extends MethodClass
 
         // see if we need to start some workflow activity here
         if (!empty($itemtype)) {
-            $activityId = $this->getModVar("$modname.$itemtype.create");
+            $activityId = $this->mod()->getVar("$modname.$itemtype.create");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar("$modname.create");
+            $activityId = $this->mod()->getVar("$modname.create");
         }
         if (empty($activityId)) {
-            $activityId = $this->getModVar('default.create');
+            $activityId = $this->mod()->getVar('default.create');
         }
         if (empty($activityId)) {
             return $extrainfo;

@@ -41,7 +41,7 @@ class ShowinstancesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow', 0)) {
+        if (!$this->sec()->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 
@@ -163,9 +163,9 @@ class ShowinstancesMethod extends MethodClass
         $tplData['context'] ??= $this->getContext();
 
         if (!empty($args['template'])) {
-            return xarTpl::module('workflow', 'user', 'showinstances', $tplData, $args['template']);
+            return $this->mod()->template('showinstances', $tplData, $args['template']);
         } else {
-            return xarTpl::module('workflow', 'user', 'showinstances', $tplData);
+            return $this->mod()->template('showinstances', $tplData);
         }
     }
 }

@@ -41,30 +41,30 @@ class MonitorActivitiesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
-        $maxRecords = $this->getModVar('items_per_page');
+        $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Adapted from tiki-g-monitor_activities.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!$this->fetch('filter_process', 'int', $data['filter_process'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('filter_process', $data['filter_process'], 'int', '')) {
             return;
         }
-        if (!$this->fetch('filter_activity', 'str', $data['filter_activity'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('filter_activity', $data['filter_activity'], 'str', '')) {
             return;
         }
-        if (!$this->fetch('filter_type', 'str', $data['filter_type'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('filter_type', $data['filter_type'], 'str', '')) {
             return;
         }
-        if (!$this->fetch('filter_isInteractive', 'str', $data['filter_isInteractive'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('filter_isInteractive', $data['filter_isInteractive'], 'str', '')) {
             return;
         }
-        if (!$this->fetch('filter_isAutoRouted', 'str', $data['filter_isAutoRouted'], '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('filter_isAutoRouted', $data['filter_isAutoRouted'], 'str', '')) {
             return;
         }
 

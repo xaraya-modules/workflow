@@ -42,7 +42,7 @@ class ShowstatusMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow', 0)) {
+        if (!$this->sec()->checkAccess('ReadWorkflow', 0)) {
             return '';
         }
 
@@ -160,9 +160,9 @@ class ShowstatusMethod extends MethodClass
         $tplData['context'] ??= $this->getContext();
 
         if (!empty($args['template'])) {
-            return xarTpl::module('workflow', 'user', 'showstatus', $tplData, $args['template']);
+            return $this->mod()->template('showstatus', $tplData, $args['template']);
         } else {
-            return xarTpl::module('workflow', 'user', 'showstatus', $tplData);
+            return $this->mod()->template('showstatus', $tplData);
         }
     }
 }

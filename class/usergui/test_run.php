@@ -46,7 +46,7 @@ class TestRunMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
 
@@ -64,11 +64,11 @@ class TestRunMethod extends MethodClass
         $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
 
-        $this->fetch('workflow', 'isset', $data['workflow'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('trackerId', 'isset', $data['trackerId'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('subjectId', 'isset', $data['subjectId'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('place', 'isset', $data['place'], null, xarVar::NOT_REQUIRED);
-        $this->fetch('transition', 'isset', $data['transition'], null, xarVar::NOT_REQUIRED);
+        $this->var()->find('workflow', $data['workflow']);
+        $this->var()->find('trackerId', $data['trackerId']);
+        $this->var()->find('subjectId', $data['subjectId']);
+        $this->var()->find('place', $data['place']);
+        $this->var()->find('transition', $data['transition']);
 
         $invalid = [];
         if (empty($data['workflow'])) {
@@ -129,7 +129,7 @@ class TestRunMethod extends MethodClass
             WorkflowConfig::setAutoload();
         } catch (Exception $e) {
             $data['warning'] = nl2br($e->getMessage());
-            return xarTpl::module('workflow', 'user', 'test', $data);
+            return $this->mod()->template('test', $data);
         }
 
         sys::import('modules.workflow.class.logger');
@@ -178,6 +178,6 @@ class TestRunMethod extends MethodClass
         $data['objectref'] = $subject->getObject();
         unset($data['place']);
 
-        return xarTpl::module('workflow', 'user', 'test', $data);
+        return $this->mod()->template('test', $data);
     }
 }

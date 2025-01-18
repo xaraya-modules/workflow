@@ -39,22 +39,22 @@ class GetmenulinksMethod extends MethodClass
         $menulinks = [];
 
         // Security Check
-        if ($this->checkAccess('ReadWorkflow', 0)) {
-            $menulinks[] = ['url'   => $this->getUrl('user', 'display'),
-                'title' => $this->translate('Links to all the available interactive processes'),
-                'label' => $this->translate('Runnable Activities'), ];
-            $menulinks[] = ['url'   => $this->getUrl('user', 'processes'),
-                'title' => $this->translate('View your workflow processes'),
-                'label' => $this->translate('Processes'), ];
-            $menulinks[] = ['url'   => $this->getUrl('user', 'activities'),
-                'title' => $this->translate('View your workflow activities'),
-                'label' => $this->translate('Activities'), ];
-            $menulinks[] = ['url'   => $this->getUrl('user', 'instances'),
-                'title' => $this->translate('View your workflow instances'),
-                'label' => $this->translate('Instances'), ];
-            $menulinks[] = ['url'   => $this->getUrl('user', 'test'),
-                'title' => $this->translate('View your workflow test'),
-                'label' => $this->translate('Test New Workflows'), ];
+        if ($this->sec()->checkAccess('ReadWorkflow', 0)) {
+            $menulinks[] = ['url'   => $this->mod()->getURL('user', 'display'),
+                'title' => $this->ml('Links to all the available interactive processes'),
+                'label' => $this->ml('Runnable Activities'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('user', 'processes'),
+                'title' => $this->ml('View your workflow processes'),
+                'label' => $this->ml('Processes'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('user', 'activities'),
+                'title' => $this->ml('View your workflow activities'),
+                'label' => $this->ml('Activities'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('user', 'instances'),
+                'title' => $this->ml('View your workflow instances'),
+                'label' => $this->ml('Instances'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('user', 'test'),
+                'title' => $this->ml('View your workflow test'),
+                'label' => $this->ml('Test New Workflows'), ];
         }
 
         return $menulinks;

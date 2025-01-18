@@ -43,7 +43,7 @@ class GetinstanceMethod extends MethodClass
         sys::import('modules.workflow.lib.galaxia.config');
 
         //make sure this user an access this instance
-        if (!$this->checkAccess('ReadWorkflow')) {
+        if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
 

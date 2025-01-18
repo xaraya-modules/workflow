@@ -41,16 +41,16 @@ class ProcessesMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        xarLog::message('WF: workflow_admin_processes ');
+        $this->log()->message('WF: workflow_admin_processes ');
         // Security Check
-        if (!$this->checkAccess('AdminWorkflow')) {
+        if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
         }
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');
         $data = [];
-        $maxRecords = $this->getModVar('items_per_page');
+        $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Adapted from tiki-g-admin_processes.php
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
@@ -76,14 +76,14 @@ class ProcessesMethod extends MethodClass
         $data['pid'] =  $_REQUEST['pid'];
 
         //Check here for an uploaded process
-        xarLog::message('WF: checking for uploaded process');
+        $this->log()->message('WF: checking for uploaded process');
         if (isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
-            xarLog::message('WF: Found upload file');
+            $this->log()->message('WF: Found upload file');
             // move the uploaded file to some temporary wf* file in cache/templates
             $tmpdir = sys::varpath() . '/cache/templates';
             $tmpfile = tempnam($tmpdir, 'wf');
             if (move_uploaded_file($_FILES['userfile1']['tmp_name'], $tmpfile) && file_exists($tmpfile)) {
-                xarLog::message('WF: Temporary upload file found, reading it in.');
+                $this->log()->message('WF: Temporary upload file found, reading it in.');
                 $fp = fopen($tmpfile, "rb");
 
                 $xml = '';
@@ -101,16 +101,16 @@ class ProcessesMethod extends MethodClass
                 $process_data = $processManager->unserialize_process($xml);
 
                 if (\Galaxia\Api\Process::exists($process_data['name'], $process_data['version'])) {
-                    $data['msg'] =  $this->translate("The process name already exists");
+                    $data['msg'] =  $this->ml("The process name already exists");
                     $data['context'] ??= $this->getContext();
-                    return xarTpl::module('workflow', 'admin', 'errors', $data);
+                    return $this->mod()->template('errors', $data);
                 } else {
                     $_REQUEST['pid'] = $processManager->import_process($process_data);
                 }
                 unlink($tmpfile);
             }
         }
-        xarLog::message('WF: done with the uploading');
+        $this->log()->message('WF: done with the uploading');
 
         if (isset($_REQUEST["delete"])) {
             foreach (array_keys($_REQUEST["process"]) as $item) {
@@ -137,13 +137,13 @@ class ProcessesMethod extends MethodClass
 
             // If process is known and we're not updating, error out.
             if (\Galaxia\Api\Process::Exists($_REQUEST['name'], $_REQUEST['version']) && $_REQUEST['pid'] == 0) {
-                $data['msg'] =  $this->translate("Process already exists");
+                $data['msg'] =  $this->ml("Process already exists");
                 $data['context'] ??= $this->getContext();
-                return xarTpl::module('workflow', 'admin', 'errors', $data);
+                return $this->mod()->template('errors', $data);
             }
 
-            $this->fetch('isSingleton', 'int', $vars['isSingleton'], 0, xarVar::NOT_REQUIRED);
-            $this->fetch('isActive', 'int', $vars['isActive'], 0, xarVar::NOT_REQUIRED);
+            $this->var()->find('isSingleton', $vars['isSingleton'], 'int', 0);
+            $this->var()->find('isActive', $vars['isActive'], 'int', 0);
 
             // Replace the info on the process with the new values (or create them)
             $pid = $processManager->replace_process($_REQUEST['pid'], $vars);
