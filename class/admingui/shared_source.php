@@ -122,7 +122,7 @@ class SharedSourceMethod extends MethodClass
                     $act->compile();
                 }
             } else {
-                die('potential hack attack');
+                $this->exit('potential hack attack');
             }
         }
 
