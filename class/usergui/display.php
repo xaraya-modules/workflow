@@ -57,7 +57,7 @@ class DisplayMethod extends MethodClass
 
         // For each activity get the roles and add them to the activity
         sys::import('xaraya.structures.query');
-        $tables = xarDB::getTables();
+        $tables = $this->db()->getTables();
         $q = new Query('SELECT', $tables['workflow_activity_roles']);
         foreach ($activities->items as $key => $item) {
             $q->eq('activityId', $item['id']);

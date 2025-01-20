@@ -109,7 +109,7 @@ class RolesMethod extends MethodClass
         } else {
             $selection = '';
             if (!empty($data['find_users'])) {
-                $dbconn = xarDB::getConn();
+                $dbconn = $this->db()->getConn();
                 $selection = " AND name LIKE " . $dbconn->qstr('%' . $data['find_users'] . '%');
             }
             $data['users'] = xarMod::apiFunc(

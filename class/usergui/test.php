@@ -77,7 +77,7 @@ class TestMethod extends MethodClass
         WorkflowConfig::setAutoload();
 
         /**
-         * This is handled automatically by xarTpl::module() now,
+         * This is handled automatically by $this->tpl()->module() now,
          * as long as we pass it the context incl. twig (or not)
          *
         // add paths for Twig filesystem loader (with namespace)
