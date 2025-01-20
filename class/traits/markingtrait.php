@@ -17,21 +17,23 @@ namespace Xaraya\Modules\Workflow\Traits;
 
 use Xaraya\Context\Context;
 use Exception;
+use Xaraya\Context\ContextInterface;
+use Xaraya\Context\ContextTrait;
 
 /**
 * For documentation purposes only - available via MarkingTrait
 */
-interface MarkingInterface
+interface MarkingInterface extends ContextInterface
 {
     public function getId(): string;
     public function getMarking(): array|string|null;
     public function setMarking($marking, Context|array $context = []): void;
-    public function getContext(): Context|array|null;
-    public function setContext(Context|array $context = []): void;
 }
 
 trait MarkingTrait
 {
+    use ContextTrait;
+
     protected $_workflowMarking;  // array for workflow or string for state_machine
     protected $_workflowContext;
 
@@ -56,16 +58,26 @@ trait MarkingTrait
     {
         $this->_workflowMarking = $marking;
         if (!empty($context)) {
+            if (!($context instanceof Context)) {
+                $context = new Context($context);
+            }
             $this->setContext($context);
         }
     }
 
-    public function getContext(): Context|array|null
+    /**
+     * @return ?Context<string, mixed>
+     */
+    public function getContext()
     {
         return $this->_workflowContext;
     }
 
-    public function setContext(Context|array $context = []): void
+    /**
+     * @param ?Context<string, mixed> $context
+     * @return void
+     */
+    public function setContext($context)
     {
         // no update of object context with transition context
         $this->_workflowContext = $context;

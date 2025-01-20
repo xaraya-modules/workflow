@@ -108,7 +108,6 @@ class SharedSourceMethod extends MethodClass
         $this->var()->find('source_data', $source_data, 'str', '');
         if (!empty($source_data)) {
             $source_data = htmlspecialchars_decode($source_data);
-            //var_dump($source);$this->exit();
             // security check on paths
             $basedir = GALAXIA_PROCESSES . "/$procname/code/";
             $basepath = realpath($basedir);

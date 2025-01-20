@@ -49,7 +49,7 @@ use Symfony\Component\Workflow\Workflow;
 
 //$sitePrefix = '/bermuda';
 //echo WorkflowProcess::dumpProcess('hook_sample', $sitePrefix);
-//exit;
+//xarCore::exit();
 $workflow = WorkflowProcess::getProcess('cd_loans');
 
 // initialize session
@@ -71,7 +71,8 @@ try {
     $result = $workflow->can($subject, $transition);
 } catch (Exception $e) {
     echo $e->getMessage();
-    exit;
+    xarCore::exit();
+    return;
 }
 echo "Result: " . var_export($result, true) . "\n";
 $subjectId = $subject->getId();
@@ -83,7 +84,8 @@ if (!$result) {
         $msg .= "\nBlocker: " . $blocker->getMessage();
     }
     echo $msg;
-    exit;
+    xarCore::exit();
+    return;
 }
 $marking = $workflow->apply($subject, "request", [Workflow::DISABLE_ANNOUNCE_EVENT => true]);
 echo "Marking: " . var_export($marking, true) . "\n";
