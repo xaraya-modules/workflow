@@ -48,7 +48,8 @@ class InstancesMethod extends MethodClass
         if (!$this->sec()->checkAccess('ReadWorkflow')) {
             return;
         }
-        $usergui = $this->getParent();
+        /** @var UserGui $usergui */
+        $usergui = $this->usergui();
 
         // Initialize some stuff
         $user = xarUser::getVar('id');
