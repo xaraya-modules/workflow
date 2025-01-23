@@ -58,7 +58,7 @@
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
-    <!-- this needs to be checked for each DataObject item, not overall
+    <xar:comment><!-- this needs to be checked for each DataObject item, not overall
     <xar:if condition="!empty($info['property']) and !empty($subjectId)">
       <xar:set name="pieces">$handlers->fromSubjectId($subjectId)</xar:set>
       <xar:if condition="!empty($objectref)">
@@ -70,7 +70,7 @@
         <xar:set name="enabled">false</xar:set>
       </xar:if>
     </xar:if>
-    -->
+    --></xar:comment>
     <xar:set name="from">is_array($info['from']) ? $info['from'] : [ $info['from'] ]</xar:set>
     <xar:foreach in="$from" value="$where">
       <xar:set name="dummy">$fromlist[$where] ??= []</xar:set>
@@ -161,6 +161,6 @@
         </tr>
       </xar:foreach>
     </table>
-    <!-- Count: #$tracker->getCount()# -->
+    <xar:comment><!-- Count: #$tracker->getCount()# --></xar:comment>
   </fieldset>
 </xar:template>

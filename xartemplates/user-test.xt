@@ -32,9 +32,9 @@
       </xar:if>
       <xar:if condition="!empty($workflow)">
         <xar:template file="test_imagemap"/>
-        <!--
+        <xar:comment><!--
         <xar:template file="test_transitionlist"/>
-        -->
+        --></xar:comment>
       </xar:if>
       <xar:template file="test_footer"/>
     </div>

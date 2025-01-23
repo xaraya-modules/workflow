@@ -45,24 +45,24 @@
             <table style="border-collapse: separate; width: 99%">
               <tr>
                 <th>
-                  <!--
+                  <xar:comment><!--
                   <xar:if condition="$sort_mode eq 'actFromName_desc'">
                     <a href="#$baselink#&amp;sort_mode=actFromName_asc">Origin</a>
                   <xar:else/>
                     <a href="#$baselink#&amp;sort_mode=actFromName_desc">Origin</a>
                   </xar:if>
-                  -->
+                  --></xar:comment>
                   From
                 </th>
                 <th>&#160;</th>
                 <th>
-                  <!--
+                  <xar:comment><!--
                   <xar:if condition="$sort_mode eq 'actToName_desc'">
                     <a href="#$baselink#&amp;sort_mode=actToName_asc">To</a>
                   <xar:else/>
                     <a href="#$baselink#&amp;sort_mode=actToName_desc">To</a>
                   </xar:if>
-                  -->
+                  --></xar:comment>
                   To
                 </th>
               </tr>

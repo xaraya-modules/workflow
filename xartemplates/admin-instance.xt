@@ -170,5 +170,5 @@
         </fieldset>
       </div>
     </div>
-    <!-- xar:template file="instance_comments" type="module"/-->
+    <xar:comment><!-- xar:template file="instance_comments" type="module"/--></xar:comment>
 </xar:template>

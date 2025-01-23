@@ -157,7 +157,8 @@ final class SymfonyWorkflowTest extends TestCase
         $this->assertEquals($expected, $marking->getPlaces());
         $expected = $transitionContext;
         $this->assertEquals($expected, $marking->getContext());
-        $this->assertEquals($expected, $subject->getContext());
+        // @todo check context creation for subject
+        $this->assertEquals($expected, $subject->getContext()->getArrayCopy());
 
         // no update of object context with transition context
         $expected = $xarayaContext;

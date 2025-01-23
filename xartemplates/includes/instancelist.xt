@@ -40,11 +40,11 @@
         </xar:foreach>
         <xar:if condition="!empty($actionlist)">
           <th>Actions</th>
-          <!--
+          <xar:comment><!--
           <xar:foreach in="$actionlist" value="$action">
             <th>#$actionlabel[$action]#</th>
           </xar:foreach>
-          -->
+          --></xar:comment>
         </xar:if>
       </tr>
       <xar:foreach in="$items" value="$item">

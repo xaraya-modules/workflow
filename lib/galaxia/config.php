@@ -1,6 +1,10 @@
 <?php
 
 //namespace Galaxia;
+sys::import('xaraya.services.servicefactory');
+use Xaraya\Services\ServiceFactory;
+
+$xarDB = ServiceFactory::getDatabaseService(__FILE__);
 
 /**
  * Configuration of the Galaxia Workflow Engine for Xaraya
@@ -8,7 +12,7 @@
 
 // Common prefix used for all database table names, e.g. xar_workflow_
 if (!defined('GALAXIA_TABLE_PREFIX')) {
-    define('GALAXIA_TABLE_PREFIX', \xarDB::getPrefix() . '_workflow_');
+    define('GALAXIA_TABLE_PREFIX', $xarDB->getPrefix() . '_workflow_');
 }
 
 // Directory containing the Galaxia library, e.g. lib/galaxia
@@ -62,13 +66,13 @@ if (!isset($GLOBALS['dbGalaxia'])) {
     if (defined('xarCore::GENERATION') && \xarCore::GENERATION == 2) {
         // CHECKME: we need a connection *without* COMPAT_ASSOC_LOWER flags here, but xaraya sets this
         //          by default now. So we get another connection with the same DSN and without the flags
-        $conn = \xarDB::getConn();
+        $conn = $xarDB->getConn();
         $dsn = $conn->getDSN();
         $flags = 0;
-        $GLOBALS['dbGalaxia'] = \xarDB::getConnection($dsn, $flags);
+        $GLOBALS['dbGalaxia'] = $xarDB->getConnection($dsn, $flags);
 
         // This means we're in the 2 series of Xaraya
-        define('GALAXIA_FETCHMODE', \xarDB::FETCHMODE_ASSOC);
+        define('GALAXIA_FETCHMODE', $xarDB->getFetchAssoc());
     } else {
         // Hope that everything works out :-)
     }

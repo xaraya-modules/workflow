@@ -73,8 +73,8 @@ class Installer extends InstallerClass
             return;
         }
 
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         sys::import('xaraya.tableddl');
 
@@ -843,8 +843,8 @@ class Installer extends InstallerClass
      */
     public function delete()
     {
-        $dbconn = xarDB::getConn();
-        $xartable = xarDB::getTables();
+        $dbconn = $this->db()->getConn();
+        $xartable = $this->db()->getTables();
 
         sys::import('xaraya.tableddl');
 

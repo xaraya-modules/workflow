@@ -63,7 +63,7 @@
       <xar:set name="label">'Process Queue'</xar:set>
       <xar:button type="link" name="process" target="$queuelink" label="$label"/>
     </div>
-    <!-- Count: #$queue->getCount()# -->
+    <xar:comment><!-- Count: #$queue->getCount()# --></xar:comment>
   </fieldset>
   </xar:if>
 </xar:template>

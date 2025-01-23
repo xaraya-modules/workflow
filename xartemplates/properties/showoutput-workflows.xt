@@ -25,7 +25,7 @@
         </xar:if>
         <!-- split marking and repeat if it contains , for workflows -->
         <xar:foreach in="$items" value="$item">
-            <!-- xar:template file="test_trackeritem"/ -->
+            <xar:comment><!-- xar:template file="test_trackeritem"/ --></xar:comment>
             <xar:workflow-actions name="actions" config="$config" item="$item" title="$item['marking']" template="$item['marking']"/>
         </xar:foreach>
         </div>

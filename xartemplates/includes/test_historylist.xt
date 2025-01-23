@@ -63,7 +63,7 @@
         </tr>
       </xar:foreach>
     </table>
-    <!-- Count: #$history->getCount()# -->
+    <xar:comment><!-- Count: #$history->getCount()# --></xar:comment>
   </fieldset>
   </xar:if>
 </xar:template>
