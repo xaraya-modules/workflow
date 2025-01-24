@@ -51,7 +51,7 @@ class DisplayMethod extends MethodClass
 
         // Get all the activities
         sys::import('modules.dynamicdata.class.objects.factory');
-        $activities = DataObjectFactory::getObjectList(['name' => 'workflow_activities']);
+        $activities = $this->data()->getObjectList(['name' => 'workflow_activities']);
         //    $where = "type = 'start'";
         $activities->getItems();
 
@@ -77,7 +77,7 @@ class DisplayMethod extends MethodClass
         $data['activities'] = $activities->items;
 
         // Get all the instances
-        $instances = DataObjectFactory::getObjectList(['name' => 'workflow_instance_activities']);
+        $instances = $this->data()->getObjectList(['name' => 'workflow_instance_activities']);
         $where = "status = 'running'";
         $instances->getItems(['where' => $where]);
         $data['properties'] = $instances->getProperties();

@@ -94,7 +94,7 @@ class ModifyconfigMethod extends MethodClass
                             $link = $mytypes[$itemtype]['url'];
                         } else {
                             $type = $this->ml('type #(1)', $itemtype);
-                            $link = xarController::URL($modname, 'user', 'view', ['itemtype' => $itemtype]);
+                            $link = $this->ctl()->getModuleURL($modname, 'user', 'view', ['itemtype' => $itemtype]);
                         }
                         $data['settings']["$modname.$itemtype"] = ['label' => $this->ml('Configuration for #(1) module - <a href="#(2)">#(3)</a>', $modname, $link, $type),
                             'create' => $create,
@@ -114,7 +114,7 @@ class ModifyconfigMethod extends MethodClass
                     if (empty($delete)) {
                         $delete = '';
                     }
-                    $link = xarController::URL($modname, 'user', 'main');
+                    $link = $this->ctl()->getModuleURL($modname, 'user', 'main');
                     $data['settings'][$modname] = ['label' => $this->ml('Configuration for <a href="#(1)">#(2)</a> module', $link, $modname),
                         'create' => $create,
                         'update' => $update,

@@ -64,7 +64,7 @@ class RunTransitionMethod extends MethodClass
             $itemType = $args['itemtype'] ?? 0;
             $itemId = $args['itemid'] ?? 0;
             $moduleId = $args['module_id'] ?? xarMod::getRegID($moduleName);
-            $info = DataObjectDescriptor::getObjectID(['moduleid' => $moduleId, 'itemtype' => $itemType]);
+            $info = $this->data()->getObjectID(['moduleid' => $moduleId, 'itemtype' => $itemType]);
             if (empty($info) || empty($info['name'])) {
                 $this->log()->info("No object associated with module '$moduleName' ($moduleId) itemtype '$itemType' for '$transitionName' in '$workflowName'");
                 // @checkme create fake objectName for module:itemtype if no object is available for now?

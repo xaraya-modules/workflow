@@ -62,7 +62,7 @@ class ActivitiesMethod extends MethodClass
         }
 
         // Create a dataobject of this activity for displaying, saving etc.
-        $data['activity'] = DataObjectFactory::getObject(['name' => 'workflow_activities']);
+        $data['activity'] = $this->data()->getObject(['name' => 'workflow_activities']);
         $data['activity']->properties['process_id']->value = $data['pid'];
 
         // Create a process object
