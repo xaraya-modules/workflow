@@ -34,6 +34,7 @@ class MainMethod extends MethodClass
      * @author mikespub
      * @access public
      * @return bool|void true on success or void on falure
+     * @see AdminGui::main()
      */
     public function __invoke(array $args = [])
     {

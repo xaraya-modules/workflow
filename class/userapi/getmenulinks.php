@@ -33,6 +33,7 @@ class GetmenulinksMethod extends MethodClass
      * utility function pass individual menu items to the main menu
      * @author the Workflow module development team
      * @return array containing the menulinks for the main menu items.
+     * @see UserApi::getmenulinks()
      */
     public function __invoke(array $args = [])
     {

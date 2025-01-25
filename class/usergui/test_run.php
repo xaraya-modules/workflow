@@ -42,6 +42,7 @@ class TestRunMethod extends MethodClass
      * @author mikespub
      * @access public
      * @return array|string|void empty
+     * @see UserGui::testRun()
      */
     public function __invoke(array $args = [])
     {

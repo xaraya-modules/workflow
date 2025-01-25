@@ -25,7 +25,8 @@ sys::import('xaraya.modules.method');
  */
 class TimetodhmsMethod extends MethodClass
 {
-    /** functions imported by bermuda_cleanup */
+    /** functions imported by bermuda_cleanup * @see UserApi::timetodhms()
+     */
 
     public function __invoke(array $args = [])
     {

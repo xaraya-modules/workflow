@@ -33,6 +33,7 @@ class TrackerMethod extends MethodClass
      * @uses WorkflowTracker
      * @author mikespub
      * @access public
+     * @see UserApi::tracker()
      */
     public function __invoke(array $args = [])
     {

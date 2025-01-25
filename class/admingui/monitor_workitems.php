@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 
 
 use Xaraya\Modules\Workflow\AdminGui;
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarModVars;
@@ -39,9 +40,12 @@ class MonitorWorkitemsMethod extends MethodClass
      * the monitor workitems administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::monitorWorkitems()
      */
     public function __invoke(array $args = [])
     {
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
         // Security Check
         if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
@@ -144,7 +148,7 @@ class MonitorWorkitemsMethod extends MethodClass
         }
         foreach ($items['data'] as $index => $info) {
             $items['data'][$index]['timescale'] = intval($scale * $info['duration']);
-            $items['data'][$index]['duration'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']]);
+            $items['data'][$index]['duration'] = $userapi->timetodhms(['time' => $info['duration']]);
             if (!empty($info['started'])) {
                 $items['data'][$index]['started'] = xarLocale::getFormattedDate('medium', $info['started']) . ' '
                                                 . xarLocale::getFormattedTime('short', $info['started']);
@@ -205,12 +209,12 @@ class MonitorWorkitemsMethod extends MethodClass
 
 
 
-        $url = xarServer::getCurrentURL(['offset' => '%%']);
-        /*    $data['pager'] = xarTplPager::getPager($data['offset'],
+        $url = $this->ctl()->getCurrentURL(['offset' => '%%']);
+        /*    $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                $items['cant'],
                                                $url,
                                                $maxRecords);*/
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

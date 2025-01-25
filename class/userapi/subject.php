@@ -33,6 +33,7 @@ class SubjectMethod extends MethodClass
      * @uses WorkflowSubject
      * @author mikespub
      * @access public
+     * @see UserApi::subject()
      */
     public function __invoke(array $args = [])
     {

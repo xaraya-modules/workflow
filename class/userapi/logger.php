@@ -34,6 +34,7 @@ class LoggerMethod extends MethodClass
      * @uses WorkflowLogger
      * @author mikespub
      * @access public
+     * @see UserApi::logger()
      */
     public function __invoke(array $args = [])
     {

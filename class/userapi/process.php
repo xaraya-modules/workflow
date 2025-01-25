@@ -34,6 +34,7 @@ class ProcessMethod extends MethodClass
      * @uses WorkflowProcess
      * @author mikespub
      * @access public
+     * @see UserApi::process()
      */
     public function __invoke(array $args = [])
     {

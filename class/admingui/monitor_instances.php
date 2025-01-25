@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 
 
 use Xaraya\Modules\Workflow\AdminGui;
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarModVars;
@@ -38,9 +39,12 @@ class MonitorInstancesMethod extends MethodClass
      * the monitor instances administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::monitorInstances()
      */
     public function __invoke(array $args = [])
     {
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
         // Security Check
         if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
@@ -187,7 +191,7 @@ class MonitorInstancesMethod extends MethodClass
         }
         foreach ($items['data'] as $index => $info) {
             $items['data'][$index]['timescale'] = intval($scale * $info['duration']);
-            $items['data'][$index]['duration'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']]);
+            $items['data'][$index]['duration'] = $userapi->timetodhms(['time' => $info['duration']]);
             if (!empty($info['started'])) {
                 $items['data'][$index]['started'] = xarLocale::getFormattedDate('medium', $info['started']) . ' '
                                                 . xarLocale::getFormattedTime('short', $info['started']);
@@ -275,11 +279,11 @@ class MonitorInstancesMethod extends MethodClass
         $tplData['filter_user'] = $_REQUEST['filter_user'] ?? '';
         $tplData['filter_owner'] = $_REQUEST['filter_owner'] ?? '';
 
-        /*$tplData['pager'] = xarTplPager::getPager($tplData['offset'],
+        /*$tplData['pager'] = $this->tpl()->getPager($tplData['offset'],
                                            $items['cant'],
                                            $url,
                                            $maxRecords);*/
-        $tplData['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $tplData['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $tplData['maxRecords'] = $maxRecords;
         return $tplData;
     }

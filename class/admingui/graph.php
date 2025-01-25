@@ -37,6 +37,7 @@ class GraphMethod extends MethodClass
      * the graph administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::graph()
      */
     public function __invoke(array $args = [])
     {
@@ -197,11 +198,11 @@ class GraphMethod extends MethodClass
 
         $tplData['mid'] =  'tiki-g-admin_processes.tpl';
 
-        /*    $tplData['pager'] = xarTplPager::getPager($tplData['offset'],
+        /*    $tplData['pager'] = $this->tpl()->getPager($tplData['offset'],
                                                $items['cant'],
                                                $url,
                                                $maxRecords);*/
-        $tplData['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $tplData['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $tplData['maxRecords'] = $maxRecords;
         return $tplData;
     }

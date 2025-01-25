@@ -36,6 +36,7 @@ class ProcessesMethod extends MethodClass
      * the processes user function
      * @author mikespub
      * @access public
+     * @see UserGui::processes()
      */
     public function __invoke(array $args = [])
     {
@@ -130,11 +131,11 @@ class ProcessesMethod extends MethodClass
         $data['mid'] =  'tiki-g-user_processes.tpl';
 
 
-        /*        $data['pager'] = xarTplPager::getPager($data['offset'],
+        /*        $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                    $items['cant'],
                                                    $url,
                                                    $maxRecords);*/
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

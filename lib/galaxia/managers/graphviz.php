@@ -236,7 +236,7 @@ class Process_GraphViz
     /**
     * Remove a node from the graph.
     *
-    * @param  Name of the node to be removed.
+    * @param string $name Name of the node to be removed.
     * @access public
     */
     public function removeNode($name, $group = 'default')

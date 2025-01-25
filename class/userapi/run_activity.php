@@ -32,6 +32,7 @@ class RunActivityMethod extends MethodClass
      * the run activity user API function - used by hook calls to workflow
      * @author mikespub
      * @access public
+     * @see UserApi::runActivity()
      */
     public function __invoke(array $args = [])
     {

@@ -32,6 +32,7 @@ class FindinstancesMethod extends MethodClass
      *  - now accepts an activityName and processName if you don't have the ids
      * @author mikespub
      * @access public
+     * @see UserApi::findinstances()
      */
     public function __invoke(array $args = [])
     {

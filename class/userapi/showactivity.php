@@ -35,6 +35,7 @@ class ShowactivityMethod extends MethodClass
      * show the result of a workflow activity (called via <xar:workflow-activity tag)
      * @author mikespub
      * @access public
+     * @see UserApi::showactivity()
      */
     public function __invoke(array $args = [])
     {
@@ -128,7 +129,7 @@ class ShowactivityMethod extends MethodClass
         $tplData['iid'] = $instance->getInstanceId();
 
         // URL to return to if some action is taken
-        $tplData['return_url'] = xarServer::getCurrentURL();
+        $tplData['return_url'] = $this->ctl()->getCurrentURL();
 
         if ($activity->isInteractive()) {
             $template = $activity->getNormalizedName() . '.xt';

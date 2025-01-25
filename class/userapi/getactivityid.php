@@ -33,7 +33,8 @@ class GetactivityidMethod extends MethodClass
      * @author Mike Dunn submitted by Court Shrock
      * @access public
      * @param mixed $activityName the name of the activity you need an id for (required)
-     * @return int workflow activityid
+     * @return int|void workflow activityid
+     * @see UserApi::getactivityid()
      */
     public function __invoke(array $args = [])
     {

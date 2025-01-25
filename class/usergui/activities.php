@@ -37,6 +37,7 @@ class ActivitiesMethod extends MethodClass
      * the activities user function
      * @author mikespub
      * @access public
+     * @see UserGui::activities()
      */
     public function __invoke(array $args = [])
     {
@@ -194,12 +195,12 @@ class ActivitiesMethod extends MethodClass
         // Missing variable
         $data['filter_process'] = $_REQUEST['filter_process'] ?? '';
 
-        /*        $data['pager'] = xarTplPager::getPager($data['offset'],
+        /*        $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                    $items['cant'],
                                                    $url,
                                                    $maxRecords);*/
         $data['maxRecords'] = $maxRecords;
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         return $data;
     }
 }

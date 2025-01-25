@@ -41,6 +41,7 @@ class InstancesMethod extends MethodClass
      * the instances user function
      * @author mikespub
      * @access public
+     * @see UserGui::instances()
      */
     public function __invoke(array $args = [])
     {
@@ -237,11 +238,11 @@ class InstancesMethod extends MethodClass
         $data['userId'] = $user;
         $data['user'] = xarUser::getVar('name', $user);
 
-        /*    $data['pager'] = xarTplPager::getPager($data['offset'],
+        /*    $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                $items['cant'],
                                                $url,
                                                $maxRecords);*/
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

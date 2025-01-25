@@ -36,7 +36,8 @@ class GetinstanceMethod extends MethodClass
      * @author Mike Dunn submitted by Court Shrock
      * @access public
      * @param mixed $instaceId (required)
-     * @return \Galaxia\Api\Instance workflow Instance
+     * @return \Galaxia\Api\Instance|void workflow Instance
+     * @see UserApi::getinstance()
      */
     public function __invoke(array $args = [])
     {

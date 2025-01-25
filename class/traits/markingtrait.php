@@ -82,4 +82,13 @@ trait MarkingTrait
         // no update of object context with transition context
         $this->_workflowContext = $context;
     }
+
+    /**
+     * Clear context after cloning
+     * @return void
+     */
+    public function __clone()
+    {
+        $this->context = null;
+    }
 }

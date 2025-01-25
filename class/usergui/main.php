@@ -33,6 +33,7 @@ class MainMethod extends MethodClass
      * @author mikespub
      * @access public
      * @return array|void empty
+     * @see UserGui::main()
      */
     public function __invoke(array $args = [])
     {

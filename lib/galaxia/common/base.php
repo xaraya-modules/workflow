@@ -131,11 +131,9 @@ class Base extends Observable
             case "oci8":
             case "postgres7":
                 return;
-                break;
             case "mysql3":
             case "mysql":
                 return "binary";
-                break;
         }
     }
 

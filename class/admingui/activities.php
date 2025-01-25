@@ -36,6 +36,7 @@ class ActivitiesMethod extends MethodClass
      * the activities administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::activities()
      */
     public function __invoke(array $args = [])
     {

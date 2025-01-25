@@ -33,6 +33,7 @@ class HandlersMethod extends MethodClass
      * @uses WorkflowHandlers
      * @author mikespub
      * @access public
+     * @see UserApi::handlers()
      */
     public function __invoke(array $args = [])
     {

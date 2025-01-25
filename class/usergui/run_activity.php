@@ -39,6 +39,7 @@ class RunActivityMethod extends MethodClass
      * the run activity user function
      * @author mikespub
      * @access public
+     * @see UserGui::runActivity()
      */
     public function __invoke(array $args = [])
     {

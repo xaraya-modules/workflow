@@ -39,6 +39,7 @@ class RolesMethod extends MethodClass
      * the roles administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::roles()
      */
     public function __invoke(array $args = [])
     {
@@ -226,7 +227,7 @@ class RolesMethod extends MethodClass
         $data['errors'] =  $errors;
         $data['proc_info'] =  $proc_info;
 
-        // $data['pager'] = xarTplPager::getPager($data['offset'],$mapitems['cant'],$url,$maxRecords);
+        // $data['pager'] = $this->tpl()->getPager($data['offset'],$mapitems['cant'],$url,$maxRecords);
         $data['url'] = $this->mod()->getURL( 'admin', 'roles', ['pid' => $data['pid'],'offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;

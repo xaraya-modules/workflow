@@ -33,6 +33,7 @@ class DefinitionMethod extends MethodClass
      * @uses WorkflowDefinition
      * @author mikespub
      * @access public
+     * @see UserApi::definition()
      */
     public function __invoke(array $args = [])
     {

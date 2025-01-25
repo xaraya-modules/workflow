@@ -39,6 +39,7 @@ class RunTransitionMethod extends MethodClass
      * the run transition user API function - used by hook calls to workflow
      * @author mikespub
      * @access public
+     * @see UserApi::runTransition()
      */
     public function __invoke(array $args = [])
     {

@@ -34,6 +34,7 @@ class WorkitemMethod extends MethodClass
      * the workitem administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::workitem()
      */
     public function __invoke(array $args = [])
     {

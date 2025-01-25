@@ -33,6 +33,7 @@ class RegistryMethod extends MethodClass
      * @uses WorkflowRegistry
      * @author mikespub
      * @access public
+     * @see UserApi::registry()
      */
     public function __invoke(array $args = [])
     {

@@ -33,6 +33,7 @@ class HistoryMethod extends MethodClass
      * @uses WorkflowHistory
      * @author mikespub
      * @access public
+     * @see UserApi::history()
      */
     public function __invoke(array $args = [])
     {

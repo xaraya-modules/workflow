@@ -43,6 +43,7 @@ class ShowactionsMethod extends MethodClass
      *     $args['layout'] default layout in template (unused)
      * @param mixed $this->getContext() not available in template tag
      * @return string
+     * @see UserApi::showactions()
      */
     public function __invoke(array $args = [])
     {

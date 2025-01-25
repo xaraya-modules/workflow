@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 
 
 use Xaraya\Modules\Workflow\AdminGui;
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarModVars;
@@ -37,9 +38,12 @@ class MonitorActivitiesMethod extends MethodClass
      * the monitor activities administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::monitorActivities()
      */
     public function __invoke(array $args = [])
     {
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
         // Security Check
         if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
@@ -153,9 +157,9 @@ class MonitorActivitiesMethod extends MethodClass
         }
         foreach ($items['data'] as $index => $info) {
             if (isset($info['duration'])) {
-                $items['data'][$index]['duration']['min'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['min']]);
-                $items['data'][$index]['duration']['avg'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['avg']]);
-                $items['data'][$index]['duration']['max'] = xarMod::apiFunc('workflow', 'user', 'timetodhms', ['time' => $info['duration']['max']]);
+                $items['data'][$index]['duration']['min'] = $userapi->timetodhms(['time' => $info['duration']['min']]);
+                $items['data'][$index]['duration']['avg'] = $userapi->timetodhms(['time' => $info['duration']['avg']]);
+                $items['data'][$index]['duration']['max'] = $userapi->timetodhms(['time' => $info['duration']['max']]);
                 $info['duration']['max'] -= $info['duration']['avg'];
                 $info['duration']['avg'] -= $info['duration']['min'];
                 $items['data'][$index]['timescale'] = [];
@@ -211,11 +215,11 @@ class MonitorActivitiesMethod extends MethodClass
 
         $data['mid'] =  'tiki-g-monitor_activities.tpl';
 
-        /*    $data['pager'] = xarTplPager::getPager($data['offset'],
+        /*    $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                $items['cant'],
                                                $url,
                                                $maxRecords);*/
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

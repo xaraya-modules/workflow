@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Workflow\UserGui;
 
 
 use Xaraya\Modules\Workflow\UserGui;
+use Xaraya\Modules\Workflow\SchedulerApi;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
@@ -36,9 +37,12 @@ class TestQueueMethod extends MethodClass
      * @author mikespub
      * @access public
      * @return array|string|void empty
+     * @see UserGui::testQueue()
      */
     public function __invoke(array $args = [])
     {
+        /** @var SchedulerApi $schedulerapi */
+        $schedulerapi = $this->schedulerapi();
         // Security Check
         if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
@@ -64,7 +68,7 @@ class TestQueueMethod extends MethodClass
 
         // run scheduler job to manually process the queue
         $params = ['scheduled' => 'manual'];
-        $data['log'] = xarMod::apiFunc('workflow', 'scheduler', 'transitions', $params, $this->getContext());
+        $data['log'] = $schedulerapi->transitions($params);
 
         return $data;
     }

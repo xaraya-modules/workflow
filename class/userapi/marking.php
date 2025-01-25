@@ -33,6 +33,7 @@ class MarkingMethod extends MethodClass
      * @uses WorkflowMarking
      * @author mikespub
      * @access public
+     * @see UserApi::marking()
      */
     public function __invoke(array $args = [])
     {

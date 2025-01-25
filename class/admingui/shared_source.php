@@ -34,6 +34,7 @@ class SharedSourceMethod extends MethodClass
      * the shared source administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::sharedSource()
      */
     public function __invoke(array $args = [])
     {

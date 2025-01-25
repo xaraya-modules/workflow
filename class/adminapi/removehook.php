@@ -34,6 +34,7 @@ class RemovehookMethod extends MethodClass
      * @var mixed $objectid ID of the object (must be the module name here !!)
      * @var mixed $extrainfo extra information
      * @return bool true on success, false on failure
+     * @see AdminApi::removehook()
      */
     public function __invoke(array $args = [])
     {

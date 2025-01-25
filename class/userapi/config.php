@@ -33,6 +33,7 @@ class ConfigMethod extends MethodClass
      * @uses WorkflowConfig
      * @author mikespub
      * @access public
+     * @see UserApi::config()
      */
     public function __invoke(array $args = [])
     {

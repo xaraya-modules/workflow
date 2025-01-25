@@ -38,6 +38,7 @@ class ShowstatusMethod extends MethodClass
      * are the owner of (called via <xar:workflow-status tag)
      * @author mikespub
      * @access public
+     * @see UserApi::showstatus()
      */
     public function __invoke(array $args = [])
     {
@@ -141,7 +142,7 @@ class ShowstatusMethod extends MethodClass
         if (!empty($args['return_url'])) {
             $tplData['return_url'] = $args['return_url'];
         } else {
-            $tplData['return_url'] = xarServer::getCurrentURL();
+            $tplData['return_url'] = $this->ctl()->getCurrentURL();
         }
 
         // field list to show

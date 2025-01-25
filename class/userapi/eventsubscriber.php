@@ -34,6 +34,7 @@ class EventsubscriberMethod extends MethodClass
      * @uses WorkflowEventSubscriber
      * @author mikespub
      * @access public
+     * @see UserApi::eventsubscriber()
      */
     public function __invoke(array $args = [])
     {

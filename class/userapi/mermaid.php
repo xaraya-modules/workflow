@@ -38,6 +38,7 @@ class MermaidMethod extends MethodClass
      * @uses \sys::autoload()
      * @uses WorkflowProcess
      * @return string
+     * @see UserApi::mermaid()
      */
     public function __invoke(array $args = [])
     {

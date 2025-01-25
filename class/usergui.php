@@ -26,7 +26,7 @@ sys::import('modules.workflow.class.userapi');
  * @method mixed instances(array $args)
  * @method mixed main(array $args)
  * @method mixed processes(array $args)
- * @method mixed runActivity(array $args)
+ * @method mixed runActivity(array $args = [])
  * @method mixed test(array $args)
  * @method mixed testQueue(array $args)
  * @method mixed testRun(array $args)

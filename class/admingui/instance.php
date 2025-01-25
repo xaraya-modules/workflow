@@ -35,6 +35,7 @@ class InstanceMethod extends MethodClass
      * the instance administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::instance()
      */
     public function __invoke(array $args = [])
     {

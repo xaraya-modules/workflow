@@ -41,6 +41,7 @@ class DisplayMethod extends MethodClass
      * @subpackage Workflow Module
      * @link http://xaraya.com/index.php/release/188.html
      * @author Marc Lutolf <mfl@netspan.ch>
+     * @see UserGui::display()
      */
     public function __invoke(array $args = [])
     {

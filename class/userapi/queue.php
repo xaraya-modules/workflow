@@ -33,6 +33,7 @@ class QueueMethod extends MethodClass
      * @uses WorkflowQueue
      * @author mikespub
      * @access public
+     * @see UserApi::queue()
      */
     public function __invoke(array $args = [])
     {

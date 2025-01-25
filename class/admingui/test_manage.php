@@ -29,6 +29,7 @@ class TestManageMethod extends MethodClass
 
     /**
      * Test manage Symfony Workflows
+     * @see AdminGui::testManage()
      */
     public function __invoke(array $args = [])
     {

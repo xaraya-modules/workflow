@@ -33,6 +33,7 @@ class TransitionMethod extends MethodClass
      * @uses WorkflowTransition
      * @author mikespub
      * @access public
+     * @see UserApi::transition()
      */
     public function __invoke(array $args = [])
     {

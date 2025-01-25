@@ -36,6 +36,7 @@ class GetitemlinksMethod extends MethodClass
      * @var mixed $itemtype item type (optional)
      * @var mixed $itemids array of item ids to get
      * @return array containing the itemlink(s) for the item(s).
+     * @see UserApi::getitemlinks()
      */
     public function __invoke(array $args = [])
     {

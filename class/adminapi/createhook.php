@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Workflow\AdminApi;
 
 
 use Xaraya\Modules\Workflow\AdminApi;
+use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -35,10 +36,13 @@ class CreatehookMethod extends MethodClass
      * @var mixed $objectid ID of the object
      * @var mixed $extrainfo extra information
      * @return array extrainfo array
+     * @see AdminApi::createhook()
      */
     public function __invoke(array $args = [])
     {
         extract($args);
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // everything is already validated in HookSubject, except possible empty objectid/itemid for create/display
         $modname = $extrainfo['module'];
@@ -63,11 +67,7 @@ class CreatehookMethod extends MethodClass
         // Symfony Workflow transition
         if (!is_numeric($activityId) && strpos($activityId, '/') !== false) {
             [$workflowName, $transitionName] = explode('/', $activityId);
-            if (!xarMod::apiFunc(
-                'workflow',
-                'user',
-                'run_transition',
-                ['workflow' => $workflowName,
+            if (!$userapi->run_transition(['workflow' => $workflowName,
                     'subjectId' => null,
                     'transition' => $transitionName,
                     // extra parameters from hook functions
@@ -76,27 +76,19 @@ class CreatehookMethod extends MethodClass
                     'itemtype' => $itemtype,
                     'itemid' => $objectid,
                     'module_id' => $modid,
-                    'extrainfo' => $extrainfo, ],
-                $this->getContext()
-            )) {
+                    'extrainfo' => $extrainfo, ])) {
                 return $extrainfo;
             }
             return $extrainfo;
         }
 
         // Galaxia Workflow activity
-        if (!xarMod::apiFunc(
-            'workflow',
-            'user',
-            'run_activity',
-            ['activityId' => $activityId,
+        if (!$userapi->run_activity(['activityId' => $activityId,
                 'auto' => 1,
                 // standard arguments for use in activity code
                 'module' => $modname,
                 'itemtype' => $itemtype,
-                'itemid' => $objectid, ],
-            $this->getContext()
-        )) {
+                'itemid' => $objectid, ])) {
             return $extrainfo;
         }
 

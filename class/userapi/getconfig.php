@@ -33,6 +33,7 @@ class GetconfigMethod extends MethodClass
      * @uses WorkflowConfig::loadConfig()
      * @author mikespub
      * @access public
+     * @see UserApi::getconfig()
      */
     public function __invoke(array $args = [])
     {

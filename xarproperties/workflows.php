@@ -89,9 +89,9 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
     public function showOutput(array $data = [])
     {
         // check if we are in preview mode for the object itself
-        xarVar::fetch('preview', 'isset', $data['preview'], null, xarVar::DONT_SET);
+        $this->var()->fetch('preview', 'isset', $data['preview'], null, xarVar::DONT_SET);
         if (!empty($data['preview'])) {
-            return xarMLS::translate('Preview');
+            return $this->ml('Preview');
         }
         $data['userId'] = $this->objectref->getContext()?->getUserId() ?? xarSession::getVar('role_id');
         $data['subjectId'] = $this->getId();

@@ -340,7 +340,7 @@ class WorkflowActivity extends Base
      * @todo This is a method which does not belong here, but in a user object of some sort (which we dont have)
      *
     **/
-    public function getActivityRoleNames()
+    public function getActivityRoleNames($aid)
     {
         $aid = $this->activityId;
         $query = "select gr.`roleId`, `name` from " . self::tbl('activity_roles') . " gar, " . self::tbl('roles') . " gr where gar.`roleId`=gr.`roleId` and gar.`activityId`=?";

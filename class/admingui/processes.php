@@ -38,6 +38,7 @@ class ProcessesMethod extends MethodClass
      * the processes administration function
      * @author mikespub
      * @access public
+     * @see AdminGui::processes()
      */
     public function __invoke(array $args = [])
     {
@@ -213,8 +214,8 @@ class ProcessesMethod extends MethodClass
 
         $data['all_procs'] =  $items['data'];
 
-        //    $data['pager'] = xarTplPager::getPager($data['offset'], $items['cant'], $url, $maxRecords);
-        $data['url'] = xarServer::getCurrentURL(['offset' => '%%']);
+        //    $data['pager'] = $this->tpl()->getPager($data['offset'], $items['cant'], $url, $maxRecords);
+        $data['url'] = $this->ctl()->getCurrentURL(['offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
 
         return $data;

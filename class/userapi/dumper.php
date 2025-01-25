@@ -34,6 +34,7 @@ class DumperMethod extends MethodClass
      * @uses WorkflowDumper
      * @author mikespub
      * @access public
+     * @see UserApi::dumper()
      */
     public function __invoke(array $args = [])
     {
