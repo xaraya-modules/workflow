@@ -89,7 +89,7 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
     public function showOutput(array $data = [])
     {
         // check if we are in preview mode for the object itself
-        $this->var()->fetch('preview', 'isset', $data['preview'], null, xarVar::DONT_SET);
+        $this->var()->check('preview', $data['preview']);
         if (!empty($data['preview'])) {
             return $this->ml('Preview');
         }

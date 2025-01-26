@@ -22,6 +22,8 @@ use sys;
 
 sys::import('modules.workflow.class.subject');
 sys::import('modules.workflow.class.handlers');
+sys::import('xaraya.facades.logger');
+use Xaraya\Facades\xarLog3;
 
 /**
  * Dummy spell checker to show-case automatically running something on
@@ -100,7 +102,7 @@ class SpellCheckerDummy
                 // queue spell checker event
                 $queueId = WorkflowHandlers::doQueueEvent($event, $eventName, $dispatcher);
                 $message = "The spell checker is queued with id ($queueId) for subject " . $subject->getId();
-                xarLog::message("Event $eventName queued: $message", xarLog::LEVEL_INFO);
+                xarLog3::info("Event $eventName queued: $message");
                 return $queueId;
             }
             $workflow = $event->getWorkflow();
@@ -111,7 +113,7 @@ class SpellCheckerDummy
             } else {
                 $message = "The spell checker resulted in NO transition for subject " . $subject->getId();
             }
-            xarLog::message("Event $eventName handled: $message", xarLog::LEVEL_INFO);
+            xarLog3:info("Event $eventName handled: $message");
             return true;
         };
         return $handler;

@@ -46,6 +46,7 @@ class GenericObserver extends HookObserver
      */
     public function notify(ixarEventSubject $subject)
     {
+        $this->setContext($subject->getContext());
         // @checkme Xaraya only fires one event per subject type, so subjectName = subjectType here
         $subjectName = $subject->getSubject();
         $this->logEvent($subject, $subjectName);
@@ -76,7 +77,7 @@ class GenericObserver extends HookObserver
         //return xarMod::guiFunc('workflow', 'user', 'display', []);
         //return 'workflow was here...';
         // See lib/xaraya/structures/events/guiobserver.php
-        return xarMod::guiFunc($this->module, $this->type, $this->func, $subject->getArgs(), $subject->getContext());
+        return $this->mod()->guiMethod($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
     public function getApiResult(ixarHookSubject $subject, string $subjectName)
@@ -91,7 +92,7 @@ class GenericObserver extends HookObserver
         //$item = ['workflow' => 'was here...'];
         //return $extrainfo += $item;
         // See lib/xaraya/structures/events/apiobserver.php
-        return xarMod::apiFunc($this->module, $this->type, $this->func, $subject->getArgs(), $subject->getContext());
+        return $this->mod()->apiMethod($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
     public function logEvent(ixarHookSubject $subject, string $subjectName)
@@ -107,6 +108,6 @@ class GenericObserver extends HookObserver
             $args['objectid'] ?? '',
             $subjectName,
         );
-        xarLog::message($message, xarLog::LEVEL_INFO);
+        $this->log()->info($message);
     }
 }
