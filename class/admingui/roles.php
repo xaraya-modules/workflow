@@ -103,7 +103,7 @@ class RolesMethod extends MethodClass
         // MAPPING
         $data['find_users'] = $_REQUEST['find_users'] ?? '';
 
-        $numusers = xarMod::apiFunc('roles', 'user', 'countall');
+        $numusers = $this->mod()->apiFunc('roles', 'user', 'countall');
         // don't show thousands of users here without filtering
         if ($numusers > 1000 && empty($data['find_users'])) {
             $data['users'] = [];
@@ -113,7 +113,7 @@ class RolesMethod extends MethodClass
                 $dbconn = $this->db()->getConn();
                 $selection = " AND name LIKE " . $dbconn->qstr('%' . $data['find_users'] . '%');
             }
-            $data['users'] = xarMod::apiFunc(
+            $data['users'] = $this->mod()->apiFunc(
                 'roles',
                 'user',
                 'getall',
@@ -122,7 +122,7 @@ class RolesMethod extends MethodClass
             );
         }
 
-        $data['groups'] = xarMod::apiFunc('roles', 'user', 'getallgroups');
+        $data['groups'] = $this->mod()->apiFunc('roles', 'user', 'getallgroups');
 
         $roles = $roleManager->list_roles($pid, 0, -1, 'name_asc', '');
         $data['roles'] = &$roles['data'];
@@ -136,7 +136,7 @@ class RolesMethod extends MethodClass
 
         if (isset($_REQUEST['mapg'])) {
             if ($_REQUEST['op'] == 'add') {
-                $users = xarMod::apiFunc(
+                $users = $this->mod()->apiFunc(
                     'roles',
                     'user',
                     'getusers',
@@ -146,7 +146,7 @@ class RolesMethod extends MethodClass
                     $roleManager->map_user_to_role($pid, $a_user['id'], $_REQUEST['role']);
                 }
             } else {
-                $users = xarMod::apiFunc(
+                $users = $this->mod()->apiFunc(
                     'roles',
                     'user',
                     'getusers',
@@ -179,7 +179,7 @@ class RolesMethod extends MethodClass
 
         // trick : replace userid by user here !
         foreach (array_keys($mapitems['data']) as $index) {
-            $role = xarMod::apiFunc(
+            $role = $this->mod()->apiFunc(
                 'roles',
                 'user',
                 'get',

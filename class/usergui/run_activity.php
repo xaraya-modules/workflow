@@ -260,7 +260,7 @@ class RunActivityMethod extends MethodClass
 
                 // If we are not testing, then display the output in its own page
                 // Otherwise display it as part of this page
-                if (xarSession::getVar('role_id') != xarModVars::get('roles', 'admin')) {
+                if (!xarUser::isSiteAdmin()) {
                     return $output;
                 }
             } elseif (isset($_REQUEST['auto']) && $activity->isInteractive()) {

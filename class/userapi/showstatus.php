@@ -110,7 +110,7 @@ class ShowstatusMethod extends MethodClass
         if (xarUser::isLoggedIn()) {
             $seenlist = xarModUserVars::get('workflow', 'seenlist');
         } else {
-            $seenlist = xarSession::getVar('workflow.seenlist');
+            $seenlist = $this->session()->getVar('workflow.seenlist');
         }
         if (!empty($seenlist)) {
             $seen = explode(';', $seenlist);

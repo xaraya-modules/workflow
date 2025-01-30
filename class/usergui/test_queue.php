@@ -59,7 +59,7 @@ class TestQueueMethod extends MethodClass
             $data['warning'] = nl2br($e->getMessage());
         }
         $data['context'] = $this->getContext();
-        $data['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
+        $data['userId'] = $this->getContext()?->getUserId() ?? $this->session()->getUserId();
 
         if (!empty($data['warning'])) {
             $data['log'] = 'No manual processing';

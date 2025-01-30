@@ -52,7 +52,7 @@ class RemovehookMethod extends MethodClass
             throw new BadParameterException($vars, $msg);
         }
 
-        $modid = xarMod::getRegID($objectid);
+        $modid = $this->mod()->getRegID($objectid);
         if (empty($modid)) {
             $msg = 'Invalid #(1) for #(2) function #(3)() in module #(4)';
             $vars = ['module ID', 'admin', 'removehook', 'workflow'];

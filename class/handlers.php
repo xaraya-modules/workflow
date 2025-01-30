@@ -83,7 +83,7 @@ class WorkflowHandlers extends WorkflowBase
         $handler = function ($event, $eventName, $dispatcher) use ($parentRoleIds, $roleId) {
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
-            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+            $userId = $roleId ?? xarSession::getUserId() ?? 0;
             $parents = xarCache::getParents($userId);
             $intersect = array_intersect($parents, $parentRoleIds);
             $result = true;
@@ -129,7 +129,7 @@ class WorkflowHandlers extends WorkflowBase
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
             $subjectId = $event->getSubject()->getId();
-            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+            $userId = $roleId ?? xarSession::getUserId() ?? 0;
             $result = true;
             if (empty($objectRef) || !$objectRef->checkAccess($action, $objectRef->itemid, $userId)) {
                 $transitionName = $event->getTransition()->getName();
@@ -314,7 +314,7 @@ class WorkflowHandlers extends WorkflowBase
         $subjectId = $subject->getId();
         // @todo use $context if available?
         //$context = $event->getSubject()->getContext();
-        $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+        $userId = $roleId ?? xarSession::getUserId() ?? 0;
         $transitionName = $event->getTransition()->getName();
         $marking = implode(WorkflowTracker::AND_OPERATOR, array_keys($event->getMarking()->getPlaces()));
         $context = json_encode($event->getContext(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -333,7 +333,7 @@ class WorkflowHandlers extends WorkflowBase
             [$objectName, $itemId] = static::fromSubjectId((string) $subject->getId());
             // @todo use $context if available?
             //$context = $event->getSubject()->getContext();
-            $userId = $roleId ?? xarSession::getVar('role_id') ?? 0;
+            $userId = $roleId ?? xarSession::getUserId() ?? 0;
             $transitionName = $event->getTransition()->getName();
             // @checkme delete tracker at the end of this transition - pass along eventName to completed
             $deleteEventName = "workflow.$workflowName.delete.$transitionName";

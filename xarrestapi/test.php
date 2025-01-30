@@ -26,7 +26,7 @@ use Xaraya\Modules\Workflow\WorkflowHistory;
 function workflow_restapi_test($args = [], $context = null)
 {
     xarLog::init();
-    $userId = $context?->getUserId() ?? xarSession::getVar('role_id');
+    $userId = $context?->getUserId() ?? xarSession::getUserId();
     // @checkme pass all args from handler here?
     //extract($args);
     $result = $args;

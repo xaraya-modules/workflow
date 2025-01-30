@@ -50,7 +50,7 @@ class ModifyconfigMethod extends MethodClass
         $data = [];
         $data['settings'] = [];
 
-        $data['module_settings'] = xarMod::apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'workflow']);
+        $data['module_settings'] = $this->mod()->apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'workflow']);
         $data['module_settings']->getItem();
 
         $create = $this->mod()->getVar('default.create');
@@ -61,7 +61,7 @@ class ModifyconfigMethod extends MethodClass
             'update' => $update,
             'delete' => $delete, ];
 
-        $hookedmodules = xarMod::apiFunc(
+        $hookedmodules = $this->mod()->apiFunc(
             'modules',
             'admin',
             'gethookedmodules',
@@ -73,7 +73,7 @@ class ModifyconfigMethod extends MethodClass
                 if (!isset($value[0])) {
                     // Get the list of all item types for this module (if any)
                     try {
-                        $mytypes = xarMod::apiFunc($modname, 'user', 'getitemtypes');
+                        $mytypes = $this->mod()->apiFunc($modname, 'user', 'getitemtypes');
                     } catch (Exception $e) {
                         $mytypes = [];
                     }
@@ -197,9 +197,9 @@ class ModifyconfigMethod extends MethodClass
             'result' => '', ];
 
         if ($this->mod()->isAvailable('scheduler')) {
-            $data['intervals'] = xarMod::apiFunc('scheduler', 'user', 'intervals');
+            $data['intervals'] = $this->mod()->apiFunc('scheduler', 'user', 'intervals');
             // see if we have a scheduler job running to execute workflow activities
-            $job = xarMod::apiFunc(
+            $job = $this->mod()->apiFunc(
                 'scheduler',
                 'user',
                 'get',

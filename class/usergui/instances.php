@@ -72,11 +72,11 @@ class InstancesMethod extends MethodClass
                         xarModUserVars::set('workflow', 'seenlist', $seenlist . ';' . $iid);
                     }
                 } else {
-                    $seenlist = xarSession::getVar('workflow.seenlist');
+                    $seenlist = $this->session()->getVar('workflow.seenlist');
                     if (empty($seenlist)) {
-                        xarSession::setVar('workflow.seenlist', $iid);
+                        $this->session()->setVar('workflow.seenlist', $iid);
                     } else {
-                        xarSession::setVar('workflow.seenlist', $seenlist . ';' . $iid);
+                        $this->session()->setVar('workflow.seenlist', $seenlist . ';' . $iid);
                     }
                 }
                 if (!empty($return_url)) {

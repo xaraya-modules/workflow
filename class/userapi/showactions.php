@@ -55,7 +55,7 @@ class ShowactionsMethod extends MethodClass
         $tplData = $args;
         if (!isset($tplData['userId'])) {
             // @todo get userId from $item['user'] here?
-            $tplData['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
+            $tplData['userId'] = $this->getContext()?->getUserId() ?? $this->session()->getUserId();
         }
         $tplData['context'] ??= $this->getContext();
 

@@ -78,7 +78,7 @@ class UpdateconfigMethod extends MethodClass
                 return;
             }
             // see if we have a scheduler job running to execute workflow activities
-            $job = xarMod::apiFunc(
+            $job = $this->mod()->apiFunc(
                 'scheduler',
                 'user',
                 'get',
@@ -89,7 +89,7 @@ class UpdateconfigMethod extends MethodClass
             if (empty($job) || empty($job['interval'])) {
                 if (!empty($interval)) {
                     // create a scheduler job
-                    xarMod::apiFunc(
+                    $this->mod()->apiFunc(
                         'scheduler',
                         'admin',
                         'create',
@@ -101,7 +101,7 @@ class UpdateconfigMethod extends MethodClass
                 }
             } elseif (empty($interval)) {
                 // delete the scheduler job
-                xarMod::apiFunc(
+                $this->mod()->apiFunc(
                     'scheduler',
                     'admin',
                     'delete',
@@ -111,7 +111,7 @@ class UpdateconfigMethod extends MethodClass
                 );
             } elseif ($interval != $job['interval']) {
                 // update the scheduler job
-                xarMod::apiFunc(
+                $this->mod()->apiFunc(
                     'scheduler',
                     'admin',
                     'update',
@@ -123,7 +123,7 @@ class UpdateconfigMethod extends MethodClass
             }
         }
 
-        $data['module_settings'] = xarMod::apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'workflow']);
+        $data['module_settings'] = $this->mod()->apiFunc('base', 'admin', 'getmodulesettings', ['module' => 'workflow']);
         $data['module_settings']->getItem();
         $isvalid = $data['module_settings']->checkInput();
         if (!$isvalid) {

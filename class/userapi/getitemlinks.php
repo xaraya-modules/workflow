@@ -52,7 +52,7 @@ class GetitemlinksMethod extends MethodClass
         include(GALAXIA_LIBRARY . '/gui.php');
 
         if (empty($user)) {
-            $user = xarSession::getVar('role_id') ?? 0;
+            $user = $this->session()->getUserId() ?? 0;
         }
 
         // get the instances this user has access to

@@ -55,7 +55,7 @@ class WorkflowTracker extends WorkflowBase
         // we want to filter on any combination of elements to get tracker items here
         if (empty($userId)) {
             // we want to get tracker items for current user here
-            //$userId = xarSession::getVar('role_id') ?? 0;
+            //$userId = xarSession::getUserId() ?? 0;
         } elseif ($userId < 0) {
             // @checkme we want to get tracker items for all users here
             $userId = null;

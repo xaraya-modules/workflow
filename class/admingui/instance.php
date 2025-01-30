@@ -100,7 +100,7 @@ class InstanceMethod extends MethodClass
         $mapitems = $roleManager->list_mappings($ins_info['pId'], 0, -1, 'name_asc', '');
         // trick : replace userid by user here !
         foreach (array_keys($mapitems['data']) as $index) {
-            $role = xarMod::apiFunc(
+            $role = $this->mod()->apiFunc(
                 'roles',
                 'user',
                 'get',

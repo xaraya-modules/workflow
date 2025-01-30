@@ -63,7 +63,7 @@ class TestRunMethod extends MethodClass
         }
         $data['config'] = WorkflowConfig::loadConfig();
         $data['context'] = $this->getContext();
-        $data['userId'] = $this->getContext()?->getUserId() ?? xarSession::getVar('role_id');
+        $data['userId'] = $this->getContext()?->getUserId() ?? $this->session()->getUserId();
 
         $this->var()->find('workflow', $data['workflow']);
         $this->var()->find('trackerId', $data['trackerId']);

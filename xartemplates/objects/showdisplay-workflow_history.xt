@@ -9,7 +9,7 @@
         <xar:set name="layout">'default'</xar:set>
     </xar:if>
     <xar:if condition="empty($userId)">
-        <xar:set name="userId">$object->getContext()?->getUserId() ?? xarSession::getVar('role_id')</xar:set>
+        <xar:set name="userId">$object->getContext()?->getUserId() ?? xarSession::getUserId()</xar:set>
     </xar:if>
     <xar:if condition="$layout eq 'default'">
         <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>

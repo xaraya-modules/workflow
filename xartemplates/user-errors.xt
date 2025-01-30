@@ -26,7 +26,7 @@
                 <div style="margin-top: 20px; margin-left: 20px">
                     Sorry! A page could not be found
                     <br />
-                    <xar:set name="seedetail">xarSession::getVar('role_id') == xarModVars::get('roles','admin')</xar:set>
+                    <xar:set name="seedetail">xarSession::getUserId() == xarModVars::get('roles','admin')</xar:set>
                     <xar:if condition="!empty($id) AND $seedetail">
                     Activity ID couldn not be matched: #$id#
                     <xar:else/>

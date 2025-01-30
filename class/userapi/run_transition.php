@@ -61,10 +61,10 @@ class RunTransitionMethod extends MethodClass
         // if we come from a hook function
         if (empty($subjectId)) {
             sys::import('modules.dynamicdata.class.objects.descriptor');
-            $moduleName = $args['module'] ?? xarMod::getName();
+            $moduleName = $args['module'] ?? $this->mod()->getName();
             $itemType = $args['itemtype'] ?? 0;
             $itemId = $args['itemid'] ?? 0;
-            $moduleId = $args['module_id'] ?? xarMod::getRegID($moduleName);
+            $moduleId = $args['module_id'] ?? $this->mod()->getRegID($moduleName);
             $info = $this->data()->getObjectID(['moduleid' => $moduleId, 'itemtype' => $itemType]);
             if (empty($info) || empty($info['name'])) {
                 $this->log()->info("No object associated with module '$moduleName' ($moduleId) itemtype '$itemType' for '$transitionName' in '$workflowName'");
