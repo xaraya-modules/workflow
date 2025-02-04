@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
-
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowLogger;

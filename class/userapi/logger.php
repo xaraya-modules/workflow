@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\UserApi;
 
-
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\MethodClass;

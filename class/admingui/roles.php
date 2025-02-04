@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\AdminGui;
 
-
 use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
@@ -228,7 +227,7 @@ class RolesMethod extends MethodClass
         $data['proc_info'] =  $proc_info;
 
         // $data['pager'] = $this->tpl()->getPager($data['offset'],$mapitems['cant'],$url,$maxRecords);
-        $data['url'] = $this->mod()->getURL( 'admin', 'roles', ['pid' => $data['pid'],'offset' => '%%']);
+        $data['url'] = $this->mod()->getURL('admin', 'roles', ['pid' => $data['pid'],'offset' => '%%']);
         $data['maxRecords'] = $maxRecords;
         return $data;
     }

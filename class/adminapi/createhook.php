@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\AdminApi;
 
-
 use Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
@@ -68,15 +67,15 @@ class CreatehookMethod extends MethodClass
         if (!is_numeric($activityId) && strpos($activityId, '/') !== false) {
             [$workflowName, $transitionName] = explode('/', $activityId);
             if (!$userapi->run_transition(['workflow' => $workflowName,
-                    'subjectId' => null,
-                    'transition' => $transitionName,
-                    // extra parameters from hook functions
-                    'hooktype' => 'ItemCreate',
-                    'module' => $modname,
-                    'itemtype' => $itemtype,
-                    'itemid' => $objectid,
-                    'module_id' => $modid,
-                    'extrainfo' => $extrainfo, ])) {
+                'subjectId' => null,
+                'transition' => $transitionName,
+                // extra parameters from hook functions
+                'hooktype' => 'ItemCreate',
+                'module' => $modname,
+                'itemtype' => $itemtype,
+                'itemid' => $objectid,
+                'module_id' => $modid,
+                'extrainfo' => $extrainfo, ])) {
                 return $extrainfo;
             }
             return $extrainfo;
@@ -84,11 +83,11 @@ class CreatehookMethod extends MethodClass
 
         // Galaxia Workflow activity
         if (!$userapi->run_activity(['activityId' => $activityId,
-                'auto' => 1,
-                // standard arguments for use in activity code
-                'module' => $modname,
-                'itemtype' => $itemtype,
-                'itemid' => $objectid, ])) {
+            'auto' => 1,
+            // standard arguments for use in activity code
+            'module' => $modname,
+            'itemtype' => $itemtype,
+            'itemid' => $objectid, ])) {
             return $extrainfo;
         }
 

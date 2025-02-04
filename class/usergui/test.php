@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
-
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowSubject;
@@ -77,28 +76,6 @@ class TestMethod extends MethodClass
 
         WorkflowConfig::setAutoload();
 
-        /**
-         * This is handled automatically by $this->tpl()->module() now,
-         * as long as we pass it the context incl. twig (or not)
-         *
-        // add paths for Twig filesystem loader (with namespace)
-        // {{ include('@workflow/includes/trackeritem.html.twig') }}
-        $paths = [
-            'code/modules/workflow/templates' => 'workflow',
-        ];
-        // override default options for Twig environment
-        $options = [
-            //'cache' => sys::varpath() . '/cache/templates',
-            'debug' => true,
-        ];
-        // get $this->getContext() from GUI/API function call or DataObject
-
-        $twigbridge = new TwigBridge($paths, $options, $this->getContext());
-        $twig = $twigbridge->getEnvironment();
-
-        $template = $twig->load('@workflow/test.html.twig');
-        return $template->render($data);
-         */
         // force using twig if not defined yet
         //$data['context']['twig'] ??= true;
 

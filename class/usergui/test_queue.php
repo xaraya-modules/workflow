@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Workflow\UserGui;
 
-
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\SchedulerApi;
 use Xaraya\Modules\Workflow\WorkflowConfig;

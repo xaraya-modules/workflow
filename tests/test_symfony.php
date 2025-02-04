@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module Test Script for Symfony Workflow tests
  *
