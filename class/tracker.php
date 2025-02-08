@@ -108,6 +108,22 @@ class WorkflowTracker extends WorkflowBase
         $items = $loader->query($params);
         // @checkme if we didn't ask for a count in paging, this will return false
         static::$count = $loader->count;
+        return static::getValues($items);
+    }
+
+    /**
+     * Summary of getValues
+     * @param array<mixed> $items
+     * @return array<mixed>
+     */
+    public static function getValues($items)
+    {
+        foreach ($items as $id => $item) {
+            if (empty($item['object']) || empty($item['item'])) {
+                continue;
+            }
+            $items[$id]['subject_id'] = static::toSubjectId($item['object'], $item['item']);
+        }
         return array_values($items);
     }
 
@@ -130,7 +146,7 @@ class WorkflowTracker extends WorkflowBase
         if (is_array($trackerIds)) {
             $loader = new DataObjectLoader(static::$objectName, static::$fieldList);
             // @todo add paging - not really used here, but in history
-            return array_values($loader->getValues($trackerIds));
+            return static::getValues($loader->getValues($trackerIds));
         }
         return [ static::getTrackerItem($trackerIds) ];
     }
