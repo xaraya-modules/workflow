@@ -40,11 +40,12 @@ class  TransitionsMethod extends MethodClass
      * 3. waiting for this to check all articles active in the workflow tracker, to see
      *    if they are in place 'wait_for_spellchecker' and then process them
      * @uses \sys::autoload()
+     * @see SchedulerApi::transitions()
      */
     public function __invoke(array $args = [])
     {
         sys::autoload();
-        $log = xarMLS::translate('Starting scheduled workflow transitions') . "\n";
+        $log = $this->ml('Starting scheduled workflow transitions') . "\n";
         // let the event handler called for this transition know that we have been scheduled
         if (empty($args['scheduled'])) {
             $args['scheduled'] = 'scheduler';
@@ -61,7 +62,7 @@ class  TransitionsMethod extends MethodClass
             // @checkme let the event handler called for this transition know that we have been scheduled
             $params['scheduled'] = $args['scheduled'];
             try {
-                $result = xarMod::apiFunc('workflow', 'user', 'run_transition', $params, $this->getContext());
+                $result = $this->mod()->apiMethod('workflow', 'user', 'run_transition', $params);
                 $log .= "Scheduled transition " . $item['transition'] . " in workflow " . $item['workflow'] . " for subject " . $item['subject'] . " succeeded";
                 $id = WorkflowQueue::delete($item['id']);
             } catch (Exception $e) {

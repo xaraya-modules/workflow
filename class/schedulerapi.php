@@ -18,6 +18,8 @@ sys::import('xaraya.modules.userapi');
 
 /**
  * Handle the workflow scheduler API
+ * @method mixed activities(array $args = []) run all scheduled workflow activities (executed by the scheduler module)
+ * @method mixed transitions(array $args = []) run all scheduled workflow transitions (executed by the scheduler module)
  * @extends UserApiClass<Module>
  */
 class SchedulerApi extends UserApiClass

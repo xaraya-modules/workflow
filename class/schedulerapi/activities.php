@@ -33,6 +33,7 @@ class  ActivitiesMethod extends MethodClass
      * run all scheduled workflow activities (executed by the scheduler module)
      * @author mikespub
      * @access public
+     * @see SchedulerApi::activities()
      */
     public function __invoke(array $args = [])
     {
@@ -40,8 +41,8 @@ class  ActivitiesMethod extends MethodClass
         // workflow activities to run when. Other modules will typically have 1 job that corresponds
         // to 1 API function, so they won't need this...
     
-        $log = xarMLS::translate('Starting scheduled workflow activities') . "\n";
-        $serialjobs = xarModVars::get('workflow', 'jobs');
+        $log = $this->ml('Starting scheduled workflow activities') . "\n";
+        $serialjobs = $this->mod()->getVar('jobs');
         if (!empty($serialjobs)) {
             $jobs = unserialize($serialjobs);
         } else {
@@ -89,25 +90,24 @@ class  ActivitiesMethod extends MethodClass
                     continue;
                 }
             }
-            $log .= xarMLS::translate('Workflow activity #(1)', $job['activity']) . ' ';
-            if (!xarMod::apiFunc(
+            $log .= $this->ml('Workflow activity #(1)', $job['activity']) . ' ';
+            if (!$this->mod()->apiMethod(
                 'workflow',
                 'user',
                 'run_activity',
-                ['activityId' => $job['activity']],
-                $this->getContext()
+                ['activityId' => $job['activity']]
             )) {
-                $jobs[$id]['result'] = xarMLS::translate('failed');
-                $log .= xarMLS::translate('failed');
+                $jobs[$id]['result'] = $this->ml('failed');
+                $log .= $this->ml('failed');
             } else {
-                $jobs[$id]['result'] = xarMLS::translate('OK');
-                $log .= xarMLS::translate('succeeded');
+                $jobs[$id]['result'] = $this->ml('OK');
+                $log .= $this->ml('succeeded');
             }
             $jobs[$id]['lastrun'] = $now - 60; // remove the margin here
             $hasrun[] = $id;
             $log .= "\n";
         }
-        $log .= xarMLS::translate('Finished scheduled workflow activities');
+        $log .= $this->ml('Finished scheduled workflow activities');
     
         // we didn't run anything, so return now
         if (count($hasrun) == 0) {
@@ -116,10 +116,10 @@ class  ActivitiesMethod extends MethodClass
     
         // Trick : make sure we're dealing with up-to-date information here,
         //         because running all those jobs may have taken a while...
-        xarVar::delCached('Mod.Variables.workflow', 'jobs');
+        $this->var()->delCached('Mod.Variables.workflow', 'jobs');
     
         // get the current list of jobs
-        $serialjobs = xarModVars::get('workflow', 'jobs');
+        $serialjobs = $this->mod()->getVar('jobs');
         if (!empty($serialjobs)) {
             $newjobs = unserialize($serialjobs);
         } else {
@@ -139,7 +139,7 @@ class  ActivitiesMethod extends MethodClass
         }
         // update the new jobs
         $serialjobs = serialize($newjobs);
-        xarModVars::set('workflow', 'jobs', $serialjobs);
+        $this->mod()->setVar('jobs', $serialjobs);
     
         return $log;
     }
