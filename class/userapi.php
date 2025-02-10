@@ -52,5 +52,7 @@ sys::import('xaraya.modules.userapi');
  */
 class UserApi extends UserApiClass
 {
+    use OtherApiTrait;
+
     // ...
 }

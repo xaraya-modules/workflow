@@ -11,17 +11,16 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use Xaraya\Modules\ModuleClass;
+use Xaraya\Modules\UserApiClass;
+use sys;
+
+sys::import('xaraya.modules.userapi');
 
 /**
- * Get workflow module classes via xarMod::getModule()
+ * Handle the workflow scheduler API
+ * @extends UserApiClass<Module>
  */
-class Module extends ModuleClass
+class SchedulerApi extends UserApiClass
 {
-    public function setClassTypes(): void
-    {
-        parent::setClassTypes();
-        // add other class types for workflow
-        $this->classtypes['schedulerapi'] = 'SchedulerApi';
-    }
+    // ...
 }
