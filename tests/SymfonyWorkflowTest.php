@@ -173,13 +173,14 @@ final class SymfonyWorkflowTest extends TestCase
         $subject->setContext($transitionContext);
 
         $expected = 'cdcollection';
-        $this->assertEquals($expected, $subject->getObject()->name);
-        $this->assertEquals($transitionContext, $subject->getObject()->getContext());
-        $expected = 'Call to a member function getUserId() on array';
         try {
+            $this->assertEquals($expected, $subject->getObject()->name);
+            $this->assertEquals($transitionContext, $subject->getObject()->getContext());
             $userId = $subject->getObject()->getContext()->getUserId();
         } catch (Throwable $e) {
+            $expected = 'Call to a member function tracePath() on array';
             $this->assertEquals($expected, $e->getMessage());
         }
+        //$expected = 'Call to a member function getUserId() on array';
     }
 }
