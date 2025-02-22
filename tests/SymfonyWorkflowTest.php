@@ -1,5 +1,7 @@
 <?php
 
+namespace Xaraya\Modules\Workflow\Tests;
+
 use PHPUnit\Framework\TestCase;
 use Xaraya\Context\Context;
 use Xaraya\Context\SessionContext;
@@ -11,6 +13,12 @@ use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 //use Xaraya\Sessions\SessionHandler;
 use Symfony\Component\Workflow\Workflow;
+use sys;
+use xarCache;
+use xarDatabase;
+use xarLog;
+use xarSession;
+use Throwable;
 
 final class SymfonyWorkflowTest extends TestCase
 {
