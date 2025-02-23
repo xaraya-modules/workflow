@@ -67,11 +67,11 @@ if (!xarMod::apiFunc('articles','user','checksecurity',$input)) {
 unset($input);
 
 // Get parameters
-if (!xarVar::fetch('edit','isset', $edit, NULL, xarVar::DONT_SET)) {return;}
-if (!xarVar::fetch('approve','isset', $approve, NULL, xarVar::DONT_SET)) {return;}
-if (!xarVar::fetch('reject','isset', $reject, NULL, xarVar::DONT_SET)) {return;}
-if (!xarVar::fetch('frontpage','isset', $frontpage, NULL, xarVar::DONT_SET)) {return;}
-if (!xarVar::fetch('reason','isset', $reason, NULL, xarVar::DONT_SET)) {return;}
+xarVar::fetch('edit','isset', $edit, NULL, xarVar::DONT_SET);
+xarVar::fetch('approve','isset', $approve, NULL, xarVar::DONT_SET);
+xarVar::fetch('reject','isset', $reject, NULL, xarVar::DONT_SET);
+xarVar::fetch('frontpage','isset', $frontpage, NULL, xarVar::DONT_SET);
+xarVar::fetch('reason','isset', $reason, NULL, xarVar::DONT_SET);
 if (empty($reason)) $reason = '';
 
 if (!empty($edit)) {
