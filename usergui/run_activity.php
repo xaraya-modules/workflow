@@ -42,7 +42,7 @@ class RunActivityMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $this->log()->message("Running activity");
+        $this->log()->debug("Running activity");
         // Security Check
         // CHECKME: what if an activity is Auto? (probably nothing different)
         if (!$this->sec()->checkAccess('ReadWorkflow')) {

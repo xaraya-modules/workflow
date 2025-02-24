@@ -60,7 +60,7 @@ class GraphMethod extends MethodClass
         }
 
         if ($_REQUEST["pid"]) {
-            $this->log()->message("WORKFLOW: Getting process");
+            $this->log()->debug("WORKFLOW: Getting process");
             $process = new \Galaxia\Api\Process($_REQUEST['pid']);
             $procNName = $process->getNormalizedName();
 
@@ -71,12 +71,12 @@ class GraphMethod extends MethodClass
 
             if (!file_exists($process->getGraph()) or !file_exists($mapfile)) {
                 // Try to build it
-                $this->log()->message("WF: need to build graph files");
+                $this->log()->debug("WF: need to build graph files");
                 $activityManager->build_process_graph($_REQUEST['pid']);
             }
 
             if (file_exists($process->getGraph()) && file_exists($mapfile)) {
-                $this->log()->message("WF: graph files exist");
+                $this->log()->debug("WF: graph files exist");
                 $map = join('', file($mapfile));
 
                 $url = $this->mod()->getURL(

@@ -41,7 +41,7 @@ class ProcessesMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $this->log()->message('WF: workflow_admin_processes ');
+        $this->log()->debug('WF: workflow_admin_processes ');
         // Security Check
         if (!$this->sec()->checkAccess('AdminWorkflow')) {
             return;
@@ -76,14 +76,14 @@ class ProcessesMethod extends MethodClass
         $data['pid'] =  $_REQUEST['pid'];
 
         //Check here for an uploaded process
-        $this->log()->message('WF: checking for uploaded process');
+        $this->log()->debug('WF: checking for uploaded process');
         if (isset($_FILES['userfile1']) && is_uploaded_file($_FILES['userfile1']['tmp_name'])) {
-            $this->log()->message('WF: Found upload file');
+            $this->log()->debug('WF: Found upload file');
             // move the uploaded file to some temporary wf* file in cache/templates
             $tmpdir = sys::varpath() . '/cache/templates';
             $tmpfile = tempnam($tmpdir, 'wf');
             if (move_uploaded_file($_FILES['userfile1']['tmp_name'], $tmpfile) && file_exists($tmpfile)) {
-                $this->log()->message('WF: Temporary upload file found, reading it in.');
+                $this->log()->debug('WF: Temporary upload file found, reading it in.');
                 $fp = fopen($tmpfile, "rb");
 
                 $xml = '';
@@ -110,7 +110,7 @@ class ProcessesMethod extends MethodClass
                 unlink($tmpfile);
             }
         }
-        $this->log()->message('WF: done with the uploading');
+        $this->log()->debug('WF: done with the uploading');
 
         if (isset($_REQUEST["delete"])) {
             foreach (array_keys($_REQUEST["process"]) as $item) {
