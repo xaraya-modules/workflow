@@ -52,9 +52,7 @@ class ActivitiesMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
 
-        if (!$this->var()->find('pid', $data['pid'], 'int')) {
-            return;
-        }
+        $this->var()->find('pid', $data['pid'], 'int');
         if (empty($data['pid'])) {
             $data['msg'] =  $this->ml("No process indicated");
             $data['context'] ??= $this->getContext();
@@ -74,9 +72,7 @@ class ActivitiesMethod extends MethodClass
 
         // Retrieve activity info if we are editing, assign to
         // default values when creating a new activity
-        if (!$this->var()->find('activityId', $data['activityId'], 'int', 0)) {
-            return;
-        }
+        $this->var()->find('activityId', $data['activityId'], 'int', 0);
         if (!empty($data['activityId'])) {
             $data['activity']->getItem(['itemid' => $data['activityId']]);
         }
@@ -110,9 +106,7 @@ class ActivitiesMethod extends MethodClass
 
         $role_to_add = 0;
         // Add a role to the process
-        if (!$this->var()->find('addrole', $data['addrole'], 'int', 0)) {
-            return;
-        }
+        $this->var()->find('addrole', $data['addrole'], 'int', 0);
         if (isset($addrole)) {
             $data['activity']->checkInput();
             $isInteractive = (isset($_REQUEST['isInteractive']) && $_REQUEST['isInteractive'] == 'on') ? 1 : 0;
@@ -292,9 +286,7 @@ class ActivitiesMethod extends MethodClass
         // ---------------------------------------
         // Update all activities at once
 
-        if (!$this->var()->find('update_act', $update_act)) {
-            return;
-        }
+        $this->var()->find('update_act', $update_act);
         if ($update_act) {
             for ($i = 0, $na = count($activities['data']); $i < $na; $i++) {
                 // Make id a bit more accessible

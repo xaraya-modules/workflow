@@ -55,21 +55,11 @@ class MonitorActivitiesMethod extends MethodClass
         // Adapted from tiki-g-monitor_activities.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!$this->var()->find('filter_process', $data['filter_process'], 'int', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_activity', $data['filter_activity'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_type', $data['filter_type'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_isInteractive', $data['filter_isInteractive'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_isAutoRouted', $data['filter_isAutoRouted'], 'str', '')) {
-            return;
-        }
+        $this->var()->find('filter_process', $data['filter_process'], 'int', '');
+        $this->var()->find('filter_activity', $data['filter_activity'], 'str', '');
+        $this->var()->find('filter_type', $data['filter_type'], 'str', '');
+        $this->var()->find('filter_isInteractive', $data['filter_isInteractive'], 'str', '');
+        $this->var()->find('filter_isAutoRouted', $data['filter_isAutoRouted'], 'str', '');
 
         // Filtering data to be received by request and
         // used to build the where part of a query

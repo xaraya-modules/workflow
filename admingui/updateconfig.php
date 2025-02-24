@@ -57,9 +57,7 @@ class UpdateconfigMethod extends MethodClass
             $this->mod()->setVar($key, $val);
         }
 
-        if (!$this->var()->find('jobs', $jobs, 'isset', [])) {
-            return;
-        }
+        $this->var()->find('jobs', $jobs, 'isset', []);
         if (empty($jobs)) {
             $jobs = [];
         }
@@ -73,9 +71,7 @@ class UpdateconfigMethod extends MethodClass
         $this->mod()->setVar('jobs', $serialjobs);
 
         if ($this->mod()->isAvailable('scheduler')) {
-            if (!$this->var()->find('interval', $interval, 'str:1', '')) {
-                return;
-            }
+            $this->var()->find('interval', $interval, 'str:1', '');
             // see if we have a scheduler job running to execute workflow activities
             $job = $this->mod()->apiFunc(
                 'scheduler',

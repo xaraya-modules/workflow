@@ -55,15 +55,9 @@ class MonitorProcessesMethod extends MethodClass
         // Adapted from tiki-g-monitor_processes.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!$this->var()->find('filter_process', $data['filter_process'], 'int', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_active', $data['filter_active'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_valid', $data['filter_valid'], 'str', '')) {
-            return;
-        }
+        $this->var()->find('filter_process', $data['filter_process'], 'int', '');
+        $this->var()->find('filter_active', $data['filter_active'], 'str', '');
+        $this->var()->find('filter_valid', $data['filter_valid'], 'str', '');
 
         // Filtering data to be received by request and
         // used to build the where part of a query

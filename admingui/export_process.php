@@ -42,9 +42,7 @@ class ExportProcessMethod extends MethodClass
         }
 
         $data = [];
-        if (!$this->var()->find('pid', $data['processid'], 'int', 0)) {
-            return;
-        }
+        $this->var()->find('pid', $data['processid'], 'int', 0);
 
         // Common setup for Galaxia environment
         sys::import('modules.workflow.lib.galaxia.config');

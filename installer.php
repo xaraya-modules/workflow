@@ -69,9 +69,7 @@ class Installer extends InstallerClass
      */
     public function init()
     {
-        if (!$this->var()->find('loadexample', $loadexample, 'checkbox', 1)) {
-            return;
-        }
+        $this->var()->find('loadexample', $loadexample, 'checkbox', 1);
 
         $dbconn = $this->db()->getConn();
         $xartable = $this->db()->getTables();

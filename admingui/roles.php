@@ -55,9 +55,7 @@ class RolesMethod extends MethodClass
         // Adapted from tiki-g-admin_roles.php
         include_once(GALAXIA_LIBRARY . '/processmanager.php');
 
-        if (!$this->var()->find('pid', $pid, 'id')) {
-            return;
-        }
+        $this->var()->find('pid', $pid, 'id');
         if (empty($pid)) {
             $data['msg'] =  $this->ml("No process indicated");
             $data['context'] ??= $this->getContext();
@@ -71,9 +69,7 @@ class RolesMethod extends MethodClass
         $proc_info['graph'] = $process->getGraph();
 
         // Role ID set?
-        if (!$this->var()->find('roleId', $roleId, 'id', 0)) {
-            return;
-        }
+        $this->var()->find('roleId', $roleId, 'id', 0);
         if ($roleId) {
             // Get it
             $data['info'] = $roleManager->get_role($pid, $roleId);

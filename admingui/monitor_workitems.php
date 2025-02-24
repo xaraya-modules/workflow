@@ -56,18 +56,10 @@ class MonitorWorkitemsMethod extends MethodClass
         // Adapted from tiki-g-monitor_workitems.php
         include_once(GALAXIA_LIBRARY . '/processmonitor.php');
 
-        if (!$this->var()->find('filter_process', $data['filter_process'], 'int', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_activity', $data['filter_activity'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_user', $data['filter_user'], 'str', '')) {
-            return;
-        }
-        if (!$this->var()->find('filter_instance', $data['filter_instance'], 'str', '')) {
-            return;
-        }
+        $this->var()->find('filter_process', $data['filter_process'], 'int', '');
+        $this->var()->find('filter_activity', $data['filter_activity'], 'str', '');
+        $this->var()->find('filter_user', $data['filter_user'], 'str', '');
+        $this->var()->find('filter_instance', $data['filter_instance'], 'str', '');
 
         // Filtering data to be received by request and
         // used to build the where part of a query
