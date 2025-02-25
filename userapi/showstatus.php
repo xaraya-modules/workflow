@@ -53,7 +53,7 @@ class ShowstatusMethod extends MethodClass
         include(GALAXIA_LIBRARY . '/processmonitor.php');
 
         if (empty($user)) {
-            $user = xarUser::getVar('id');
+            $user = $this->user()->getId();
         }
 
         // TODO: keep track of instances from anonymous visitors via session ?
@@ -106,8 +106,8 @@ class ShowstatusMethod extends MethodClass
         $items = $processMonitor->monitor_list_instances($startnum - 1, $numitems, $sort_mode, '', $where, []);
 
         // filter out instances the user doesn't want to see
-        if (xarUser::isLoggedIn()) {
-            $seenlist = xarModUserVars::get('workflow', 'seenlist');
+        if ($this->user()->isLoggedIn()) {
+            $seenlist = $this->mod()->getUserVar('seenlist');
         } else {
             $seenlist = $this->session()->getVar('workflow.seenlist');
         }

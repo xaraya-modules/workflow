@@ -52,7 +52,7 @@ class ProcessesMethod extends MethodClass
         include_once(GALAXIA_LIBRARY . '/gui.php');
 
         // Initialize some stuff
-        $user = xarUser::getVar('id');
+        $user = $this->user()->getId();
         $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Filtering data to be received by request and

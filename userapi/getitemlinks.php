@@ -51,7 +51,7 @@ class GetitemlinksMethod extends MethodClass
         include(GALAXIA_LIBRARY . '/gui.php');
 
         if (empty($user)) {
-            $user = $this->session()->getUserId() ?? 0;
+            $user = $this->user()->getId() ?? 0;
         }
 
         // get the instances this user has access to

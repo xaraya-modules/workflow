@@ -52,7 +52,7 @@ class InstancesMethod extends MethodClass
         $usergui = $this->usergui();
 
         // Initialize some stuff
-        $user = xarUser::getVar('id');
+        $user = $this->user()->getId();
         $maxRecords = $this->mod()->getVar('items_per_page');
 
         if (isset($_REQUEST['run']) || isset($_REQUEST['run_x'])) {
@@ -63,12 +63,12 @@ class InstancesMethod extends MethodClass
             $this->var()->find('iid', $iid);
             $this->var()->find('return_url', $return_url);
             if (!empty($iid)) {
-                if (xarUser::isLoggedIn()) {
-                    $seenlist = xarModUserVars::get('workflow', 'seenlist');
+                if ($this->user()->isLoggedIn()) {
+                    $seenlist = $this->mod()->getUserVar('seenlist');
                     if (empty($seenlist)) {
-                        xarModUserVars::set('workflow', 'seenlist', $iid);
+                        $this->mod()->setUserVar('seenlist', $iid);
                     } else {
-                        xarModUserVars::set('workflow', 'seenlist', $seenlist . ';' . $iid);
+                        $this->mod()->setUserVar('seenlist', $seenlist . ';' . $iid);
                     }
                 } else {
                     $seenlist = $this->session()->getVar('workflow.seenlist');
@@ -235,7 +235,7 @@ class InstancesMethod extends MethodClass
         $data['filter_act_status'] = $_REQUEST['filter_act_status'] ?? '';
         $data['filter_user'] = $_REQUEST['filter_user'] ?? '';
         $data['userId'] = $user;
-        $data['user'] = xarUser::getVar('name', $user);
+        $data['user'] = $this->user($user)->getName();
 
         /*    $data['pager'] = $this->tpl()->getPager($data['offset'],
                                                $items['cant'],

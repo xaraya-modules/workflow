@@ -94,7 +94,7 @@ class WorkflowsProperty extends TextAreaProperty implements Traits\MarkingInterf
         if (!empty($data['preview'])) {
             return $this->ml('Preview');
         }
-        $data['userId'] = $this->objectref->getContext()?->getUserId() ?? $this->session()->getUserId();
+        $data['userId'] = $this->objectref->getContext()?->getUserId() ?? $this->user()->getId();
         $data['subjectId'] = $this->getId();
         // pass along objectref for WorkflowTracker::getItems()
         $data['objectref'] = $this->objectref;

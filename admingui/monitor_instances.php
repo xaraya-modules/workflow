@@ -192,14 +192,14 @@ class MonitorInstancesMethod extends MethodClass
             $items['data'][$index]['timescale'] = intval($scale * $info['duration']);
             $items['data'][$index]['duration'] = $userapi->timetodhms(['time' => $info['duration']]);
             if (!empty($info['started'])) {
-                $items['data'][$index]['started'] = xarLocale::getFormattedDate('medium', $info['started']) . ' '
-                                                . xarLocale::getFormattedTime('short', $info['started']);
+                $items['data'][$index]['started'] = $this->mls()->getFormattedDate('medium', $info['started']) . ' '
+                                                . $this->mls()->getFormattedTime('short', $info['started']);
             }
             if (is_numeric($info['user'])) {
-                $items['data'][$index]['user'] = xarUser::getVar('name', $info['user']);
+                $items['data'][$index]['user'] = $this->user($info['user'])->getName();
             }
             if (is_numeric($info['owner'])) {
-                $items['data'][$index]['owner'] = xarUser::getVar('name', $info['owner']);
+                $items['data'][$index]['owner'] = $this->user($info['owner'])->getName();
             }
         }
         $tplData['items'] = &$items["data"];
@@ -253,7 +253,7 @@ class MonitorInstancesMethod extends MethodClass
                 $tplData['users'][$index]['user'] = $users[$index];
                 $tplData['users'][$index]['userId'] = $users[$index];
             } else {
-                $tplData['users'][$index]['user'] = xarUser::getVar('name', $users[$index]);
+                $tplData['users'][$index]['user'] = $this->user($users[$index])->getName();
                 $tplData['users'][$index]['userId'] = $users[$index];
             }
         }
@@ -264,7 +264,7 @@ class MonitorInstancesMethod extends MethodClass
                 $tplData['owners'][$index]['user'] = $owners[$index];
                 $tplData['owners'][$index]['userId'] = $owners[$index];
             } else {
-                $tplData['owners'][$index]['user'] = xarUser::getVar('name', $owners[$index]);
+                $tplData['owners'][$index]['user'] = $this->user($owners[$index])->getName();
                 $tplData['owners'][$index]['userId'] = $owners[$index];
             }
         }

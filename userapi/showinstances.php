@@ -52,7 +52,7 @@ class ShowinstancesMethod extends MethodClass
         include(GALAXIA_LIBRARY . '/gui.php');
 
         if (empty($user)) {
-            $user = xarUser::getVar('id');
+            $user = $this->user()->getId();
         }
 
         // TODO: keep track of instances from anonymous visitors via session ?
@@ -109,8 +109,8 @@ class ShowinstancesMethod extends MethodClass
         }
 
         // filter out instances the user doesn't want to see
-        if (xarUser::isLoggedIn()) {
-            $seenlist = xarModUserVars::get('workflow', 'seenlist');
+        if ($this->user()->isLoggedIn()) {
+            $seenlist = $this->mod()->getUserVar('seenlist');
         } else {
             $seenlist = $this->session()->getVar('workflow.seenlist');
         }

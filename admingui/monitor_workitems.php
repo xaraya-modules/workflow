@@ -141,13 +141,13 @@ class MonitorWorkitemsMethod extends MethodClass
             $items['data'][$index]['timescale'] = intval($scale * $info['duration']);
             $items['data'][$index]['duration'] = $userapi->timetodhms(['time' => $info['duration']]);
             if (!empty($info['started'])) {
-                $items['data'][$index]['started'] = xarLocale::getFormattedDate('medium', $info['started']) . ' '
-                                                . xarLocale::getFormattedTime('short', $info['started']);
+                $items['data'][$index]['started'] = $this->mls()->getFormattedDate('medium', $info['started']) . ' '
+                                                . $this->mls()->getFormattedTime('short', $info['started']);
             }
             if (!is_numeric($info['user'])) {
                 continue;
             }
-            $items['data'][$index]['user'] = xarUser::getVar('name', $info['user']);
+            $items['data'][$index]['user'] = $this->user($info['user'])->getName();
         }
         $data['items'] = &$items["data"];
 
@@ -191,7 +191,7 @@ class MonitorWorkitemsMethod extends MethodClass
                 $data['users'][$index]['user'] = $users[$index];
                 $data['users'][$index]['userId'] = $users[$index];
             } else {
-                $data['users'][$index]['user'] = xarUser::getVar('name', $users[$index]);
+                $data['users'][$index]['user'] = $this->user($users[$index])->getName();
                 $data['users'][$index]['userId'] = $users[$index];
             }
         }

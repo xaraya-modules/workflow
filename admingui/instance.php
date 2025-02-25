@@ -80,8 +80,8 @@ class InstanceMethod extends MethodClass
         // Get the instance and set instance information
         $ins_info = $instanceManager->get_instance($_REQUEST['iid']);
         if (!empty($ins_info['started'])) {
-            $date = xarLocale::getFormattedDate('medium', $ins_info['started']) . ' '
-                    . xarLocale::getFormattedTime('short', $ins_info['started']);
+            $date = $this->mls()->getFormattedDate('medium', $ins_info['started']) . ' '
+                    . $this->mls()->getFormattedTime('short', $ins_info['started']);
             $ins_info['started'] = $date;
         }
         $tplData['ins_info'] = &$ins_info;

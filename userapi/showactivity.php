@@ -58,7 +58,7 @@ class ShowactivityMethod extends MethodClass
         $process = new \Galaxia\Api\Process($activity->getProcessId());
 
         if (empty($user)) {
-            $user = xarUser::getVar('id');
+            $user = $this->user()->getId();
         }
         if (!empty($args['instanceId'])) {
             $instance->getInstance($args['instanceId']);

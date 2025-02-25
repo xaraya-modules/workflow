@@ -59,7 +59,7 @@ class WorkitemMethod extends MethodClass
 
         $wi = $processMonitor->monitor_get_workitem($_REQUEST['itemId']);
         if (is_numeric($wi['user'])) {
-            $wi['user'] = xarUser::getVar('name', $wi['user']);
+            $wi['user'] = $this->user($wi['user'])->getName();
         }
         $tplData['wi'] = &$wi;
 

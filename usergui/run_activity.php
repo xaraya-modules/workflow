@@ -54,7 +54,7 @@ class RunActivityMethod extends MethodClass
         $data = [];
         // global $user variable used by instance
         global $user;
-        $user = xarUser::getVar('id');
+        $user = $this->user()->getId();
         //--------------------------------------------- Load the instance class
         include(GALAXIA_LIBRARY . '/api.php');
         /** @var \Galaxia\Api\Instance $instance */
@@ -259,7 +259,7 @@ class RunActivityMethod extends MethodClass
 
                 // If we are not testing, then display the output in its own page
                 // Otherwise display it as part of this page
-                if (!xarUser::isSiteAdmin()) {
+                if (!$this->user()->isSiteAdmin()) {
                     return $output;
                 }
             } elseif (isset($_REQUEST['auto']) && $activity->isInteractive()) {
