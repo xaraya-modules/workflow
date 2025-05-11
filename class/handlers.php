@@ -15,7 +15,6 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use DataObject;
 use DataObjectFactory;
 use xarCache;
 use xarLog;
@@ -143,8 +142,9 @@ class WorkflowHandlers extends WorkflowBase
         return $handler;
     }
 
-    public static function doCheckAccess(string|DataObject $objectName, int|null $itemId, string $action, int $userId)
+    public static function doCheckAccess(string|object $objectName, int|null $itemId, string $action, int $userId)
     {
+        // DataObject or stdClass for WorkflowSubject
         if (is_object($objectName)) {
             $objectRef = $objectName;
             $objectName = $objectRef->name;
@@ -216,8 +216,9 @@ class WorkflowHandlers extends WorkflowBase
         return $handler;
     }
 
-    public static function doCheckProperty(string|DataObject $objectName, int|null $itemId, array $propertyMapping)
+    public static function doCheckProperty(string|object $objectName, int|null $itemId, array $propertyMapping)
     {
+        // DataObject or stdClass for WorkflowSubject
         if (is_object($objectName)) {
             $objectRef = $objectName;
             $objectName = $objectRef->name;
