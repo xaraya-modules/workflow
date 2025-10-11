@@ -8,7 +8,7 @@
         "optimize-autoloader": true,
         "sort-packages": true
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "conflict": {
         "xaraya/core": "<2.4.1"
@@ -18,7 +18,7 @@
     },
     "require": {
         "psr/log": "^3.0",
-        "symfony/event-dispatcher": "^6.4||^7.3",
-        "symfony/workflow": "^6.4||^7.3"
+        "symfony/event-dispatcher": "^7.4",
+        "symfony/workflow": "^7.4"
     }
 }
