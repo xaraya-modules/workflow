@@ -15,8 +15,6 @@ use Xaraya\Modules\MethodClass;
 use Xaraya\Modules\Workflow\SchedulerApi;
 use Xaraya\Modules\Workflow\WorkflowQueue;
 use Exception;
-use xarMLS;
-use xarMod;
 use sys;
 
 sys::import('xaraya.modules.method');

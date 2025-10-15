@@ -13,16 +13,9 @@ namespace Xaraya\Modules\Workflow\UserGui;
 
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
-use xarLog;
-use xarSecurity;
-use xarUser;
 use xarTpl;
-use xarController;
 use xarModHooks;
-use xarSession;
-use xarModVars;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

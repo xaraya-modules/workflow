@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Workflow\AdminApi;
 
 use Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
 use sys;
 use BadParameterException;
 

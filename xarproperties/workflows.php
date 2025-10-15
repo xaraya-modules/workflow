@@ -17,9 +17,6 @@ namespace Xaraya\Modules\Workflow;
 
 use TextAreaProperty;
 use ObjectDescriptor;
-use xarMLS;
-use xarSession;
-use xarVar;
 use sys;
 
 sys::import('modules.base.xarproperties.textarea');

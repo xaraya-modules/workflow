@@ -13,11 +13,7 @@ namespace Xaraya\Modules\Workflow\UserApi;
 
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarSession;
-use xarController;
-use xarVar;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

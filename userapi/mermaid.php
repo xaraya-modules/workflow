@@ -16,7 +16,6 @@ use Symfony\Component\Workflow\Dumper\MermaidDumper;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\MethodClass;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

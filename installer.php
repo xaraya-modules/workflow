@@ -14,13 +14,9 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Modules\InstallerClass;
-use xarVar;
-use xarDB;
 use xarSystemVars;
 use xarTableDDL;
 use xarMod;
-use xarModVars;
-use xarController;
 use xarPrivileges;
 use xarMasks;
 use xarHooks;

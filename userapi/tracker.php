@@ -15,7 +15,6 @@ use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

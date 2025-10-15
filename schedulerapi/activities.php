@@ -13,10 +13,6 @@ namespace Xaraya\Modules\Workflow\SchedulerApi;
 
 use Xaraya\Modules\MethodClass;
 use Xaraya\Modules\Workflow\SchedulerApi;
-use xarMLS;
-use xarMod;
-use xarModVars;
-use xarVar;
 use sys;
 
 sys::import('xaraya.modules.method');

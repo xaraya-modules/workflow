@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Workflow\UserApi;
 
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarSecurity;
 use sys;
 use Exception;
 

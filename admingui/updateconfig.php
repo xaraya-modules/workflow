@@ -13,15 +13,7 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 
 use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
-use xarSec;
-use xarSecurity;
-use xarVar;
-use xarModVars;
-use xarMod;
-use xarTpl;
-use xarController;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

@@ -22,7 +22,6 @@ use ApiHookSubject;
 use GuiHookSubject;
 use Exception;
 use xarMod;
-use xarLog;
 use sys;
 
 sys::import('xaraya.structures.hooks.observer');

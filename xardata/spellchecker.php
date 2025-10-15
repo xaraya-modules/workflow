@@ -17,7 +17,6 @@ namespace Xaraya\Modules\Publications;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Xaraya\Modules\Workflow\WorkflowHandlers;
 use Xaraya\Modules\Workflow\WorkflowSubject;
-use xarLog;
 use sys;
 
 sys::import('modules.workflow.class.subject');

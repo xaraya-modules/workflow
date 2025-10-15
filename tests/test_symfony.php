@@ -38,7 +38,6 @@ sys::import('modules.workflow.class.subject');
 sys::import('modules.workflow.class.tracker');
 //sys::import('modules.workflow.class.logger');
 
-use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
