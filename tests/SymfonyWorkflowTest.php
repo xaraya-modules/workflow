@@ -123,7 +123,6 @@ final class SymfonyWorkflowTest extends TestCase
     {
         // initialize session
         xarSession::init();
-        //$_SESSION[SessionHandler::PREFIX.'role_id'] = 6;
         $xarayaContext = new Context(['hello' => 'world']);
         xarSession::getInstance()->startSession($xarayaContext, 'phpunit', 6);
 

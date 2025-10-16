@@ -38,6 +38,8 @@ sys::import('modules.workflow.class.subject');
 sys::import('modules.workflow.class.tracker');
 //sys::import('modules.workflow.class.logger');
 
+use Xaraya\Context\Context;
+use Xaraya\Context\SessionContext;
 use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
@@ -53,8 +55,12 @@ use Symfony\Component\Workflow\Workflow;
 $workflow = WorkflowProcess::getProcess('cd_loans');
 
 // initialize session
+xarSession::setSessionClass(SessionContext::class);
 xarSession::init();
-$_SESSION[SessionHandler::PREFIX . 'role_id'] = 6;
+
+// start session with userId
+$xarayaContext = new Context(['hello' => 'world']);
+xarSession::getInstance()->startSession($xarayaContext, 'phpunit', 6);
 
 $subject = new WorkflowSubject('cdcollection', 5);
 
