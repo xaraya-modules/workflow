@@ -148,7 +148,7 @@ class RolesMethod extends MethodClass
             if (isset($_REQUEST['user']) && isset($_REQUEST['role'])) {
                 foreach ($_REQUEST['user'] as $a_user) {
                     if (empty($a_user)) {
-                        $a_user = _XAR_ID_UNREGISTERED;
+                        $a_user = $this->session()->getAnonId();
                     }
                     foreach ($_REQUEST['role'] as $role) {
                         $roleManager->map_user_to_role($pid, $a_user, $role);

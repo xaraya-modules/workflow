@@ -141,11 +141,6 @@ parameters:
 			path: admingui/processes.php
 
 		-
-			message: "#^Constant _XAR_ID_UNREGISTERED not found\\.$#"
-			count: 1
-			path: admingui/roles.php
-
-		-
 			message: "#^Variable \\$activityManager might not be defined\\.$#"
 			count: 2
 			path: admingui/roles.php

@@ -312,7 +312,7 @@ foreach ($findinstances as $info) {
     $reason = xarML('Out of Office');
 
     // Save the reviewer information (= the scheduler here)
-    $curinstance->set('reviewer', _XAR_ID_UNREGISTERED);
+    $curinstance->set('reviewer', xarSession::getAnonId());
     $curinstance->set('reviewed', time());
     // Save the new status
     $curinstance->set('status', 'approved');
