@@ -15,8 +15,6 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use xarDB;
-
 class Tables
 {
     /**
@@ -28,12 +26,10 @@ class Tables
      * @access private
      * @return array
      */
-    public function __invoke(?string $prefix = null)
+    public function __invoke(string $prefix = 'xar')
     {
         // Initialise table array
         $xarTables = [];
-
-        $prefix ??= xarDB::getPrefix();
 
         // Get the name for the workflow tables.
         $xarTables['workflow_activities'] = $prefix . '_workflow_activities';
