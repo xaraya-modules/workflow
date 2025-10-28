@@ -112,7 +112,7 @@ class  ActivitiesMethod extends MethodClass
     
         // Trick : make sure we're dealing with up-to-date information here,
         //         because running all those jobs may have taken a while...
-        $this->var()->delCached('Mod.Variables.workflow', 'jobs');
+        $this->mem()->del('Mod.Variables.workflow', 'jobs');
     
         // get the current list of jobs
         $serialjobs = $this->mod()->getVar('jobs');
