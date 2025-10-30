@@ -81,7 +81,7 @@ class GetitemlinksMethod extends MethodClass
                 ['filter_process' => $itemtype]
             ),
                 'title' => $this->ml('Display Instance'),
-                'label' => $this->var()->prep($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']), ];
+                'label' => \xarVarPrep::forDisplay($item['procname'] . ' ' . $item['version'] . ' # ' . $item['instanceId']), ];
         }
         return $itemlinks;
     }

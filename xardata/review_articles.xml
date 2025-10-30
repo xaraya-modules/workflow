@@ -44,14 +44,14 @@ $module = $instance->get('module');
 $itemtype = $instance->get('itemtype');
 $itemid = $instance->get('itemid');
 if (empty($itemid) || !is_numeric($itemid)) {
-    $msg = xarML('Invalid article #(1)', xarVar::prepForDisplay($itemid));
+    $msg = xarML('Invalid article #(1)', xarVarPrep::forDisplay($itemid));
     throw new BadParameterException(null, $msg);
 }
 
 // Retrieve the item
 $article = xarMod::apiFunc('articles','user','get', array('aid' => $itemid));
 if (empty($article)) {
-    $msg = xarML('Unable to find article #(1)', xarVar::prepForDisplay($itemid));
+    $msg = xarML('Unable to find article #(1)', xarVarPrep::forDisplay($itemid));
     throw new BadParameterException(null, $msg);
 }
 
@@ -61,7 +61,7 @@ $input['article'] = $article;
 $input['mask'] = 'EditArticles';
 if (!xarMod::apiFunc('articles','user','checksecurity',$input)) {
     $msg = xarML('You have no permission to modify article #(1)',
-                 xarVar::prepForDisplay($itemid));
+                 xarVarPrep::forDisplay($itemid));
     throw new BadParameterException(null, $msg);
 }
 unset($input);
@@ -175,14 +175,14 @@ $module = $instance->get('module');
 $itemtype = $instance->get('itemtype');
 $itemid = $instance->get('itemid');
 if (empty($itemid) || !is_numeric($itemid)) {
-    $msg = xarML('Invalid article #(1)', xarVar::prepForDisplay($itemid));
+    $msg = xarML('Invalid article #(1)', xarVarPrep::forDisplay($itemid));
     throw new BadParameterException(null, $msg);
 }
 
 // Retrieve the module item
 $article = xarMod::apiFunc('articles','user','get', array('aid' => $itemid));
 if (empty($article)) {
-    $msg = xarML('Unable to find article #(1)', xarVar::prepForDisplay($itemid));
+    $msg = xarML('Unable to find article #(1)', xarVarPrep::forDisplay($itemid));
     throw new BadParameterException(null, $msg);
 }
 $article['ptid'] = $article['pubtypeid'];

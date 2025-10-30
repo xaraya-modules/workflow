@@ -42,8 +42,8 @@ class GetitemtypesMethod extends MethodClass
         $processes = $processMonitor->monitor_list_all_processes('name_asc', "isActive = 1");
 
         foreach ($processes as $process) {
-            $itemtypes[$process['pId']] = ['label' => $this->var()->prep($process['name'] . ' ' . $process['version']),
-                'title' => $this->var()->prep($this->ml('View Process')),
+            $itemtypes[$process['pId']] = ['label' => \xarVarPrep::forDisplay($process['name'] . ' ' . $process['version']),
+                'title' => \xarVarPrep::forDisplay($this->ml('View Process')),
                 'url'   => $this->mod()->getURL(
                     'user',
                     'activities',
