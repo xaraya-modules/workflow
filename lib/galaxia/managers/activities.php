@@ -2,8 +2,8 @@
 
 namespace Galaxia\Managers;
 
-include_once(GALAXIA_LIBRARY . '/managers/base.php');
-include_once(GALAXIA_LIBRARY . '/api/activity.php');
+include_once(\GALAXIA_LIBRARY . '/managers/base.php');
+include_once(\GALAXIA_LIBRARY . '/api/activity.php');
 use Galaxia\Api\WorkflowActivity;
 use Galaxia\Api\Process;
 
@@ -315,7 +315,7 @@ class ActivityManager extends BaseManager
         $result = $this->query($query, [$pid]);
         while ($res = $result->fetchRow()) {
             $actname = $res['normalized_name'];
-            $source = GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php';
+            $source = \GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php';
             if (!file_exists($source)) {
                 continue;
             }
@@ -426,18 +426,18 @@ class ActivityManager extends BaseManager
             // remove the old compiled file and recompile
             // the activity
 
-            $user_file_old = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $oldname . '.php';
-            $user_file_new = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $newname . '.php';
+            $user_file_old = \GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $oldname . '.php';
+            $user_file_new = \GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $newname . '.php';
             rename($user_file_old, $user_file_new);
 
-            $user_file_old = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $oldname . '.xt';
-            $user_file_new = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $newname . '.xt';
+            $user_file_old = \GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $oldname . '.xt';
+            $user_file_new = \GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $newname . '.xt';
             if ($user_file_old != $user_file_new) {
                 rename($user_file_old, $user_file_new);
             }
 
 
-            $compiled_file = GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $oldname . '.php';
+            $compiled_file = \GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $oldname . '.php';
             unlink($compiled_file);
             $oldAct->setName($newname);
             $oldAct->compile();
@@ -459,14 +459,14 @@ class ActivityManager extends BaseManager
                 throw new \Exception("No result from: select max(activityId) from $TABLE_NAME where pId=$pId and lastModif=$now");
             }
             // Should create the code file
-            $fw = fopen(GALAXIA_PROCESSES . "/$procNName/code/activities/" . $vars['normalized_name'] . '.php', 'w');
+            $fw = fopen(\GALAXIA_PROCESSES . "/$procNName/code/activities/" . $vars['normalized_name'] . '.php', 'w');
             fwrite($fw, '<' . '?' . 'php' . "\n" . '?' . '>');
             fclose($fw);
 
             if ($vars['isInteractive'] == 1) {
-                $fw = fopen(GALAXIA_PROCESSES . "/$procNName/code/templates/" . $vars['normalized_name'] . '.xt', 'w');
-                if (defined('GALAXIA_TEMPLATE_HEADER') && GALAXIA_TEMPLATE_HEADER) {
-                    fwrite($fw, GALAXIA_TEMPLATE_HEADER . "\n");
+                $fw = fopen(\GALAXIA_PROCESSES . "/$procNName/code/templates/" . $vars['normalized_name'] . '.xt', 'w');
+                if (defined('GALAXIA_TEMPLATE_HEADER') && \GALAXIA_TEMPLATE_HEADER) {
+                    fwrite($fw, \GALAXIA_TEMPLATE_HEADER . "\n");
                 }
                 fclose($fw);
             }

@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY . '/common/base.php');
+include_once(\GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -105,7 +105,7 @@ class Process extends Base
         $this->description = $res['description'];
         $this->version = $res['version'];
         $this->pId = $res['pId'];
-        $this->graph = GALAXIA_PROCESSES . "/" . $this->getNormalizedName() . "/graph/" . $this->getNormalizedName() . ".png";
+        $this->graph = \GALAXIA_PROCESSES . "/" . $this->getNormalizedName() . "/graph/" . $this->getNormalizedName() . ".png";
     }
 
     /**
@@ -244,14 +244,14 @@ class Process extends Base
         // And we have to remove the user and compiled files
         // for this activity
         $procname = $this->getNormalizedName();
-        if (file_exists(GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php')) {
-            unlink(GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php');
+        if (file_exists(\GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php')) {
+            unlink(\GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php');
         }
-        if (file_exists(GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt')) {
-            unlink(GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt');
+        if (file_exists(\GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt')) {
+            unlink(\GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt');
         }
-        if (file_exists(GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php')) {
-            unlink(GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php');
+        if (file_exists(\GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php')) {
+            unlink(\GALAXIA_PROCESSES . "/$procname/compiled/$actname" . '.php');
         }
         return true;
     }

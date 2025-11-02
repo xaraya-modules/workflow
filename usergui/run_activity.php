@@ -43,13 +43,13 @@ class RunActivityMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
         // global $user variable used by instance
         global $user;
         $user = $this->user()->getId();
         //--------------------------------------------- Load the instance class
-        include(GALAXIA_LIBRARY . '/api.php');
+        include(\GALAXIA_LIBRARY . '/api.php');
         /** @var \Galaxia\Api\Instance $instance */
 
         // TODO: evaluate why this is here
@@ -114,8 +114,8 @@ class RunActivityMethod extends MethodClass
             }
         }
 
-        $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
-        $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
+        $source = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+        $shared = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
         // Existing variables here:
         // $process, $activity, $instance (if not standalone)
@@ -223,7 +223,7 @@ class RunActivityMethod extends MethodClass
                 $data['mid'] = '';
 
                 if ($activity->isInteractive()) {
-                    $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $data);
+                    $output = xarTpl::file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $data);
                     $data['mid'] = $output;
                 }
 

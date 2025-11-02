@@ -39,13 +39,13 @@ class InstanceMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
 
         // Adapted from tiki-g-admin_instance.php
 
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
-        include_once(GALAXIA_LIBRARY . '/api.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/api.php');
 
         if (!isset($_REQUEST['iid'])) {
             $tplData['msg'] =  $this->ml("No instance indicated");

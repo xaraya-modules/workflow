@@ -40,12 +40,12 @@ class ProcessesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
         $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Adapted from tiki-g-admin_processes.php
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
 
         // Initialize
         $data['proc_info'] = [

@@ -43,8 +43,8 @@ class GetitemlinksMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
-        include(GALAXIA_LIBRARY . '/gui.php');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
+        include(\GALAXIA_LIBRARY . '/gui.php');
 
         if (empty($user)) {
             $user = $this->user()->getId() ?? 0;

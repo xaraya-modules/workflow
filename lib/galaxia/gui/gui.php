@@ -2,7 +2,7 @@
 
 namespace Galaxia\Gui;
 
-include_once(GALAXIA_LIBRARY . '/common/base.php');
+include_once(\GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 //!! GUI
@@ -233,7 +233,7 @@ class GUI extends Base
         )) {
             return false;
         }
-        include_once(GALAXIA_LIBRARY . '/api/instance.php');
+        include_once(\GALAXIA_LIBRARY . '/api/instance.php');
         $instance = new \Galaxia\Api\Instance($this->db);
         $instance->getInstance($instanceId);
         if (!empty($instance->instanceId)) {
@@ -304,7 +304,7 @@ class GUI extends Base
         ) {
             return false;
         }
-        include_once(GALAXIA_LIBRARY . '/api/instance.php');
+        include_once(\GALAXIA_LIBRARY . '/api/instance.php');
         $instance = new \Galaxia\Api\Instance($this->db);
         $instance->getInstance($instanceId);
         $instance->complete($activityId, true, false);

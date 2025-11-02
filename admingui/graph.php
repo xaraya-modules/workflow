@@ -39,12 +39,12 @@ class GraphMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
         $maxRecords = $this->mod()->getVar('items_per_page');
         // Adapted from tiki-g-admin_processes.php
 
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
 
         // Check if we are editing an existing process
         // if so retrieve the process info and assign it.
@@ -59,8 +59,8 @@ class GraphMethod extends MethodClass
 
             $info = $processManager->get_process($_REQUEST["pid"]);
 
-            $info['graph'] = GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".png";
-            $mapfile = GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".map";
+            $info['graph'] = \GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".png";
+            $mapfile = \GALAXIA_PROCESSES . "/" . $procNName . "/graph/" . $procNName . ".map";
 
             if (!file_exists($process->getGraph()) or !file_exists($mapfile)) {
                 // Try to build it

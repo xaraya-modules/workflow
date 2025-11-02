@@ -39,11 +39,11 @@ class ActivitiesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
 
         // Adapted from tiki-g-admin_activities.php
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
 
 
         $this->var()->find('pid', $data['pid'], 'int');

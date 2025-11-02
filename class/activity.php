@@ -41,15 +41,15 @@ class ActivityObject extends WorkflowObject
 
         // Create a code file
         $newname = $this->properties['normalized_name']->value;
-        $fw = fopen(GALAXIA_PROCESSES . "/$procNName/code/activities/" . $newname . '.php', 'w');
+        $fw = fopen(\GALAXIA_PROCESSES . "/$procNName/code/activities/" . $newname . '.php', 'w');
         fwrite($fw, '<' . '?' . 'php' . "\n" . '?' . '>');
         fclose($fw);
 
         // Create a template file for interactive activities
         if ($this->properties['interactive']->value) {
-            $fw = fopen(GALAXIA_PROCESSES . "/$procNName/code/templates/" . $newname . '.xt', 'w');
-            if (defined('GALAXIA_TEMPLATE_HEADER') && GALAXIA_TEMPLATE_HEADER) {
-                fwrite($fw, GALAXIA_TEMPLATE_HEADER . "\n");
+            $fw = fopen(\GALAXIA_PROCESSES . "/$procNName/code/templates/" . $newname . '.xt', 'w');
+            if (defined('GALAXIA_TEMPLATE_HEADER') && \GALAXIA_TEMPLATE_HEADER) {
+                fwrite($fw, \GALAXIA_TEMPLATE_HEADER . "\n");
             }
             fclose($fw);
         }
@@ -78,17 +78,17 @@ class ActivityObject extends WorkflowObject
             $process = new \Galaxia\Api\Process($this->properties['process_id']->value);
             $procNName = $process->getNormalizedName();
 
-            $user_file_old = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $args['oldname'] . '.php';
-            $user_file_new = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $newname . '.php';
+            $user_file_old = \GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $args['oldname'] . '.php';
+            $user_file_new = \GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $newname . '.php';
             rename($user_file_old, $user_file_new);
 
-            $user_file_old = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $args['oldname'] . '.xt';
-            $user_file_new = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $newname . '.xt';
+            $user_file_old = \GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $args['oldname'] . '.xt';
+            $user_file_new = \GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $newname . '.xt';
             if ($user_file_old != $user_file_new) {
                 rename($user_file_old, $user_file_new);
             }
 
-            $compiled_file = GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $args['oldname'] . '.php';
+            $compiled_file = \GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $args['oldname'] . '.php';
             if (file_exists($compiled_file)) {
                 unlink($compiled_file);
             }

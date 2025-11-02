@@ -119,8 +119,8 @@ class ModifyconfigMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
-        include_once(GALAXIA_LIBRARY . '/processmonitor.php');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
+        include_once(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         // get all start activities that are not interactive
         $activities = $processMonitor->monitor_list_activities(0, -1, 'pId_asc', '', "type='start' and isInteractive=0");

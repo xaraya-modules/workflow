@@ -75,12 +75,12 @@ class InstancesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
 
         // Adapted from tiki-g-user_instances.php
 
-        include_once(GALAXIA_LIBRARY . '/gui.php');
+        include_once(\GALAXIA_LIBRARY . '/gui.php');
 
         $action = 0;
 

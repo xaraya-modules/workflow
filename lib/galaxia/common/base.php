@@ -2,7 +2,7 @@
 
 namespace Galaxia\Common;
 
-include_once(GALAXIA_LIBRARY . '/common/observable.php');
+include_once(\GALAXIA_LIBRARY . '/common/observable.php');
 
 //!! Abstract class representing the base of the API
 //! An abstract class representing the API base
@@ -36,9 +36,9 @@ class Base extends Observable
     {
         $this->convert_query($query);
         if ($numrows == -1 && $offset == -1) {
-            $result = $this->db->Execute($query, $values, GALAXIA_FETCHMODE);
+            $result = $this->db->Execute($query, $values, \GALAXIA_FETCHMODE);
         } else {
-            $result = $this->db->SelectLimit($query, $numrows, $offset, $values, GALAXIA_FETCHMODE);
+            $result = $this->db->SelectLimit($query, $numrows, $offset, $values, \GALAXIA_FETCHMODE);
         }
         if (!$result && $reporterrors) {
             $this->sql_error($query, $values, $result);
@@ -50,7 +50,7 @@ class Base extends Observable
     public function getOne($query, $values = null, $reporterrors = true)
     {
         $this->convert_query($query);
-        $result = $this->db->SelectLimit($query, 1, 0, $values, GALAXIA_FETCHMODE);
+        $result = $this->db->SelectLimit($query, 1, 0, $values, \GALAXIA_FETCHMODE);
         if (!$result && $reporterrors) {
             $this->sql_error($query, $values, $result);
         }
@@ -147,7 +147,7 @@ class Base extends Observable
 
     public static function tbl($tbl)
     {
-        return ' `' . GALAXIA_TABLE_PREFIX . $tbl . '` ';
+        return ' `' . \GALAXIA_TABLE_PREFIX . $tbl . '` ';
     }
 
     public static function normalize($name, $version = null)

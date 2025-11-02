@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api\Activities;
 
-include_once(GALAXIA_LIBRARY . '/api/activity.php');
+include_once(\GALAXIA_LIBRARY . '/api/activity.php');
 use Galaxia\Api\WorkflowActivity;
 
 /**

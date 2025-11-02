@@ -35,8 +35,8 @@ class FindinstancesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
-        include(GALAXIA_LIBRARY . '/processmonitor.php');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
+        include(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         extract($args);
         if (!isset($status)) {

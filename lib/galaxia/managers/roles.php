@@ -2,7 +2,7 @@
 
 namespace Galaxia\Managers;
 
-include_once(GALAXIA_LIBRARY . '/managers/base.php');
+include_once(\GALAXIA_LIBRARY . '/managers/base.php');
 
 //!! RoleManager
 //! A class to maniplate roles.

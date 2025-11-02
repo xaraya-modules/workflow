@@ -39,12 +39,12 @@ class WorkitemMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
 
         // Adapted from tiki-g-view_workitem.php
 
-        include_once(GALAXIA_LIBRARY . '/processmonitor.php');
+        include_once(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         if (!isset($_REQUEST['itemId'])) {
             $tplData['msg'] =  $this->ml("No item indicated");

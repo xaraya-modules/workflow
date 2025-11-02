@@ -2,7 +2,7 @@
 
 namespace Galaxia\Observers;
 
-include_once(GALAXIA_LIBRARY . '/common/observer.php');
+include_once(\GALAXIA_LIBRARY . '/common/observer.php');
 use Galaxia\Common\Observer;
 
 //!! Logger

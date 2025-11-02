@@ -42,8 +42,8 @@ class GetactivityidMethod extends MethodClass
             return;
         }
 
-        sys::import('modules.workflow.lib.galaxia.config');
-        include(GALAXIA_LIBRARY . '/processmonitor.php');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
+        include(\GALAXIA_LIBRARY . '/processmonitor.php');
 
 
         $items = $processMonitor->monitor_list_activities(0, -1, 'activityId_asc', $activityName, '', []);

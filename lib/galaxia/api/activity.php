@@ -2,7 +2,7 @@
 
 namespace Galaxia\Api;
 
-include_once(GALAXIA_LIBRARY . '/common/base.php');
+include_once(\GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 /**
@@ -50,31 +50,31 @@ class WorkflowActivity extends Base
         $res = $result->fetchRow();
         switch ($res['type']) {
             case 'start':
-                include_once(GALAXIA_LIBRARY . '/api/activities/start.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/start.php');
                 $act = new \Galaxia\Api\Activities\StartActivity();
                 break;
             case 'end':
-                include_once(GALAXIA_LIBRARY . '/api/activities/end.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/end.php');
                 $act = new \Galaxia\Api\Activities\EndActivity();
                 break;
             case 'join':
-                include_once(GALAXIA_LIBRARY . '/api/activities/join.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/join.php');
                 $act = new \Galaxia\Api\Activities\JoinActivity();
                 break;
             case 'split':
-                include_once(GALAXIA_LIBRARY . '/api/activities/split.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/split.php');
                 $act = new \Galaxia\Api\Activities\SplitActivity();
                 break;
             case 'standalone':
-                include_once(GALAXIA_LIBRARY . '/api/activities/standalone.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/standalone.php');
                 $act = new \Galaxia\Api\Activities\StandaloneActivity();
                 break;
             case 'switch':
-                include_once(GALAXIA_LIBRARY . '/api/activities/switch.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/switch.php');
                 $act = new \Galaxia\Api\Activities\SwitchActivity();
                 break;
             case 'activity':
-                include_once(GALAXIA_LIBRARY . '/api/activities/standard.php');
+                include_once(\GALAXIA_LIBRARY . '/api/activities/standard.php');
                 $act = new \Galaxia\Api\Activities\StandardActivity();
                 break;
             default:
@@ -229,19 +229,19 @@ class WorkflowActivity extends Base
         $process = new Process($this->pId);
         $procNName = $process->getNormalizedName();
 
-        $compiled_file = GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $actname . '.php';
-        $template_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $actname . '.xt';
-        $user_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $actname . '.php';
-        $pre_file = GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pre.php';
-        $pos_file = GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pos.php';
+        $compiled_file = \GALAXIA_PROCESSES . '/' . $procNName . '/compiled/' . $actname . '.php';
+        $template_file = \GALAXIA_PROCESSES . '/' . $procNName . '/code/templates/' . $actname . '.xt';
+        $user_file = \GALAXIA_PROCESSES . '/' . $procNName . '/code/activities/' . $actname . '.php';
+        $pre_file = \GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pre.php';
+        $pos_file = \GALAXIA_LIBRARY . '/compiler/' . $acttype . '_pos.php';
         $fw = fopen($compiled_file, "w");
 
         // First of all add an include to the shared code
-        $shared_file = GALAXIA_PROCESSES . '/' . $procNName . '/code/shared.php';
+        $shared_file = \GALAXIA_PROCESSES . '/' . $procNName . '/code/shared.php';
         fwrite($fw, '<' . "?php include_once('$shared_file');\n");
 
         // Before pre shared
-        $fp = fopen(GALAXIA_LIBRARY . '/compiler/_shared_pre.php', "r");
+        $fp = fopen(\GALAXIA_LIBRARY . '/compiler/_shared_pre.php', "r");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
             $data = $this->stripPHPTags($data);
@@ -277,7 +277,7 @@ class WorkflowActivity extends Base
         fclose($fp);
 
         // Shared pos
-        $fp = fopen(GALAXIA_LIBRARY . '/compiler/_shared_pos.php', "r");
+        $fp = fopen(\GALAXIA_LIBRARY . '/compiler/_shared_pos.php', "r");
         while (!feof($fp)) {
             $data = fread($fp, 4096);
             $data = $this->stripPHPTags($data);
@@ -291,20 +291,20 @@ class WorkflowActivity extends Base
 
         if ($this->isInteractive() && !file_exists($template_file)) {
             $fw = fopen($template_file, 'w');
-            if (defined('GALAXIA_TEMPLATE_HEADER') && GALAXIA_TEMPLATE_HEADER) {
-                fwrite($fw, GALAXIA_TEMPLATE_HEADER . "\n");
+            if (defined('GALAXIA_TEMPLATE_HEADER') && \GALAXIA_TEMPLATE_HEADER) {
+                fwrite($fw, \GALAXIA_TEMPLATE_HEADER . "\n");
             }
             fclose($fw);
         }
         if ($this->isInteractive() && file_exists($template_file)) {
             // remove the copy of the template, if any
-            if (GALAXIA_TEMPLATES && file_exists(GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt")) {
-                unlink(GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
+            if (\GALAXIA_TEMPLATES && file_exists(\GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt")) {
+                unlink(\GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
             }
         }
-        if (GALAXIA_TEMPLATES && file_exists($template_file)) {
+        if (\GALAXIA_TEMPLATES && file_exists($template_file)) {
             // and make a fresh one
-            copy($template_file, GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
+            copy($template_file, \GALAXIA_TEMPLATES . '/' . $procNName . "/$actname.xt");
         }
     }
 

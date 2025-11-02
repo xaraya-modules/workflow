@@ -42,12 +42,12 @@ class MonitorInstancesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
         $maxRecords = $this->mod()->getVar('items_per_page');
         // Adapted from tiki-g-monitor_instances.php
 
-        include_once(GALAXIA_LIBRARY . '/processmonitor.php');
+        include_once(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         // Filtering data to be received by request and
         // used to build the where part of a query
@@ -85,7 +85,7 @@ class MonitorInstancesMethod extends MethodClass
         if (isset($_REQUEST['sendInstance'])) {
             //activityId indicates the activity where the instance was
             //and we have to send it to some activity to be determined
-            include_once(GALAXIA_LIBRARY . '/api/instance.php');
+            include_once(\GALAXIA_LIBRARY . '/api/instance.php');
 
             $instance = new \Galaxia\Api\Instance();
             $instance->getInstance($_REQUEST['sendInstance']);

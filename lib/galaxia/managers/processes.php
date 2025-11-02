@@ -2,7 +2,7 @@
 
 namespace Galaxia\Managers;
 
-include_once(GALAXIA_LIBRARY . '/managers/base.php');
+include_once(\GALAXIA_LIBRARY . '/managers/base.php');
 use Galaxia\Api\WorkflowActivity;
 use Galaxia\Api\Process;
 
@@ -35,7 +35,7 @@ class ProcessManager extends BaseManager
         $out .= '   <description>' . htmlspecialchars($proc_info['description']) . '</description>' . "\n";
         $out .= '  <lastModif>' . date("d/m/Y [h:i:s]", $proc_info['lastModif']) . '</lastModif>' . "\n";
         $out .= '  <sharedCode><![CDATA[';
-        $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/shared.php", "r");
+        $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/shared.php", "r");
         while (!feof($fp)) {
             $line = fread($fp, 8192);
             $out .= $line;
@@ -65,7 +65,7 @@ class ProcessManager extends BaseManager
             }
             $out .= '      </roles>' . "\n";
             $out .= '      <code><![CDATA[';
-            $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/activities/$name.php", "r");
+            $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/activities/$name.php", "r");
             while (!feof($fp)) {
                 $line = fread($fp, 8192);
                 $out .= $line;
@@ -74,7 +74,7 @@ class ProcessManager extends BaseManager
             $out .= '      ]]></code>' . "\n";
             if ($res['isInteractive'] == 1) {
                 $out .= '      <template><![CDATA[';
-                $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/templates/$name.xt", "r");
+                $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/templates/$name.xt", "r");
                 while (!feof($fp)) {
                     $line = fread($fp, 8192);
                     $out .= $line;
@@ -95,7 +95,7 @@ class ProcessManager extends BaseManager
         }
         $out .= '  </transitions>' . "\n";
         $out .= '</process>' . "\n";
-        //$fp = fopen(GALAXIA_PROCESSES."/$procname/$procname.xml","w");
+        //$fp = fopen(\GALAXIA_PROCESSES."/$procname/$procname.xml","w");
         //fwrite($fp,$out);
         //fclose($fp);
         return $out;
@@ -221,7 +221,7 @@ class ProcessManager extends BaseManager
         $process = new Process($pid);
         $procname = $process->getNormalizedName();
 
-        $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/shared.php", "w");
+        $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/shared.php", "w");
         fwrite($fp, $data['sharedCode']);
         fclose($fp);
         $actids = [];
@@ -240,11 +240,11 @@ class ProcessManager extends BaseManager
             $act = WorkflowActivity::get($actid);
             $actname = $act->getNormalizedName();
 
-            $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php', "w");
+            $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php', "w");
             fwrite($fp, $activity['code']);
             fclose($fp);
             if ($activity['isInteractive'] == 1) {
-                $fp = fopen(GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt', "w");
+                $fp = fopen(\GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt', "w");
                 $nr = fwrite($fp, $activity['template']);
                 fclose($fp);
             }
@@ -377,7 +377,7 @@ class ProcessManager extends BaseManager
         //the old directory structure to the new directory
         $oldname = $oldProcess->getNormalizedName();
         $newname = $newProcess->getNormalizedName();
-        $this->_rec_copy(GALAXIA_PROCESSES . "/$oldname", GALAXIA_PROCESSES . "/$newname");
+        $this->_rec_copy(\GALAXIA_PROCESSES . "/$oldname", \GALAXIA_PROCESSES . "/$newname");
 
         // create a graph for the new process
         $am->build_process_graph($pid);
@@ -455,11 +455,11 @@ class ProcessManager extends BaseManager
         $process->removeRoles();
 
         // Remove the directory structure
-        if (!empty($name) && is_dir(GALAXIA_PROCESSES . "/$name")) {
-            $this->_remove_directory(GALAXIA_PROCESSES . "/$name", true);
+        if (!empty($name) && is_dir(\GALAXIA_PROCESSES . "/$name")) {
+            $this->_remove_directory(\GALAXIA_PROCESSES . "/$name", true);
         }
-        if (GALAXIA_TEMPLATES && !empty($name) && is_dir(GALAXIA_TEMPLATES . "/$name")) {
-            $this->_remove_directory(GALAXIA_TEMPLATES . "/$name", true);
+        if (\GALAXIA_TEMPLATES && !empty($name) && is_dir(\GALAXIA_TEMPLATES . "/$name")) {
+            $this->_remove_directory(\GALAXIA_TEMPLATES . "/$name", true);
         }
         // And finally remove the proc
         $query = "delete from " . self::tbl('processes') . " where pId=?";
@@ -506,7 +506,7 @@ class ProcessManager extends BaseManager
             $oldname = $oldProcess->getNormalizedName();
             $newname = $vars['normalized_name'];
             if ($newname != $oldname) {
-                rename(GALAXIA_PROCESSES . "/$oldname", GALAXIA_PROCESSES . "/$newname");
+                rename(\GALAXIA_PROCESSES . "/$oldname", \GALAXIA_PROCESSES . "/$newname");
             }
             $msg = sprintf(\xarMLS::translate('Process %s has been updated'), $vars['name']);
             $this->notify_all(3, $msg);
@@ -591,17 +591,17 @@ class ProcessManager extends BaseManager
     public function _create_directory_structure($name)
     {
         // Create in processes a directory with this name
-        mkdir(GALAXIA_PROCESSES . "/$name", 0o770);
-        mkdir(GALAXIA_PROCESSES . "/$name/graph", 0o770);
-        mkdir(GALAXIA_PROCESSES . "/$name/code", 0o770);
-        mkdir(GALAXIA_PROCESSES . "/$name/compiled", 0o770);
-        mkdir(GALAXIA_PROCESSES . "/$name/code/activities", 0o770);
-        mkdir(GALAXIA_PROCESSES . "/$name/code/templates", 0o770);
-        if (GALAXIA_TEMPLATES) {
-            mkdir(GALAXIA_TEMPLATES . "/$name", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name/graph", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name/code", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name/compiled", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name/code/activities", 0o770);
+        mkdir(\GALAXIA_PROCESSES . "/$name/code/templates", 0o770);
+        if (\GALAXIA_TEMPLATES) {
+            mkdir(\GALAXIA_TEMPLATES . "/$name", 0o770);
         }
         // Create shared file
-        $fp = fopen(GALAXIA_PROCESSES . "/$name/code/shared.php", "w");
+        $fp = fopen(\GALAXIA_PROCESSES . "/$name/code/shared.php", "w");
         fwrite($fp, '<' . '?' . 'php' . "\n" . '?' . '>');
         fclose($fp);
     }

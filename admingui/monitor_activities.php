@@ -42,11 +42,11 @@ class MonitorActivitiesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $maxRecords = $this->mod()->getVar('items_per_page');
 
         // Adapted from tiki-g-monitor_activities.php
-        include_once(GALAXIA_LIBRARY . '/processmonitor.php');
+        include_once(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         $this->var()->find('filter_process', $data['filter_process'], 'int', '');
         $this->var()->find('filter_activity', $data['filter_activity'], 'str', '');

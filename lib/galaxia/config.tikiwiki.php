@@ -19,7 +19,7 @@ if (!defined('GALAXIA_LIBRARY')) {
 // Directory where the Galaxia processes will be stored, e.g. lib/galaxia/processes
 if (!defined('GALAXIA_PROCESSES')) {
     // Note: this directory must be writeable by the webserver !
-    define('GALAXIA_PROCESSES', GALAXIA_LIBRARY . '/processes');
+    define('GALAXIA_PROCESSES', \GALAXIA_LIBRARY . '/processes');
 }
 
 // Directory where a *copy* of the Galaxia activity templates will be stored, e.g. templates
@@ -40,7 +40,7 @@ if (!defined('GALAXIA_TEMPLATE_HEADER')) {
 // Define as '' if you don't want to use logging
 if (!defined('GALAXIA_LOGFILE')) {
     // Note: this file must be writeable by the webserver !
-    //define('GALAXIA_LOGFILE', GALAXIA_LIBRARY . '/log/pm.log');
+    //define('GALAXIA_LOGFILE', \GALAXIA_LIBRARY . '/log/pm.log');
     define('GALAXIA_LOGFILE', '');
 }
 

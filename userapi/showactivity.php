@@ -40,10 +40,10 @@ class ShowactivityMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
 
-        include(GALAXIA_LIBRARY . '/api.php');
+        include(\GALAXIA_LIBRARY . '/api.php');
         /** @var \Galaxia\Api\Instance $instance */
 
         if (empty($args['activityId'])) {
@@ -97,8 +97,8 @@ class ShowactivityMethod extends MethodClass
             }
         }
 
-        $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
-        $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
+        $source = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+        $shared = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
         // Existing variables here:
         // $process, $activity, $instance (if not standalone)
@@ -129,7 +129,7 @@ class ShowactivityMethod extends MethodClass
         if ($activity->isInteractive()) {
             $template = $activity->getNormalizedName() . '.xt';
             // not very clean way, but it works :)
-            $output = xarTpl::file(GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $tplData);
+            $output = xarTpl::file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $tplData);
             return $output;
         } else {
             $instance->getInstance($instance->instanceId);

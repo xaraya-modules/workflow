@@ -39,12 +39,12 @@ class SharedSourceMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
 
         // Adapted from tiki-g-admin_shared_source.php
 
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
 
         if (!isset($_REQUEST['pid'])) {
             $data['msg'] =  $this->ml("No process indicated");
@@ -82,11 +82,11 @@ class SharedSourceMethod extends MethodClass
             if (isset($_REQUEST['template'])) {
                 $data['template'] =  1;
 
-                $source = GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt';
+                $source = \GALAXIA_PROCESSES . "/$procname/code/templates/$actname" . '.xt';
             } else {
                 $data['template'] =  0;
 
-                $source = GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php';
+                $source = \GALAXIA_PROCESSES . "/$procname/code/activities/$actname" . '.php';
             }
 
             // Then editing an activity
@@ -97,7 +97,7 @@ class SharedSourceMethod extends MethodClass
             $data['template'] =  0;
             $data['act_info'] =  ['isInteractive' => 0, 'type' => 'shared'];
             // Then editing shared code
-            $source = GALAXIA_PROCESSES . "/$procname/code/shared.php";
+            $source = \GALAXIA_PROCESSES . "/$procname/code/shared.php";
         }
 
         //First of all save
@@ -105,7 +105,7 @@ class SharedSourceMethod extends MethodClass
         if (!empty($source_data)) {
             $source_data = htmlspecialchars_decode($source_data);
             // security check on paths
-            $basedir = GALAXIA_PROCESSES . "/$procname/code/";
+            $basedir = \GALAXIA_PROCESSES . "/$procname/code/";
             $basepath = realpath($basedir);
             $sourcepath = realpath($_REQUEST['source_name']);
             if (substr($sourcepath, 0, strlen($basepath)) == $basepath) {

@@ -42,12 +42,12 @@ class ExportProcessMethod extends MethodClass
         $this->var()->find('pid', $data['processid'], 'int', 0);
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
 
         // Adapted from tiki-g-save_process.php
 
-        include_once(GALAXIA_LIBRARY . '/processmanager.php');
+        include_once(\GALAXIA_LIBRARY . '/processmanager.php');
 
         // The galaxia process manager PHP script.
 

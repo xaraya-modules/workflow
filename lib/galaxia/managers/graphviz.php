@@ -480,7 +480,7 @@ class Process_GraphViz
     {
         $parsedGraph = $this->parse();
         if (!empty($parsedGraph)) {
-            $file = GALAXIA_PROCESSES . '/' . $this->pid . '/graph/' . $this->pid;
+            $file = \GALAXIA_PROCESSES . '/' . $this->pid . '/graph/' . $this->pid;
 
             if ($fp = @fopen($file, 'w')) {
                 @fputs($fp, $parsedGraph, strlen($parsedGraph));

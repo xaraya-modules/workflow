@@ -40,11 +40,11 @@ class RunActivityMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment (possibly include more than once here !)
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
 
         // Adapted from tiki-g-run_activity.php
-        include(GALAXIA_LIBRARY . '/api.php');
+        include(\GALAXIA_LIBRARY . '/api.php');
         /** @var \Galaxia\Api\Instance $instance */
 
         // TODO: evaluate why this is here
@@ -69,8 +69,8 @@ class RunActivityMethod extends MethodClass
             $instance->complete($args['activityId']);
         }
 
-        $source = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
-        $shared = GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
+        $source = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/compiled/' . $activity->getNormalizedName() . '.php';
+        $shared = \GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/shared.php';
 
         // Existing variables here:
         // $process, $activity, $instance (if not standalone)

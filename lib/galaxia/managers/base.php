@@ -2,7 +2,7 @@
 
 namespace Galaxia\Managers;
 
-include_once(GALAXIA_LIBRARY . '/common/base.php');
+include_once(\GALAXIA_LIBRARY . '/common/base.php');
 use Galaxia\Common\Base;
 
 //!! Abstract class representing the base of the API

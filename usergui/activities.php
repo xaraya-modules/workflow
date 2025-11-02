@@ -39,11 +39,11 @@ class ActivitiesMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $data = [];
 
         // Adapted from tiki-g-user_activities.php
-        include_once(GALAXIA_LIBRARY . '/gui.php');
+        include_once(\GALAXIA_LIBRARY . '/gui.php');
 
         // Initialize some stuff
         $user = $this->user()->getId();
@@ -124,8 +124,8 @@ class ActivitiesMethod extends MethodClass
             }
             foreach ($data['all_procs'] as $info) {
                 if ($info['pId'] == $_REQUEST['filter_process'] && !empty($info['normalized_name'])) {
-                    $graph = GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".png";
-                    $mapfile = GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".map";
+                    $graph = \GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".png";
+                    $mapfile = \GALAXIA_PROCESSES . "/" . $info['normalized_name'] . "/graph/" . $info['normalized_name'] . ".map";
                     if (file_exists($graph) && file_exists($mapfile)) {
                         $maplines = file($mapfile);
                         $map = '';

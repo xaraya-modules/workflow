@@ -38,7 +38,7 @@ class GetinstanceMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
 
         //make sure this user an access this instance
         if (!$this->sec()->checkAccess('ReadWorkflow')) {
@@ -54,7 +54,7 @@ class GetinstanceMethod extends MethodClass
 
         //check to see if this hasn't alredy been done
         if (!function_exists("getInstance")) {
-            include_once(GALAXIA_LIBRARY . '/api.php');
+            include_once(\GALAXIA_LIBRARY . '/api.php');
         }
 
         $inst = new \Galaxia\Api\Instance();

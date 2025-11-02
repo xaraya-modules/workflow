@@ -886,8 +886,8 @@ class Installer extends InstallerClass
 
     public function remove_processes()
     {
-        sys::import('modules.workflow.lib.galaxia.config');
-        $dir = GALAXIA_PROCESSES;
+        require_once __DIR__ . '/lib/galaxia/config.php';
+        $dir = \GALAXIA_PROCESSES;
         if (!is_dir($dir)) {
             return;
         }

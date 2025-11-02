@@ -40,10 +40,10 @@ class ShowstatusMethod extends MethodClass
         }
 
         // Common setup for Galaxia environment
-        sys::import('modules.workflow.lib.galaxia.config');
+        require_once dirname(__DIR__) . '/lib/galaxia/config.php';
         $tplData = [];
 
-        include(GALAXIA_LIBRARY . '/processmonitor.php');
+        include(\GALAXIA_LIBRARY . '/processmonitor.php');
 
         if (empty($user)) {
             $user = $this->user()->getId();
