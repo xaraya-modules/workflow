@@ -15,9 +15,6 @@ use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarTpl;
 use xarModHooks;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow user run_activity function

@@ -4,7 +4,6 @@
 // and corresponding config/workflow.php at https://github.com/zerodahero/laravel-workflow
 // See also https://pimcore.com/docs/pimcore/current/Development_Documentation/Workflow_Management/Configuration_Details/index.html
 
-sys::import('modules.workflow.class.handlers');
 use Xaraya\Modules\Workflow\WorkflowHandlers;
 
 // list of callback functions per workflow, transition & event type

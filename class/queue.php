@@ -19,9 +19,6 @@ namespace Xaraya\Modules\Workflow;
 
 use DataObjectFactory;
 use xarLog;
-use sys;
-
-sys::import('modules.workflow.class.tracker');
 
 class WorkflowQueue extends WorkflowTracker
 {

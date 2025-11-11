@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi showactions function
@@ -54,9 +51,9 @@ class ShowactionsMethod extends MethodClass
         }
         $tplData['context'] ??= $this->getContext();
 
-        if (!empty($args['item']) &&
-            !empty($args['item']['marking']) &&
-            str_contains($args['item']['marking'], WorkflowTracker::AND_OPERATOR)) {
+        if (!empty($args['item'])
+            && !empty($args['item']['marking'])
+            && str_contains($args['item']['marking'], WorkflowTracker::AND_OPERATOR)) {
             $places = explode(WorkflowTracker::AND_OPERATOR, $args['item']['marking']);
             $output = '';
             foreach ($places as $here) {

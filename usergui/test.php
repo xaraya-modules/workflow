@@ -15,10 +15,7 @@ use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow user test function
@@ -45,7 +42,6 @@ class TestMethod extends MethodClass
         $data = $args ?? [];
         $data['warning'] = '';
         // @checkme we don't actually need to require composer autoload here
-        sys::import('modules.workflow.class.config');
         try {
             WorkflowConfig::checkAutoload();
             //WorkflowConfig::setAutoload();
@@ -63,7 +59,6 @@ class TestMethod extends MethodClass
         $this->var()->find('transition', $data['transition']);
 
         if (!empty($data['subjectId'])) {
-            sys::import('modules.workflow.class.subject');
             [$objectName, $itemId] = explode('.', $data['subjectId'] . '.0');
             $subject = new WorkflowSubject($objectName, (int) $itemId);
             $subject->setContext($this->getContext());

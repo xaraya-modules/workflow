@@ -117,10 +117,10 @@ class ProcessManager extends BaseManager
         xml_set_element_handler($this->parser, "_start_element_handler", "_end_element_handler");
         xml_set_character_data_handler($this->parser, "_data_handler");
         $aux = [
-          'name' => 'root',
-          'children' => [],
-          'parent' => 0,
-          'data' => '',
+            'name' => 'root',
+            'children' => [],
+            'parent' => 0,
+            'data' => '',
         ];
         $this->tree[0] = $aux;
         $this->current = 0;
@@ -543,19 +543,19 @@ class ProcessManager extends BaseManager
             if ($create) {
                 $aM = new ActivityManager($this->db);
                 $vars1 = [
-                  'name' => 'start',
-                  'description' => 'default start activity',
-                  'type' => 'start',
-                  'isInteractive' => 1,
-                  'isAutoRouted' => 1,
-                  ];
+                    'name' => 'start',
+                    'description' => 'default start activity',
+                    'type' => 'start',
+                    'isInteractive' => 1,
+                    'isAutoRouted' => 1,
+                ];
                 $vars2 = [
-                  'name' => 'end',
-                  'description' => 'default end activity',
-                  'type' => 'end',
-                  'isInteractive' => 0,
-                  'isAutoRouted' => 1,
-                  ];
+                    'name' => 'end',
+                    'description' => 'default end activity',
+                    'type' => 'end',
+                    'isInteractive' => 0,
+                    'isAutoRouted' => 1,
+                ];
                 $aM->replace_activity($pId, 0, $vars1);
                 $aM->replace_activity($pId, 0, $vars2);
             }
@@ -650,9 +650,9 @@ class ProcessManager extends BaseManager
     public function _start_element_handler($parser, $element, $attribs)
     {
         $aux = ['name' => $element,
-               'data' => '',
-               'parent' => $this->current,
-               'children' => [], ];
+            'data' => '',
+            'parent' => $this->current,
+            'children' => [], ];
         $i = count($this->tree);
         $this->tree[$i] = $aux;
 

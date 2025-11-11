@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module REST API for Symfony Workflow Component (test)
  *
@@ -33,7 +34,6 @@ function workflow_restapi_test($args = [], $context = null)
     $what = $args['what'] ?? '';
     switch ($what) {
         case 'config':
-            sys::import('modules.workflow.class.config');
             $config = WorkflowConfig::loadConfig();
             $workflowName = $args['workflow'] ?? '';
             if (empty($workflowName)) {
@@ -45,7 +45,6 @@ function workflow_restapi_test($args = [], $context = null)
             $result = $config[$workflowName];
             break;
         case 'process':
-            sys::import('modules.workflow.class.process');
             $workflowName = $args['workflow'] ?? '';
             $subjectId = $args['subjectId'] ?? '';
             $transition = $args['transition'] ?? '';
@@ -53,7 +52,6 @@ function workflow_restapi_test($args = [], $context = null)
             $result = WorkflowProcess::showProcess($workflow);
             break;
         case 'tracker':
-            sys::import('modules.workflow.class.tracker');
             $workflowName = $args['workflow'] ?? '';
             $subjectId = $args['subjectId'] ?? '';
             $trackerId = $args['trackerId'] ?? 0;
@@ -81,7 +79,6 @@ function workflow_restapi_test($args = [], $context = null)
             //$result['paging']['count'] = WorkflowTracker::getCount();
             break;
         case 'history':
-            sys::import('modules.workflow.class.history');
             $workflowName = $args['workflow'] ?? '';
             $subjectId = $args['subjectId'] ?? '';
             $trackerId = $args['trackerId'] ?? 0;
@@ -109,7 +106,6 @@ function workflow_restapi_test($args = [], $context = null)
             //$result['paging']['count'] = WorkflowHistory::getCount();
             break;
         case 'subject':
-            sys::import('modules.workflow.class.subject');
             $objectName = $args['object'] ?? '';
             $itemId = $args['item'] ?? 0;
             $subject = new WorkflowSubject($objectName, (int) $itemId);

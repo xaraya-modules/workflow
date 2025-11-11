@@ -16,10 +16,6 @@
 namespace Xaraya\Modules\Workflow;
 
 use DataObjectList;
-use sys;
-
-sys::import('modules.workflow.class.object');
-sys::import('modules.dynamicdata.class.objects.list');
 
 class ActivityObject extends WorkflowObject
 {

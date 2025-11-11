@@ -21,7 +21,7 @@ trait OtherApiTrait
     /**
      * Get module scheduler API class for this module
      */
-    public function schedulerapi(): UserApiInterface|null
+    public function schedulerapi(): ?UserApiInterface
     {
         $component = $this->getModule()->getComponent('SchedulerApi');
         assert($component instanceof UserApiInterface);

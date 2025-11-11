@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow admin monitor_processes function

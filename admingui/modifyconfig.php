@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow admin modifyconfig function
@@ -153,7 +150,6 @@ class ModifyconfigMethod extends MethodClass
         }
 
         // for Symfony Workflows build a list of transitions from initial marking
-        sys::import('modules.workflow.class.config');
         $config = WorkflowConfig::loadConfig();
         //$data['transitions'] = [];
         foreach ($config as $workflowName => $info) {

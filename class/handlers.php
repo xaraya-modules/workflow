@@ -20,10 +20,7 @@ use xarCache;
 use xarLog;
 use xarRoles;
 use xarSession;
-use sys;
 use Exception;
-
-sys::import('modules.workflow.class.base');
 
 class WorkflowHandlers extends WorkflowBase
 {
@@ -76,7 +73,6 @@ class WorkflowHandlers extends WorkflowBase
 
     public static function guardCheckRoles(array $groupUserNames, $roleId = null)
     {
-        sys::import('modules.roles.class.roles');
         $parentRoleIds = static::getGroupRoleIds($groupUserNames);
         // @checkme we only look up the direct parents here
         $handler = function ($event, $eventName, $dispatcher) use ($parentRoleIds, $roleId) {
@@ -122,7 +118,6 @@ class WorkflowHandlers extends WorkflowBase
 
     public static function guardCheckAccess(string $action, $roleId = null)
     {
-        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName, $dispatcher) use ($action, $roleId) {
             $objectRef = static::getObjectRef($event->getSubject(), $eventName);
             // @todo use $context if available?
@@ -142,7 +137,7 @@ class WorkflowHandlers extends WorkflowBase
         return $handler;
     }
 
-    public static function doCheckAccess(string|object $objectName, int|null $itemId, string $action, int $userId)
+    public static function doCheckAccess(string|object $objectName, ?int $itemId, string $action, int $userId)
     {
         // DataObject or stdClass for WorkflowSubject
         if (is_object($objectName)) {
@@ -160,7 +155,6 @@ class WorkflowHandlers extends WorkflowBase
 
     public static function guardCheckSecurity($mask, $catch = 0, $component = '', $instance = '', $module = '', $rolename = '', $realm = 0, $level = 0)
     {
-        sys::import('modules.privileges.class.security');
         // Fallback for checkAccess:
         // return xarSecurity::check($mask,0,'Item',$this->moduleid.':'.$this->itemtype.':'.$itemid,'',$rolename);
     }
@@ -173,7 +167,6 @@ class WorkflowHandlers extends WorkflowBase
     // this would be where we check the actual status of the subject, rather than the places
     public static function guardCheckProperty(array $propertyMapping, array $valueMapping = [])
     {
-        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName, $dispatcher) use ($propertyMapping, $valueMapping) {
             $transitionName = $event->getTransition()->getName();
             //$places = $event->getMarking()->getPlaces();
@@ -216,7 +209,7 @@ class WorkflowHandlers extends WorkflowBase
         return $handler;
     }
 
-    public static function doCheckProperty(string|object $objectName, int|null $itemId, array $propertyMapping)
+    public static function doCheckProperty(string|object $objectName, ?int $itemId, array $propertyMapping)
     {
         // DataObject or stdClass for WorkflowSubject
         if (is_object($objectName)) {
@@ -251,7 +244,6 @@ class WorkflowHandlers extends WorkflowBase
     // this would be where we update the actual status of the object, rather than the places of the subject
     public static function updateProperty(array $propertyMapping, array $valueMapping = [])
     {
-        sys::import('modules.dynamicdata.class.objects.factory');
         $handler = function ($event, $eventName, $dispatcher) use ($propertyMapping, $valueMapping) {
             //$workflowName = $event->getWorkflowName();
             //$subject = $event->getSubject();
@@ -293,7 +285,6 @@ class WorkflowHandlers extends WorkflowBase
 
     public static function queueEvent(bool $queued, $roleId = null)
     {
-        sys::import('modules.workflow.class.queue');
         $handler = function ($event, $eventName, $dispatcher) use ($queued, $roleId) {
             if (empty($queued)) {
                 return null;
@@ -325,8 +316,6 @@ class WorkflowHandlers extends WorkflowBase
 
     public static function setTrackerItem(array $deleteTracker = [], $roleId = null)
     {
-        sys::import('modules.workflow.class.tracker');
-        sys::import('modules.workflow.class.history');
         $handler = function ($event, $eventName, $dispatcher) use ($deleteTracker, $roleId) {
             $workflowName = $event->getWorkflowName();
             $subject = $event->getSubject();

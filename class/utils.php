@@ -15,10 +15,7 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use sys;
 use JsonException;
-
-sys::import('modules.workflow.class.base');
 
 class WorkflowUtils extends WorkflowBase
 {

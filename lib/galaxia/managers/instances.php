@@ -14,9 +14,9 @@ class InstanceManager extends BaseManager
 {
     public function get_instance_activities($iid)
     {
-        $query = "select ga.type,ga.isInteractive,ga.isAutoRouted,gi.pId,ga.activityId,ga.name,gi.instanceId,gi.status,gia.activityId,gia.user,gi.started,gia.status as actstatus " .
-             "from " . self::tbl('activities') . " ga," . self::tbl('instances') . " gi," . self::tbl('instance_activities') . " gia " .
-             "where ga.activityId=gia.activityId and gi.instanceId=gia.instanceId and gi.instanceId=?";
+        $query = "select ga.type,ga.isInteractive,ga.isAutoRouted,gi.pId,ga.activityId,ga.name,gi.instanceId,gi.status,gia.activityId,gia.user,gi.started,gia.status as actstatus "
+             . "from " . self::tbl('activities') . " ga," . self::tbl('instances') . " gi," . self::tbl('instance_activities') . " gia "
+             . "where ga.activityId=gia.activityId and gi.instanceId=gia.instanceId and gi.instanceId=?";
         $result = $this->query($query, [$iid]);
         $ret = [];
         while ($res = $result->fetchRow()) {

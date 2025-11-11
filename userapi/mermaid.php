@@ -17,8 +17,6 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow userapi mermaid function
  * @extends MethodClass<UserApi>

@@ -17,13 +17,11 @@ use Xaraya\Modules\Workflow\WorkflowQueue;
 use Exception;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow schedulerapi transitions function
  * @extends MethodClass<SchedulerApi>
  */
-class  TransitionsMethod extends MethodClass
+class TransitionsMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
@@ -31,7 +29,7 @@ class  TransitionsMethod extends MethodClass
      * run all scheduled workflow transitions (executed by the scheduler module)
      * This can be based on queued transition events from workflow_queue (if used) and/or
      * active workflow subjects based on their place or last update from workflow_tracker
-     * 
+     *
      * For example, with the 'article' workflow the spell checker can be:
      * 1. automatically called at the end of the 'request_review' transition (in-line), or
      * 2. queued as event for later processing as called here by the scheduler module, or
@@ -48,7 +46,7 @@ class  TransitionsMethod extends MethodClass
         if (empty($args['scheduled'])) {
             $args['scheduled'] = 'scheduler';
         }
-    
+
         // get queued events for all workflows, subjects and users
         $items = WorkflowQueue::getItems();
         foreach ($items as $item) {
@@ -70,10 +68,9 @@ class  TransitionsMethod extends MethodClass
             $log .= "\n";
         }
         $log .= "Done\n";
-    
+
         // @todo and/or check workflow tracker for specific conditions
-    
+
         return $log;
     }
 }
-

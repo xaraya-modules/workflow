@@ -13,15 +13,12 @@ namespace Xaraya\Modules\Workflow\SchedulerApi;
 
 use Xaraya\Modules\MethodClass;
 use Xaraya\Modules\Workflow\SchedulerApi;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow schedulerapi activities function
  * @extends MethodClass<SchedulerApi>
  */
-class  ActivitiesMethod extends MethodClass
+class ActivitiesMethod extends MethodClass
 {
     /** functions imported by bermuda_cleanup */
 
@@ -36,7 +33,7 @@ class  ActivitiesMethod extends MethodClass
         // We need to keep track of our own set of jobs here, because the scheduler won't know what
         // workflow activities to run when. Other modules will typically have 1 job that corresponds
         // to 1 API function, so they won't need this...
-    
+
         $log = $this->ml('Starting scheduled workflow activities') . "\n";
         $serialjobs = $this->mod()->getVar('jobs');
         if (!empty($serialjobs)) {
@@ -104,16 +101,16 @@ class  ActivitiesMethod extends MethodClass
             $log .= "\n";
         }
         $log .= $this->ml('Finished scheduled workflow activities');
-    
+
         // we didn't run anything, so return now
         if (count($hasrun) == 0) {
             return $log;
         }
-    
+
         // Trick : make sure we're dealing with up-to-date information here,
         //         because running all those jobs may have taken a while...
         $this->mem()->del('Mod.Variables.workflow', 'jobs');
-    
+
         // get the current list of jobs
         $serialjobs = $this->mod()->getVar('jobs');
         if (!empty($serialjobs)) {
@@ -127,8 +124,8 @@ class  ActivitiesMethod extends MethodClass
                 continue;
             }
             // make sure we're dealing with the same job here :)
-            if ($newjobs[$id]['activity'] == $jobs[$id]['activity'] &&
-                $newjobs[$id]['lastrun'] < $jobs[$id]['lastrun']) {
+            if ($newjobs[$id]['activity'] == $jobs[$id]['activity']
+                && $newjobs[$id]['lastrun'] < $jobs[$id]['lastrun']) {
                 $newjobs[$id]['result'] = $jobs[$id]['result'];
                 $newjobs[$id]['lastrun'] = $jobs[$id]['lastrun'];
             }
@@ -136,8 +133,7 @@ class  ActivitiesMethod extends MethodClass
         // update the new jobs
         $serialjobs = serialize($newjobs);
         $this->mod()->setVar('jobs', $serialjobs);
-    
+
         return $log;
     }
 }
-

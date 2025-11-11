@@ -18,11 +18,8 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow user test_run function
@@ -49,7 +46,6 @@ class TestRunMethod extends MethodClass
         $data = $args ?? [];
         $data['warning'] = '';
         // @checkme we don't actually need to require composer autoload here
-        sys::import('modules.workflow.class.config');
         try {
             WorkflowConfig::checkAutoload();
             //WorkflowConfig::setAutoload();
@@ -79,7 +75,6 @@ class TestRunMethod extends MethodClass
             throw new BadParameterException($vars, $msg);
         }
 
-        sys::import('modules.workflow.class.tracker');
 
         if (!empty($data['trackerId'])) {
             $item = WorkflowTracker::getTrackerItem($data['trackerId']);
@@ -128,9 +123,6 @@ class TestRunMethod extends MethodClass
             return $this->mod()->template('test', $data);
         }
 
-        sys::import('modules.workflow.class.logger');
-        sys::import('modules.workflow.class.process');
-        sys::import('modules.workflow.class.subject');
         WorkflowProcess::setLogger(new WorkflowLogger());
 
         $workflow = WorkflowProcess::getProcess($data['workflow']);

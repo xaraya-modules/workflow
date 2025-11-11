@@ -15,10 +15,6 @@
 
 namespace Xaraya\Modules\Workflow\HookObservers;
 
-use sys;
-
-sys::import('modules.workflow.class.hookobservers.generic');
-
 class ItemDeleteObserver extends GenericObserver
 {
     public $module = 'workflow';

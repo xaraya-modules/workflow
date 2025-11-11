@@ -1,7 +1,6 @@
 <?php
 
 //namespace Galaxia;
-sys::import('xaraya.services.servicefactory');
 use Xaraya\Services\ServiceFactory;
 
 $xarDB = ServiceFactory::getDatabaseService(__FILE__);
@@ -88,8 +87,8 @@ if (!function_exists('galaxia_execute_activity')) {
             'user',
             'run_activity',
             ['activityId' => $activityId,
-                                      'iid' => $iid,
-                                      'auto' => $auto, ]
+                'iid' => $iid,
+                'auto' => $auto, ]
         );
     }
 }

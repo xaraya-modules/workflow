@@ -12,9 +12,6 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Modules\UserApiClass;
-use sys;
-
-sys::import('xaraya.modules.userapi');
 
 /**
  * Handle the workflow user API

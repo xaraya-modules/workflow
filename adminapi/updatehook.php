@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\Workflow\AdminApi;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow adminapi updatehook function

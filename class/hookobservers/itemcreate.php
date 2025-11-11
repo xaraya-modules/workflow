@@ -15,10 +15,6 @@
 
 namespace Xaraya\Modules\Workflow\HookObservers;
 
-use sys;
-
-sys::import('modules.workflow.class.hookobservers.generic');
-
 class ItemCreateObserver extends GenericObserver
 {
     public $module = 'workflow';

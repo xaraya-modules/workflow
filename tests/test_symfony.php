@@ -33,9 +33,6 @@ xarDatabase::init();
 //xarMod::init();
 // initialize users
 //xarUser::init();
-sys::import('modules.workflow.class.process');
-sys::import('modules.workflow.class.subject');
-sys::import('modules.workflow.class.tracker');
 //sys::import('modules.workflow.class.logger');
 
 use Xaraya\Context\Context;
@@ -44,7 +41,6 @@ use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\Workflow\WorkflowTracker;
-use Xaraya\Sessions\SessionHandler;
 use Symfony\Component\Workflow\Workflow;
 
 //WorkflowProcess::setLogger(new WorkflowLogger());

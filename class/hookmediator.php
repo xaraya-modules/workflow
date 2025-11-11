@@ -20,12 +20,7 @@ use ixarEventSubject;
 use ixarHookSubject;
 use ApiHookSubject;
 use GuiHookSubject;
-use sys;
 use Exception;
-
-sys::import('modules.workflow.class.hookobservers.generic');
-sys::import('xaraya.structures.hooks.apisubject');
-sys::import('xaraya.structures.hooks.guisubject');
 
 class HookMediator extends GenericObserver
 {

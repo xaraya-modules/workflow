@@ -18,9 +18,6 @@ namespace Xaraya\Modules\Workflow;
 use Xaraya\Context\ContextInterface;
 use Xaraya\Context\ContextTrait;
 use xarObject;
-use sys;
-
-sys::import('xaraya.context.contexttrait');
 
 class WorkflowBase extends xarObject implements ContextInterface
 {

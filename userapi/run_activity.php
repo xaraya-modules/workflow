@@ -13,10 +13,7 @@ namespace Xaraya\Modules\Workflow\UserApi;
 
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi run_activity function

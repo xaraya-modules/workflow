@@ -12,10 +12,6 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Modules\UserGuiClass;
-use sys;
-
-sys::import('xaraya.modules.usergui');
-sys::import('modules.workflow.userapi');
 
 /**
  * Handle the workflow user GUI

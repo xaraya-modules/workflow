@@ -17,11 +17,6 @@ namespace Xaraya\Modules\Workflow;
 
 use DataObject;
 use DataObjectFactory;
-use sys;
-
-sys::import('modules.workflow.class.base');
-sys::import('modules.workflow.class.traits.markingtrait');
-sys::import('modules.workflow.class.traits.transitiontrait');
 
 // @todo verify interface with WorkflowBase
 class WorkflowSubject implements Traits\MarkingInterface
@@ -40,7 +35,6 @@ class WorkflowSubject implements Traits\MarkingInterface
 
     public function getObject(bool $build = true)
     {
-        sys::import('modules.dynamicdata.class.objects.base');
         // @checkme create fake objectName for module:itemtype if no object is available for now?
         if ($build && !$this->objectref instanceof DataObject && strpos($this->objectref->name, ':') === false) {
             $objectref = DataObjectFactory::getObject(

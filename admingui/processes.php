@@ -15,8 +15,6 @@ use Xaraya\Modules\Workflow\AdminGui;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow admin processes function
  * @extends MethodClass<AdminGui>

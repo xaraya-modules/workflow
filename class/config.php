@@ -18,8 +18,6 @@ namespace Xaraya\Modules\Workflow;
 use sys;
 use Exception;
 
-sys::import('modules.workflow.class.base');
-
 class WorkflowConfig extends WorkflowBase
 {
     public static $config = [];

@@ -16,8 +16,6 @@ use Xaraya\Modules\Workflow\WorkflowEventSubscriber;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow userapi eventsubscriber function
  * @extends MethodClass<UserApi>

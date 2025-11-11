@@ -292,8 +292,7 @@ class GUI extends Base
                       where activityId=? and instanceId=? and user=?",
             [$activityId,$instanceId,$user]
         ))
-      ||
-      ($this->getOne(
+      || ($this->getOne(
           "select count(*)
                       from " . self::tbl('instance_activities') . " gia
                       INNER JOIN " . self::tbl('activity_roles') . "gar ON gar.activityId=gia.activityId

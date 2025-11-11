@@ -26,12 +26,7 @@ namespace Xaraya\Modules\Workflow;
 use DataObjectFactory;
 use DataObjectLoader;
 use xarLog;
-use sys;
 use Exception;
-
-sys::import('modules.workflow.class.base');
-sys::import('modules.dynamicdata.class.objects.factory');
-sys::import('modules.dynamicdata.class.objects.loader');
 
 class WorkflowTracker extends WorkflowBase
 {

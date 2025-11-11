@@ -672,8 +672,8 @@ class Instance extends Base
                     'user',
                     'run_activity',
                     ['activityId' => $activityId,
-                                      'iid' => $iid,
-                                      'auto' => 0, ]
+                        'iid' => $iid,
+                        'auto' => 0, ]
                 )
             );
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Workflow Module REST API for Galaxia Workflow Engine and Symfony Workflow Component (test)
  *

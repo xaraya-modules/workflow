@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
 use Query;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow user display function
@@ -45,13 +42,11 @@ class DisplayMethod extends MethodClass
         $this->tpl()->setPageTitle('Display Activities');
 
         // Get all the activities
-        sys::import('modules.dynamicdata.class.objects.factory');
         $activities = $this->data()->getObjectList(['name' => 'workflow_activities']);
         //    $where = "type = 'start'";
         $activities->getItems();
 
         // For each activity get the roles and add them to the activity
-        sys::import('xaraya.structures.query');
         $tables = $this->db()->getTables();
         $q = new Query('SELECT', $tables['workflow_activity_roles']);
         foreach ($activities->items as $key => $item) {

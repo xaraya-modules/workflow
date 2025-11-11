@@ -16,8 +16,6 @@ use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow userapi logger function
  * @extends MethodClass<UserApi>

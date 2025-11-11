@@ -22,11 +22,6 @@ use ApiHookSubject;
 use GuiHookSubject;
 use Exception;
 use xarMod;
-use sys;
-
-sys::import('xaraya.structures.hooks.observer');
-sys::import('xaraya.structures.hooks.apisubject');
-sys::import('xaraya.structures.hooks.guisubject');
 
 class GenericObserver extends HookObserver
 {

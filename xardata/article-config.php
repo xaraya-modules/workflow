@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This workflow show-cases several special features:
  *
@@ -7,8 +8,6 @@
  * 3. it has a callback function to automatically run a (dummy) spell checker once request_review is completed
  */
 
-sys::import('modules.workflow.class.utils');
-sys::import('modules.workflow.xardata.spellchecker');
 use Xaraya\Modules\Workflow\WorkflowUtils;
 use Xaraya\Modules\Publications\SpellCheckerDummy;
 

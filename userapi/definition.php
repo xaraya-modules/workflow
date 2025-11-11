@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\WorkflowDefinition;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi definition function

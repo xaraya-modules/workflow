@@ -23,10 +23,7 @@ use xarHooks;
 use xarModHooks;
 use DataObjectDescriptor;
 use DataObjectFactory;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.installer');
 
 /**
  * Handle module installer functions
@@ -70,7 +67,6 @@ class Installer extends InstallerClass
         $dbconn = $this->db()->getConn();
         $xartable = $this->db()->getTables();
 
-        sys::import('xaraya.tableddl');
 
         // Galaxia developers use quotes around column names.
         // Since PostgreSQL creates column names in lowercase by
@@ -646,7 +642,6 @@ class Installer extends InstallerClass
 
             case '1.6.1':
                 // Code to upgrade from version 1.6.1 goes here
-                sys::import('modules.dynamicdata.class.objects.base');
                 $objectinfo = DataObjectDescriptor::getObjectID(['name' => 'workflow_activities']);
                 $object = DataObjectFactory::getObject(['name' => 'objects', 'itemid' => $objectinfo['objectid']]);
                 $itemid = $object->getItem();
@@ -840,7 +835,6 @@ class Installer extends InstallerClass
         $dbconn = $this->db()->getConn();
         $xartable = $this->db()->getTables();
 
-        sys::import('xaraya.tableddl');
 
         $mytables = [
             'workflow_activities',

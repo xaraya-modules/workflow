@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Dummy spell checker for Symfony Workflow events
  *
@@ -17,11 +18,6 @@ namespace Xaraya\Modules\Publications;
 use Symfony\Component\Workflow\WorkflowInterface;
 use Xaraya\Modules\Workflow\WorkflowHandlers;
 use Xaraya\Modules\Workflow\WorkflowSubject;
-use sys;
-
-sys::import('modules.workflow.class.subject');
-sys::import('modules.workflow.class.handlers');
-sys::import('xaraya.services.xar');
 use Xaraya\Services\xar;
 
 /**

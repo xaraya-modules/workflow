@@ -15,10 +15,6 @@
 
 namespace Xaraya\Modules\Workflow\Traits;
 
-use sys;
-
-sys::import('modules.workflow.class.traits.registrytrait');
-
 /**
  * For documentation purposes only - available via TransitionTrait
  */

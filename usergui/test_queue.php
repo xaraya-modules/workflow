@@ -16,10 +16,7 @@ use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\SchedulerApi;
 use Xaraya\Modules\Workflow\WorkflowConfig;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow user test_queue function
@@ -50,7 +47,6 @@ class TestQueueMethod extends MethodClass
         $data = $args ?? [];
         $data['warning'] = '';
         // @checkme we don't actually need to require composer autoload here
-        sys::import('modules.workflow.class.config');
         try {
             WorkflowConfig::checkAutoload();
             //WorkflowConfig::setAutoload();

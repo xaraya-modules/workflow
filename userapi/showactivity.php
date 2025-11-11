@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarTpl;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi showactivity function

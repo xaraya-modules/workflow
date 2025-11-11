@@ -17,10 +17,7 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * workflow userapi run_transition function
@@ -55,7 +52,6 @@ class RunTransitionMethod extends MethodClass
 
         // if we come from a hook function
         if (empty($subjectId)) {
-            sys::import('modules.dynamicdata.class.objects.descriptor');
             $moduleName = $args['module'] ?? $this->mod()->getName();
             $itemType = $args['itemtype'] ?? 0;
             $itemId = $args['itemid'] ?? 0;
@@ -78,9 +74,6 @@ class RunTransitionMethod extends MethodClass
         // @checkme we DO actually need to require composer autoload here
         WorkflowConfig::setAutoload();
 
-        sys::import('modules.workflow.class.logger');
-        sys::import('modules.workflow.class.process');
-        sys::import('modules.workflow.class.subject');
         //WorkflowProcess::setLogger(new WorkflowLogger());
 
         $workflow = WorkflowProcess::getProcess($workflowName);

@@ -12,9 +12,6 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Modules\AdminApiClass;
-use sys;
-
-sys::import('xaraya.modules.adminapi');
 
 /**
  * Handle the workflow admin API

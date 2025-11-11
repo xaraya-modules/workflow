@@ -16,8 +16,6 @@ use Xaraya\Modules\Workflow\WorkflowDumper;
 use Xaraya\Modules\MethodClass;
 use sys;
 
-sys::import('xaraya.modules.method');
-
 /**
  * workflow userapi dumper function
  * @extends MethodClass<UserApi>
