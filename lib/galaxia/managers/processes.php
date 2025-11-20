@@ -132,7 +132,6 @@ class ProcessManager extends BaseManager
             );
             trigger_error($error, E_USER_WARNING);
         }
-        xml_parser_free($this->parser);
         // Now that we have the tree we can do interesting things
         //print_r($this->tree);
         $process = [];
