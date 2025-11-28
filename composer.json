@@ -18,7 +18,7 @@
     },
     "require": {
         "psr/log": "^3.0",
-        "symfony/event-dispatcher": "^7.4",
-        "symfony/workflow": "^7.4"
+        "symfony/event-dispatcher": "^7.4 || ^8.0",
+        "symfony/workflow": "^7.4 || ^8.0"
     }
 }
