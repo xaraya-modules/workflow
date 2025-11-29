@@ -161,7 +161,7 @@ class WorkflowEventSubscriber extends WorkflowBase implements EventSubscriberInt
         self::$callbackFunctions[$eventName][] = $callbackFunc;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         //return [
         //    'workflow.guard' => ['onGuardEvent'],

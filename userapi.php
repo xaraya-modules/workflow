@@ -37,6 +37,8 @@ use Xaraya\Modules\UserApiClass;
  * @method mixed registry(array $args)
  * @method mixed runActivity(array $args)
  * @method mixed runTransition(array $args)
+ * @method mixed run_activity(array $args)
+ * @method mixed run_transition(array $args)
  * @method mixed showactions(array $args)
  * @method mixed showactivity(array $args)
  * @method mixed showinstances(array $args)
