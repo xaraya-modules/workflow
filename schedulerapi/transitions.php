@@ -58,7 +58,7 @@ class TransitionsMethod extends MethodClass
             // @checkme let the event handler called for this transition know that we have been scheduled
             $params['scheduled'] = $args['scheduled'];
             try {
-                $result = $this->mod()->apiMethod('workflow', 'user', 'run_transition', $params);
+                $result = $this->mod()->apiMethod('workflow', 'userapi', 'run_transition', $params);
                 $log .= "Scheduled transition " . $item['transition'] . " in workflow " . $item['workflow'] . " for subject " . $item['subject'] . " succeeded";
                 $id = WorkflowQueue::delete($item['id']);
             } catch (Exception $e) {

@@ -86,7 +86,7 @@ class ActivitiesMethod extends MethodClass
             $log .= $this->ml('Workflow activity #(1)', $job['activity']) . ' ';
             if (!$this->mod()->apiMethod(
                 'workflow',
-                'user',
+                'userapi',
                 'run_activity',
                 ['activityId' => $job['activity']]
             )) {

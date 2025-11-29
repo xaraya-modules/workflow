@@ -18,6 +18,6 @@ namespace Xaraya\Modules\Workflow\HookObservers;
 class ItemUpdateObserver extends GenericObserver
 {
     public $module = 'workflow';
-    public $type   = 'admin';
+    public $type   = 'adminapi';
     public $func   = 'updatehook';
 }

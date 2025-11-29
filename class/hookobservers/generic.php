@@ -21,12 +21,11 @@ use ixarHookSubject;
 use ApiHookSubject;
 use GuiHookSubject;
 use Exception;
-use xarMod;
 
 class GenericObserver extends HookObserver
 {
     public $module = 'workflow';
-    public $type   = 'admin';
+    public $type   = 'adminapi';
     public $func   = 'OVERRIDE';
 
     public function __construct(array $args = [])

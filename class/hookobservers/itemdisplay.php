@@ -18,6 +18,6 @@ namespace Xaraya\Modules\Workflow\HookObservers;
 class ItemDisplayObserver extends GenericObserver
 {
     public $module = 'workflow';
-    public $type   = 'user';
+    public $type   = 'usergui';
     public $func   = 'displayhook';
 }
