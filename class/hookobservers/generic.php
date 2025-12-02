@@ -67,7 +67,7 @@ class GenericObserver extends HookObserver
         //$extrainfo = $subject->getExtrainfo();
 
         // for gui hooks the subject expects a string to display, return the display gui func
-        //return xarMod::guiFunc('workflow', 'user', 'display', []);
+        //return $this->mod()->guiFunc('workflow', 'user', 'display', []);
         //return 'workflow was here...';
         // See lib/xaraya/structures/events/guiobserver.php
         return $this->mod()->guiMethod($this->module, $this->type, $this->func, $subject->getArgs());

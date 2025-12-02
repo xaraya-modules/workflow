@@ -13,8 +13,6 @@ namespace Xaraya\Modules\Workflow\UserGui;
 
 use Xaraya\Modules\Workflow\UserGui;
 use Xaraya\Modules\MethodClass;
-use xarTpl;
-use xarModHooks;
 
 /**
  * workflow user run_activity function
@@ -220,7 +218,7 @@ class RunActivityMethod extends MethodClass
                 $data['mid'] = '';
 
                 if ($activity->isInteractive()) {
-                    $output = xarTpl::file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $data);
+                    $output = $this->tpl()->file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $data);
                     $data['mid'] = $output;
                 }
 
@@ -244,7 +242,7 @@ class RunActivityMethod extends MethodClass
                         ['activityId' => $activity->getActivityId(),
                             'iid' => $instance->getInstanceId(), ]
                     );
-                    $data['hooks'] = xarModHooks::call('item', 'display', $instance->instanceId, $item);
+                    $data['hooks'] = $this->mod()->callHooks('item', 'display', $instance->instanceId, $item);
                 }
 
                 // If we are not testing, then display the output in its own page

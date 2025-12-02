@@ -17,6 +17,7 @@ if (php_sapi_name() !== 'cli') {
     echo 'Workflow Module Test Script for Symfony Workflow tests';
     return;
 }
+use Xaraya\Services\xar;
 
 $baseDir = dirname(__DIR__);
 $baseDir = '/home/mikespub/xaraya-core';
@@ -24,15 +25,15 @@ require_once $baseDir . '/vendor/autoload.php';
 // initialize bootstrap
 sys::init();
 // initialize caching - delay until we need results
-xarCache::init();
+xar::cache()->init();
 // initialize loggers
-xarLog::init();
+xar::log()->init();
 // initialize database - delay until caching fails
-xarDatabase::init();
+xar::db()->init();
 // initialize modules
-//xarMod::init();
+//xar::mod()->init();
 // initialize users
-//xarUser::init();
+//xar::user()->init();
 //sys::import('modules.workflow.class.logger');
 
 use Xaraya\Context\Context;
@@ -47,16 +48,16 @@ use Symfony\Component\Workflow\Workflow;
 
 //$sitePrefix = '/bermuda';
 //echo WorkflowProcess::dumpProcess('hook_sample', $sitePrefix);
-//xarCore::exit();
+//xar::exit();
 $workflow = WorkflowProcess::getProcess('cd_loans');
 
 // initialize session
-xarSession::setSessionClass(SessionContext::class);
-xarSession::init();
+xar::session()->setSessionClass(SessionContext::class);
+xar::session()->init();
 
 // start session with userId
 $xarayaContext = new Context(['hello' => 'world']);
-xarSession::getInstance()->startSession($xarayaContext, 'phpunit', 6);
+xar::session()->getInstance()->startSession($xarayaContext, 'phpunit', 6);
 
 $subject = new WorkflowSubject('cdcollection', 5);
 
@@ -73,7 +74,7 @@ try {
     $result = $workflow->can($subject, $transition);
 } catch (Exception $e) {
     echo $e->getMessage();
-    xarCore::exit();
+    xar::exit();
     return;
 }
 echo "Result: " . var_export($result, true) . "\n";
@@ -86,7 +87,7 @@ if (!$result) {
         $msg .= "\nBlocker: " . $blocker->getMessage();
     }
     echo $msg;
-    xarCore::exit();
+    xar::exit();
     return;
 }
 $marking = $workflow->apply($subject, "request", [Workflow::DISABLE_ANNOUNCE_EVENT => true]);

@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Workflow\UserApi;
 
 use Xaraya\Modules\Workflow\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarTpl;
 
 /**
  * workflow userapi showactivity function
@@ -126,7 +125,7 @@ class ShowactivityMethod extends MethodClass
         if ($activity->isInteractive()) {
             $template = $activity->getNormalizedName() . '.xt';
             // not very clean way, but it works :)
-            $output = xarTpl::file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $tplData);
+            $output = $this->tpl()->file(\GALAXIA_PROCESSES . '/' . $process->getNormalizedName() . '/code/templates/' . $template, $tplData);
             return $output;
         } else {
             $instance->getInstance($instance->instanceId);

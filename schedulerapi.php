@@ -24,6 +24,6 @@ class SchedulerApi extends UserApiClass
     public function configure()
     {
         $this->setModType('scheduler');
-        // don't call xarMod:apiLoad() for workflow scheduler API
+        // don't call xar::mod()->apiLoad() for workflow scheduler API
     }
 }

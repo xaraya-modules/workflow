@@ -9,13 +9,10 @@ use Xaraya\Modules\Workflow\WorkflowEventSubscriber;
 use Xaraya\Modules\Workflow\WorkflowLogger;
 use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
+use Xaraya\Services\xar;
 //use Xaraya\Sessions\SessionHandler;
 use Symfony\Component\Workflow\Workflow;
 use sys;
-use xarCache;
-use xarDatabase;
-use xarLog;
-use xarSession;
 use Throwable;
 
 final class SymfonyWorkflowTest extends TestCase
@@ -25,17 +22,17 @@ final class SymfonyWorkflowTest extends TestCase
         // initialize bootstrap
         sys::init();
         // initialize caching - delay until we need results
-        xarCache::init();
+        xar::cache()->init();
         // initialize loggers
-        xarLog::init();
+        xar::log()->init();
         // initialize database - delay until caching fails
-        xarDatabase::init();
+        xar::db()->init();
         // initialize modules
-        //xarMod::init();
+        //xar::mod()->init();
         // initialize users
-        //xarUser::init();
+        //xar::user()->init();
         //WorkflowProcess::setLogger(new WorkflowLogger());
-        xarSession::setSessionClass(SessionContext::class);
+        xar::session()->setSessionClass(SessionContext::class);
     }
 
     public static function tearDownAfterClass(): void {}
@@ -122,9 +119,9 @@ final class SymfonyWorkflowTest extends TestCase
     public function testGetSubject_UserTransitions(): void
     {
         // initialize session
-        xarSession::init();
+        xar::session()->init();
         $xarayaContext = new Context(['hello' => 'world']);
-        xarSession::getInstance()->startSession($xarayaContext, 'phpunit', 6);
+        xar::session()->getInstance()->startSession($xarayaContext, 'phpunit', 6);
 
         // create subject with Xaraya context
         $subject = new WorkflowSubject('cdcollection', 5);

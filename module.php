@@ -14,7 +14,7 @@ namespace Xaraya\Modules\Workflow;
 use Xaraya\Modules\ModuleClass;
 
 /**
- * Get workflow module classes via xarMod::getModule()
+ * Get workflow module classes via xar::mod()->getModule()
  */
 class Module extends ModuleClass
 {

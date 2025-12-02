@@ -14,9 +14,7 @@
 namespace Xaraya\Modules\Workflow;
 
 use Xaraya\Modules\InstallerClass;
-use xarSystemVars;
 use xarTableDDL;
-use xarMod;
 use xarPrivileges;
 use xarMasks;
 use xarHooks;
@@ -71,7 +69,7 @@ class Installer extends InstallerClass
         // Galaxia developers use quotes around column names.
         // Since PostgreSQL creates column names in lowercase by
         // default, the column names must be surrounded by quotes.
-        $dbtype  = xarSystemVars::get(null, 'DB.Type');
+        $dbtype  = $this->sysConfig()->getVar('DB.Type');
         switch ($dbtype) {
             case 'postgres':
                 $qte = '"';
@@ -560,7 +558,7 @@ class Installer extends InstallerClass
             //'cdcollection3',
         ];
 
-        if (!xarMod::apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
+        if (!$this->mod()->apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
             return;
         }
 
@@ -693,7 +691,7 @@ class Installer extends InstallerClass
             'workflow_queue',
         ];
 
-        if (!xarMod::apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
+        if (!$this->mod()->apiFunc('modules', 'admin', 'standardinstall', ['module' => $module, 'objects' => $objects])) {
             return;
         }
     }
@@ -875,7 +873,7 @@ class Installer extends InstallerClass
         xarPrivileges::removeInstances('workflow');
 
         $module = 'workflow';
-        return xarMod::apiFunc('modules', 'admin', 'standarddeinstall', ['module' => $module]);
+        return $this->mod()->apiFunc('modules', 'admin', 'standarddeinstall', ['module' => $module]);
     }
 
     public function remove_processes()

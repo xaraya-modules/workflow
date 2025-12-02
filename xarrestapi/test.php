@@ -18,6 +18,7 @@ use Xaraya\Modules\Workflow\WorkflowProcess;
 use Xaraya\Modules\Workflow\WorkflowSubject;
 use Xaraya\Modules\Workflow\WorkflowTracker;
 use Xaraya\Modules\Workflow\WorkflowHistory;
+use Xaraya\Services\xar;
 
 /**
  * Sample REST API call supported by this module (if any)
@@ -26,8 +27,8 @@ use Xaraya\Modules\Workflow\WorkflowHistory;
  */
 function workflow_restapi_test($args = [], $context = null)
 {
-    xarLog::init();
-    $userId = $context?->getUserId() ?? xarSession::getUserId();
+    xar::log()->init();
+    $userId = $context?->getUserId() ?? xar::session()->getUserId();
     // @checkme pass all args from handler here?
     //extract($args);
     $result = $args;
@@ -120,6 +121,6 @@ function workflow_restapi_test($args = [], $context = null)
         default:
             break;
     }
-    //xarVar::fetch('name', 'isset', $name, null, xarVar::NOT_REQUIRED);
+    //xar::var()->find('name', $name);
     return $result;
 }

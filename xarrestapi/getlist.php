@@ -26,7 +26,7 @@
 function workflow_restapi_getlist($args = [], $context = null)
 {
     $apilist = [];
-    // $func name as used in xarMod::apiFunc($module, $type, $func, $args)
+    // $func name as used in xar::mod()->apiFunc($module, $type, $func, $args)
     $apilist['findinstances'] = [
         'type' => 'user',  // default = rest, other options are user, admin, ... as usual
         'path' => 'instances',  // path to use in REST API operation /modules/{module}/{path}
@@ -37,7 +37,7 @@ function workflow_restapi_getlist($args = [], $context = null)
         // @todo transform assoc array("$itemid" => $item) to list of $item or not?
         //'response' => ['type' => 'array', 'items' => ['type' => 'object']],  // optional response schema
     ];
-    // $func name as used in xarMod::apiFunc($module, $type, $func, $args)
+    // $func name as used in xar::mod()->apiFunc($module, $type, $func, $args)
     $apilist['getinstance'] = [
         'type' => 'user',  // default = rest, other $type options are user, admin, ... as usual
         'path' => 'instances/{instanceId}',  // path to use in REST API operation /modules/{module}/{path} with path parameter
@@ -50,7 +50,7 @@ function workflow_restapi_getlist($args = [], $context = null)
         // @checkme Galaxia library has issues unserializing Instance without Creole being loaded - set_include_path
         //'caching' => false,
     ];
-    // $func name as used in xarMod::apiFunc($module, $type, $func, $args)
+    // $func name as used in xar::mod()->apiFunc($module, $type, $func, $args)
     $apilist['test_configs'] = [
         //'type' => 'rest',  // default = rest, other $type options are user, admin, ... as usual
         'name' => 'test',  // default = $api array key
