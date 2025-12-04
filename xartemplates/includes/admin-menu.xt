@@ -4,7 +4,7 @@
     <xar:comment>Common Administration menu</xar:comment>
     <xar:style scope="module" module="base" file="tabs"/>
 
-    <xar:set name="request">xarController::getRequest()->getInfo()</xar:set>
+    <xar:set name="request">$xar->req()->getRequest()->getInfo()</xar:set>
     <xar:set name="activetab">#$request.2#</xar:set>
     <div>
       <ul class="xar-tabs">
@@ -17,7 +17,7 @@
               <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
             </xar:if>
             <li class="#$tabclass#">
-              <a href="#xarController::URL('workflow','admin','overview')#" class="#$linkclass#">
+              <a href="#$xar->ctl()->URL('workflow','admin','overview')#" class="#$linkclass#">
                 Overview
               </a>
             </li>
@@ -32,7 +32,7 @@
           </xar:if>
 
             <li class="#$tabclass#">
-              <a href="#xarController::URL('workflow','admin','monitor_processes')#" class="#$linkclass#">
+              <a href="#$xar->ctl()->URL('workflow','admin','monitor_processes')#" class="#$linkclass#">
                 Workflow Monitoring
               </a>
             </li>
@@ -47,7 +47,7 @@
             </xar:if>
 
             <li class="#$tabclass#">
-                <a href="#xarController::URL('workflow','admin','processes')#" class="#$linkclass#">
+                <a href="#$xar->ctl()->URL('workflow','admin','processes')#" class="#$linkclass#">
                     Manage Processes
                 </a>
             </li>
@@ -60,7 +60,7 @@
               <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
             </xar:if>
             <li class="#$tabclass#">
-              <a href="#xarController::URL('workflow','admin','test_manage')#" class="#$linkclass#">
+              <a href="#$xar->ctl()->URL('workflow','admin','test_manage')#" class="#$linkclass#">
                 New Workflows
               </a>
             </li>
@@ -73,7 +73,7 @@
               <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
             </xar:if>
             <li class="#$tabclass#">
-              <a href="#xarController::URL('workflow','admin','modifyconfig')#" class="#$linkclass#">
+              <a href="#$xar->ctl()->URL('workflow','admin','modifyconfig')#" class="#$linkclass#">
                 Modify Configuration
               </a>
             </li>

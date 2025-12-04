@@ -33,9 +33,9 @@
       <tr>
         <xar:foreach in="$fieldlist" value="$field">
           <xar:if condition="$sort_mode eq $field . '_desc'">
-            <th><a href="#xarServer::getCurrentURL(['sort_mode' => $field . '_asc'])#">#$fieldlabel[$field]#</a></th>
+            <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => $field . '_asc'])#">#$fieldlabel[$field]#</a></th>
           <xar:else/>
-            <th><a href="#xarServer::getCurrentURL(['sort_mode' => $field . '_desc'])#">#$fieldlabel[$field]#</a></th>
+            <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => $field . '_desc'])#">#$fieldlabel[$field]#</a></th>
           </xar:if>
         </xar:foreach>
         <xar:if condition="!empty($actionlist)">
@@ -49,7 +49,7 @@
       </tr>
       <xar:foreach in="$items" value="$item">
         <tr>
-          <form method="post" action="#xarController::URL('workflow','user','instances')#">
+          <form method="post" action="#$xar->ctl()->URL('workflow','user','instances')#">
             <xar:foreach in="$fieldlist" value="$field">
               <xar:if condition="$field eq 'procname'">
                 <td>#$item[$field]#</td>
@@ -57,7 +57,7 @@
                 <td style="text-align: center;">#$item[$field]#</td>
               <xar:elseif condition="$field eq 'user' or $field eq 'owner'"/>
                 <xar:if condition="!empty($item[$field]) and is_numeric($item[$field])">
-                  <td>#xarUser::getVar('name',$item[$field])#</td>
+                  <td>#$xar->user($item[$field])->getVar('name')#</td>
                 <xar:else/>
                   <td>#$item[$field]#</td>
                 </xar:if>
@@ -66,9 +66,9 @@
                   <!-- you can choose how to display the date and time here, e.g. show
                        the time for the last 12 hours and the date for anything older -->
                   <xar:if condition="$item[$field] > time() - 12*60*60">
-                    <td>#xarLocale::getFormattedTime('short',$item[$field])#</td>
+                    <td>#$xar->mls()->getFormattedTime('short',$item[$field])#</td>
                   <xar:else/>
-                    <td>#xarLocale::getFormattedDate('medium',$item[$field])#</td>
+                    <td>#$xar->mls()->getFormattedDate('medium',$item[$field])#</td>
                   </xar:if>
                 <xar:else/>
                   <td>#$item[$field]#</td>

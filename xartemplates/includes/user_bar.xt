@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     <xar:style scope="module" module="base" file="navtabs"/>
-    <xar:set name="func">xarController::getVar('func')</xar:set>
+    <xar:set name="func">$xar->req()->getVar('func')</xar:set>
 
       <ul class="xar-tabs">
         <xar:if condition="$func eq 'main' or !isset($func) or $func eq ''">
@@ -12,9 +12,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','user','main')#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('my workflows')</xar:set>
-            <xar:set name="imgalt">xarML('workflows')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','user','main')#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('my workflows')</xar:set>
+            <xar:set name="imgalt">$xar->ml('workflows')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/home.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             My Workflow
           </a>
@@ -28,9 +28,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','user','processes')#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('user processes')</xar:set>
-            <xar:set name="imgalt">xarML('processes')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','user','processes')#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('user processes')</xar:set>
+            <xar:set name="imgalt">$xar->ml('processes')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/process.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Processes
           </a>
@@ -44,9 +44,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','user','activities')#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('user activities')</xar:set>
-            <xar:set name="imgalt">xarML('activities')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','user','activities')#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('user activities')</xar:set>
+            <xar:set name="imgalt">$xar->ml('activities')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Activities
           </a>
@@ -60,9 +60,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','user','instances')#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('user instances')</xar:set>
-            <xar:set name="imgalt">xarML('instances')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','user','instances')#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('user instances')</xar:set>
+            <xar:set name="imgalt">$xar->ml('instances')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/instance.gif" class="xar-icon" alt="$imgalt" title="$imgtitle"/>
             Instances
           </a>
@@ -76,7 +76,7 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','user','test')#" class="#$linkclass#">
+          <a href="#$xar->ctl()->URL('workflow','user','test')#" class="#$linkclass#">
             <xar:img scope="theme" file="icons/move.png" class="xar-icon" alt="test"/>
             Test New Workflows
           </a>

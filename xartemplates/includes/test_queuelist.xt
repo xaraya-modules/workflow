@@ -2,7 +2,7 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId and $userId if available -->
   <xar:if condition="empty($queue)">
-    <xar:set name="queue">xarMod::apiFunc('workflow', 'user', 'queue')</xar:set>
+    <xar:set name="queue">$xar->mod()->apiFunc('workflow', 'user', 'queue')</xar:set>
   </xar:if>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => '-updated']</xar:set>
   <xar:set name="dummy">$queue->setPaging($paging)</xar:set>
@@ -33,10 +33,10 @@
       </tr>
       <xar:foreach in="$items" value="$item">
         <xar:set name="pieces">$queue->fromSubjectId($item['subject'])</xar:set>
-        <xar:set name="displaylink">xarServer::getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
-        <xar:set name="infolink">xarServer::getObjectURL('workflow_queue', 'display', ['itemid' => $item['id']])</xar:set>
+        <xar:set name="displaylink">$xar->ctl()->getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
+        <xar:set name="infolink">$xar->ctl()->getObjectURL('workflow_queue', 'display', ['itemid' => $item['id']])</xar:set>
         <xar:set name="params">['workflow' => $item['workflow'], 'subjectId' => $item['subject']]</xar:set>
-        <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+        <xar:set name="filterlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
         <tr>
           <td><a href="#$infolink#" title="Info Queue (#$item['id']#)">#$item['id']#</a></td>
           <td>
@@ -52,14 +52,14 @@
               #ucwords(str_replace('_', ' ', $here))#&#160;
             </xar:foreach>
           </td>
-          <td>#xarUser::getVar('name', $item['user'])#</td>
-          <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
-          #xarLocale::getFormattedTime('short',$item['updated'])#</td>
+          <td>#$xar->user($item['user'])->getVar('name')#</td>
+          <td>#$xar->mls()->getFormattedDate('medium',$item['updated'])#
+          #$xar->mls()->getFormattedTime('short',$item['updated'])#</td>
         </tr>
       </xar:foreach>
     </table>
     <div>
-      <xar:set name="queuelink">xarServer::getModuleURL('workflow', 'user', 'test_queue')</xar:set>
+      <xar:set name="queuelink">$xar->ctl()->getModuleURL('workflow', 'user', 'test_queue')</xar:set>
       <xar:set name="label">'Process Queue'</xar:set>
       <xar:button type="link" name="process" target="$queuelink" label="$label"/>
     </div>

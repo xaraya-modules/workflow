@@ -2,7 +2,7 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId, $place, $transition and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+    <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <xar:if condition="!empty($workflow) and !empty($config[$workflow]) and empty($trackerId) and empty($subjectId)">
   <fieldset>

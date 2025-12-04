@@ -29,12 +29,12 @@
                     <xar:continue/>
                 </xar:if>
                 <!--  Only activities where I am the owner or user, or which are open to all -->
-                <xar:if condition="!empty($activity['roles']) AND (in_array(xarSession::getUserId(),$activity['roles']) OR in_array('*',$activity['roles']))">
+                <xar:if condition="!empty($activity['roles']) AND (in_array($xar->session()->getUserId(),$activity['roles']) OR in_array('*',$activity['roles']))">
                     <xar:continue/>
                 </xar:if>
                 <tr>
                     <td>
-                        <a href="#xarController::URL('workflow','user','run_activity',['activityId'=>$activity['id']])#">#$activity['name']#</a>
+                        <a href="#$xar->ctl()->URL('workflow','user','run_activity',['activityId'=>$activity['id']])#">#$activity['name']#</a>
                     </td>
                     <td>
                         <xar:if condition="!empty($activity['description'])">
@@ -60,8 +60,8 @@
                 <xar:foreach in="$items" value="$item">
                     <tr>
                         <td>
-                            <a href="#xarController::URL('workflow','user','run_activity',['activityId'=>$item['activity'],'iid'=>$item['instance_id']])#">
-                                <input type="image" name="run" value="1" title="#xarML('run instance')#" src="#xarTpl::getImage('../lib/galaxia/img/icons/next.gif','module','workflow')#"/>
+                            <a href="#$xar->ctl()->URL('workflow','user','run_activity',['activityId'=>$item['activity'],'iid'=>$item['instance_id']])#">
+                                <input type="image" name="run" value="1" title="#$xar->ml('run instance')#" src="#$xar->tpl()->getImage('../lib/galaxia/img/icons/next.gif','module','workflow')#"/>
                                 <xar:data-output property="$properties['activity']" value="$item['activity']" link=""/>#var_export($item, true)#
                             </a>
                         </td>

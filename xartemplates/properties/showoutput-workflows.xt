@@ -8,9 +8,9 @@
     <xar:elseif condition="!empty($layout) and $layout eq 'linebreak'"/>
         #nl2br($value)#
     <xar:elseif condition="!empty($workflows) and !empty($objectref)"/>
-        <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+        <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
         <xar:if condition="empty($tracker)">
-            <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
+            <xar:set name="tracker">$xar->mod()->apiFunc('workflow', 'user', 'tracker')</xar:set>
         </xar:if>
         <!-- @todo decide whether to show items for all users or only the current one -->
         <xar:set name="items">$tracker->getItems('', $objectref->name, $objectref->itemid, '', $userId)</xar:set>

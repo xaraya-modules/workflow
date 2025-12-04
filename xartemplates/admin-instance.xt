@@ -9,7 +9,7 @@
             Instance: #$ins_info['instanceId']# (Process: #$proc_info['name']# #$proc_info['version']#)
           </legend>
 
-          <form style="margin-left: 1em;" action="#xarController::URL('workflow','admin','instance')#" method="post">
+          <form style="margin-left: 1em;" action="#$xar->ctl()->URL('workflow','admin','instance')#" method="post">
             <input type="hidden" name="iid" value="#$iid#"/>
 
             <div class="xar-form-input-wrapper">
@@ -18,7 +18,7 @@
             </div>
             <div class="xar-form-input-wrapper">
               <label class="xar-form-label">Workitems</label>
-              <a href="#xarController::URL('workflow','admin','monitor_workitems',['filter_instance' => $ins_info['instanceId']])#">#$ins_info['workitems']#</a>
+              <a href="#$xar->ctl()->URL('workflow','admin','monitor_workitems',['filter_instance' => $ins_info['instanceId']])#">#$ins_info['workitems']#</a>
             </div>
             <div class="xar-form-input-wrapper">
               <label class="xar-form-label">Status</label>
@@ -85,9 +85,9 @@
                     <tr>
                       <td class="odd">#$acts[$ix]['name']#
                         <xar:if condition="$acts[$ix]['isInteractive'] eq 1">
-                          <a href="#xarController::URL('workflow','user','run_activity',['activityId' => $acts[$ix]['activityId'], 'iid' => $iid])#">
-                            <xar:set name="imgtitle">xarML('run')</xar:set>
-                            <xar:set name="imgalt">xarML('run')</xar:set>
+                          <a href="#$xar->ctl()->URL('workflow','user','run_activity',['activityId' => $acts[$ix]['activityId'], 'iid' => $iid])#">
+                            <xar:set name="imgtitle">$xar->ml('run')</xar:set>
+                            <xar:set name="imgalt">$xar->ml('run')</xar:set>
                             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="$imgalt" title="$imgtitle"/></a>
                         </xar:if>
                       </td>
@@ -116,14 +116,14 @@
               </xar:if>
             </div>
             <div class="xar-form-input-wrapper-after">
-              <input type="submit" name="save" value="#xarML('update')#"/>
+              <input type="submit" name="save" value="#$xar->ml('update')#"/>
             </div>
           </form>
         </fieldset>
 
         <fieldset>
           <legend>Properties</legend>
-          <form style="margin-left: 1em;" action="#xarController::URL('workflow','admin','instance')#" method="post">
+          <form style="margin-left: 1em;" action="#$xar->ctl()->URL('workflow','admin','instance')#" method="post">
             <input type="hidden" name="iid" value="#$iid#"/>
             <xar:foreach in="$props" key="$key" value="$item">
               <div class="xar-form-input-wrapper">
@@ -133,22 +133,22 @@
                 <xar:else/>
                   <input type="text" name="props[#$key#]" value="#$item#"/>
                 </xar:if>
-                <a href="#xarController::URL('workflow','admin','instance',['iid'=>$iid,'unsetprop'=>$key])#">
-                  <xar:set name="imgtitle">xarML('del')</xar:set>
-                  <xar:set name="imgalt">xarML('del')</xar:set>
+                <a href="#$xar->ctl()->URL('workflow','admin','instance',['iid'=>$iid,'unsetprop'=>$key])#">
+                  <xar:set name="imgtitle">$xar->ml('del')</xar:set>
+                  <xar:set name="imgalt">$xar->ml('del')</xar:set>
                   <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="$imgalt" title="$imgtitle"/>
                 </a>
               </div>
             </xar:foreach>
             <div class="xar-form-input-wrapper-after">
-              <input type="submit" name="saveprops" value="#xarML('update')#"/>
+              <input type="submit" name="saveprops" value="#$xar->ml('update')#"/>
             </div>
           </form>
         </fieldset>
 
         <fieldset>
           <legend>Add property</legend>
-          <form style="margin-left:1em;" action="#xarController::URL('workflow','admin','instance')#" method="post">
+          <form style="margin-left:1em;" action="#$xar->ctl()->URL('workflow','admin','instance')#" method="post">
             <input type="hidden" name="iid" value="#$iid#"/>
             <div class="xar-form-input-wrapper">
               <label for="propname" class="xar-form-label">
@@ -164,7 +164,7 @@
               <textarea id="propvalue" name="value" rows="4" cols="80">#$empty#</textarea>
             </div>
             <div class="xar-form-input-wrapper-after">
-              <input type="submit" name="addprop" value="#xarML('add')#"/>
+              <input type="submit" name="addprop" value="#$xar->ml('add')#"/>
             </div>
           </form>
         </fieldset>

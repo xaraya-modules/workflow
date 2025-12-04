@@ -8,7 +8,7 @@
     <div class="xar-mod-body">
         <xar:template type="module" file="admin-menu"/>
         <h2>Export Process Definition</h2>
-        <form method="post" action="#xarServer::getCurrentURL()#">
+        <form method="post" action="#$xar->ctl()->getCurrentURL()#">
             <fieldset>
                 <legend>Select Object</legend>
                 <div class="xar-form-input-wrapper">

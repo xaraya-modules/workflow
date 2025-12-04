@@ -2,10 +2,10 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $config and $item from trackerlist or test_run, or on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+    <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <xar:if condition="empty($tracker)">
-    <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
+    <xar:set name="tracker">$xar->mod()->apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
   <xar:if condition="!empty($trackerId) and empty($workflow) and empty($item)">
     <xar:set name="item">$tracker->getTrackerItem($trackerId)</xar:set>
@@ -19,11 +19,11 @@
     <xar:set name="subjectId">$tracker->toSubjectId($item['object'], $item['item'])</xar:set>
   </xar:if>
   <xar:set name="params">['workflow' => $workflow, 'subjectId' => $subjectId]</xar:set>
-  <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  <xar:set name="subjectlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
   <xar:if condition="!empty($trackerId)">
     <xar:set name="params">$params + ['trackerId' => $trackerId]</xar:set>
   </xar:if>
-  <xar:set name="trackerlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  <xar:set name="trackerlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
   <xar:if condition="!empty($workflow) and !empty($config[$workflow])">
     <a href="#$trackerlink#">#$config[$workflow]['label']#</a>&#160;(#$trackerId#)
     <xar:template file="test_actionbuttons"/>

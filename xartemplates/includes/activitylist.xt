@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <div>
-    <form action="#xarController::URL('workflow','admin','activities')#" method="post">
+    <form action="#$xar->ctl()->URL('workflow','admin','activities')#" method="post">
       <fieldset>
         <legend>Process activities</legend>
         <input type="hidden" name="sort_mode" value="#$sort_mode#"/>
@@ -46,14 +46,14 @@
               </select>
             </td>
             <td>
-              <input type="submit" name="filter" value="#xarML('Filter')#"/>
+              <input type="submit" name="filter" value="#$xar->ml('Filter')#"/>
             </td>
           </tr>
         </table>
       </fieldset>
     </form>
 
-    <form action="#xarController::URL('workflow','admin','activities')#" method="post">
+    <form action="#$xar->ctl()->URL('workflow','admin','activities')#" method="post">
         <fieldset>
             <legend>Activities List</legend>
             <input type="hidden" name="pid" value="#$pid#"/>
@@ -64,7 +64,7 @@
     
             <!-- Little trick to get the base link into a variable, save some typing ahead -->
             <xar:set name="params">['pid' => $pid, 'find' => $find, 'where' => $where]</xar:set>
-            <xar:set name="baselink">xarController::URL('workflow','admin','activities',$params)</xar:set>
+            <xar:set name="baselink">$xar->ctl()->URL('workflow','admin','activities',$params)</xar:set>
 
             <table style="border-collapse: separate; width: 99%">
               <tr>
@@ -129,17 +129,17 @@
                     </td>
     
                     <td style="text-align: center;">
-                      <a href="#xarController::URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId']])#">
-                        <xar:set name="imgtitle">xarML('Code to execute when running this activity')</xar:set>
-                        <xar:set name="imgalt">xarML('code')</xar:set>
+                      <a href="#$xar->ctl()->URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId']])#">
+                        <xar:set name="imgtitle">$xar->ml('Code to execute when running this activity')</xar:set>
+                        <xar:set name="imgalt">$xar->ml('code')</xar:set>
                         <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/></a>
                       </a>
                     </td>
                     <td style="text-align: center;">
                       <xar:if condition="$items[$ix]['isInteractive']">
-                        <a class="link" href="#xarController::URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId'], 'template' => 1])#">
-                          <xar:set name="imgtitle">xarML('Interface template for interactive activity')</xar:set>
-                          <xar:set name="imgalt">xarML('template')</xar:set>
+                        <a class="link" href="#$xar->ctl()->URL('workflow','admin','shared_source',['pid' => $pid, 'activityId' => $items[$ix]['activityId'], 'template' => 1])#">
+                          <xar:set name="imgtitle">$xar->ml('Interface template for interactive activity')</xar:set>
+                          <xar:set name="imgalt">$xar->ml('template')</xar:set>
                           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/theme.gif" alt="$imgalt" title="$imgtitle"/>
                         </a>
                       <xar:else/>

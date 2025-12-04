@@ -2,12 +2,12 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId, $place, $transition and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+    <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <fieldset>
     <legend>
       <xar:if condition="!empty($workflow)">
-        <xar:set name="testlink">xarServer::getModuleURL('workflow', 'user', 'test')</xar:set>
+        <xar:set name="testlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test')</xar:set>
         <a href="#$testlink#">List of workflows</a>
       <xar:else/>
         List of workflows
@@ -23,7 +23,7 @@
         <th>Transitions</th>
       </tr>
       <xar:foreach in="$config" key="$name" value="$info">
-        <xar:set name="workflowlink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $name])</xar:set>
+        <xar:set name="workflowlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', ['workflow' => $name])</xar:set>
         <tr>
           <td>
               <a href="#$workflowlink#" title="Search Workflow #$info['label']#">
@@ -41,8 +41,8 @@
           </td>
           <td>
             <xar:foreach in="$info['supports']" value="$objectName">
-              <xar:set name="viewlink">xarServer::getObjectURL($objectName)</xar:set>
-              <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $name, 'subjectId' => $objectName])</xar:set>
+              <xar:set name="viewlink">$xar->ctl()->getObjectURL($objectName)</xar:set>
+              <xar:set name="subjectlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', ['workflow' => $name, 'subjectId' => $objectName])</xar:set>
               <a href="#$viewlink#" title="View Subjects #$objectName#">
                 <xar:img scope="theme" file="icons/item-list.png" class="xar-icon" alt="view"/>
               </a>&#160;

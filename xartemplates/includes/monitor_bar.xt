@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     <xar:style scope="module" module="base" file="tabs"/>
-    <xar:set name="func">xarController::getVar('func')</xar:set>
+    <xar:set name="func">$xar->req()->getVar('func')</xar:set>
 
     <ul class="xar-tabs">
       <xar:if condition="$func eq 'monitor_processes'">
@@ -13,9 +13,9 @@
       </xar:if>
 
       <li class="#$tabclass#">
-        <a href="#xarController::URL('workflow','admin','monitor_processes')#" class="#$linkclass#">
-          <xar:set name="imgtitle">xarML('monitor processes')</xar:set>
-          <xar:set name="imgalt">xarML('monitor')</xar:set>
+        <a href="#$xar->ctl()->URL('workflow','admin','monitor_processes')#" class="#$linkclass#">
+          <xar:set name="imgtitle">$xar->ml('monitor processes')</xar:set>
+          <xar:set name="imgalt">$xar->ml('monitor')</xar:set>
           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/process.gif" alt="$imgalt" title="$imgtitle"/>
           Monitor processes
         </a>
@@ -29,9 +29,9 @@
         <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
       </xar:if>
       <li class="#$tabclass#">
-        <a href="#xarController::URL('workflow','admin','monitor_activities')#" class="#$linkclass#">
-          <xar:set name="imgtitle">xarML('monitor activities')</xar:set>
-          <xar:set name="imgalt">xarML('monitor')</xar:set>
+        <a href="#$xar->ctl()->URL('workflow','admin','monitor_activities')#" class="#$linkclass#">
+          <xar:set name="imgtitle">$xar->ml('monitor activities')</xar:set>
+          <xar:set name="imgalt">$xar->ml('monitor')</xar:set>
           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" alt="$imgalt" title="$imgtitle"/>
           Monitor activities
         </a>
@@ -45,9 +45,9 @@
         <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
       </xar:if>
       <li class="#$tabclass#">
-        <a  href="#xarController::URL('workflow','admin','monitor_instances')#" class="#$linkclass#">
-          <xar:set name="imgtitle">xarML('monitor instances')</xar:set>
-          <xar:set name="imgalt">xarML('monitor')</xar:set>
+        <a  href="#$xar->ctl()->URL('workflow','admin','monitor_instances')#" class="#$linkclass#">
+          <xar:set name="imgtitle">$xar->ml('monitor instances')</xar:set>
+          <xar:set name="imgalt">$xar->ml('monitor')</xar:set>
           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/instance.gif" alt="$imgalt" title="$imgtitle"/>
           Monitor instances
         </a>
@@ -61,9 +61,9 @@
         <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
       </xar:if>
       <li class="#$tabclass#">
-        <a  href="#xarController::URL('workflow','admin','monitor_workitems')#" class="#$linkclass#">
-          <xar:set name="imgtitle">xarML('monitor workitems')</xar:set>
-          <xar:set name="imgalt">xarML('monitor')</xar:set>
+        <a  href="#$xar->ctl()->URL('workflow','admin','monitor_workitems')#" class="#$linkclass#">
+          <xar:set name="imgtitle">$xar->ml('monitor workitems')</xar:set>
+          <xar:set name="imgalt">$xar->ml('monitor')</xar:set>
           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/memo.gif" alt="$imgalt" title="$imgtitle"/>
           Monitor workitems
         </a>

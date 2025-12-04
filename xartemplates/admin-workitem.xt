@@ -24,7 +24,7 @@
           <td>#$wi['procname']#&#xA0;#$wi['version']#</td>
           <td>#$wi['type']#&#xA0;#$wi['name']#</td>
           <td>#$wi['user']#</td>
-          <td>#xarLocale::getFormattedDate('long',$wi['started'])#&#xA0;#xarLocale::getFormattedTime('long',$wi['started'])#</td>
+          <td>#$xar->mls()->getFormattedDate('long',$wi['started'])#&#xA0;#$xar->mls()->getFormattedTime('long',$wi['started'])#</td>
           <td>#$wi['duration']#</td>
         </tr>
       </table>

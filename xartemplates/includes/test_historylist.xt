@@ -2,7 +2,7 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId, $userId and $trackerId if available -->
   <xar:if condition="empty($history)">
-    <xar:set name="history">xarMod::apiFunc('workflow', 'user', 'history')</xar:set>
+    <xar:set name="history">$xar->mod()->apiFunc('workflow', 'user', 'history')</xar:set>
   </xar:if>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => '-updated']</xar:set>
   <xar:set name="dummy">$history->setPaging($paging)</xar:set>
@@ -37,11 +37,11 @@
         <th>Updated</th>
       </tr>
       <xar:foreach in="$items" value="$item">
-        <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
-        <xar:set name="infolink">xarServer::getObjectURL('workflow_history', 'display', ['itemid' => $item['id']])</xar:set>
+        <xar:set name="displaylink">$xar->ctl()->getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
+        <xar:set name="infolink">$xar->ctl()->getObjectURL('workflow_history', 'display', ['itemid' => $item['id']])</xar:set>
         <xar:set name="currentId">$history->toSubjectId($item['object'], $item['item'])</xar:set>
         <xar:set name="params">['workflow' => $item['workflow'], 'subjectId' => $currentId]</xar:set>
-        <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+        <xar:set name="filterlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
         <tr>
           <td><a href="#$infolink#" title="Info History (#$item['id']#)">#$item['id']#</a></td>
           <td>
@@ -57,9 +57,9 @@
               #ucwords(str_replace('_', ' ', $here))#&#160;
             </xar:foreach>
           </td>
-          <td>#xarUser::getVar('name', $item['user'])#</td>
-          <td>#xarLocale::getFormattedDate('medium',$item['updated'])#
-          #xarLocale::getFormattedTime('short',$item['updated'])#</td>
+          <td>#$xar->user($item['user'])->getVar('name')#</td>
+          <td>#$xar->mls()->getFormattedDate('medium',$item['updated'])#
+          #$xar->mls()->getFormattedTime('short',$item['updated'])#</td>
         </tr>
       </xar:foreach>
     </table>

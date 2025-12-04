@@ -6,7 +6,7 @@
         <fieldset>
             <legend>Workflow Problem</legend>
             <xar:var name="label">System Message</xar:var>
-            <img src="#xarTpl::getImage('user-error.png','base')#" alt="#$label#" width="96" height="96" class="xar-module-icon"/>
+            <img src="#$xar->tpl()->getImage('user-error.png','base')#" alt="#$label#" width="96" height="96" class="xar-module-icon"/>
             <xar:if condition="!isset($layout)">
                 <div style="margin-top: 20px; margin-left: 20px">
                     <xar:if condition="isset($msg)">
@@ -26,7 +26,7 @@
                 <div style="margin-top: 20px; margin-left: 20px">
                     Sorry! A page could not be found
                     <br />
-                    <xar:set name="seedetail">xarSession::getUserId() == xarModVars::get('roles','admin')</xar:set>
+                    <xar:set name="seedetail">$xar->session()->getUserId() == $xar->mod('roles')->getVar('admin')</xar:set>
                     <xar:if condition="!empty($id) AND $seedetail">
                     Activity ID couldn not be matched: #$id#
                     <xar:else/>

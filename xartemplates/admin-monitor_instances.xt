@@ -17,7 +17,7 @@
           List of instances (#$cant#)
         </legend>
 
-        <form style="margin-left: 1em;" action="#xarController::URL('workflow','admin','monitor_instances')#" method="post">
+        <form style="margin-left: 1em;" action="#$xar->ctl()->URL('workflow','admin','monitor_instances')#" method="post">
           <input type="hidden" name="offset" value="#$offset#"/>
           <input type="hidden" name="sort_mode" value="#$sort_mode#"/>
           <table>
@@ -117,13 +117,13 @@
               </td>
 
               <td>
-                <input type="submit" name="filter" value="#xarML('filter')#"/>
+                <input type="submit" name="filter" value="#$xar->ml('filter')#"/>
               </td>
             </tr>
           </table>
         </form>
 
-        <form style="margin-left: 1em;" action="#xarController::URL('workflow','admin','monitor_activities')#" method="post">
+        <form style="margin-left: 1em;" action="#$xar->ctl()->URL('workflow','admin','monitor_activities')#" method="post">
           <input type="hidden" name="offset" value="#$offset#"/>
           <input type="hidden" name="find" value="#$find#"/>
           <input type="hidden" name="where" value="#$where#"/>
@@ -131,13 +131,13 @@
           <table style="border-collapse: separate; width: 99%">
             <xar:if condition="!empty($items) and count($items) gt 0">
               <tr>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'procname_asc'])#">Process</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'instanceId_asc'])#">Ins</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'owner_asc'])#">Owner</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'status_asc'])#">Status</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'name_asc'])#">Current Activity</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'user_asc'])#">User</a></th>
-                <th><a href="#xarServer::getCurrentURL(['sort_mode' => 'started_asc'])#">Start</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'procname_asc'])#">Process</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'instanceId_asc'])#">Ins</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'owner_asc'])#">Owner</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'status_asc'])#">Status</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'name_asc'])#">Current Activity</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'user_asc'])#">User</a></th>
+                <th><a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'started_asc'])#">Start</a></th>
                 <th>Duration of this instance</th>
               </tr>
               <xar:foreach in="$items" key="$ix">
@@ -151,7 +151,7 @@
                   </td>
 
                   <td>
-                    <a class="link" href="#xarController::URL('workflow','admin','instance',['iid'=>$items[$ix]['instanceId']])#">#$items[$ix]['instanceId']#</a>
+                    <a class="link" href="#$xar->ctl()->URL('workflow','admin','instance',['iid'=>$items[$ix]['instanceId']])#">#$items[$ix]['instanceId']#</a>
                   </td>
 
                   <td style="text-align:left;">
@@ -183,7 +183,7 @@
                   <td style="text-align:left;">
                     <xar:if condition="!empty($items[$ix]['duration'])">
                       <xar:if condition="!empty($items[$ix]['timescale'])">
-                        <img src="#xarTpl::getImage('bluepixel.gif')#" width="#$items[$ix]['timescale']#" height="10" alt="duration" title="duration = #$items[$ix]['duration']#"/>
+                        <img src="#$xar->tpl()->getImage('bluepixel.gif')#" width="#$items[$ix]['timescale']#" height="10" alt="duration" title="duration = #$items[$ix]['duration']#"/>
                       </xar:if>
                       #$items[$ix]['duration']#
                     </xar:if>

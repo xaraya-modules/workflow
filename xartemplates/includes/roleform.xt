@@ -10,7 +10,7 @@
       </xar:if>
     </legend>
 
-    <form action="#xarController::URL('workflow','admin','roles')#" method="post">
+    <form action="#$xar->ctl()->URL('workflow','admin','roles')#" method="post">
       <input type="hidden" name="pid" value="#$pid#"/>
       <input type="hidden" name="roleId" value="#$info['roleId']#"/>
       <input type="hidden" name="sort_mode" value="#$sort_mode#"/>
@@ -27,9 +27,9 @@
       </div>
       <div class="xar-form-input-wrapper-after">
         <xar:if condition="$roleId gt 0">
-          <input type="submit" name="save" value="#xarML('Update')#"/>
+          <input type="submit" name="save" value="#$xar->ml('Update')#"/>
           <xar:else/>
-          <input type="submit" name="save" value="#xarML('Save')#"/>
+          <input type="submit" name="save" value="#$xar->ml('Save')#"/>
         </xar:if>
       </div>
     </form>

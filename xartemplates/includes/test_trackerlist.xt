@@ -2,10 +2,10 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $workflow, $subjectId, $userId, $place and $trackerId if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+    <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <xar:if condition="empty($tracker)">
-    <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
+    <xar:set name="tracker">$xar->mod()->apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
   <xar:set name="paging">['limit' => 10, 'count' => false, 'offset' => 0, 'order' => null]</xar:set>
   <xar:set name="dummy">$tracker->setPaging($paging)</xar:set>
@@ -32,7 +32,7 @@
   </xar:if>
   <xar:set name="fromlist">[]</xar:set>
   <xar:if condition="empty($handlers)">
-    <xar:set name="handlers">xarMod::apiFunc('workflow', 'user', 'handlers')</xar:set>
+    <xar:set name="handlers">$xar->mod()->apiFunc('workflow', 'user', 'handlers')</xar:set>
   </xar:if>
   <xar:foreach in="$config[$workflow]['transitions']" key="$name" value="$info">
     <!-- check for access based on config here -->
@@ -91,15 +91,15 @@
         <th>Transitions</th>
       </tr>
       <xar:foreach in="$items" value="$item">
-        <xar:set name="displaylink">xarServer::getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
-        <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $item['id']])</xar:set>
+        <xar:set name="displaylink">$xar->ctl()->getObjectURL($item['object'], 'display', ['itemid' => $item['item']])</xar:set>
+        <xar:set name="infolink">$xar->ctl()->getObjectURL('workflow_tracker', 'display', ['itemid' => $item['id']])</xar:set>
         <xar:set name="currentId">$tracker->toSubjectId($item['object'], $item['item'])</xar:set>
         <xar:set name="params">['workflow' => $workflow, 'subjectId' => $currentId]</xar:set>
-        <xar:set name="filterlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
-        <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test_run', $params)</xar:set>
+        <xar:set name="filterlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+        <xar:set name="subjectlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test_run', $params)</xar:set>
         <xar:set name="params">$params + ['trackerId' => $item['id']]</xar:set>
-        <xar:set name="trackerlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
-        <xar:set name="actionlink">xarServer::getModuleURL('workflow', 'user', 'test_run', $params)</xar:set>
+        <xar:set name="trackerlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+        <xar:set name="actionlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test_run', $params)</xar:set>
         <tr>
           <td>
             <a href="#$infolink#" title="Info Tracker (#$item['id']#) #$currentId#">
@@ -127,7 +127,7 @@
               <a href="#$filterlink#" title="Filter Subject #$currentId#">#$currentId#</a>
             </xar:if>
           </td>
-          <td>#xarUser::getVar('name', $item['user'])#</td>
+          <td>#$xar->user($item['user'])->getVar('name')#</td>
           <td>
             <xar:set name="places">explode($tracker::AND_OPERATOR, $item['marking'])</xar:set>
             <xar:foreach in="$places" value="$here">
@@ -141,16 +141,16 @@
           <!-- you can choose how to display the date and time here, e.g. show
              the time for the last 12 hours and the date for anything older -->
           <xar:if condition="$item['updated'] > time() - 12*60*60">
-            <td>#xarLocale::getFormattedTime('short',$item['updated'])#</td>
+            <td>#$xar->mls()->getFormattedTime('short',$item['updated'])#</td>
           <xar:else/>
-            <td>#xarLocale::getFormattedDate('medium',$item['updated'])#</td>
+            <td>#$xar->mls()->getFormattedDate('medium',$item['updated'])#</td>
           </xar:if>
           <td>
           <xar:if condition="!empty($fromlist[$item['marking']])">
             <xar:foreach in="$fromlist[$item['marking']]" key="$name" value="$enabled">
               <xar:set name="label">ucwords(str_replace('_', ' ', $name))</xar:set>
               <xar:if condition="!empty($enabled)">
-                <xar:set name="runlink">xarServer::getModuleURL('workflow', 'user', 'test_run', $params + ['transition' => $name])</xar:set>
+                <xar:set name="runlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test_run', $params + ['transition' => $name])</xar:set>
                 <xar:button type="link" name="$name" target="$runlink" label="$label"/>&#160;
               <xar:else/>
                 <xar:button type="link" name="$name" label="$label" disabled="disabled"/>&#160;

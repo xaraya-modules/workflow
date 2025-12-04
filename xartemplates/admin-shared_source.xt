@@ -8,7 +8,7 @@
         <!-- Process navigation bar -->
         <xar:template file="proc_bar"/>
 
-      <form id='editsource' action="#xarController::URL('workflow','admin','shared_source')#" method="post">
+      <form id='editsource' action="#$xar->ctl()->URL('workflow','admin','shared_source')#" method="post">
 
         <fieldset>
          <legend>Admin process sources</legend>
@@ -34,10 +34,10 @@
             </div>
            <div class="xar-form-input-wrapper-before">
               <xar:if condition="$activityId gt 0 and $act_info['isInteractive'] eq 1 and $template eq 0">
-                <input type="submit" name='template' value="#xarML('Switch to template')#"/>
+                <input type="submit" name='template' value="#$xar->ml('Switch to template')#"/>
               </xar:if>
               <xar:if condition="$activityId gt 0 and $act_info['isInteractive'] eq 1 and $template eq 1">
-                <input type="submit" name='save' value="#xarML('Switch to code')#"/>
+                <input type="submit" name='save' value="#$xar->ml('Switch to code')#"/>
               </xar:if>
               &#160;
             </div>
@@ -71,8 +71,8 @@
              <div class="xar-form-input-wrapper-after">
                 <input type="hidden" name="pid" value="#$pid#"/>
                 <input type="hidden" name="source_name" value="#$source_name#"/>
-                <input type="submit" name='save' value="#xarML('Save')#"/>&#160;
-                <input type="submit" name='cancel' value="#xarML('Cancel')#"/>
+                <input type="submit" name='save' value="#$xar->ml('Save')#"/>&#160;
+                <input type="submit" name='cancel' value="#$xar->ml('Cancel')#"/>
             </div>
       </form>
       <!-- Show a courtesy footer -->

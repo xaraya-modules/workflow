@@ -13,7 +13,7 @@
         <fieldset>
           <legend>List of activities (#$cant#)</legend>
 
-          <form action="#xarController::URL('workflow','user','activities')#" method="post" id='fform'>
+          <form action="#$xar->ctl()->URL('workflow','user','activities')#" method="post" id='fform'>
             <input type="hidden" name="offset" value="#$offset#"/>
             <input type="hidden" name="sort_mode" value="#$sort_mode#"/>
             <table>
@@ -41,12 +41,12 @@
                   </select>
                 </td>
                 <td ><input size="8" type="text" name="find" value="#$find#"/></td>
-                <td ><input type="submit" name="filter" value="#xarML('filter')#"/></td>
+                <td ><input type="submit" name="filter" value="#$xar->ml('filter')#"/></td>
               </tr>
             </table>
           </form>
 
-          <form action="#xarController::URL('workflow','user','activities')#" method="post">
+          <form action="#$xar->ctl()->URL('workflow','user','activities')#" method="post">
             <input type="hidden" name="offset" value="#$offset#"/>
             <input type="hidden" name="find" value="#$find#"/>
             <input type="hidden" name="where" value="#$where#"/>
@@ -56,17 +56,17 @@
                 <tr>
                   <th>
                     <xar:if condition="$sort_mode eq 'procname_desc'">
-                      <a href="#xarServer::getCurrentURL(['sort_mode' => 'procname_asc'])#">Process</a>
+                      <a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'procname_asc'])#">Process</a>
                       <xar:else/>
-                      <a href="#xarServer::getCurrentURL(['sort_mode' => 'procname_desc'])#">Process</a>
+                      <a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'procname_desc'])#">Process</a>
                     </xar:if>
                   </th>
                   <th>Version</th>
                   <th>
                     <xar:if condition="$sort_mode eq 'name_desc'">
-                      <a href="#xarServer::getCurrentURL(['sort_mode' => 'name_asc'])#">Activity</a>
+                      <a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'name_asc'])#">Activity</a>
                       <xar:else/>
-                      <a href="#xarServer::getCurrentURL(['sort_mode' => 'name_desc'])#">Activity</a>
+                      <a href="#$xar->ctl()->getCurrentURL(['sort_mode' => 'name_desc'])#">Activity</a>
                     </xar:if>
                   </th>
                   <th>Instances</th>
@@ -83,14 +83,14 @@
                       <!-- Get an image for the activity -->
                       <xar:template file="activity_image" subdata="$items[$ix]"/>
                       <xar:if condition="$items[$ix]['instances'] gt 0">
-                        <a href="#xarController::URL('workflow','user','instances',['filter_process'=>$items[$ix]['pId'],'filter_activity'=>$items[$ix]['activityId']])#">#$items[$ix]['name']#</a>
+                        <a href="#$xar->ctl()->URL('workflow','user','instances',['filter_process'=>$items[$ix]['pId'],'filter_activity'=>$items[$ix]['activityId']])#">#$items[$ix]['name']#</a>
                         <xar:else/>
                         #$items[$ix]['name']#
                       </xar:if>&#160;
                       <xar:if condition="$items[$ix]['isInteractive'] OR ($items[$ix]['type'] eq 'start') OR ($items[$ix]['type'] eq 'standalone')">
-                        <xar:set name="imgtitle">xarML('run activity')</xar:set>
-                        <xar:set name="imgalt">xarML('run')</xar:set>
-                        <a href="#xarController::URL('workflow','user','run_activity',['activityId' => $items[$ix]['activityId']])#">
+                        <xar:set name="imgtitle">$xar->ml('run activity')</xar:set>
+                        <xar:set name="imgalt">$xar->ml('run')</xar:set>
+                        <a href="#$xar->ctl()->URL('workflow','user','run_activity',['activityId' => $items[$ix]['activityId']])#">
                           <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/next.gif" alt="$imgalt" title="$imgtitle"/>
                         </a>
                       </xar:if>

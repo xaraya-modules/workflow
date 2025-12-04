@@ -2,24 +2,24 @@
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
   <!-- this relies on $config and $item from showdisplay or test_run, or on $workflow, $subjectId and $place if available -->
   <xar:if condition="empty($config)">
-    <xar:set name="config">xarMod::apiFunc('workflow', 'user', 'getconfig')</xar:set>
+    <xar:set name="config">$xar->mod()->apiFunc('workflow', 'user', 'getconfig')</xar:set>
   </xar:if>
   <xar:if condition="empty($tracker)">
-    <xar:set name="tracker">xarMod::apiFunc('workflow', 'user', 'tracker')</xar:set>
+    <xar:set name="tracker">$xar->mod()->apiFunc('workflow', 'user', 'tracker')</xar:set>
   </xar:if>
   <xar:set name="pieces">$tracker->fromSubjectId($item['subject'])</xar:set>
-  <xar:set name="displaylink">xarServer::getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
+  <xar:set name="displaylink">$xar->ctl()->getObjectURL($pieces[0], 'display', ['itemid' => $pieces[1]])</xar:set>
   <xar:set name="params">['workflow' => $item['workflow']]</xar:set>
-  <xar:set name="workflowlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  <xar:set name="workflowlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
   <xar:set name="params">$params + ['subjectId' => $item['subject']]</xar:set>
-  <xar:set name="subjectlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+  <xar:set name="subjectlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
   <xar:set name="trackerItems">$tracker->getSubjectItems($item['subject'], $item['workflow'], $item['user'])</xar:set>
   <xar:if condition="!empty($trackerItems)">
     <!-- @checkme there should be only one -->
     <xar:set name="trackerId">$trackerItems[0]['id']</xar:set>
-    <xar:set name="infolink">xarServer::getObjectURL('workflow_tracker', 'display', ['itemid' => $trackerId])</xar:set>
+    <xar:set name="infolink">$xar->ctl()->getObjectURL('workflow_tracker', 'display', ['itemid' => $trackerId])</xar:set>
     <xar:set name="params">$params + ['trackerId' => $trackerId]</xar:set>
-    <xar:set name="trackerlink">xarServer::getModuleURL('workflow', 'user', 'test', $params)</xar:set>
+    <xar:set name="trackerlink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', $params)</xar:set>
   </xar:if>
   <fieldset>
     <legend><a href="#$workflowlink#">#$config[$item['workflow']]['label']#</a></legend>
@@ -63,7 +63,7 @@
         </xar:if>
         <xar:set name="places">explode($tracker::AND_OPERATOR, $item['marking'])</xar:set>
         <xar:foreach in="$places" value="$here">
-          <xar:set name="placelink">xarServer::getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $prefix . $here])</xar:set>
+          <xar:set name="placelink">$xar->ctl()->getModuleURL('workflow', 'user', 'test', ['workflow' => $item['workflow'], 'place' => $prefix . $here])</xar:set>
           <xar:set name="where">ucwords(str_replace('_', ' ', $here))</xar:set>
           <a href="#$placelink#" title="Filter Place #$where#">#$where#</a>&#160;
         </xar:foreach>
@@ -74,7 +74,7 @@
         <label>User Name</label>
       </div>
       <div class="xar-col">
-        #xarUser::getVar('name', $item['user'])#
+        #$xar->user($item['user'])->getVar('name')#
       </div>
     </div>
     <div class="xar-row">
@@ -82,8 +82,8 @@
         <label>Updated</label>
       </div>
       <div class="xar-col">
-        #xarLocale::getFormattedDate('medium',$item['updated'])#
-        #xarLocale::getFormattedTime('short',$item['updated'])#
+        #$xar->mls()->getFormattedDate('medium',$item['updated'])#
+        #$xar->mls()->getFormattedTime('short',$item['updated'])#
       </div>
     </div>
     <div class="xar-row">

@@ -10,7 +10,7 @@
         <fieldset>
             <legend>Workflow Problem</legend>
             <xar:var name="label">System Message</xar:var>
-            <img src="#xarTpl::getImage('user-error.png','base')#" alt="#$label#" width="96" height="96" class="xar-module-icon"/>
+            <img src="#$xar->tpl()->getImage('user-error.png','base')#" alt="#$label#" width="96" height="96" class="xar-module-icon"/>
             <xar:if condition="!isset($layout)">
                 <div style="margin-top: 20px; margin-left: 20px">
                     <xar:if condition="isset($msg)">

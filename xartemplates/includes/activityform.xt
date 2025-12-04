@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     <div class="xar-form-input-container">
-      <form action="#xarController::URL('workflow','admin','activities')#" method="post">
+      <form action="#$xar->ctl()->URL('workflow','admin','activities')#" method="post">
         <fieldset>
           <legend>
             <xar:if condition="$activityId gt 0">
@@ -65,9 +65,9 @@
                 <xar:foreach in="$roles" key="$ix">
                   <tr>
                     <td>
-                      <a class="link" href="#xarController::URL('workflow','admin','activities',['pid'=>$pid,'activityId'=>$activityId,'remove_role'=>$roles[$ix]['roleId']])#">
-                        <xar:set name="imgtitle">xarML('Delete role')</xar:set>
-                        <xar:set name="imgalt">xarML('del')</xar:set>
+                      <a class="link" href="#$xar->ctl()->URL('workflow','admin','activities',['pid'=>$pid,'activityId'=>$activityId,'remove_role'=>$roles[$ix]['roleId']])#">
+                        <xar:set name="imgtitle">$xar->ml('Delete role')</xar:set>
+                        <xar:set name="imgalt">$xar->ml('del')</xar:set>
                         <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/trash.gif" alt="$imgalt" title="$imgtitle"/>
                       </a>
                     </td>
@@ -89,7 +89,7 @@
                 </xar:foreach>
               </select>
             </xar:if>
-            <input type="text" name="rolename"/><input type="submit" name="addrole" value="#xarML('Add')#"/>
+            <input type="text" name="rolename"/><input type="submit" name="addrole" value="#$xar->ml('Add')#"/>
           </div>
           <div class="xar-form-input-wrapper-after">
             <xar:set name="pid">$activity->properties['process_id']->value</xar:set>

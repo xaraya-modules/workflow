@@ -38,7 +38,7 @@
         <td>
           <input type="hidden" name="jobs[#$id#][lastrun]" value="#$job['lastrun']#"/>
           <xar:if condition="!empty($job['lastrun'])">
-            #xarLocale::formatDate('%x %X %z',$job['lastrun'])#
+            #$xar->mls()->formatDate('%x %X %z',$job['lastrun'])#
           </xar:if>
         </td>
         <td>

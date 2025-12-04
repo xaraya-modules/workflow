@@ -3,7 +3,7 @@
     <div>
       <fieldset>
         <legend>Map users to roles</legend>
-        <form method="post" action="#xarController::URL('workflow','admin','roles')#">
+        <form method="post" action="#$xar->ctl()->URL('workflow','admin','roles')#">
           <input type="hidden" name="pid" value="#$pid#"/>
           <input type="hidden" name="offset" value="#$offset#"/>
           <input type="hidden" name="sort_mode" value="#$sort_mode#"/>
@@ -12,7 +12,7 @@
           <div class="xar-form-input-wrapper">
             <label class="xar-form-label">Filter users</label>
             <input type="text" size="10" name="find_users" value="#$find_users#"/>
-            <input type="submit" name="findusers" value="#xarML('filter')#"/>
+            <input type="submit" name="findusers" value="#$xar->ml('filter')#"/>
           </div>
           <div class="xar-form-input-wrapper">
             <label class="xar-form-label">Map users</label>
@@ -45,7 +45,7 @@
             </table>
           </div>
           <div class="xar-form-input-wrapper-after">
-            <input type="submit" name="save_map" value="#xarML('Map')#"/>
+            <input type="submit" name="save_map" value="#$xar->ml('Map')#"/>
           </div>
         </form>
       </fieldset>

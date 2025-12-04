@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xar:template xmlns:xar="http://xaraya.com/2004/blocklayout">
     <xar:style scope="module" module="base" file="navtabs"/>
-    <xar:set name="func">xarController::getVar('func')</xar:set>
+    <xar:set name="func">$xar->req()->getVar('func')</xar:set>
 
     <ul class="xar-tabs">
         <li class="help">Process:</li>
@@ -13,8 +13,8 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','processes')#" class="#$linkclass#">
-            <img src="#xarTpl::getImage('index.gif')#" alt="#xarML('processlist')#" title="#xarML('processlist')#"/>
+          <a href="#$xar->ctl()->URL('workflow','admin','processes')#" class="#$linkclass#">
+            <img src="#$xar->tpl()->getImage('index.gif')#" alt="#$xar->ml('processlist')#" title="#$xar->ml('processlist')#"/>
             View Processes
           </a>
         </li>
@@ -25,9 +25,9 @@
         <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         <xar:if condition="$proc_info['isActive']">
           <li class="#$tabclass#">
-            <a href="#xarController::URL('workflow','admin','activities',['pid' => $pid, 'deactivate_proc' => $pid])#" class="#$linkclass#">
-              <xar:set name="imgtitle">xarML('stop')</xar:set>
-              <xar:set name="imgalt">xarML('stop')</xar:set>
+            <a href="#$xar->ctl()->URL('workflow','admin','activities',['pid' => $pid, 'deactivate_proc' => $pid])#" class="#$linkclass#">
+              <xar:set name="imgtitle">$xar->ml('stop')</xar:set>
+              <xar:set name="imgalt">$xar->ml('stop')</xar:set>
               <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/stop.gif" alt="$imgalt" title="$imgtitle"/>
               Deactivate Process
              </a>
@@ -35,9 +35,9 @@
         <xar:else/>
           <xar:if condition="$proc_info['isValid']">
             <li class="#$tabclass#">
-              <a href="#xarController::URL('workflow','admin','activities',['pid' => $pid, 'activate_proc' => $pid])#" class="#$linkclass#">
-                <xar:set name="imgtitle">xarML('activate')</xar:set>
-                <xar:set name="imgalt">xarML('activate')</xar:set>
+              <a href="#$xar->ctl()->URL('workflow','admin','activities',['pid' => $pid, 'activate_proc' => $pid])#" class="#$linkclass#">
+                <xar:set name="imgtitle">$xar->ml('activate')</xar:set>
+                <xar:set name="imgalt">$xar->ml('activate')</xar:set>
                 <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/refresh2.gif" alt="$imgalt" title="$imgtitle"/>
                 Activate Process
                </a>
@@ -53,9 +53,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','processes',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('edit')</xar:set>
-            <xar:set name="imgalt">xarML('edit')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','processes',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('edit')</xar:set>
+            <xar:set name="imgalt">$xar->ml('edit')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/change.gif" alt="$imgalt" title="$imgtitle"/>
             Process Details
           </a>
@@ -69,9 +69,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','activities',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('activities')</xar:set>
-            <xar:set name="imgalt">xarML('activities')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','activities',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('activities')</xar:set>
+            <xar:set name="imgalt">$xar->ml('activities')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/activity.gif" alt="$imgalt" title="$imgtitle"/>
             Activities
           </a>
@@ -85,9 +85,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','shared_source',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('code')</xar:set>
-            <xar:set name="imgalt">xarML('code')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','shared_source',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('code')</xar:set>
+            <xar:set name="imgalt">$xar->ml('code')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/book.gif" alt="$imgalt" title="$imgtitle"/>
             Code
           </a>
@@ -101,9 +101,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','roles',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('roles')</xar:set>
-            <xar:set name="imgalt">xarML('roles')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','roles',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('roles')</xar:set>
+            <xar:set name="imgalt">$xar->ml('roles')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/myinfo.gif" alt="$imgalt" title="$imgtitle"/>
             Roles
           </a>
@@ -117,9 +117,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','graph',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('graph')</xar:set>
-            <xar:set name="imgalt">xarML('graph')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','graph',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('graph')</xar:set>
+            <xar:set name="imgalt">$xar->ml('graph')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/mode_tree.gif" alt="$imgalt" title="$imgtitle"/>
             Graph
           </a>
@@ -133,9 +133,9 @@
           <xar:set name="linkclass">'xar-norm xar-norm-outline'</xar:set>
         </xar:if>
         <li class="#$tabclass#">
-          <a href="#xarController::URL('workflow','admin','export_process',['pid'=>$pid])#" class="#$linkclass#">
-            <xar:set name="imgtitle">xarML('export')</xar:set>
-            <xar:set name="imgalt">xarML('export')</xar:set>
+          <a href="#$xar->ctl()->URL('workflow','admin','export_process',['pid'=>$pid])#" class="#$linkclass#">
+            <xar:set name="imgtitle">$xar->ml('export')</xar:set>
+            <xar:set name="imgalt">$xar->ml('export')</xar:set>
             <xar:img scope="module" module="workflow" file="../lib/galaxia/img/icons/export.gif" alt="$imgalt" title="$imgtitle"/>
             Export
           </a>

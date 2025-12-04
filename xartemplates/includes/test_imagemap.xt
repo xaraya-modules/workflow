@@ -6,9 +6,9 @@
       mermaid.initialize({ startOnLoad: true });
     </script>
     <xar:if condition="!empty($subject)">
-      <xar:set name="mermaid">xarMod::apiFunc('workflow', 'user', 'mermaid', ['workflow' => $workflow, 'subject' => $subject])</xar:set>
+      <xar:set name="mermaid">$xar->mod()->apiFunc('workflow', 'user', 'mermaid', ['workflow' => $workflow, 'subject' => $subject])</xar:set>
     <xar:else/>
-      <xar:set name="mermaid">xarMod::apiFunc('workflow', 'user', 'mermaid', ['workflow' => $workflow])</xar:set>
+      <xar:set name="mermaid">$xar->mod()->apiFunc('workflow', 'user', 'mermaid', ['workflow' => $workflow])</xar:set>
     </xar:if>
     <div class="mermaid">
       #$mermaid#
