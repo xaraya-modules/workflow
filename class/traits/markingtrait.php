@@ -17,13 +17,13 @@ namespace Xaraya\Modules\Workflow\Traits;
 
 use Xaraya\Context\Context;
 use Exception;
-use Xaraya\Context\ContextInterface;
-use Xaraya\Context\ContextTrait;
+use Xaraya\Context\WithContextInterface;
+use Xaraya\Context\WithContextTrait;
 
 /**
 * For documentation purposes only - available via MarkingTrait
 */
-interface MarkingInterface extends ContextInterface
+interface MarkingInterface extends WithContextInterface
 {
     public function getId(): string;
     public function getMarking(): array|string|null;
@@ -32,7 +32,7 @@ interface MarkingInterface extends ContextInterface
 
 trait MarkingTrait
 {
-    use ContextTrait;
+    use WithContextTrait;
 
     protected $_workflowMarking;  // array for workflow or string for state_machine
     protected $_workflowContext;

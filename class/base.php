@@ -15,13 +15,13 @@
 
 namespace Xaraya\Modules\Workflow;
 
-use Xaraya\Context\ContextInterface;
-use Xaraya\Context\ContextTrait;
+use Xaraya\Context\WithContextInterface;
+use Xaraya\Context\WithContextTrait;
 use xarObject;
 
-class WorkflowBase extends xarObject implements ContextInterface
+class WorkflowBase extends xarObject implements WithContextInterface
 {
-    use ContextTrait;
+    use WithContextTrait;
 
     public static function init(array $args = []) {}
 
