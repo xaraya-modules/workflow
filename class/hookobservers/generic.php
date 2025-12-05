@@ -39,6 +39,7 @@ class GenericObserver extends HookObserver
      */
     public function notify(ixarEventSubject $subject)
     {
+        $this->setStaticServices($subject->getServicesClass());
         $this->setContext($subject->getContext());
         // @checkme Xaraya only fires one event per subject type, so subjectName = subjectType here
         $subjectName = $subject->getSubject();
