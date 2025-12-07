@@ -51,9 +51,9 @@ use Symfony\Component\Workflow\Workflow;
 //xar::exit();
 $workflow = WorkflowProcess::getProcess('cd_loans');
 
-// initialize session
+// start session
 xar::session()->setSessionClass(SessionContext::class);
-xar::session()->init();
+xar::session()->start();
 
 // start session with userId
 $xarayaContext = new Context(['hello' => 'world']);

@@ -118,8 +118,8 @@ final class SymfonyWorkflowTest extends TestCase
 
     public function testGetSubject_UserTransitions(): void
     {
-        // initialize session
-        xar::session()->init();
+        // start session
+        xar::session()->start();
         $xarayaContext = new Context(['hello' => 'world']);
         xar::session()->getInstance()->startSession($xarayaContext, 'phpunit', 6);
 
