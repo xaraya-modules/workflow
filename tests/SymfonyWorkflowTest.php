@@ -24,7 +24,7 @@ final class SymfonyWorkflowTest extends TestCase
         // initialize caching - delay until we need results
         xar::cache()->init();
         // initialize loggers
-        xar::log()->init();
+        //xar::log()->init();
         // initialize database - delay until caching fails
         xar::db()->init();
         // initialize modules

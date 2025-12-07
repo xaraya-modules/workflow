@@ -27,7 +27,6 @@ use Xaraya\Services\xar;
  */
 function workflow_restapi_test($args = [], $context = null)
 {
-    xar::log()->init();
     $userId = $context?->getUserId() ?? xar::session()->getUserId();
     // @checkme pass all args from handler here?
     //extract($args);
