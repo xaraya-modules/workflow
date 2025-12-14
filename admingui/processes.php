@@ -92,8 +92,7 @@ class ProcessesMethod extends MethodClass
 
                 if (\Galaxia\Api\Process::exists($process_data['name'], $process_data['version'])) {
                     $data['msg'] =  $this->ml("The process name already exists");
-                    $data['context'] ??= $this->getContext();
-                    return $this->mod()->template('errors', $data);
+                    return $this->render('errors', $data);
                 } else {
                     $_REQUEST['pid'] = $processManager->import_process($process_data);
                 }
@@ -128,8 +127,7 @@ class ProcessesMethod extends MethodClass
             // If process is known and we're not updating, error out.
             if (\Galaxia\Api\Process::Exists($_REQUEST['name'], $_REQUEST['version']) && $_REQUEST['pid'] == 0) {
                 $data['msg'] =  $this->ml("Process already exists");
-                $data['context'] ??= $this->getContext();
-                return $this->mod()->template('errors', $data);
+                return $this->render('errors', $data);
             }
 
             $this->var()->find('isSingleton', $vars['isSingleton'], 'int', 0);

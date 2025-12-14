@@ -49,7 +49,6 @@ class TestMethod extends MethodClass
             $data['warning'] = nl2br($e->getMessage());
         }
         $data['config'] = WorkflowConfig::loadConfig();
-        $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? $this->user()->getId();
 
         $this->var()->find('workflow', $data['workflow']);

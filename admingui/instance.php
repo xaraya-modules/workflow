@@ -46,8 +46,7 @@ class InstanceMethod extends MethodClass
 
         if (!isset($_REQUEST['iid'])) {
             $tplData['msg'] =  $this->ml("No instance indicated");
-            $tplData['context'] ??= $this->getContext();
-            return $this->mod()->template('errors', $tplData);
+            return $this->render('errors', $tplData);
         }
         $tplData['iid'] =  $_REQUEST['iid'];
 

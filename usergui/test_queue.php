@@ -53,7 +53,6 @@ class TestQueueMethod extends MethodClass
         } catch (Exception $e) {
             $data['warning'] = nl2br($e->getMessage());
         }
-        $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? $this->user()->getId();
 
         if (!empty($data['warning'])) {

@@ -150,12 +150,11 @@ class ShowinstancesMethod extends MethodClass
                 $tplData['actionlist'] = [];
             }
         }
-        $tplData['context'] ??= $this->getContext();
 
         if (!empty($args['template'])) {
-            return $this->mod()->template('showinstances', $tplData, $args['template']);
+            return $this->render('showinstances', $tplData, $args['template']);
         } else {
-            return $this->mod()->template('showinstances', $tplData);
+            return $this->render('showinstances', $tplData);
         }
     }
 }

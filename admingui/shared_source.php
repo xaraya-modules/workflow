@@ -45,8 +45,7 @@ class SharedSourceMethod extends MethodClass
 
         if (!isset($_REQUEST['pid'])) {
             $data['msg'] =  $this->ml("No process indicated");
-            $data['context'] ??= $this->getContext();
-            return $this->mod()->template('errors', $data);
+            return $this->render('errors', $data);
         }
 
         $data['pid'] =  $_REQUEST['pid'];

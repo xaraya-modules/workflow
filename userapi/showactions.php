@@ -49,7 +49,6 @@ class ShowactionsMethod extends MethodClass
             // @todo get userId from $item['user'] here?
             $tplData['userId'] = $this->getContext()?->getUserId() ?? $this->user()->getId();
         }
-        $tplData['context'] ??= $this->getContext();
 
         if (!empty($args['item'])
             && !empty($args['item']['marking'])
@@ -59,15 +58,15 @@ class ShowactionsMethod extends MethodClass
             foreach ($places as $here) {
                 $tplData['title'] = ucwords(str_replace('_', ' ', $here));
                 $tplData['item']['marking'] = $here;
-                $output .= $this->mod()->template('showactions', $tplData, $here);
+                $output .= $this->render('showactions', $tplData, $here);
             }
             return $output;
         }
 
         if (!empty($args['template'])) {
-            return $this->mod()->template('showactions', $tplData, $args['template']);
+            return $this->render('showactions', $tplData, $args['template']);
         } else {
-            return $this->mod()->template('showactions', $tplData);
+            return $this->render('showactions', $tplData);
         }
     }
 }

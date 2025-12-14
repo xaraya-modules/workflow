@@ -46,8 +46,7 @@ class ActivitiesMethod extends MethodClass
         $this->var()->find('pid', $data['pid'], 'int');
         if (empty($data['pid'])) {
             $data['msg'] =  $this->ml("No process indicated");
-            $data['context'] ??= $this->getContext();
-            return $this->mod()->template('errors', $data);
+            return $this->render('errors', $data);
         }
 
         // Create a dataobject of this activity for displaying, saving etc.
@@ -151,8 +150,7 @@ class ActivitiesMethod extends MethodClass
             $name = $data['activity']->properties['name']->value;
             if ($process->hasActivity($name) && $data['activityId'] == 0) {
                 $data['msg'] =  $this->ml("Activity name already exists");
-                $data['context'] ??= $this->getContext();
-                return $this->mod()->template('errors', $data);
+                return $this->render('errors', $data);
             }
 
             //--------------------------------------------- Save or create the item

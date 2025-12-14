@@ -53,7 +53,6 @@ class TestRunMethod extends MethodClass
             $data['warning'] = nl2br($e->getMessage());
         }
         $data['config'] = WorkflowConfig::loadConfig();
-        $data['context'] = $this->getContext();
         $data['userId'] = $this->getContext()?->getUserId() ?? $this->user()->getId();
 
         $this->var()->find('workflow', $data['workflow']);
@@ -120,7 +119,7 @@ class TestRunMethod extends MethodClass
             WorkflowConfig::setAutoload();
         } catch (Exception $e) {
             $data['warning'] = nl2br($e->getMessage());
-            return $this->mod()->template('test', $data);
+            return $this->render('test', $data);
         }
 
         WorkflowProcess::setLogger(new WorkflowLogger());
@@ -166,6 +165,6 @@ class TestRunMethod extends MethodClass
         $data['objectref'] = $subject->getObject();
         unset($data['place']);
 
-        return $this->mod()->template('test', $data);
+        return $this->render('test', $data);
     }
 }

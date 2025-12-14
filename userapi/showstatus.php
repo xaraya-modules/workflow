@@ -147,12 +147,11 @@ class ShowstatusMethod extends MethodClass
                 $tplData['actionlist'] = [];
             }
         }
-        $tplData['context'] ??= $this->getContext();
 
         if (!empty($args['template'])) {
-            return $this->mod()->template('showstatus', $tplData, $args['template']);
+            return $this->render('showstatus', $tplData, $args['template']);
         } else {
-            return $this->mod()->template('showstatus', $tplData);
+            return $this->render('showstatus', $tplData);
         }
     }
 }

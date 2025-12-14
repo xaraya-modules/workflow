@@ -29,7 +29,6 @@ class TestManageMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         $data = [];
-        $data['context'] = $this->getContext();
         return $data;
     }
 }

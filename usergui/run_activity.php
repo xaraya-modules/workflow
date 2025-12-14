@@ -57,15 +57,13 @@ class RunActivityMethod extends MethodClass
         // load then the compiled version of the activity
         if (!isset($_REQUEST['activityId'])) {
             $data['msg'] =  $this->ml("No workflow activity indicated");
-            $data['context'] ??= $this->getContext();
-            return $this->mod()->template('errors', $data);
+            return $this->render('errors', $data);
         }
 
         $activity = \Galaxia\Api\WorkflowActivity::get($_REQUEST['activityId']);
         if (empty($activity)) {
             $data['msg'] = $this->ml("Invalid workflow activity specified");
-            $data['context'] ??= $this->getContext();
-            return $this->mod()->template('errors', $data);
+            return $this->render('errors', $data);
         }
         $process = new \Galaxia\Api\Process($activity->getProcessId());
         $instance->pId = $activity->getProcessId();
@@ -89,8 +87,7 @@ class RunActivityMethod extends MethodClass
             if (!$canrun) {
                 var_dump($act_roles);
                 $data['msg'] =  $this->ml("You can't execute this activity");
-                $data['context'] ??= $this->getContext();
-                return $this->mod()->template('errors', $data);
+                return $this->render('errors', $data);
             }
         }
 
@@ -263,7 +260,6 @@ class RunActivityMethod extends MethodClass
                 $template = 'completed';
             }
         }
-        $data['context'] ??= $this->getContext();
-        return $this->mod()->template('activity', $data, $template);
+        return $this->render('activity', $data, $template);
     }
 }
