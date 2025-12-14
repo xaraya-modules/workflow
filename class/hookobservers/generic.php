@@ -39,8 +39,7 @@ class GenericObserver extends HookObserver
      */
     public function notify(ixarEventSubject $subject)
     {
-        $this->setStaticServices($subject->getServicesClass());
-        $this->setContext($subject->getContext());
+        $this->setServicesClass($subject->getServicesClass());
         // @checkme Xaraya only fires one event per subject type, so subjectName = subjectType here
         $subjectName = $subject->getSubject();
         $this->logEvent($subject, $subjectName);
@@ -62,20 +61,22 @@ class GenericObserver extends HookObserver
 
     public function getGuiResult(ixarHookSubject $subject, string $subjectName)
     {
+        $xar = $this->getServicesClass();
         // get args from subject (array containing objectid, extrainfo)
         //$args = $subject->getArgs();
         // get extrainfo from subject (array containing module, module_id, itemtype, itemid)
         //$extrainfo = $subject->getExtrainfo();
 
         // for gui hooks the subject expects a string to display, return the display gui func
-        //return $this->mod()->guiFunc('workflow', 'user', 'display', []);
+        //return $xar->mod()->guiFunc('workflow', 'user', 'display', []);
         //return 'workflow was here...';
         // See lib/xaraya/structures/events/guiobserver.php
-        return $this->mod()->guiMethod($this->module, $this->type, $this->func, $subject->getArgs());
+        return $xar->mod()->guiMethod($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
     public function getApiResult(ixarHookSubject $subject, string $subjectName)
     {
+        $xar = $this->getServicesClass();
         // get args from subject (array containing objectid, extrainfo)
         //$args = $subject->getArgs();
         // get extrainfo from subject (array containing module, module_id, itemtype, itemid)
@@ -86,11 +87,12 @@ class GenericObserver extends HookObserver
         //$item = ['workflow' => 'was here...'];
         //return $extrainfo += $item;
         // See lib/xaraya/structures/events/apiobserver.php
-        return $this->mod()->apiMethod($this->module, $this->type, $this->func, $subject->getArgs());
+        return $xar->mod()->apiMethod($this->module, $this->type, $this->func, $subject->getArgs());
     }
 
     public function logEvent(ixarHookSubject $subject, string $subjectName)
     {
+        $xar = $this->getServicesClass();
         //$subjectName = $subject->getSubject();
         // get args from subject (array containing objectid, extrainfo)
         $args = $subject->getArgs();
@@ -102,6 +104,6 @@ class GenericObserver extends HookObserver
             $args['objectid'] ?? '',
             $subjectName,
         );
-        $this->log()->info($message);
+        $xar->log()->info($message);
     }
 }
