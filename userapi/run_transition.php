@@ -52,7 +52,7 @@ class RunTransitionMethod extends MethodClass
 
         // if we come from a hook function
         if (empty($subjectId)) {
-            $moduleName = $args['module'] ?? $this->mod()->getName();
+            $moduleName = $args['module'] ?? $this->req()->getModule();
             $itemType = $args['itemtype'] ?? 0;
             $itemId = $args['itemid'] ?? 0;
             $moduleId = $args['module_id'] ?? $this->mod()->getRegID($moduleName);
